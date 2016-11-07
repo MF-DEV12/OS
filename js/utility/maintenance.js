@@ -57,8 +57,6 @@
 
  
    
- 
-
 
 
 
@@ -69,47 +67,41 @@
     var td =  tr.find("td:not(:first-child)")
 
  	if(isEdit){ 
-        if(table.find("tr.on-edit").length > 0) {
-            table.find("tr.on-edit").find("td:eq(1)").focus();
-            return;
-        }
+        
     	elem.closest("td").find("span[data-mode=edit]").show()
     	elem.closest("span").hide() 
         tr.addClass("on-edit")
-        td
-        .on("blur", onEditBlur)
-        .on("focus", onEditFocus)
+        
 
         
  	}
  	else{
-        if(tr.find("span.enter-here").length){
-            tr.find("span.enter-here").closest("td")
-                .addClass("required") 
-            return;
-        }
+     
 
  		elem.closest("td").find("span[data-mode=display]").show()
-        tr.find("td:not(:first-child)").attr("placeholder", null) 
     	elem.closest("span").hide() 
         tr.removeClass("on-edit")
         tr.find("td").removeClass("required")
-
+        
  	}
 
-    td.prop("contenteditable", isEdit) 
+ 
 
     
  }
 
  function onEditBlur(e){
-    var elem = jQuery(this)
-    if(jQuery.trim(elem.text()).length == 0 )
+    var elem = $(this)
+    if($.trim(elem.text()).length == 0 )
         elem.html("<span class=\"enter-here\"> Enter to type here </span>") 
     
  }
 
  function onEditFocus(e){
-    var elem = jQuery(this)
+    var elem = $(this)
     elem.find("span.enter-here").remove();
+      
+   
  }
+
+  

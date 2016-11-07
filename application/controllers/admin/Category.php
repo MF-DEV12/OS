@@ -11,6 +11,7 @@ class Category extends CI_Controller {
 		$this->param = $this->param = $this->query_model->param; 
  		$this->param["table"] = "tblcategory";
  		$this->param["fields"] = "catid `ID`, catdescription `Category`, createddate `Date Created`";
+ 		$this->param["fields_list"] = "catid|ID*, catdescription|Category*, createddate|Date Created*";
  
 	}
 
@@ -19,6 +20,7 @@ class Category extends CI_Controller {
 		 $data = array();
 		 $data["title"] = "Vote Category"; 
 		 $data["list"] = $this->getData(); 
+		 $data["fields"] = $this->param["fields_list"]; 
 		 $this->load->view("admin/maintenance",$data); 
 	}
 

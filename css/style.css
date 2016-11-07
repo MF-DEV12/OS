@@ -15,12 +15,18 @@ table.list-table tbody tr.on-edit{
      /*background-color: #fffff2 !important; */
 }
 
-table.list-table tbody tr.on-edit td:not(:first-child){
+table.list-table tbody tr.on-edit > td:not(:first-child){
     text-align: left !important;
      background-color: #fffff2 ;   
 }
 
  
+/*MODAL STYLE*/
+
+.form-wrap{
+  padding: 35px 20px;
+}
+
 
 span.enter-here{
   font-style: italic;
@@ -30,6 +36,12 @@ span.enter-here{
   background-color:#fff2f2 !important;
 
 }
+asterisk{
+  color: red;
+}
+
+
+
 
 
 
@@ -41,8 +53,8 @@ span.enter-here{
 
 
    /*ROW EDIT STYLE */
-   table.list-table tbody tr.on-edit td:not(:first-child){
-    text-align: right !important;
+   table.list-table tbody tr.on-edit  > td:not(:first-child){
+      text-align: right !important;
    }
 
 
