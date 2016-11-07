@@ -1,0 +1,99 @@
+
+body{
+    font-family: "Century Gothic" !important;
+}
+ 
+/*MAINTENANCE - TABLE*/
+
+div.table-wrap{
+  width: 100%;
+  padding: 40px;
+}
+
+/*ROW EDIT STYLE*/
+table.list-table tbody tr.on-edit{
+     /*background-color: #fffff2 !important; */
+}
+
+table.list-table tbody tr.on-edit td:not(:first-child){
+    text-align: left !important;
+     background-color: #fffff2 ;   
+}
+
+ 
+
+span.enter-here{
+  font-style: italic;
+  color: gray;
+}
+.required{
+  background-color:#fff2f2 !important;
+
+}
+
+
+
+/* MOBILE VIEW*/
+ @media screen and (max-width: 767px) {
+   div.table-wrap{
+    width: 100%;
+   }
+
+
+   /*ROW EDIT STYLE */
+   table.list-table tbody tr.on-edit td:not(:first-child){
+    text-align: right !important;
+   }
+
+
+}
+
+
+span[data-mode=edit]{
+    display:none;
+}
+
+
+
+
+
+
+
+/*SCROLL BAR*/
+::-webkit-scrollbar {
+width: 10px;
+height: 15px;
+}
+
+
+::-webkit-scrollbar-track-piece  {
+background-color: #fff;
+filter: alpha(opacity=40); /* internet explorer */
+opacity: 0.4; /* fx, safari, opera, chrome */
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=40)"; /*IE8*/
+}
+
+::-webkit-scrollbar-thumb:vertical {
+height: 20px;
+border-radius: 5px;
+width: 5px;
+background-color: #ccc;
+filter: alpha(opacity=40); /* internet explorer */
+opacity: 0.4; /* fx, safari, opera, chrome */
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=40)"; /*IE8*/
+
+transition: 0.5s ease;
+    -webkit-transition: 0.5s ease;
+    -moz-transition: 0.5s ease;
+    -ms-transition: 0.5s ease;
+    -o-transition: 0.5s ease;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+  background-color: #666;
+  transition: 0.5s ease;
+    -webkit-transition: 0.5s ease;
+    -moz-transition: 0.5s ease;
+    -ms-transition: 0.5s ease;
+    -o-transition: 0.5s ease;
+} 
