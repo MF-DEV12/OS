@@ -14,46 +14,16 @@
 	 
 </head>
 <body> 
-	
+	<input type="hidden" id="ctrl" value="<?=$controller;?>">
+	<input type="hidden" id="collist" value='<?=$columns;?>'>
 	<div class="table-wrap">
-		<h4>List of <?=$title;?></h4>
-		<div class="btn-group">
-			<button id=\"btn-add\" class="btn btn-default" data-toggle="modal" data-target="#save-modal" data-backdrop="static"  data-keyboard="false" type='button' >Add Category</button>
-			<button id=\"btn-filter\" class="btn btn-default">Filter</button> 
+		<div class="btn-group pull-right">
+			<button id=\"btn-add\" class="btn btn-success" data-toggle="modal" data-target="#save-modal" data-backdrop="static"  data-keyboard="false" type='button' >Add Category</button>
 		</div>
+		<h4>List of <?=$title;?></h4>
+		
 		<table class="list-table display">
-			<thead>
-				<!-- HEADER -->
-				<tr>  
-					<th>Action</th> 
-					<?php $hdr = (array)$list[0]; ?>  
-					<?php foreach( $hdr  as $row=>$value){ ?> 
-					 	<th><?=$row;?></th>
-					<?php } ?> 				 
-				</tr>
-			</thead>
-			<tbody>
-				<!-- LIST DATA -->
-				<?php foreach($list as $row=>$value){ ?> 
-					<tr> 
-						<td>
-							<span data-mode="display">
-								<a href="#" class="btn-edit" data-id="<?=$value->ID;?>">Edit</a>  |  
-								<a href="#" class="btn-delete" data-id="<?=$value->ID;?>">Delete</a>
-							</span>
-							<span data-mode="edit">
-								<a href="#" class="btn-save" data-id="<?=$value->ID;?>">Save</a>  |  
-								<a href="#" class="btn-cancel" data-id="<?=$value->ID;?>">Cancel</a>
-							</span>
-						</td>
-
-						<?php foreach($value as $key=>$data) { ?>
-							<td data-label="<?=$key;?>" data-type="<?=gettype($data);?>"><?=$data;?></td>
-						<?php } ?>  
-
-					</tr>
-				<?php } ?> 
-			</tbody>
+			 
 		</table> 
 	</div> 
 
@@ -64,24 +34,32 @@
 	    <div class="modal-content">
 	      <!-- dialog body -->
 	      <div class="modal-body">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <button type="button" class="close" data-dismiss="modal" onclick="onModalClose();">&times;</button>
 	        <div class="form-wrap">
 		        <?php $fields = explode(",", $fields) ?>
-		        <table>
+		        <table width="100%">
 		        <?php foreach($fields as $f){ ?>
-		        	<tr>
-			        	<td>
-				        	<?php $splitfld = explode("|", $f) ?>
-				        	<label for="fld-<?=$splitfld[0]?>"><?=$splitfld[1]?>:</label>
-				        	<input type="text" id="fld-<?=$splitfld[0]?>" class="form-control" <?=((!strpos($splitfld[1], "*")) ? "" : 'required="required"');?>/>
-			        	</td>
-		        	</tr>
+		        	<?php $splitfld = explode("|", $f) ?>
+		        	<?php $description = str_replace("*", "", $splitfld[1]); ?>
+		        	<?php if($description != "ACTION") {?> 
+			        	<tr>
+				        	<td>
+					        	
+					        	<label for="fld-<?=$description?>" <?=(($description != "ID") ? "" : 'style="display:none;"');?>><?=$splitfld[1]?>:</label>
+					        	<input type="text" id="fld-<?=$splitfld[0]?>" data-label="<?=$description?>" class="form-control" <?=((!strpos($splitfld[1], "*")) ? "" : 'required="required"');?> <?=(($description != "ID") ? "" : 'style="display:none;"');?>/>
+				        	</td>
+			        	</tr>
+		        	<?php }?>
+
 		        <?php } ?>
 		        </table>
 	        </div>
 	      </div>
 	      <!-- dialog buttons -->
-	      <div class="modal-footer"><button type="button" class="btn btn-primary">OK</button></div>
+	      <div class="modal-footer">
+	      <button type="button" data-dismiss="modal" class="btn btn-default btn-cancel">Cancel</button>
+	      <button type="button" class="btn btn-primary btn-save">Save</button>
+	      </div>
 	    </div>
 	  </div>
 	</div>
