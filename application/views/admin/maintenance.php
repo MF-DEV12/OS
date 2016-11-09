@@ -16,25 +16,32 @@
 <body> 
 	<input type="hidden" id="ctrl" value="<?=$controller;?>">
 	<input type="hidden" id="collist" value='<?=$columns;?>'>
+	<input type="hidden" id="mode" value='<?=$mode;?>'>
+	<input type="hidden" id="requiredfields" value='<?=$requiredfields;?>'>
 	<div class="table-wrap">
-		<div class="btn-group pull-right">
-			<button id=\"btn-add\" class="btn btn-success" data-toggle="modal" data-target="#save-modal" data-backdrop="static"  data-keyboard="false" type='button' >Add Category</button>
-		</div>
-		<h4>List of <?=$title;?></h4>
 		
-		<table class="list-table display">
-			 
-		</table> 
+		<h4>List of <?=$title;?></h4>
+		<div class="btn-group btn-action-group mode">
+			<button id=\"btn-add\" class="btn btn-success" data-toggle="modal" data-target="#save-modal" data-backdrop="static"  data-keyboard="false" type='button'><span class="glyphicon glyphicon-plus"></span> Add</button>
+		</div>
+		<div class="table-group">
+			<table class="list-table display">
+				 
+			</table> 
+		</div>
 	</div> 
 
 
 	<!-- SAVE FORM -->
-	<div id="save-modal" class="modal fade">
+	<div id="save-modal" class="modal fade" mode="add">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
+		    <div class="modal-header">
+		    	<button type="button" class="bootbox-close-button close" data-dismiss="modal" aria-hidden="true" onclick="onModalClose();">&times;</button>
+		    	<h4 class="modal-title"><mode>New</mode> <?=$title;?></h4>
+	    	</div>
 	      <!-- dialog body -->
-	      <div class="modal-body">
-	        <button type="button" class="close" data-dismiss="modal" onclick="onModalClose();">&times;</button>
+	      <div class="modal-body"> 
 	        <div class="form-wrap">
 		        <?php $fields = explode(",", $fields) ?>
 		        <table width="100%">
@@ -57,8 +64,9 @@
 	      </div>
 	      <!-- dialog buttons -->
 	      <div class="modal-footer">
-	      <button type="button" data-dismiss="modal" class="btn btn-default btn-cancel">Cancel</button>
-	      <button type="button" class="btn btn-primary btn-save">Save</button>
+	      <p class="message">*Please input all required field(s).</p>
+		      <button type="button" data-dismiss="modal" class="btn btn-default btn-cancel">Cancel</button>
+		      <button type="button" class="btn btn-primary btn-save">Save</button>
 	      </div>
 	    </div>
 	  </div>

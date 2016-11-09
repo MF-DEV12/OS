@@ -74,7 +74,7 @@ class Query_model extends CI_Model {
 
 		$this->session->set_flashdata('result', $this->db->affected_rows() . " row inserted.");
 		
-		return true;
+		return $result;
 	}
 
 

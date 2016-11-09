@@ -10,6 +10,11 @@ div.table-wrap{
   padding: 40px;
 }
 
+div.table-group{
+  padding-top: 12px;
+
+}
+
 /*ROW EDIT STYLE*/
 table.list-table tbody tr.on-edit{
      /*background-color: #fffff2 !important; */
@@ -32,10 +37,22 @@ span.enter-here{
   font-style: italic;
   color: gray;
 }
-.required{
-  background-color:#fff2f2 !important;
-
+td.required:before{
+  content: "*";
+  width: 10px;
+  color:red;
 }
+
+td.required input{
+  background-color:#fff2f2 !important; 
+}
+
+p.message{
+  color: red;
+  font-size: 12px; 
+  display: none;
+}
+
 asterisk{
   color: red;
 }
@@ -50,6 +67,11 @@ asterisk{
    div.table-wrap{
     width: 100%;
    }
+   .btn-action-group{
+    float: right;
+   }
+
+
 
 
    /*ROW EDIT STYLE */
@@ -57,6 +79,35 @@ asterisk{
       text-align: right !important;
    }
 
+   /*MODAL DIALOG STYLE*/
+   .modal-dialog {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .modal-content {
+      height: auto;
+      min-height: 100%;
+      border-radius: 0;
+    }
+    .modal-body {
+      width: 100%;
+      max-height: calc(100vh - 140px);
+      overflow-y: auto;
+      overflow: auto;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    .modal-footer{
+      bottom: 0;
+      position: absolute;
+      width: 100%;
+
+    }
 
 }
 

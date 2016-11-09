@@ -65,7 +65,7 @@
 
     table.list-table tr > td:not(:first-child):before {
       content: attr(data-label)  ":    ";
-      float: left;
+      display: block;
       /*text-transform: uppercase;*/
       font-weight: bold;
       text-align: left;
