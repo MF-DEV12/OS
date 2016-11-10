@@ -30,6 +30,12 @@ a {
 Main Components 
 
 -------------------------------- */
+img.company-logo{
+  height: 100%;
+  margin: -12px 0px;
+  width: 200px;
+}
+
 header {
   position: fixed;
   z-index: 3;
@@ -37,7 +43,7 @@ header {
   width: 100%;
   top: 0;
   left: 0;
-  background-color: #003455;
+  background-color: #009688;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Force Hardware Acceleration */
@@ -95,11 +101,7 @@ header::before {
   backface-visibility: hidden;
   color: white;
 }
-.cd-logo img {
-  display: block;
-  max-width: 100%;
-  margin-top: 14px;
-}
+ 
 @media only screen and (min-width: 1024px) {
   .cd-logo {
     position: absolute;
@@ -107,9 +109,8 @@ header::before {
     margin-left: 5%;
     margin-top: 14px;
   }
-  .cd-logo img {
-    margin-top: 29px;
-  }
+   
+ 
 }
 
 .cd-nav-trigger {
@@ -204,7 +205,7 @@ header::before {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   visibility: hidden;
-  background: #001A2A;
+  background: #005a51;
   -webkit-transition: visibility 0s 0.3s;
   -moz-transition: visibility 0s 0.3s;
   transition: visibility 0s 0.3s;
@@ -213,7 +214,7 @@ header::before {
   display: block;
   font-size: 1.5rem;
   padding: .9em 2em .9em 1em;
-  border-bottom: 1px solid #33414a;
+  border-bottom: 1px solid white;
   color: #ffffff;
   -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
   -moz-transition: -moz-transform 0.3s, opacity 0.3s;
@@ -464,6 +465,7 @@ header::before {
     -o-transform: rotate(135deg);
     transform: rotate(135deg);
   }
+
 }
 
 .cd-main-content::before {
@@ -590,6 +592,11 @@ header::before {
  #mobile-text{
     display: block !important;
   }
+   img.company-logo{
+    height: 34px;
+    margin: -12px 0px !important;
+    width: 200px;
+  }
 } 
 
 #mobile-text{
@@ -610,7 +617,7 @@ header::before {
 }
  
 .cd-main-nav li.active a {
-    background: #003455;
+    background: #009688;
 }
 
 

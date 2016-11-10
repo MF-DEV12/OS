@@ -8,6 +8,11 @@ class Login extends CI_Controller {
  		$this->param = $this->param = $this->query_model->param; 
  		$this->param["table"] = "tblusers";
  	}
+
+ 	function index(){
+ 		$this->load->view('login');
+ 	}
+
 	function validateUser(){
 		$username = $this->input->post("username");
 		$password = $this->input->post("password");

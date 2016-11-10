@@ -3,12 +3,14 @@
 body{
     font-family: Arial, sans-serif !important;
 }
- 
+
+
+
 /*MAINTENANCE - TABLE*/
 
 div.table-wrap{
   width: 100%;
-  padding: 0px;
+  padding: 10px;
 }
 
 div.table-group{
@@ -59,6 +61,16 @@ asterisk{
 }
 
 
+/*BUTTON STYLE*/
+button#btn-add{
+  margin-left: 10px !important;
+  background-color:   #4caf50 !important;
+  border-color:   #4caf50 !important;
+}
+
+button#btn-add:after {
+    content: " ADD";
+}
 
 
 
@@ -67,13 +79,14 @@ asterisk{
  @media screen and (max-width: 767px) {
    div.table-wrap{
     width: 100%;
+    padding: 0px !important;
+
    }
    .btn-action-group{
     float: right;
    }
 
-
-
+ 
 
    /*ROW EDIT STYLE */
    table.list-table tbody tr.on-edit  > td:not(:first-child){
@@ -110,7 +123,12 @@ asterisk{
 
     }
 
-    #btn-add{
+    /*BUTTON STYLE*/
+    button#btn-add:after {
+        content: "" !important;
+    }
+
+    button#btn-add{
       position: fixed !important;
       bottom: 10px;
       right: 10px;
@@ -122,6 +140,7 @@ asterisk{
       height: 70px;
       border-radius: 50%
     }
+
 
 }
 
