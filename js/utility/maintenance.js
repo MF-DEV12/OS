@@ -43,13 +43,20 @@
      }
 
     function onRowDelete(e){ 
-
+        selectedData = tableList.row(e.closest("tr")).data();
+        var param = new Object;
+        param.data = JSON.stringify(selectedData);
         bootbox.confirm("Are you sure you want to delete it?", function(result){
             if(result){ 
-                tableList
-                    .row( e.closest("tr") )
-                    .remove()
-                    .draw();
+                callAjaxJson(currentController + "deleteData", param, 
+                    function(response){
+                       tableList
+                        .row( e.closest("tr") )
+                        .remove()
+                        .draw();
+                    } 
+                ,ajaxError) 
+             
             }
 
         }) 

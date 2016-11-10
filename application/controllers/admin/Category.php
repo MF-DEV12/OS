@@ -9,19 +9,20 @@ class Category extends CI_Controller {
  	function __construct(){ 
  		parent::__construct();    
 		$this->param = $this->param = $this->query_model->param; 
- 		$this->param["table"] = "customer";
- 		$this->param["fields"] = "CustomerNo,Lastname,Firstname,ContactNo,Email,Address";
- 		$this->param["fields_list"] = "CustomerNo|ACTION,CustomerNo|ID,Lastname|Last name,Firstname|First name,ContactNo|Contact Number,Email|Email Address,Address|Address";
- 		$this->param["primaryfld"] = "CustomerNo"; // single condition only
- 		$this->param["requiredfields"] = "Lastname,Firstname,ContactNo,Email,Address";
+ 		$this->param["table"] = "tblcategory";
+ 		$this->param["fields"] = "catid,catdescription,createddate";
+ 		$this->param["fields_list"] = "catid|ACTION,catid|ID,catdescription|Category Name,createddate|Date Created";
+ 		$this->param["primaryfld"] = "catid"; // single condition only
+ 		$this->param["requiredfields"] = "catdescription";
  
 	}
  
 	public function index()
 	{
 		 $data = array();
-		 $data["title"] = "Customers"; 
+		 $data["title"] = "Category"; 
 		 $data["mode"] = "maintenance"; 
+		 $data["primarykey"] = $this->param["primaryfld"]; 
 		 $data["requiredfields"] = $this->param["requiredfields"]; 
 		 $data["list"] = $this->getData(); 
 		 $data["fields"] = $this->param["fields_list"]; 
@@ -32,8 +33,8 @@ class Category extends CI_Controller {
 
 	function getData(){
 		$param = $this->param;
-		//$param["conditions"] = "status = 1";
-		$param["order"] = "Lastname";
+		$param["conditions"] = "status = 1";
+		$param["order"] = "catdescription";
 		return $this->query_model->getData($param);
 
 	}
@@ -50,6 +51,13 @@ class Category extends CI_Controller {
 		$this->param["dataToUpdate"] = $data;
 		echo $this->query_model->updateData($this->param);
 	}
+
+	function deleteData(){
+		$data = json_decode($this->input->post("data"),true);
+		$this->param["conditions"] = $this->param["primaryfld"] . " = '" . $data[$this->param["primaryfld"]] . "'"; // single condition only
+		echo $this->query_model->removeData($this->param);
+	}
+
 
 	function listData(){
 		echo json_encode($this->getData());

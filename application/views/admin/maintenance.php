@@ -22,7 +22,7 @@
 		
 		<h4>List of <?=$title;?></h4>
 		<div class="btn-group btn-action-group mode">
-			<button id=\"btn-add\" class="btn btn-success" data-toggle="modal" data-target="#save-modal" data-backdrop="static"  data-keyboard="false" type='button'><span class="glyphicon glyphicon-plus"></span> Add</button>
+			<button id="btn-add" class="btn btn-success" data-toggle="modal" data-target="#save-modal" data-backdrop="static"  data-keyboard="false" type='button'><span class="glyphicon glyphicon-plus"></span></button>
 		</div>
 		<div class="table-group">
 			<table class="list-table display">
@@ -34,14 +34,14 @@
 
 	<!-- SAVE FORM -->
 	<div id="save-modal" class="modal fade" mode="add">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
+	  <div class="modal-dialog form">
+	    <div class="modal-content form">
 		    <div class="modal-header">
 		    	<button type="button" class="bootbox-close-button close" data-dismiss="modal" aria-hidden="true" onclick="onModalClose();">&times;</button>
 		    	<h4 class="modal-title"><mode>New</mode> <?=$title;?></h4>
 	    	</div>
 	      <!-- dialog body -->
-	      <div class="modal-body"> 
+	      <div class="modal-body form"> 
 	        <div class="form-wrap">
 		        <?php $fields = explode(",", $fields) ?>
 		        <table width="100%">
@@ -63,7 +63,7 @@
 	        </div>
 	      </div>
 	      <!-- dialog buttons -->
-	      <div class="modal-footer">
+	      <div class="modal-footer form">
 	      <p class="message">*Please input all required field(s).</p>
 		      <button type="button" data-dismiss="modal" class="btn btn-default btn-cancel">Cancel</button>
 		      <button type="button" class="btn btn-primary btn-save">Save</button>

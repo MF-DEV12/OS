@@ -89,7 +89,7 @@ class Query_model extends CI_Model {
 
 	function removeData($data){
 		if($data['conditions']!=""){$this->db->where($data['conditions']);}
-		$this->db->update($data['table'],$data['dataToUpdate']);
+		$this->db->delete($data['table']);
 		// $this->setAuditLogs('remove',$data['table']); 
 		return true;
 	}
