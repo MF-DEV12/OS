@@ -31,7 +31,7 @@ class Query_model extends CI_Model {
 		 		$qry .= "WHERE " .  $data["conditions"] . " ";
 
 		 	if($data["groups"] != "")
-		 		$qry .= $data["groups"] . " "; 
+		 		$qry .= "GROUP BY " . $data["groups"] . " "; 
 
 		 	if($data["order"] != "")
 		 		$qry .= "ORDER BY " . $data["order"] . " "; 

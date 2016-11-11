@@ -9,11 +9,11 @@ class Category extends CI_Controller {
  	function __construct(){ 
  		parent::__construct();    
 		$this->param = $this->param = $this->query_model->param; 
- 		$this->param["table"] = "tblcategory";
- 		$this->param["fields"] = "catid,catdescription,createddate";
- 		$this->param["fields_list"] = "catid|ACTION,catid|ID,catdescription|Category Name,createddate|Date Created";
- 		$this->param["primaryfld"] = "catid"; // single condition only
- 		$this->param["requiredfields"] = "catdescription";
+ 		$this->param["table"] = "category";
+ 		$this->param["fields"] = "CategoryNo,CategoryDescription";
+ 		$this->param["fields_list"] = "CategoryNo|ACTION,CategoryNo|ID,CategoryDescription|Category Name";
+ 		$this->param["primaryfld"] = "CategoryNo"; // single condition only
+ 		$this->param["requiredfields"] = "CategoryDescription";
  
 	}
  
@@ -33,8 +33,8 @@ class Category extends CI_Controller {
 
 	function getData(){
 		$param = $this->param;
-		$param["conditions"] = "status = 1";
-		$param["order"] = "catdescription";
+		// $param["conditions"] = "status = 1";
+		$param["order"] = "CategoryDescription";
 		return $this->query_model->getData($param);
 
 	}
