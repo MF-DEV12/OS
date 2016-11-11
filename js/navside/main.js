@@ -27,6 +27,29 @@ jQuery(document).ready(function($){
 		$('.cd-main-nav').toggleClass('moves-out');
 	});
 
+	$('.cd-main-nav a').click(function(e){
+		var elem = $(this)
+		$('.cd-main-nav li').removeClass("active")
+		elem.closest("li").addClass("active")
+		if(elem.attr("href").indexOf("#") >= 0){
+
+			var a = elem.attr("href").replace("#","")
+			$("nav.sub-menu").find("ul.selected-sub-menu").removeClass("selected-sub-menu")
+			$("nav.sub-menu").find("ul."+a).addClass("selected-sub-menu")
+			$(".cd-nav-trigger").click();
+		}
+	})
+
+	$("nav.sub-menu a").click(function(e){
+		var elem = $(this)
+		var ul = elem.closest("ul");
+		ul.find("li.current").removeClass("current")
+		elem.closest("li").addClass("current")
+	})
+
+
+
+
 	function moveNavigation(){
 		var navigation = $('.cd-main-nav-wrapper');
   		var screenSize = checkWindowWidth();
@@ -45,4 +68,8 @@ jQuery(document).ready(function($){
 		var mq = window.getComputedStyle(document.querySelector('header'), '::before').getPropertyValue('content').replace(/"/g, '').replace(/'/g, "");
 		return ( mq == 'mobile' ) ? false : true;
 	}
+
+	 
+
+
 });

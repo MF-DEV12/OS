@@ -219,6 +219,7 @@ header::before {
   -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
   -moz-transition: -moz-transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s;
+   
 }
 .cd-main-nav li ul {
   position: absolute;
@@ -608,6 +609,12 @@ header::before {
   list-style: none;
 }
 
+.cd-main-nav li.active ,
+.cd-main-nav li.active a {
+  background: #006f65 !important;
+}
+
+
 .cd-main-nav li ul{
   list-style: none;
 }
@@ -629,4 +636,94 @@ header::before {
 }
 #loadingchart{
   float:  none !important;
+}
+
+
+
+
+/* SUB NAV MENU */
+
+nav.sub-menu {
+  background: #111;
+ border-right: 1px solid #000;
+  box-shadow: 
+    1px 0 0 #222
+  ;
+  height: 90%;
+  width: 220px;
+  position: absolute;
+}
+
+nav.sub-menu ul {
+  background: #111;
+  border-bottom: 1px solid #222;  
+  padding: 0px;
+  display:none;
+} 
+
+nav.sub-menu ul.selected-sub-menu { 
+  display:block !important;
+} 
+
+nav.sub-menu li {
+  display: block;
+}
+
+
+nav.sub-menu a {
+  background: #111;
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #222;
+  box-shadow:
+    inset -5px 0 0 hsla(0, 0%, 0%, .2),
+    inset 0 20px 0 #161616
+  ;
+  color: #bbb;
+  display: block;
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 45px;
+  text-align: left;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px hsla(0, 0%, 0%, .5);
+  transition: all 300ms;
+}
+
+nav.sub-menu a:hover,
+nav.sub-menu a:focus,
+nav.sub-menu li.current a {
+  background: #222;
+  border-top-color: #3a3a3a;
+  box-shadow: 
+    inset -5px 0 0 #3a3a3a,
+    inset 0 20px 0 #282828
+  ;
+  color: #ddd;
+  outline: 0  ;
+  padding: 0 50px;
+  transition: all 300ms;
+}
+
+nav.sub-menu li.current a {
+  box-shadow:
+    inset -5px 0 0 #e00,
+    inset 0 20px 0 #282828
+  ;
+  padding: 0 45px;
+}
+
+nav.sub-menu a:active {
+  background: #333;
+  border-top-color: #666;
+  box-shadow: 
+    inset -5px 0 0 #666,
+    inset 0 20px 0 #444
+  ;
+  color: #fff;
+  transition: all 50ms;
+}
+
+nav.sub-menu li:first-child a {
+   border-top: none; 
 }

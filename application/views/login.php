@@ -28,22 +28,26 @@
 
                                 <div class="form-top-left" align="center">
                                     <h3>Login page</h3>
+                                    <?php if($this->session->flashdata('error')) {?>
+                                        <p class="label label-danger"><?=$this->session->flashdata('error');?></p> 
+                                    <?php }?>
                                 </div>
                                 <div class="form-top-right">
                                     <i class="fa fa-lock"></i>
                                 </div>
                             </div>
                             <div class="form-bottom">
-                                <form role="form" action="" method="post" class="login-form" id="loginform">
+                                <form role="form" action="<?=base_url('login/validateUser')?>" method="post" class="login-form" id="loginform">
                                     <div class="form-group">
                                         <label class="sr-only" for="form-username">Username</label>
-                                        <input type="text" name="form-username" placeholder="Username..." class="form-control" id="USERNAME" required autofocus="autofocus">
+                                        <input type="text" name="username" placeholder="Enter your username..." class="form-control" id="USERNAME" required autofocus="autofocus">
                                     </div>
                                     <div class="form-group">
                                         <label class="sr-only" for="form-password">Password</label>
-                                        <input type="password" name="form-password" placeholder="Password..." class="form-control" id="PASSWORD" required>
+                                        <input type="password" name="password" placeholder="Enter your password..." class="form-control" id="PASSWORD" required>
                                     </div>
-                                    <button type="submit" class="btn btn-success">Sign in!</button>
+                                 
+                                    <button type="submit" class="btn btn-success">Sign in</button>
                                 </form>
                             </div>
                         </div>
@@ -58,6 +62,6 @@
     <script type="text/javascript" src='js/bootstrap/bootstrap.min.js'></script>
     <script type="text/javascript" src="<?=base_url('js/bootbox.min.js');?>"></script> 
     <script type="text/javascript" src='js/utility/ajaxCall.js'></script>
-    <script type="text/javascript" src='js/index.js'></script>
+    <!-- <script type="text/javascript" src='js/index.js'></script> -->
 </body>
 </html>

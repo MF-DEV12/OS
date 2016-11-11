@@ -9,7 +9,7 @@ jQuery(function(){
 		var param = new Object();
 		param.username = jQuery("#USERNAME").val()
 		param.password = jQuery("#PASSWORD").val()
-		callAjaxJson("Login/validateUser",param,successLogin,ajaxError)
+		callAjaxJson("login/validateUser",param,successLogin,ajaxError)
 	})
 
 

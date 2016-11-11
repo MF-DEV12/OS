@@ -1,18 +1,12 @@
  
  <header>
-
- <?php
- 	$curLabel = "LAMPANO HARDWARE";
- 	$mode = "admin"; // admin|supplier|customer
- 	  
- ?>
-
+  
 	<div class="cd-logo"> <img class="company-logo" src="<?=base_url('images/logo.png');?>" alt=""/>  </div>
 
 	<nav class="cd-main-nav-wrapper">
 	 	<ul class="cd-main-nav">
 	 	<!-- CUSTOMER NAVIGATION MENU -->
-	 	<?php if($mode=="customer") { ?>
+	 	<?php if($role=="customer") { ?>
 
 				
 					<li><a href="<?=base_url('admin/dashboard');?>"><span class="glyphicon glyphicon-shopping-cart"></span> Order</a></li>
@@ -24,21 +18,21 @@
 	 	<?php } ?>
 
 	 	<!-- CUSTOMER NAVIGATION MENU -->
-	 	<?php if($mode=="admin") { ?>
-
+	 	<?php if($role=="admin") { ?>
 				 
-				<li><a href="<?=base_url('admin/dashboard');?>"><span class="glyphicon glyphicon-edit"></span> Purchase Order</a></li>
-				<li><a href="<?=base_url('admin/project');?>"><span class="glyphicon glyphicon-glyphicon glyphicon-tasks"></span> Inventory</a></li>
-				<li><a href="<?=base_url('admin/contributors');?>"><span class="glyphicon glyphicon-shopping-cart"></span> Orders</a></li>
-				<li><a href="<?=base_url('admin/contributors');?>"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
-				<li><a href="<?=base_url('login/clearSession');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li> 
+				<li class="active"><a href="#purchaseorder"><span class="glyphicon glyphicon-edit"></span> Purchase Order</a></li>
+				<li><a href="#inventory"><span class="glyphicon glyphicon-glyphicon glyphicon-tasks"></span> Inventory</a></li>
+				<li><a href="#orders"><span class="glyphicon glyphicon-shopping-cart"></span> Orders</a></li>
+				<li><a href="#reports"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
+				<li><a href="#settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-comment"></span> Forums</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li> 
+				 
 					  
-			 
-
 	 	<?php } ?>
 
 	 	<!-- CUSTOMER NAVIGATION MENU -->
-	 	<?php if($mode=="supplier") { ?>
+	 	<?php if($role=="supplier") { ?>
 
 				 
 				<li><a href="<?=base_url('admin/dashboard');?>"><span class="glyphicon glyphicon-download-alt"></span> Requests</a></li>
@@ -87,7 +81,10 @@
 			 
 		</ul> <!-- .cd-main-nav -->
 	</nav> <!-- .cd-main-nav-wrapper --> 
+
 	<a href="#0" class="cd-nav-trigger" style="color:transparent !important;">Menu<span></span></a>
 
+
+
 </header>
- 
+ 	

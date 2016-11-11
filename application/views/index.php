@@ -17,11 +17,16 @@
 <body>
     
     <?php $this->load->view("header");?>
-    <main class="cd-main-content">
-      
 
+    <main class="cd-main-content">
+
+    <?php $this->load->view("sub-menu");?>
+  
+    <div class="content-holder">
+        <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Project Contributions</h5>
+
+    </div>
       
-            <!-- <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Project Contributions</h5> -->
             
 
     </main>          

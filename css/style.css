@@ -4,6 +4,11 @@ body{
     font-family: Arial, sans-serif !important;
 }
 
+/*CONTENT STYLE*/
+div.content-holder{
+  padding: 1px 232px;
+  width: 100%
+}
 
 
 /*MAINTENANCE - TABLE*/
