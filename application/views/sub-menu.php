@@ -4,10 +4,10 @@
     <!-- SUB-MENU -->
      <?php if($role=="admin") {?>
           <ul class="purchaseorder selected-sub-menu">
-                <li class="current"><a href="#">Purchase Order</a></li>
-                <li><a href="#">Receivings</a></li>
-                <li><a href="#">Back Orders</a></li>
-                <li><a href="#">Suppliers</a></li>
+                <li class="current" data-content="purchaseorder"><a href="#">Purchase Order</a></li>
+                <li data-content="receivings"><a href="#">Receivings</a></li>
+                <li data-content="backorders"><a href="#">Back Orders</a></li>
+                <li data-content="suppliers"><a href="#">Suppliers</a></li>
           </ul>
           <ul class="inventory">
                 <li class="current"><a href="#">Inventory</a></li>

@@ -1,11 +1,11 @@
 $(function(){
 
-	callAjaxJson("main/PurchaseOrderData", new Object(), setupPO, ajaxError)
+	callAjaxJson("main/initializeAllData", new Object(), bindingDatatoDataTable, ajaxError)
 
 
 })
 
-function setupPO(response){
+function bindingDatatoDataTable(response){
 	var data = response
 	for(x in data){
 		console.log(data);
@@ -23,11 +23,13 @@ function setupPO(response){
 
 function setupDataTable(table, data, fields){
 
-	table.DataTable({
-		 "bSort" : false,
+	table.dataTable({
+		     "bSort" : false,
+         "iDisplayLength": 10,
+         "bLengthChange": false,
          "autoWidth": false,
          "columnDefs": [
-            { "width": "20%", "targets": 0},
+            { "width": "100px", "targets": 0},
           ],
          "aaData" : data,
          "aoColumns" : fields.Columns, 

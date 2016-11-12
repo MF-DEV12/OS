@@ -106,7 +106,7 @@ header::before {
   .cd-logo {
     position: absolute;
     z-index: 2;
-    margin-left: 5%;
+    /*margin-left: 5%;*/
     margin-top: 14px;
   }
    
@@ -197,7 +197,7 @@ header::before {
 
 .cd-main-nav {
   position: fixed;
-  z-index: 1;
+  z-index: 6;
   top: 0;
   right: 0;
   width: 260px;
@@ -320,7 +320,7 @@ header::before {
     height: 80px;
     line-height: 80px;
     /* padding left = logo size + logo left position*/
-    padding: 0 5% 0 calc(5% + 124px);
+    /*padding: 0 5% 0 calc(5% + 124px);*/
     background: transparent;
     text-align: right;
   }
@@ -629,10 +629,10 @@ header::before {
 
 
 .dash-header{
-  background: #085281;
+  background: #005a52;
   color: white;
   padding: 9px;
-  text-align: center;
+  text-align: left;
 }
 #loadingchart{
   float:  none !important;
@@ -645,10 +645,10 @@ header::before {
 
 nav.sub-menu {
   background: #111;
- border-right: 1px solid #000;
+/* border-right: 1px solid #000;
   box-shadow: 
     1px 0 0 #222
-  ;
+  ;*/
   height: 90%;
   width: 220px;
   position: absolute;
@@ -705,11 +705,26 @@ nav.sub-menu li.current a {
   transition: all 300ms;
 }
 
+nav.sub-menu li.current:after{
+   content: '';
+    width: 0;
+    height: 0;
+    margin-top: -30px;
+    right: 0;
+    margin-left: -1px;
+    position: absolute;
+    border-right: 10px solid white;
+    border-left: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+    transition: top 500ms, right 500ms;
+}
+
 nav.sub-menu li.current a {
-  box-shadow:
-    inset -5px 0 0 #e00,
+  /*box-shadow:
+    inset -8px 0 0 white,
     inset 0 20px 0 #282828
-  ;
+  ;*/
   padding: 0 45px;
 }
 

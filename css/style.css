@@ -6,9 +6,46 @@ body{
 
 /*CONTENT STYLE*/
 div.content-holder{
-  padding: 1px 232px;
-  width: 100%
+   left: 219px;
+    top: 78px;
+    width: 88%;
+    position: absolute;
+    border-left: 8px solid white;
 }
+
+div.content-holder .content-group,
+div.content-holder .content-list{
+  display: none;
+}
+
+
+div.content-holder .show{
+  display: block !important;
+}
+ 
+
+div.content-holder .content-list table{
+    height: 800px;
+    padding: 37px;
+    background: white !important;
+}
+
+div.content-holder .dataTables_filter{
+  float: left;
+}
+
+div.content-holder .btn-action{
+     background: #f44336;
+    border: 1px solid #f44336;
+    color: white;
+    cursor: pointer;
+    z-index: 4;
+    position: absolute;
+    right: 0;
+    top: 48px;
+}
+ 
+
 
 
 /*MAINTENANCE - TABLE*/

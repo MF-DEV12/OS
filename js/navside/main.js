@@ -34,8 +34,15 @@ jQuery(document).ready(function($){
 		if(elem.attr("href").indexOf("#") >= 0){
 
 			var a = elem.attr("href").replace("#","")
+			// SUB MENU
 			$("nav.sub-menu").find("ul.selected-sub-menu").removeClass("selected-sub-menu")
 			$("nav.sub-menu").find("ul."+a).addClass("selected-sub-menu")
+
+			// CONTENT GROUP
+			$("div.content-holder .content-group.show").removeClass("show");
+			$("div.content-holder .content-group[data-group='"+ a +"']").addClass("show");
+
+
 			$(".cd-nav-trigger").click();
 		}
 	})
@@ -43,8 +50,14 @@ jQuery(document).ready(function($){
 	$("nav.sub-menu a").click(function(e){
 		var elem = $(this)
 		var ul = elem.closest("ul");
+		var li = elem.closest("li");
 		ul.find("li.current").removeClass("current")
-		elem.closest("li").addClass("current")
+		li.addClass("current")
+
+		$("div.content-holder .content-group.show .content-list.show").removeClass("show");
+		$("div.content-holder")
+			.find(".content-list[data-content='"+ li.data("content") +"']").addClass("show") 
+
 	})
 
 
