@@ -22,6 +22,9 @@ class Main extends CI_Controller {
 			$data["receivings"] = $this->GetReceivings();
 			$data["backorders"] = $this->GetBackOrders();
 			$data["suppliers"] = $this->GetSuppliers();
+			$data["inventory"] = $this->getInventory();
+			$data["items"] = $this->getItems();
+			$data["lowstocks"] = $this->getLowStocks();
 
 			echo json_encode($data); 
 	}
@@ -76,13 +79,32 @@ class Main extends CI_Controller {
 	// INVENTORY 
 		function getInventory(){
 			$this->param = $this->param = $this->query_model->param; 
-			$this->param["table"] = "vw_getpurchaseorders";
+			$this->param["table"] = "vw_inventory";
 			$this->param["fields"] = "*"; 
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "SupplyRequestNo|No,NoOfItems|No of items,SupplierName|Supplier name,Date|Date Order,Action|Action";
-			return $data;
+			$data["fields"] = "ItemNo|Item Number,ItemDescription|Item Name,Category|Category,STOCKCOMMIT|Available Quantity,STOCKS|Onhand Stocks,COMMIT|Quantity Committed";
+			return $data; 
+		}
 
+		function getItems(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_items";
+			$this->param["fields"] = "*"; 
+ 
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,Name1|Family,Name2|Category,Name3|Subcategory,SupplierName|Supplier name";
+			return $data; 
+		}
+		
+		function getLowStocks(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_lowstocks";
+			$this->param["fields"] = "*"; 
+ 
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ItemNo|Item Number,ItemDescription|Item Name,SupplierName|Supplier name,STOCKS|Stocks,LOWSTOCKS|Low Stock Threshold,CRITICAL|Critical";
+			return $data; 
 		}
 		 
 	///

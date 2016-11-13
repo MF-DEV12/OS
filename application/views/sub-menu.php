@@ -10,9 +10,9 @@
                 <li data-content="suppliers"><a href="#">Suppliers</a></li>
           </ul>
           <ul class="inventory">
-                <li class="current"><a href="#">Inventory</a></li>
-                <li><a href="#">Items</a></li>
-                <li><a href="#">Low Stocks</a></li>
+                <li class="current" data-content="inventory"><a href="#">Inventory</a></li>
+                <li data-content="items"><a href="#">Items</a></li>
+                <li data-content="lowstocks"><a href="#">Low Stocks</a></li>
                 <li><a href="#">Categories</a></li>
                 <li><a href="#">Removed</a></li>
           </ul>

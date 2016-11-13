@@ -29,7 +29,7 @@
             <div class="content-list show" data-content="purchaseorder">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Purchase Orders</h5> 
                 <button id="add-request-po" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> Create Request</button>
-                <table class="display list-table" data-table="purchaseorder"> </table>
+                <table class="display" data-table="purchaseorder"> </table>
             </div>
             <div class="content-list" data-content="receivings">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Receivings</h5> 
@@ -46,6 +46,32 @@
                 <button id="add-request-po" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
                 <table class="display" data-table="suppliers"> </table>
             </div>
+        </div>
+        <div class="content-group" data-group="inventory">
+            <div class="content-list show" data-content="inventory">
+                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Inventory</h5> 
+                <button id="add-request-po" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> Physical Count</button>
+                <table class="display list-table" data-table="inventory"> </table>
+            </div>
+            <div class="content-list" data-content="items">
+                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Items</h5> 
+                <button id="direct-receive" class="btn btn-action"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button>
+                <table class="display" data-table="items"> </table>
+            </div>
+            <div class="content-list" data-content="lowstocks">
+                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Low Stocks</h5> 
+                <table class="display" data-table="lowstocks"> </table>
+            </div>
+             <!--<div class="content-list" data-content="backorders">
+                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Back Order</h5> 
+                <button id="add-request-po" class="btn btn-action"><span class="glyphicon glyphicon-send"></span> Send Notification</button>
+                <table class="display" data-table="backorders"> </table>
+            </div>
+            <div class="content-list" data-content="suppliers">
+                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Suppliers</h5> 
+                <button id="add-request-po" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
+                <table class="display" data-table="suppliers"> </table>
+            </div> -->
         </div>
        <!--  <div class="content-list" data-content="backorders">
             <table class="display" data-table="backorders"></table>
