@@ -17,11 +17,11 @@
                 <li><a href="#">Removed</a></li>
           </ul>
           <ul class="orders">
-                <li class="current"><a href="#">All</a></li>
-                <li><a href="#">New</a></li>
-                <li><a href="#">Processing</a></li>
-                <li><a href="#">Shipped</a></li>
-                <li><a href="#">Cancelled</a></li>
+                <li class="current" data-content="allorders"><a href="#">All</a></li>
+                <li data-content="neworders"><a href="#">New</a></li>
+                <li data-content="processorders"><a href="#">Processing</a></li>
+                <li data-content="shippedorders"><a href="#">Shipped</a></li>
+                <li data-content="cancelledorders"><a href="#">Cancelled</a></li>
           </ul>
            <ul class="reports">
                 <li class="current"><a href="#">Sales</a></li>

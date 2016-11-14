@@ -11,6 +11,7 @@ class Main extends CI_Controller {
 	public function index()
 	{
 		$data['role'] = $this->session->userdata("role");
+		$data["suppliers"] = $this->GetSuppliers();
 		$this->load->view('index', $data);
 
 
@@ -22,9 +23,16 @@ class Main extends CI_Controller {
 			$data["receivings"] = $this->GetReceivings();
 			$data["backorders"] = $this->GetBackOrders();
 			$data["suppliers"] = $this->GetSuppliers();
+
 			$data["inventory"] = $this->getInventory();
 			$data["items"] = $this->getItems();
 			$data["lowstocks"] = $this->getLowStocks();
+
+			$data["allorders"] = $this->getOrders("");
+			$data["neworders"] = $this->getOrders("New");
+			$data["processorders"] = $this->getOrders("Process");
+			$data["shippedorders"] = $this->getOrders("Ship");
+			$data["cancelledorders"] = $this->getOrders("Cancel");
 
 			echo json_encode($data); 
 	}
@@ -44,6 +52,23 @@ class Main extends CI_Controller {
 			return $data;
 
 		}
+
+		function getSupplierOrder(){
+			$supplierID = $this->input->post("sid");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "item i";
+			$this->param["fields"] = "CONCAT('<input type=\"checkbox\" data-item=\"', i.ItemNo, '\" data-variant=\"', iv.VariantNo ,'\" checked>') Action,"; 
+			$this->param["fields"] .= "CONCAT(i.ItemNo,'-', iv.VariantNo) ItemNo, CONCAT(Name, '<br/>', iv.Size, ' ', iv.Color, ' ', iv.Description) Description, DPOCost"; 
+			$this->param["joins"] = "INNER JOIN itemvariant iv ON i.ItemNo = iv.ItemNo"; 
+			$this->param["conditions"] = "i.SupplierNo = '$supplierID'";
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "Action| ,ItemNo|Item No.,Description|Item Description,DPOCost|DPO Cost";
+			$json["pobysupplier"] = $data;
+			echo json_encode($json); 
+		}
+
+
 		function GetReceivings(){
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "vw_receivings";
@@ -107,6 +132,19 @@ class Main extends CI_Controller {
 			return $data; 
 		}
 		 
+	///
+
+	// ORDERS 
+		function getOrders($status){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_allorders";
+			$this->param["fields"] = "*"; 
+ 			if($status != "") { $this->param["conditions"] = "Status = '$status'"; }
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "OrderNo|OR#,Name|Customer Name,Address|Address,Date|Order Date,TotalAmount|Total Amount,Status|Status,Status,Action|Action";
+			return $data; 
+		}
+	 
 	///
 
 

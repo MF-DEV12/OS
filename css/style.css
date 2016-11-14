@@ -6,7 +6,7 @@ body{
 
 /*CONTENT STYLE*/
 div.content-holder{
-   left: 219px;
+   left: 222px;
     top: 78px;
     width: 88%;
     position: absolute;
@@ -24,7 +24,7 @@ div.content-holder .show{
 }
  
 
-div.content-holder .content-list table{
+div.content-holder .content-list .main-table{
     height: 800px;
     padding: 37px;
     background: white !important;
@@ -44,7 +44,25 @@ div.content-holder .btn-action{
     right: 0;
     top: 48px;
 }
- 
+
+div.content-holder .content-child{
+  display: none;
+}
+
+/*DIV STYLE*/
+.polistsupplier-wrap{
+   margin-top: 6px;
+}
+.polistsupplier-wrap table{
+    height: 300px;
+   
+}
+
+.posubmit-wrap{
+  background: white;
+  margin-top: 33px;
+}
+
 
 
 
