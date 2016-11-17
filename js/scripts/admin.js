@@ -34,6 +34,21 @@ $(function(){
         callAjaxJson("main/addToPO", param, bindingDatatoDataTable, ajaxError)
 
     }
+    function removePO(requestlistno, elem){
+        var tr = elem.closest("tr")
+        var param = new Object();
+        param.rlno = requestlistno;
+        callAjaxJson("main/deletePO", param, 
+            function(response){
+                if(response){
+                   var posubmittable = listObjTableBinded["posubmit"] 
+                   posubmittable.row(tr).remove().draw();
+                }
+
+            }
+        , ajaxError)
+
+    }
 
 function bindingDatatoDataTable(response){
 	var data = response

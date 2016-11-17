@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v10.00 Beta1
-MySQL - 5.5.5-10.1.9-MariaDB : Database - lampanohardwaretradings
+SQLyog Community v12.09 (64 bit)
+MySQL - 10.1.9-MariaDB : Database - lampanohardwaretradings
 *********************************************************************
 */
 
@@ -9,9 +9,12 @@ MySQL - 5.5.5-10.1.9-MariaDB : Database - lampanohardwaretradings
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`lampanohardwaretradings` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `lampanohardwaretradings`;
 
 /*Table structure for table `accounts` */
 
@@ -48,24 +51,6 @@ CREATE TABLE `admin` (
 /*Data for the table `admin` */
 
 insert  into `admin`(`AdminNo`,`Name`,`AuthorityLevel`,`ContactNo`,`Address`,`AccountNo`) values (1,'Rolen','Owner','1234124','Gen. Luis',NULL),(2,'Raemond','Co-owner','13134341','Sta Lucia',NULL),(3,'Melyza','Manager','4224231','Sabungan',NULL),(4,'Patrick','Worker','4356345','Caloocan',NULL),(5,'Marc','Worker','9296940118','Bukaneg St Sta Lucia Novaliches Quezon City',NULL),(6,'Hannah','Manager','549811651','Fairview',NULL),(7,'Ed','watcher','897456321','BukanegGroundz',NULL);
-
-/*Table structure for table `category` */
-
-DROP TABLE IF EXISTS `category`;
-
-CREATE TABLE `category` (
-  `CategoryNo` int(3) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `Category` varchar(50) DEFAULT NULL,
-  `CategoryDescription` varchar(50) DEFAULT NULL,
-  `FamilyNo` int(3) unsigned zerofill DEFAULT NULL,
-  PRIMARY KEY (`CategoryNo`),
-  KEY `FKFamily_category` (`FamilyNo`),
-  CONSTRAINT `FKFamily_category` FOREIGN KEY (`FamilyNo`) REFERENCES `family` (`FamilyNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
-
-/*Data for the table `category` */
-
-insert  into `category`(`CategoryNo`,`Category`,`CategoryDescription`,`FamilyNo`) values (001,'Paints','Pangkulay ng iyong buhay',001),(002,'Brushes and Rollers',NULL,001),(003,'Caulks and Sealants',NULL,001),(004,'Adhesive and Tapes',NULL,001),(005,'Ladders',NULL,001),(006,'Power Tools',NULL,002),(007,'Hand Tools',NULL,002),(008,'Measuring Tools',NULL,002),(009,'Tool Organizers',NULL,002),(010,'Bulbs and Flourescent',NULL,003),(011,'Ligthing Fixtures',NULL,003),(012,'Flashlights and Batteries',NULL,003),(013,'Rechargables',NULL,003),(014,'Power Supply',NULL,003),(015,'Extension Cords, Wires, and Cables',NULL,003),(016,'Wiring Devices',NULL,003),(017,'Audio, Video and Telephone',NULL,003),(018,'Supplies',NULL,003),(019,'Air Purifier',NULL,004),(020,'Faucets',NULL,004),(021,'Fittings',NULL,004),(022,'Shower and Bidets',NULL,004),(023,'Water Filtration',NULL,004),(024,'Water Heaters',NULL,004),(025,'Water Storage and Pumps',NULL,004),(026,'Waterclosets and Accessories',NULL,004),(027,'Sink, Lavatory and Accessories',NULL,004),(028,'Building Materials and Supplies',NULL,005),(029,'Door and Hardware',NULL,005);
 
 /*Table structure for table `customer` */
 
@@ -299,14 +284,16 @@ CREATE TABLE `requestlist` (
   `ItemNo` int(4) unsigned zerofill DEFAULT NULL,
   `VariantNo` int(11) DEFAULT NULL,
   `Temp` tinyint(1) DEFAULT NULL,
+  `createdby` varchar(50) DEFAULT NULL,
+  `createddate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`RequestListNo`),
   KEY `FKSupplyRequest_requestlist` (`SupplyRequestNo`),
   KEY `FKItem_requestlist` (`ItemNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=latin1;
 
 /*Data for the table `requestlist` */
 
-insert  into `requestlist`(`RequestListNo`,`Quantity`,`Total`,`Received`,`SupplyRequestNo`,`ItemNo`,`VariantNo`,`Temp`) values (32,10,100,10,24,0031,12,0),(48,1,10,NULL,27,0031,12,0),(63,1,10,NULL,29,0031,12,0),(64,1,10,NULL,30,0031,12,0),(66,1,10,NULL,31,0031,12,0),(81,5,50,NULL,32,0031,12,0),(82,2,20,2,33,0031,12,0),(83,3,30,3,33,0031,13,0),(84,4,40,4,33,0031,14,0),(85,3,30,2,33,0031,16,0),(86,5,500,4,33,0031,17,0),(87,2,10,2,33,0031,18,0),(88,5,50,NULL,34,0031,13,0),(89,3,30,5,35,0031,12,0),(90,4,40,6,35,0031,13,0);
+insert  into `requestlist`(`RequestListNo`,`Quantity`,`Total`,`Received`,`SupplyRequestNo`,`ItemNo`,`VariantNo`,`Temp`,`createdby`,`createddate`) values (32,10,100,10,24,0031,12,0,NULL,'2016-11-15 15:01:21'),(48,1,10,NULL,27,0031,12,0,NULL,'2016-11-15 15:01:21'),(63,1,10,NULL,29,0031,12,0,NULL,'2016-11-15 15:01:21'),(64,1,10,NULL,30,0031,12,0,NULL,'2016-11-15 15:01:21'),(66,1,10,NULL,31,0031,12,0,NULL,'2016-11-15 15:01:21'),(81,5,50,NULL,32,0031,12,0,NULL,'2016-11-15 15:01:21'),(82,2,20,2,33,0031,12,0,NULL,'2016-11-15 15:01:21'),(83,3,30,3,33,0031,13,0,NULL,'2016-11-15 15:01:21'),(84,4,40,4,33,0031,14,0,NULL,'2016-11-15 15:01:21'),(85,3,30,2,33,0031,16,0,NULL,'2016-11-15 15:01:21'),(86,5,500,4,33,0031,17,0,NULL,'2016-11-15 15:01:21'),(87,2,10,2,33,0031,18,0,NULL,'2016-11-15 15:01:21'),(88,5,50,NULL,34,0031,13,0,NULL,'2016-11-15 15:01:21'),(89,3,30,5,35,0031,12,0,NULL,'2016-11-15 15:01:21'),(90,4,40,6,35,0031,13,0,NULL,'2016-11-15 15:01:21');
 
 /*Table structure for table `sales` */
 
@@ -440,6 +427,39 @@ DROP TABLE IF EXISTS `vw_getbackorders`;
  `PendingQuantity` int(11) 
 )*/;
 
+/*Table structure for table `vw_getorderbysupplier` */
+
+DROP TABLE IF EXISTS `vw_getorderbysupplier`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getorderbysupplier` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getorderbysupplier` */;
+
+/*!50001 CREATE TABLE  `vw_getorderbysupplier`(
+ `Action` varchar(134) ,
+ `ItemNo` varchar(22) ,
+ `Description` varchar(257) ,
+ `DPOCost` double ,
+ `SupplierNo` int(11) 
+)*/;
+
+/*Table structure for table `vw_getposubmit` */
+
+DROP TABLE IF EXISTS `vw_getposubmit`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getposubmit` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getposubmit` */;
+
+/*!50001 CREATE TABLE  `vw_getposubmit`(
+ `Remove` varchar(86) ,
+ `ItemQty` varchar(123) ,
+ `Item` varchar(22) ,
+ `ItemDescription` varchar(258) ,
+ `DPOCost` double ,
+ `Total` double ,
+ `createdby` varchar(50) ,
+ `SupplierNo` int(11) 
+)*/;
+
 /*Table structure for table `vw_getpurchaseorders` */
 
 DROP TABLE IF EXISTS `vw_getpurchaseorders`;
@@ -529,6 +549,20 @@ DROP TABLE IF EXISTS `vw_receivings`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getbackorders` AS (select `rl`.`RequestListNo` AS `RequestListNo`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`rl`.`Received` AS `Received`,`sup`.`PendingQuantity` AS `PendingQuantity` from (((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on(((`rl`.`VariantNo` = `iv`.`VariantNo`) and (`i`.`ItemNo` = `iv`.`ItemNo`)))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sup`.`PendingQuantity` > 0)) */;
 
+/*View structure for view vw_getorderbysupplier */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getorderbysupplier` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getorderbysupplier` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getorderbysupplier` AS (select concat('<button class="btn btn-success" onclick=\'addtoPo("',`i`.`ItemNo`,'","',`iv`.`VariantNo`,'");\'><span class="glyphicon glyphicon-plus"></span></button>') AS `Action`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`) AS `Description`,`iv`.`DPOCost` AS `DPOCost`,`i`.`SupplierNo` AS `SupplierNo` from (`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`)))) */;
+
+/*View structure for view vw_getposubmit */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getposubmit` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getposubmit` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getposubmit` AS (select concat('<button class="btn btn-danger" onclick="removePO(\'',`rl`.`RequestListNo`,'\',this);">&times</button>') AS `Remove`,concat('<input type="text" value="',ifnull(`rl`.`Quantity`,0),'" class="form-control poquantity" onchange="updatePOQty("',`i`.`ItemNo`,',"',`iv`.`VariantNo`,'");"/>') AS `ItemQty`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `Item`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`iv`.`DPOCost` AS `DPOCost`,`rl`.`Total` AS `Total`,`rl`.`createdby` AS `createdby`,`i`.`SupplierNo` AS `SupplierNo` from ((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`iv`.`VariantNo` = `rl`.`VariantNo`)))) where (`rl`.`Temp` = 1)) */;
+
 /*View structure for view vw_getpurchaseorders */
 
 /*!50001 DROP TABLE IF EXISTS `vw_getpurchaseorders` */;
@@ -565,5 +599,6 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_receivings` AS (select `sup`.`SupplyNo` AS `SupplyNo`,`sup`.`DateReceive` AS `DateReceive`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`sup`.`QuantityReceived` AS `QuantityReceived`,`sup`.`PendingQuantity` AS `PendingQuantity`,`rl`.`Quantity` AS `Quantity` from (((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`rl`.`VariantNo` = `iv`.`VariantNo`))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sr`.`isReceived` = 1) order by `sup`.`DateReceive` desc) */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

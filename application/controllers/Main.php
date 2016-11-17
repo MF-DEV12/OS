@@ -88,9 +88,16 @@ class Main extends CI_Controller {
 			}
 			
 			$json["posubmit"] = $this->GetPOSubmit($supplierNo); 
-		 	echo json_encode($json); 
+		 	echo json_encode($json);  
+		}
 
-		
+		function deletePO(){
+			$requestlistno = $this->input->post("rlno");
+			$this->param = $this->query_model->param; 
+			$this->param["table"] = "requestlist";
+			$this->param["conditions"] = "RequestListNo = '$requestlistno'";
+			$result = $this->query_model->removeData($this->param); 
+			echo $result; 
 		}
 
 		function GetPOSubmit($supplierNo){
