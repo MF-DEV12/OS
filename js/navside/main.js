@@ -41,7 +41,8 @@ jQuery(document).ready(function($){
 			// CONTENT GROUP
 			$("div.content-holder .content-group.show").removeClass("show");
 			$("div.content-holder .content-group[data-group='"+ a +"']").addClass("show");
-
+			$("nav.sub-menu").find("ul."+a).find("li.current a").click()
+			 
 
 			$(".cd-nav-trigger").click();
 		}
@@ -57,7 +58,10 @@ jQuery(document).ready(function($){
 		$("div.content-holder .content-group.show .content-list.show").removeClass("show");
 		$("div.content-holder")
 			.find(".content-list[data-content='"+ li.data("content") +"']").addClass("show") 
-
+		var table = $("table[data-table='" + li.data("content") + "']")
+		table.attr("style",null)
+	 
+	 
 	})
 
 

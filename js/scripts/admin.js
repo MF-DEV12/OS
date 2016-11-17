@@ -16,13 +16,24 @@ $(function(){
             var elem = $(this)
             var param = new Object()
             param.sid = elem.find("option:selected").val()
-            if(param.sid!=""){
+            if(param.sid != ""){
                 callAjaxJson("main/getSupplierOrder", param, bindingDatatoDataTable, ajaxError)
             }
         })
 
 
+
 })
+
+// PURCHASE ORDER
+    function addtoPo(itemno, variantno){
+        var param = new Object();
+        param.ino = itemno;
+        param.vno = variantno; 
+        param.sno = $("#polistsupplier").find("option:selected").val();
+        callAjaxJson("main/addToPO", param, bindingDatatoDataTable, ajaxError)
+
+    }
 
 function bindingDatatoDataTable(response){
 	var data = response
@@ -47,20 +58,17 @@ function setupDataTable(table, data, fields){
         dttable.destroy();
         table.empty()
     }
-  
+    
 
-    dttable = table.DataTable({
-                     "bSort" : false,
-                     "iDisplayLength": (table.is(".main-table")) ? 10 : 5, 
-                     "bLengthChange": false,
-                     "autoWidth": false,
-                     "columnDefs": [
-                        { "width": "10px", "targets": 0},
-                      ],
+    dttable = table.DataTable({  
                      "aaData" : data,
-                     "aoColumns" : fields.Columns, 
+                     "aoColumns" : fields.Columns,  
+                      scrollY:        '20vh',
+                      scrollCollapse: false,
+                      paging:         false,
+                      
                 }); 
-   
+     
     listObjTableBinded[table.data("table")] = dttable
     
 

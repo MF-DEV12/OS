@@ -28,11 +28,11 @@ class Main extends CI_Controller {
 			$data["items"] = $this->getItems();
 			$data["lowstocks"] = $this->getLowStocks();
 
-			$data["allorders"] = $this->getOrders("");
-			$data["neworders"] = $this->getOrders("New");
-			$data["processorders"] = $this->getOrders("Process");
-			$data["shippedorders"] = $this->getOrders("Ship");
-			$data["cancelledorders"] = $this->getOrders("Cancel");
+			// $data["allorders"] = $this->getOrders("");
+			// $data["neworders"] = $this->getOrders("New");
+			// $data["processorders"] = $this->getOrders("Process");
+			// $data["shippedorders"] = $this->getOrders("Ship");
+			// $data["cancelledorders"] = $this->getOrders("Cancel");
 
 			echo json_encode($data); 
 	}
@@ -56,18 +56,53 @@ class Main extends CI_Controller {
 		function getSupplierOrder(){
 			$supplierID = $this->input->post("sid");
 			$this->param = $this->param = $this->query_model->param; 
-			$this->param["table"] = "item i";
-			$this->param["fields"] = "CONCAT('<input type=\"checkbox\" data-item=\"', i.ItemNo, '\" data-variant=\"', iv.VariantNo ,'\" checked>') Action,"; 
-			$this->param["fields"] .= "CONCAT(i.ItemNo,'-', iv.VariantNo) ItemNo, CONCAT(Name, '<br/>', iv.Size, ' ', iv.Color, ' ', iv.Description) Description, DPOCost"; 
-			$this->param["joins"] = "INNER JOIN itemvariant iv ON i.ItemNo = iv.ItemNo"; 
-			$this->param["conditions"] = "i.SupplierNo = '$supplierID'";
+			$this->param["table"] = "vw_getorderbysupplier";
+			$this->param["fields"] = "*"; 
+		 
+			$this->param["conditions"] = "SupplierNo = '$supplierID'";
 
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "Action| ,ItemNo|Item No.,Description|Item Description,DPOCost|DPO Cost";
+			$data["fields"] = "Action| ,ItemNo|Item No.,Description|Description,DPOCost|DPO Cost";
 			$json["pobysupplier"] = $data;
+			$json["posubmit"] = $this->GetPOSubmit($supplierID); 
 			echo json_encode($json); 
 		}
 
+		function addToPO(){
+			$itemNo = $this->input->post("ino");
+			$variantNo = $this->input->post("vno");
+			$supplierNo = $this->input->post("sno");
+			$createdby = $this->session->userdata("username");
+
+			$this->param = $this->query_model->param; 
+			$this->param["table"] = "requestlist";
+			$this->param["fields"] = "*";
+			$this->param["conditions"] = "ItemNo = '$itemNo' AND VariantNo = '$variantNo' AND createdby = '$createdby' AND Temp = 1";
+			$resultrequestlist = $this->query_model->getData($this->param);
+			if(!$resultrequestlist){
+
+				$qry =  "INSERT INTO requestlist(Temp, ItemNo, VariantNo, createdby) ";
+				$qry .= "VALUES( 1, '$itemNo', '$variantNo', '$createdby' )"; 
+				$this->db->query($qry);  
+
+			}
+			
+			$json["posubmit"] = $this->GetPOSubmit($supplierNo); 
+		 	echo json_encode($json); 
+
+		
+		}
+
+		function GetPOSubmit($supplierNo){
+			$createdby = $this->session->userdata("username");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getposubmit";
+			$this->param["fields"] = "*";
+			$this->param["conditions"] = "createdby = '$createdby' AND SupplierNo = '$supplierNo'";
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,DPOCost|DPO Cost,Total|Total";
+			return $data;
+		}
 
 		function GetReceivings(){
 			$this->param = $this->param = $this->query_model->param; 

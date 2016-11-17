@@ -8,7 +8,7 @@ body{
 div.content-holder{
    left: 222px;
     top: 78px;
-    width: 88%;
+    width: 83%;
     position: absolute;
     border-left: 8px solid white;
 }
@@ -25,8 +25,9 @@ div.content-holder .show{
  
 
 div.content-holder .content-list .main-table{
-    height: 800px;
-    padding: 37px;
+    /*height: 800px;*/
+  /*  padding: 37px;*/
+    /*width: auto !important*/
     background: white !important;
 }
 
@@ -49,18 +50,53 @@ div.content-holder .content-child{
   display: none;
 }
 
+div.content-child .dataTables_filter,
+div.content-child .dataTables_info{
+  display: none;
+}
+div.content-holder table td,
+div.content-child table td,
+div.content-holder table td,{
+  padding: 2px 0px !important;
+  font-size: 12px !important;
+}
+
+div.content-child button{
+    padding: 2px !important;
+    font-size: 10px;
+}
+
+.poquantity{
+  text-align: right !important;
+}
+
+.dataTables tbody td {
+min-height: 20px; /* or whatever height you need to make them all consistent */
+}
+
 /*DIV STYLE*/
 .polistsupplier-wrap{
    margin-top: 6px;
 }
-.polistsupplier-wrap table{
-    height: 300px;
-   
+.polistsupplier-wrap{
+    height: 50%;
+    font-size: 12px; 
+}
+.polistsupplier-holder{
+ 
+    margin-top: -11px; 
+    margin-left: -11px;
 }
 
 .posubmit-wrap{
   background: white;
   margin-top: 33px;
+  font-size: 12px;
+}
+.posubmit-wrap table tbody td{
+  text-align: center;
+  padding: 2px 0px !important;
+  margin: 0px !important;
 }
 
 
@@ -69,8 +105,11 @@ div.content-holder .content-child{
 /*MAINTENANCE - TABLE*/
 
 div.table-wrap{
-  width: 100%;
+ 
   padding: 10px;
+}
+.dataTables_scrollHeadInner{
+  width: auto !important;
 }
 
 div.table-group{

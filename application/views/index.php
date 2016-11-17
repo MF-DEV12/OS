@@ -32,11 +32,10 @@
                 <table class="display main-table" data-table="purchaseorder"> </table>
                 <div class="content-child">
 
-                    <div class="col-md-3 polistsupplier-wrap"> 
-                        <div style="padding:20px 0px;>
-                            <label for="polistsupplier">Supplier:</label>
+                    <div class="col-md-4 polistsupplier-wrap"> 
+                        <div class="polistsupplier-holder">
                             <select id="polistsupplier" class="form-control">
-                                <option value="" disabled selected>Select here</option>
+                                <option value="" disabled selected>Select a Supplier</option>
                                 <?php foreach($suppliers["list"] as $po){ ?>
                                     <option value="<?=$po->SupplierNo;?>"><?=$po->SupplierName;?></option>
                                 <?php }?>
@@ -46,8 +45,8 @@
                         <table class="display" data-table="pobysupplier"></table>
                      </div>
 
-                     <div class="col-md-9 posubmit-wrap"> 
-                        <table class="display" id="posubmit"></table>
+                     <div class="col-md-8 posubmit-wrap"> 
+                        <table class="display" data-table="posubmit" ></table>
                      </div>
 
                 </div>
