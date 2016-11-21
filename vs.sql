@@ -289,11 +289,11 @@ CREATE TABLE `requestlist` (
   PRIMARY KEY (`RequestListNo`),
   KEY `FKSupplyRequest_requestlist` (`SupplyRequestNo`),
   KEY `FKItem_requestlist` (`ItemNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=latin1;
 
 /*Data for the table `requestlist` */
 
-insert  into `requestlist`(`RequestListNo`,`Quantity`,`Total`,`Received`,`SupplyRequestNo`,`ItemNo`,`VariantNo`,`Temp`,`createdby`,`createddate`) values (32,10,100,10,24,0031,12,0,NULL,'2016-11-15 15:01:21'),(48,1,10,NULL,27,0031,12,0,NULL,'2016-11-15 15:01:21'),(63,1,10,NULL,29,0031,12,0,NULL,'2016-11-15 15:01:21'),(64,1,10,NULL,30,0031,12,0,NULL,'2016-11-15 15:01:21'),(66,1,10,NULL,31,0031,12,0,NULL,'2016-11-15 15:01:21'),(81,5,50,NULL,32,0031,12,0,NULL,'2016-11-15 15:01:21'),(82,2,20,2,33,0031,12,0,NULL,'2016-11-15 15:01:21'),(83,3,30,3,33,0031,13,0,NULL,'2016-11-15 15:01:21'),(84,4,40,4,33,0031,14,0,NULL,'2016-11-15 15:01:21'),(85,3,30,2,33,0031,16,0,NULL,'2016-11-15 15:01:21'),(86,5,500,4,33,0031,17,0,NULL,'2016-11-15 15:01:21'),(87,2,10,2,33,0031,18,0,NULL,'2016-11-15 15:01:21'),(88,5,50,NULL,34,0031,13,0,NULL,'2016-11-15 15:01:21'),(89,3,30,5,35,0031,12,0,NULL,'2016-11-15 15:01:21'),(90,4,40,6,35,0031,13,0,NULL,'2016-11-15 15:01:21');
+insert  into `requestlist`(`RequestListNo`,`Quantity`,`Total`,`Received`,`SupplyRequestNo`,`ItemNo`,`VariantNo`,`Temp`,`createdby`,`createddate`) values (32,10,100,10,24,0031,12,0,NULL,'2016-11-15 15:01:21'),(48,1,10,NULL,27,0031,12,0,NULL,'2016-11-15 15:01:21'),(63,1,10,NULL,29,0031,12,0,NULL,'2016-11-15 15:01:21'),(64,1,10,NULL,30,0031,12,0,NULL,'2016-11-15 15:01:21'),(66,1,10,NULL,31,0031,12,0,NULL,'2016-11-15 15:01:21'),(81,5,50,NULL,32,0031,12,0,NULL,'2016-11-15 15:01:21'),(82,2,20,2,33,0031,12,0,NULL,'2016-11-15 15:01:21'),(83,3,30,3,33,0031,13,0,NULL,'2016-11-15 15:01:21'),(84,4,40,4,33,0031,14,0,NULL,'2016-11-15 15:01:21'),(85,3,30,2,33,0031,16,0,NULL,'2016-11-15 15:01:21'),(86,5,500,4,33,0031,17,0,NULL,'2016-11-15 15:01:21'),(87,2,10,2,33,0031,18,0,NULL,'2016-11-15 15:01:21'),(88,5,50,NULL,34,0031,13,0,NULL,'2016-11-15 15:01:21'),(89,3,30,5,35,0031,12,0,NULL,'2016-11-15 15:01:21'),(90,4,40,6,35,0031,13,0,NULL,'2016-11-15 15:01:21'),(133,2,NULL,NULL,40,0031,12,0,'Rolen','2016-11-21 15:02:34'),(134,4,NULL,NULL,40,0031,13,0,'Rolen','2016-11-21 15:02:35'),(135,5,NULL,NULL,41,0031,12,0,'Rolen','2016-11-21 15:04:43'),(137,1,NULL,NULL,42,0031,12,0,'Rolen','2016-11-21 15:12:22'),(138,3,NULL,NULL,42,0031,13,0,'Rolen','2016-11-21 15:12:23'),(139,2,NULL,NULL,42,0031,15,0,'Rolen','2016-11-21 15:12:25'),(140,3,NULL,NULL,42,0031,14,0,'Rolen','2016-11-21 15:12:26'),(141,2,NULL,NULL,42,0031,16,0,'Rolen','2016-11-21 15:12:27'),(142,3,NULL,NULL,42,0031,18,0,'Rolen','2016-11-21 15:12:28'),(143,6,NULL,NULL,42,0031,17,0,'Rolen','2016-11-21 15:12:29');
 
 /*Table structure for table `sales` */
 
@@ -367,11 +367,11 @@ CREATE TABLE `supplyrequest` (
   PRIMARY KEY (`SupplyRequestNo`),
   KEY `FKSupplier_supplyrequest` (`SupplierNo`),
   CONSTRAINT `FKSupplier_supplyrequest` FOREIGN KEY (`SupplierNo`) REFERENCES `supplier` (`SupplierNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 /*Data for the table `supplyrequest` */
 
-insert  into `supplyrequest`(`SupplyRequestNo`,`Date`,`SupplierNo`,`isReceived`) values (24,'2016-10-01 02:17:36',4,1),(25,'2016-10-01 09:45:51',4,0),(26,'2016-10-01 09:52:01',4,0),(27,'2016-10-01 09:52:32',4,0),(28,'2016-10-01 09:53:46',4,0),(29,'2016-10-01 10:30:25',4,0),(30,'2016-10-01 10:30:45',4,0),(31,'2016-10-01 10:34:56',4,1),(32,'2016-11-09 20:38:59',4,0),(33,'2016-11-09 20:53:49',4,1),(34,'2016-11-09 21:05:35',4,0),(35,'2016-11-09 21:25:11',4,1);
+insert  into `supplyrequest`(`SupplyRequestNo`,`Date`,`SupplierNo`,`isReceived`) values (24,'2016-10-01 02:17:36',4,1),(25,'2016-10-01 09:45:51',4,0),(26,'2016-10-01 09:52:01',4,0),(27,'2016-10-01 09:52:32',4,0),(28,'2016-10-01 09:53:46',4,0),(29,'2016-10-01 10:30:25',4,0),(30,'2016-10-01 10:30:45',4,0),(31,'2016-10-01 10:34:56',4,1),(32,'2016-11-09 20:38:59',4,0),(33,'2016-11-09 20:53:49',4,1),(34,'2016-11-09 21:05:35',4,0),(35,'2016-11-09 21:25:11',4,1),(40,'2016-11-21 15:02:41',4,0),(41,'2016-11-21 15:05:01',4,0),(42,'2016-11-21 15:12:42',4,0);
 
 /*Table structure for table `tblorder` */
 
@@ -427,6 +427,22 @@ DROP TABLE IF EXISTS `vw_getbackorders`;
  `PendingQuantity` int(11) 
 )*/;
 
+/*Table structure for table `vw_getlowstockbysupplier` */
+
+DROP TABLE IF EXISTS `vw_getlowstockbysupplier`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getlowstockbysupplier` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getlowstockbysupplier` */;
+
+/*!50001 CREATE TABLE  `vw_getlowstockbysupplier`(
+ `ItemNo` varchar(22) ,
+ `ItemDescription` varchar(258) ,
+ `STOCKS` bigint(11) ,
+ `LOWSTOCKS` bigint(11) ,
+ `CRITICAL` bigint(11) ,
+ `SupplierNo` int(11) 
+)*/;
+
 /*Table structure for table `vw_getorderbysupplier` */
 
 DROP TABLE IF EXISTS `vw_getorderbysupplier`;
@@ -451,13 +467,28 @@ DROP TABLE IF EXISTS `vw_getposubmit`;
 
 /*!50001 CREATE TABLE  `vw_getposubmit`(
  `Remove` varchar(86) ,
- `ItemQty` varchar(123) ,
+ `ItemQty` varchar(114) ,
  `Item` varchar(22) ,
  `ItemDescription` varchar(258) ,
  `DPOCost` double ,
  `Total` double ,
  `createdby` varchar(50) ,
- `SupplierNo` int(11) 
+ `SupplierNo` int(11) ,
+ `RequestListNo` int(11) 
+)*/;
+
+/*Table structure for table `vw_getpotoreceive` */
+
+DROP TABLE IF EXISTS `vw_getpotoreceive`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getpotoreceive` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getpotoreceive` */;
+
+/*!50001 CREATE TABLE  `vw_getpotoreceive`(
+ `SupplyRequestNo` int(11) ,
+ `NoOfItems` bigint(21) ,
+ `SupplierName` varchar(50) ,
+ `Date` datetime 
 )*/;
 
 /*Table structure for table `vw_getpurchaseorders` */
@@ -473,6 +504,23 @@ DROP TABLE IF EXISTS `vw_getpurchaseorders`;
  `NoOfItems` bigint(21) ,
  `Date` datetime ,
  `Action` varchar(39) 
+)*/;
+
+/*Table structure for table `vw_getselectedorderdetails` */
+
+DROP TABLE IF EXISTS `vw_getselectedorderdetails`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getselectedorderdetails` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getselectedorderdetails` */;
+
+/*!50001 CREATE TABLE  `vw_getselectedorderdetails`(
+ `SupplyRequestNo` int(11) ,
+ `RequestListNo` int(11) ,
+ `VariantNo` int(11) ,
+ `ItemDescription` varchar(258) ,
+ `Received` varchar(119) ,
+ `Requested` int(11) ,
+ `QtyReceived` bigint(11) 
 )*/;
 
 /*Table structure for table `vw_inventory` */
@@ -549,6 +597,13 @@ DROP TABLE IF EXISTS `vw_receivings`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getbackorders` AS (select `rl`.`RequestListNo` AS `RequestListNo`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`rl`.`Received` AS `Received`,`sup`.`PendingQuantity` AS `PendingQuantity` from (((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on(((`rl`.`VariantNo` = `iv`.`VariantNo`) and (`i`.`ItemNo` = `iv`.`ItemNo`)))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sup`.`PendingQuantity` > 0)) */;
 
+/*View structure for view vw_getlowstockbysupplier */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getlowstockbysupplier` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getlowstockbysupplier` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getlowstockbysupplier` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,ifnull(`iv`.`LowStock`,0) AS `LOWSTOCKS`,ifnull(`iv`.`Critical`,0) AS `CRITICAL`,`iv`.`SupplierNo` AS `SupplierNo` from (`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) where ((`iv`.`Stocks` <= `iv`.`LowStock`) and (`iv`.`Owned` = 1))) */;
+
 /*View structure for view vw_getorderbysupplier */
 
 /*!50001 DROP TABLE IF EXISTS `vw_getorderbysupplier` */;
@@ -561,7 +616,14 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 DROP TABLE IF EXISTS `vw_getposubmit` */;
 /*!50001 DROP VIEW IF EXISTS `vw_getposubmit` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getposubmit` AS (select concat('<button class="btn btn-danger" onclick="removePO(\'',`rl`.`RequestListNo`,'\',this);">&times</button>') AS `Remove`,concat('<input type="text" value="',ifnull(`rl`.`Quantity`,0),'" class="form-control poquantity" onchange="updatePOQty("',`i`.`ItemNo`,',"',`iv`.`VariantNo`,'");"/>') AS `ItemQty`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `Item`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`iv`.`DPOCost` AS `DPOCost`,`rl`.`Total` AS `Total`,`rl`.`createdby` AS `createdby`,`i`.`SupplierNo` AS `SupplierNo` from ((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`iv`.`VariantNo` = `rl`.`VariantNo`)))) where (`rl`.`Temp` = 1)) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getposubmit` AS (select concat('<button class="btn btn-danger" onclick="removePO(\'',`rl`.`RequestListNo`,'\',this);">&times</button>') AS `Remove`,concat('<input type="text" value="',ifnull(`rl`.`Quantity`,0),'" class="form-control poquantity" onblur="updatePOQty(\'',`rl`.`RequestListNo`,'\',this);"/>') AS `ItemQty`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `Item`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`iv`.`DPOCost` AS `DPOCost`,`rl`.`Total` AS `Total`,`rl`.`createdby` AS `createdby`,`i`.`SupplierNo` AS `SupplierNo`,`rl`.`RequestListNo` AS `RequestListNo` from ((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`iv`.`VariantNo` = `rl`.`VariantNo`)))) where (`rl`.`Temp` = 1)) */;
+
+/*View structure for view vw_getpotoreceive */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getpotoreceive` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getpotoreceive` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getpotoreceive` AS (select `sr`.`SupplyRequestNo` AS `SupplyRequestNo`,count(`rl`.`SupplyRequestNo`) AS `NoOfItems`,`s`.`SupplierName` AS `SupplierName`,`sr`.`Date` AS `Date` from ((`supplyrequest` `sr` join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`rl`.`Quantity` is not null)))) where (`sr`.`isReceived` = 0) group by `rl`.`SupplyRequestNo` order by `sr`.`Date` desc) */;
 
 /*View structure for view vw_getpurchaseorders */
 
@@ -569,6 +631,13 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 DROP VIEW IF EXISTS `vw_getpurchaseorders` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getpurchaseorders` AS (select `sr`.`SupplyRequestNo` AS `SupplyRequestNo`,`s`.`SupplierName` AS `SupplierName`,count(`rl`.`SupplyRequestNo`) AS `NoOfItems`,`sr`.`Date` AS `Date`,concat('<span><a>View</a> | <a>Print</a></span>') AS `Action` from ((`supplyrequest` `sr` join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`rl`.`Quantity` is not null)))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) group by `rl`.`SupplyRequestNo` order by `sr`.`Date` desc) */;
+
+/*View structure for view vw_getselectedorderdetails */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getselectedorderdetails` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getselectedorderdetails` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getselectedorderdetails` AS (select `sr`.`SupplyRequestNo` AS `SupplyRequestNo`,`rl`.`RequestListNo` AS `RequestListNo`,`iv`.`VariantNo` AS `VariantNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,concat('<input type="text" value="',ifnull(`rl`.`Received`,0),'" class="form-control poreceived" onblur="updatePOReceived(\'',`rl`.`RequestListNo`,'\',this);"/>') AS `Received`,`rl`.`Quantity` AS `Requested`,ifnull(`rl`.`Received`,0) AS `QtyReceived` from (((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`rl`.`VariantNo` = `iv`.`VariantNo`)))) join `supplyrequest` `sr` on((`rl`.`SupplyRequestNo` = `sr`.`SupplyRequestNo`)))) */;
 
 /*View structure for view vw_inventory */
 

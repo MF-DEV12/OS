@@ -28,11 +28,16 @@
         <div class="content-group show" data-group="purchaseorder">
             <div class="content-list show" data-content="purchaseorder">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Purchase Orders <subheader></subheader></h5> 
-                <button id="btn-addrequest" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> Create Request</button>
+                <button id="btn-addrequest" class="btn btn-action main-button btn-action-right"><span class="glyphicon glyphicon-plus"></span> Create Request</button>
+                <div class="btn-group btn-child-group btn-group-mode btn-action-right">
+                    <button id="btn-pocancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
+                    <button id="btn-poreset" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span> Reset</button>
+                    <button id="btn-posubmit" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
+                </div>
                 <table class="display main-table" data-table="purchaseorder"> </table>
                 <div class="content-child">
 
-                    <div class="col-md-4 polistsupplier-wrap"> 
+                    <div class="col-md-5 polistsupplier-wrap"> 
                         <div class="polistsupplier-holder">
                             <select id="polistsupplier" class="form-control">
                                 <option value="" disabled selected>Select a Supplier</option>
@@ -43,39 +48,57 @@
                         </div>
                        
                         <table class="display" data-table="pobysupplier"></table>
+                        <table class="display" data-table="lowstockbysupplier"></table>
                      </div>
 
-                     <div class="col-md-8 posubmit-wrap"> 
-                        <table class="display" data-table="posubmit" ></table>
+                     <div class="col-md-7 posubmit-wrap"> 
+                        <table class="display main-table" data-table="posubmit" ></table>
                      </div>
 
                 </div>
             </div>
             <div class="content-list" data-content="receivings">
-                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Receivings</h5> 
-                <button id="direct-receive" class="btn btn-action"><span class="glyphicon glyphicon-arrow-right"></span> Direct Receive</button>
+                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Receivings <subheader></subheader></h5> 
+                <button id="btn-directreceive" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-arrow-right"></span> Direct Receive</button>
+                <div class="btn-group btn-child-group btn-group-mode btn-action-right">
+                    <button id="btn-receivecancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
+                    <button id="btn-receivesubmit" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
+                </div>
                 <table class="display main-table" data-table="receivings"> </table>
+                
+                <div class="content-child">
+                    <div class="row">
+                         <div class="col-md-6"> 
+                            <table class="display main-table" data-table="porequest" ></table>
+                           
+                         </div>
+
+                         <div class="col-md-6"> 
+                            <table class="display main-table" data-table="poreceivesubmit" ></table>
+                         </div>
+                     </div> 
+                </div>
             </div>
             <div class="content-list" data-content="backorders">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Back Order</h5> 
-                <button id="" class="btn btn-action"><span class="glyphicon glyphicon-send"></span> Send Notification</button>
+                <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-send"></span> Send Notification</button>
                 <table class="display main-table" data-table="backorders"> </table>
             </div>
             <div class="content-list" data-content="suppliers">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Suppliers</h5> 
-                <button id="" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
+                <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
                 <table class="display main-table" data-table="suppliers"> </table>
             </div>
         </div>
         <div class="content-group" data-group="inventory">
             <div class="content-list show" data-content="inventory">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Inventory</h5> 
-                <button id="" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> Physical Count</button>
+                <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> Physical Count</button>
                 <table class="display main-table" data-table="inventory"> </table>
             </div>
             <div class="content-list" data-content="items">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Items</h5> 
-                <button id="direct-receive" class="btn btn-action"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button>
+                <button id="direct-receive" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button>
                 <table class="display main-table" data-table="items"> </table>
             </div>
             <div class="content-list" data-content="lowstocks">
@@ -97,12 +120,12 @@
         <div class="content-group" data-group="orders">
             <div class="content-list show" data-content="allorders">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> All Orders</h5> 
-                <button id="" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> Physical Count</button>
+                <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> Physical Count</button>
                 <table class="display main-table" data-table="allorders"> </table>
             </div>
             <div class="content-list" data-content="neworders">
                 <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> New Orders</h5> 
-                <button id="direct-receive" class="btn btn-action"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button>
+                <button id="direct-receive" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button>
                 <table class="display main-table" data-table="neworders"> </table>
             </div>
             <div class="content-list" data-content="processorders">
@@ -143,6 +166,7 @@
     <script type="text/javascript" src='<?=base_url("js/jquery/jquery-ui.js")?>'></script> 
     <script type="text/javascript" src='<?=base_url("js/datatables/jquery.dataTables.min.js")?>'></script> 
     <script type="text/javascript" src='<?=base_url("js/bootstrap/bootstrap.min.js")?>'></script>
+    <script type="text/javascript" src='<?=base_url("js/bootbox.min.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
     <script src="https://code.highcharts.com/highcharts.js"></script> 
     <script src="<?=base_url('js/navside/main.js');?>"></script>   

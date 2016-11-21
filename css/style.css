@@ -35,16 +35,7 @@ div.content-holder .dataTables_filter{
   float: left;
 }
 
-div.content-holder .btn-action{
-     background: #f44336;
-    border: 1px solid #f44336;
-    color: white;
-    cursor: pointer;
-    z-index: 4;
-    position: absolute;
-    right: 0;
-    top: 48px;
-}
+
 
 div.content-holder .content-child{
   display: none;
@@ -64,6 +55,9 @@ div.content-holder table td,{
 div.content-child button{
     padding: 2px !important;
     font-size: 10px;
+}
+div.content-child > .row{
+  padding-top: 33px !important;
 }
 
 .poquantity{
@@ -99,6 +93,25 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
   margin: 0px !important;
 }
 
+/*BUTTON STYLE*/
+div.content-holder .btn-action{
+     background: #f44336;
+    border: 1px solid #f44336;
+    color: white;
+    cursor: pointer;
+    z-index: 4;
+  
+}
+
+.btn-action-right{
+      position: absolute;
+      right: 0;
+      top: 48px;
+}
+
+.btn-child-group{
+  display: none;
+}
 
 
 
@@ -114,7 +127,15 @@ div.table-wrap{
 
 div.table-group{
   padding-top: 12px;
+}
 
+.main-table tbody tr:hover{
+  cursor: pointer;
+}
+
+.main-table tbody tr.selected td{
+  background-color: #282828 !important;
+  color: white !important;
 }
 
 /*ROW EDIT STYLE*/

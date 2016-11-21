@@ -65,6 +65,8 @@ class Main extends CI_Controller {
 			$data["fields"] = "Action| ,ItemNo|Item No.,Description|Description,DPOCost|DPO Cost";
 			$json["pobysupplier"] = $data;
 			$json["posubmit"] = $this->GetPOSubmit($supplierID); 
+			$json["lowstockbysupplier"] = $this->GetLowStockBySupplier($supplierID); 
+
 			echo json_encode($json); 
 		}
 
@@ -100,6 +102,82 @@ class Main extends CI_Controller {
 			echo $result; 
 		}
 
+		function updatePOQty(){
+			$requestlistno = $this->input->post("rlno");
+			$qty = $this->input->post("qty");
+			$this->param = $this->query_model->param; 
+			$data["Quantity"] = $qty;
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "requestlist";
+			$this->param["conditions"] = "RequestListNo = '$requestlistno'";
+			$result = $this->query_model->updateData($this->param); 
+			echo $result; 
+		}
+
+		function deleteAllRequestPO(){
+			$rlno = $this->input->post("rlno");
+			$this->param = $this->query_model->param; 
+			$this->param["table"] = "requestlist";
+			$this->param["conditions"] = "RequestListNo IN ($rlno)";
+			$result = $this->query_model->removeData($this->param); 
+			echo $result; 
+		}
+
+		function submitPo(){
+			date_default_timezone_set("Asia/Manila");
+			$date = date('Y-m-d H:i:s');
+			$datetime = date('Y-m-d H:i:s', strtotime($date));
+
+			$requestlistno = $this->input->post("rlno");
+			$supplierNo = $this->input->post("sno");
+
+			// Insert to SupplyRequest
+			$this->param = $this->query_model->param; 
+			$data["Date"] = $datetime;
+			$data["SupplierNo"] = $supplierNo;
+			$data["isReceived"] = 0;
+			$this->param["dataToInsert"] = $data;
+			$this->param["table"] = "supplyrequest";
+			$this->query_model->insertData($this->param); 
+
+			// Get SupplierRequestNo 
+			$this->param = $this->query_model->param;  
+			$this->param["fields"] = "*";
+			$this->param["table"] = "supplyrequest";
+			$this->param["conditions"] = "Date = '$datetime' AND SupplierNo = '$supplierNo'";
+			$result = $this->query_model->getData($this->param); 
+ 			
+ 			$SupplyRequestNo = $result[0]->SupplyRequestNo;
+
+			// Update SupplyRequestNo and Temp in requestlist
+			$this->param = $this->query_model->param; 
+			$data = array();
+			$data["Temp"] = 0;
+			$data["SupplyRequestNo"] = $SupplyRequestNo;
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "requestlist";
+			$this->param["conditions"] = "RequestListNo IN ($requestlistno)";
+			$result = $this->query_model->updateData($this->param); 
+
+			$data = array();
+
+			$data["purchaseorder"] = $this->GetListOfPO();
+
+			echo json_encode($data); 
+		}
+
+		function GetLowStockBySupplier($supid){
+
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getlowstockbysupplier";
+			$this->param["fields"] = "*";
+			$this->param["conditions"] = "SupplierNo = '$supid'";
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ItemNo|Item No.,ItemDescription|Description,STOCKS|Stocks,LOWSTOCKS|Low,CRITICAL|Critical";
+			return $data;
+
+		}
+
 		function GetPOSubmit($supplierNo){
 			$createdby = $this->session->userdata("username");
 			$this->param = $this->param = $this->query_model->param; 
@@ -120,6 +198,76 @@ class Main extends CI_Controller {
 			$data["fields"] = "SupplyNo|No,DateReceive|Date Received,SupplierName|Supplier name,ItemDescription|Item Description,QuantityReceived|Qty Received,PendingQuantity|Qty Back Order,Quantity|QTY Expected Received";
 			return $data;
 
+		}
+
+		function GetOrderToReceive(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getpotoreceive";
+			$this->param["fields"] = "*";  
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "SupplyRequestNo|No,NoOfItems|No. of Items,SupplierName|Supplier name,Date|Order Date";
+			$list["porequest"] = $data;
+			echo json_encode($list); 
+		}
+
+		function GetSelectedOrderDetails(){
+			$supplierNo = $this->input->post("sno");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getselectedorderdetails";
+			$this->param["fields"] = "*";  
+			$this->param["conditions"] = "SupplyRequestNo = '$supplierNo'";  
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "RequestListNo|No,ItemDescription|Item,Received|Received,Requested|Requested";
+			$list["poreceivesubmit"] = $data;
+			echo json_encode($list);  
+		}
+
+		function updatePOReceived(){
+			$requestlistno = $this->input->post("rlno");
+			$rec = $this->input->post("rec");
+			$this->param = $this->query_model->param; 
+			$data["Received"] = $rec;
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "requestlist";
+			$this->param["conditions"] = "RequestListNo = '$requestlistno'";
+			$result = $this->query_model->updateData($this->param); 
+			echo $result; 
+		}
+
+		function submitPOReceived(){
+			date_default_timezone_set("Asia/Manila");
+			$date = date('Y-m-d H:i:s');
+			$datetime = date('Y-m-d H:i:s', strtotime($date));
+
+			$SupplyRequestNo = $this->input->post("sno");
+
+			// Insert to Supply
+			$qry =  "INSERT INTO supply(QuantityReceived, PendingQuantity, DateReceive, RequestListNo, SupplyRequestNo) ";
+			$qry += "SELECT Received, (Received-Quantity), '$datetime', RequestListNo, SupplyRequestNo ";
+			$qry += "FROM requestlist WHERE SupplyRequestNo = '$SupplyRequestNo'";
+			$this->db->query($qry);
+
+			//Update isReceived = 1 for the selected SupplyRequest
+			$this->param = $this->query_model->param; 
+			$data["isReceived"] = 1;
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "supplyrequest";
+			$this->param["conditions"] = "SupplyRequestNo = '$SupplyRequestNo'";
+			$this->query_model->updateData($this->param); 
+
+			//UPDATE Stocks of the received items
+			$qry = " UPDATE itemvariant iv ";
+			$qry += "INNER JOIN vw_getselectedorderdetails o ";
+			$qry += "ON iv.VariantNo = o.VariantNo ";
+			$qry += "SET iv.Stocks = iv.Stocks - o.QtyReceived ";
+			$qry += "WHERE o.SupplyRequestNo = '$SupplyRequestNo'";
+
+			$this->db->query($qry);
+  			
+  			// Get the latest the list of order to receive
+			$this->GetOrderToReceive();
 		}
 
 		function GetBackOrders(){

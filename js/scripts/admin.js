@@ -5,11 +5,116 @@ $(function(){
 
 
     // PURCHASE ORDER
+        // Purchase Order
         $("#btn-addrequest").click(function(){
             var elem = $(this)
-            elem.closest(".content-list").find("subheader").text("- Create Request")
-            elem.closest(".content-list").find(".dataTables_wrapper").hide();
-            elem.closest(".content-list").find(".content-child").show();
+            toggleMainDisplay(false,elem,"Create Request") 
+            $("#polistsupplier").find("option:first-child").prop("selected",true)
+
+        
+            var listposupplier = new Object()
+
+            var arrList = new Object();
+            arrList.list = "";
+            arrList.fields = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,DPOCost|DPO Cost,Total|Total"
+            listposupplier["posubmit"] = arrList;
+
+            arrList = new Object();
+            arrList.list  = "";
+            arrList.fields = "Action| ,ItemNo|Item No.,Description|Description,DPOCost|DPO Cost"
+            listposupplier["pobysupplier"] = arrList;
+
+            arrList = new Object();
+            arrList.list  = "";
+            arrList.fields = "ItemNo|Item No.,ItemDescription|Description,STOCKS|Stocks,LOWSTOCKS|Low,CRITICAL|Critical"
+            listposupplier["lowstockbysupplier"] = arrList;
+
+            bindingDatatoDataTable(listposupplier)
+
+        })
+
+        $("#btn-pocancel, #btn-poreset").click(function(){
+            var elem = $(this) 
+            var table = listObjTableBinded["posubmit"]
+            if(table.data().length > 0){
+                 bootbox.confirm("Disregard this request?", function(result){
+                    if(result){
+                     
+                        var data = table.rows().data();
+                        var requestlistno = new Array();
+                        for(x in data){
+                            if($.isNumeric(x))
+                                requestlistno.push(data[x].RequestListNo);
+                            else
+                                break;
+                        }
+                        var param = new Object()
+                        param.rlno = requestlistno.join(',')
+                        callAjaxJson("main/deleteAllRequestPO", param, function(response){
+                            if(response){ 
+                                if(elem.attr("id") == "btn-pocancel"){
+                                    toggleMainDisplay(true,elem,"") 
+                                    
+                                }
+                                else{
+                                    table.clear().draw();
+                                    // $("table[data-table='posubmit']").empty()
+                                }
+                               
+                            }
+
+                        }, ajaxError) 
+                    } 
+                 })
+            }
+            else{
+                toggleMainDisplay(true,elem,"") 
+                elem.closest(".btn-group").hide();
+                elem.closest(".btn-group").prev().show(); 
+            } 
+        })
+
+        $("#btn-posubmit").click(function(){
+            var isOkay = true
+            //VALIDATE THE QUANTITY INPUT
+            $("input.poquantity").each(function(e){
+                var elem = $(this)
+                if($.trim(elem.val()).length == 0 || parseInt(elem.val()) == 0 ){
+                    isOkay = false;
+                    return;
+                } 
+
+            })
+
+            if(isOkay){
+                var table = listObjTableBinded["posubmit"]
+                var data = table.rows().data();
+                var requestlistno = new Array();
+                for(x in data){
+                    if($.isNumeric(x))
+                        requestlistno.push(data[x].RequestListNo);
+                    else
+                        break;
+                }
+                var param = new Object()
+                param.rlno = requestlistno.join(',')
+                param.sno =  $("#polistsupplier").find("option:selected").val()
+                callAjaxJson("main/submitPo", param, function(response){
+                    if(response){
+                        bindingDatatoDataTable(response);
+                        table.clear().draw();
+                         $("#btn-pocancel").click();
+                        bootbox.alert("Transaction completed.",function(){})
+                    }
+
+                }, ajaxError)
+                    
+            }
+            else{
+                bootbox.alert("Please input the Quantity first.", function(){})
+
+            }
+
         })
 
         $("#polistsupplier").change(function(e){
@@ -21,11 +126,87 @@ $(function(){
             }
         })
 
+        //Receivings
+        $("#btn-directreceive").click(function(e){
+            var elem = $(this)
+            toggleMainDisplay(false,elem,"PO List to Receive")
+            var listreceive = new Object()
+
+            callAjaxJson("main/GetOrderToReceive", new Object(), bindingDatatoDataTable, ajaxError)
+            
+  
+            arrList = new Object();
+            arrList.list  = "";
+            arrList.fields = "ItemNo|Item No.,ItemDescription|Description,Receive|Receive,Requested|Requested"
+            listreceive["poreceivesubmit"] = arrList;
+            
+            bindingDatatoDataTable(listreceive)
+
+        })
+
+        $("#btn-receivecancel").click(function(e){
+            var elem = $(this)
+            toggleMainDisplay(true,elem,"")
+        })
+
+
+
+        $('table[data-table=porequest]').on( 'click', 'tr', function () {
+            var elem = $(this)
+            var table = listObjTableBinded["porequest"]
+            
+            var param = new Object();
+            var data = table.rows(elem).data();
+            param.sno = data[0].SupplyRequestNo; 
+            callAjaxJson("main/GetSelectedOrderDetails", param, bindingDatatoDataTable, ajaxError)
+
+            $("table[data-table='porequest'] tr.selected").removeClass("selected")
+            elem.closest("tr").addClass("selected")
+
+
+        })
+
+        $("#btn-receivesubmit").click(function(e){
+             var isOkay = true
+            //VALIDATE THE RECEIVED INPUT
+            $("input.poreceived").each(function(e){
+                var elem = $(this)
+                if($.trim(elem.val()).length == 0 || parseInt(elem.val()) == 0 ){
+                    isOkay = false;
+                    return;
+                } 
+
+            })
+
+            if(isOkay){
+                var tr =  $("table[data-table='porequest'] tr.selected")
+                var table = listObjTableBinded["porequest"];
+                var data = table.rows(tr).data()
+                var param = new Object() 
+                param.sno =  data[0].SupplyRequestNo; 
+                callAjaxJson("main/submitPOReceived", param, function(response){
+                    if(response){
+                        bindingDatatoDataTable(response);
+                        table.clear().draw();
+                         $("#btn-receivecancel").click();
+                        bootbox.alert("Transaction completed.",function(){})
+                    }
+
+                }, ajaxError)
+                    
+            }
+            else{
+                bootbox.alert("Please input the Received first.", function(){})
+
+            }
+        })
+
 
 
 })
 
 // PURCHASE ORDER
+    // Purchase order
     function addtoPo(itemno, variantno){
         var param = new Object();
         param.ino = itemno;
@@ -50,6 +231,36 @@ $(function(){
 
     }
 
+    function updatePOQty(requestlistno,elem){
+        var param = new Object();
+        param.rlno = requestlistno;
+        param.qty = elem.value;
+        callAjaxJson("main/updatePOQty", param, 
+            function(response){
+                if(response){
+                   
+                }
+
+            }
+        , ajaxError) 
+    }
+
+    // Receivings
+     function updatePOReceived(requestlistno,elem){
+        var param = new Object();
+        param.rlno = requestlistno;
+        param.rec = elem.value;
+        callAjaxJson("main/updatePOReceived", param, 
+            function(response){
+                if(response){
+                   
+                }
+
+            }
+        , ajaxError) 
+    }
+
+
 function bindingDatatoDataTable(response){
 	var data = response
 	for(x in data){
@@ -64,6 +275,8 @@ function bindingDatatoDataTable(response){
 	}
 
 }
+ 
+
 
 
 function setupDataTable(table, data, fields){
@@ -78,7 +291,7 @@ function setupDataTable(table, data, fields){
     dttable = table.DataTable({  
                      "aaData" : data,
                      "aoColumns" : fields.Columns,  
-                      scrollY:        '20vh',
+                      scrollY:        (table.is(".main-table")) ? '60vh' :'30vh',
                       scrollCollapse: false,
                       paging:         false,
                       
@@ -90,7 +303,26 @@ function setupDataTable(table, data, fields){
 }
 
 
- 
+
+ function toggleMainDisplay(isShow, elem, header){
+    if(isShow){
+        elem.closest(".content-list").find("subheader").text("") 
+        elem.closest(".content-list").find(".content-child").hide();
+        elem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").show();
+        elem.closest(".btn-group").hide();
+        elem.closest(".btn-group").prev().show(); 
+
+    }
+    else{
+        elem.closest(".content-list").find("subheader").text(" - " + header) 
+        elem.closest(".content-list").find(".content-child").show();
+        elem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide();
+        elem.hide();
+        elem.next().show();
+
+    }
+
+ }
 
 
  function colJsonConvert(elem){
