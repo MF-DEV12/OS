@@ -168,6 +168,7 @@ $(function(){
 
         $("#btn-receivesubmit").click(function(e){
              var isOkay = true
+             var isValid = true
             //VALIDATE THE RECEIVED INPUT
             $("input.poreceived").each(function(e){
                 var elem = $(this)
@@ -176,18 +177,22 @@ $(function(){
                     return;
                 } 
 
+
+
+
             })
 
             if(isOkay){
                 var tr =  $("table[data-table='porequest'] tr.selected")
                 var table = listObjTableBinded["porequest"];
+                var tableSubmit = listObjTableBinded["poreceivesubmit"];
                 var data = table.rows(tr).data()
                 var param = new Object() 
                 param.sno =  data[0].SupplyRequestNo; 
                 callAjaxJson("main/submitPOReceived", param, function(response){
                     if(response){
                         bindingDatatoDataTable(response);
-                        table.clear().draw();
+                        tableSubmit.clear().draw();
                          $("#btn-receivecancel").click();
                         bootbox.alert("Transaction completed.",function(){})
                     }
@@ -199,6 +204,64 @@ $(function(){
                 bootbox.alert("Please input the Received first.", function(){})
 
             }
+        })
+
+        //Suppliers
+        $("#btn-addsupplier").click(function(e){
+            var elem = $(this)
+            toggleMainDisplay(false,elem,"New")
+
+            elem.closest(".content-list").find(".group-1").show()
+            elem.closest(".content-list").find(".group-2").hide()
+            $(".form-table").find("input").val("")
+
+
+        })
+
+        $("#btn-suppliercancel").click(function(e){
+            var elem = $(this)
+            toggleMainDisplay(true,elem,"")  
+
+        })
+
+        $("#btn-suppliersubmit").click(function(e){
+
+            if(!validateData()){ return; }  
+            if(!validatePassword()){return;}
+
+            var elem = $(this)
+            var param = new Object();
+            var supplier = new Object();
+            var account = new Object();
+
+
+            supplier.SupplierName = $("#txt-suppliername").val();
+            supplier.ContactNo = $("#txt-contact").val();
+            supplier.Address = $("#txt-address").val();
+            supplier.Email = $("#txt-email").val();
+
+            account.Username = $("#txt-username").val();
+            account.Password = $("#txt-password").val();
+
+            param.supplier = JSON.stringify(supplier);
+            param.account = JSON.stringify(account);
+
+            callAjaxJson("main/addSupplier", param, function(response){
+                if(response.errormessage !== undefined){
+                    $("#txt-confirmpassword").after("<p class='label label-danger label-error'>"+ response.errormessage +"</p>")
+
+                }
+                else{
+                    toggleMainDisplay(true,elem,"") 
+                    bindingDatatoDataTable(response);
+                }
+              
+
+
+            }, ajaxError)
+
+
+
         })
 
 
@@ -259,6 +322,37 @@ $(function(){
             }
         , ajaxError) 
     }
+
+    //Suppliers
+     function validateData(){
+        $(".form-table").find("p.label-error").remove()
+        var isOkay = true
+        $(".form-table").find("input").each(function(e){
+            var elem = $(this)
+            if($.trim(elem.val()).length == 0){
+                isOkay = false;
+            }
+
+        })
+        if(!isOkay)
+            $("#txt-confirmpassword").after("<p class='label label-danger label-error'>Please input all required field(*).</p>")
+
+       
+        return isOkay;
+     }
+     function validatePassword(){
+
+        if($.trim($("#txt-password").val()).length < 8 && $.trim($("#txt-confirmpassword").val()).length < 8 ){
+            $("#txt-confirmpassword").after("<p class='label label-danger label-error'>Password must be atleast 8 characters.</p>")
+            return false;
+        }
+
+        if($("#txt-password").val() != $("#txt-confirmpassword").val()){
+            $("#txt-confirmpassword").after("<p class='label label-danger label-error'>Password entered not matched.</p>")
+           return false;
+        }
+        return true;
+     }
 
 
 function bindingDatatoDataTable(response){

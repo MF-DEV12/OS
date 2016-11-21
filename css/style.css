@@ -138,6 +138,15 @@ div.table-group{
   color: white !important;
 }
 
+.form-table{
+     
+} 
+ 
+.form-table tr td{
+  padding: 10px;
+}
+
+
 /*ROW EDIT STYLE*/
 table.list-table tbody tr.on-edit{
      /*background-color: #fffff2 !important; */

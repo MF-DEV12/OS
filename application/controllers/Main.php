@@ -245,8 +245,8 @@ class Main extends CI_Controller {
 
 			// Insert to Supply
 			$qry =  "INSERT INTO supply(QuantityReceived, PendingQuantity, DateReceive, RequestListNo, SupplyRequestNo) ";
-			$qry += "SELECT Received, (Received-Quantity), '$datetime', RequestListNo, SupplyRequestNo ";
-			$qry += "FROM requestlist WHERE SupplyRequestNo = '$SupplyRequestNo'";
+			$qry .= "SELECT Received, (Received-Quantity), '$datetime', RequestListNo, SupplyRequestNo ";
+			$qry .= "FROM requestlist WHERE SupplyRequestNo = '$SupplyRequestNo'";
 			$this->db->query($qry);
 
 			//Update isReceived = 1 for the selected SupplyRequest
@@ -259,10 +259,10 @@ class Main extends CI_Controller {
 
 			//UPDATE Stocks of the received items
 			$qry = " UPDATE itemvariant iv ";
-			$qry += "INNER JOIN vw_getselectedorderdetails o ";
-			$qry += "ON iv.VariantNo = o.VariantNo ";
-			$qry += "SET iv.Stocks = iv.Stocks - o.QtyReceived ";
-			$qry += "WHERE o.SupplyRequestNo = '$SupplyRequestNo'";
+			$qry .= "INNER JOIN vw_getselectedorderdetails o ";
+			$qry .= "ON iv.VariantNo = o.VariantNo ";
+			$qry .= "SET iv.Stocks = iv.Stocks - o.QtyReceived ";
+			$qry .= "WHERE o.SupplyRequestNo = '$SupplyRequestNo'";
 
 			$this->db->query($qry);
   			
@@ -288,6 +288,53 @@ class Main extends CI_Controller {
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "SupplierNo|Supplier No.,SupplierName|Supplier name,Address|Address,ContactNo|Contact Number,Action|Action";
 			return $data; 
+		}
+
+		function addSupplier(){
+			$supplier = $this->input->post("supplier");
+			$account = $this->input->post("account");
+			$supplier = json_decode($supplier);
+			$account = json_decode($account);
+  
+			$account->Password = MD5($account->Password);
+			$account->LoginType = "supplier";
+
+
+			//Check username if already taken in Accounts
+			$this->param = $this->param = $this->query_model->param;  
+			$this->param["table"] = "accounts";
+			$this->param["fields"] = "*";
+			$this->param["conditions"] = "Username = '$account->Username'";
+			$result = $this->query_model->getData($this->param);
+			if($result)
+				$data["errormessage"] = "Username has already taken";
+			else{
+				//INSERT INTO Accounts
+				$this->param = $this->param = $this->query_model->param;  
+				$this->param["table"] = "accounts";
+				$this->param["dataToInsert"] = $account;
+				$this->query_model->insertData($this->param);
+
+				// GET AccountNo for the Supplier
+				$this->param = $this->param = $this->query_model->param;  
+				$this->param["table"] = "accounts";
+				$this->param["fields"] = "*";
+				$this->param["conditions"] = "Username = '$account->Username'";
+				$result = $this->query_model->getData($this->param);
+
+				//INSERT INTO Supplier
+				$supplier->AccountNo = $result[0]->AccountNo;
+				$this->param = $this->param = $this->query_model->param;  
+				$this->param["table"] = "supplier";
+				$this->param["dataToInsert"] = $supplier;
+				$this->query_model->insertData($this->param);
+				
+	 			$data["suppliers"] = $this->GetSuppliers();
+			}
+
+
+
+			echo json_encode($data);
 		}
 	///
 

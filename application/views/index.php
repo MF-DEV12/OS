@@ -85,9 +85,73 @@
                 <table class="display main-table" data-table="backorders"> </table>
             </div>
             <div class="content-list" data-content="suppliers">
-                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Suppliers</h5> 
-                <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
+                <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Suppliers <subheader></subheader></h5> 
+                <button id="btn-addsupplier" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
+                <div class="btn-group btn-child-group btn-group-mode btn-action-right">
+                    <button id="btn-suppliercancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
+                    <button id="btn-suppliersubmit" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
+                </div>
                 <table class="display main-table" data-table="suppliers"> </table>
+
+                <div class="content-child">
+                    <div class="row group-1">
+                         <div class="col-lg-12"> 
+                            <table class="display form-table" width="500px">
+                                <tr>
+                                    <td>
+                                        <label for="txt-suppliername">Supplier name:</label>
+                                        <input type="text" name="SupplierName" id="txt-suppliername" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="txt-address">Address:</label>
+                                        <input type="text" name="Address" id="txt-address" class="form-control">
+                                    </td> 
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="txt-contact">Contact:</label>
+                                        <input type="text" name="ContactNo" id="txt-contact" class="form-control">
+                                    </td>  
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="txt-email">Email Address:</label>
+                                        <input type="text" name="Email" id="txt-email" class="form-control">
+                                    </td>  
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="txt-username">Username:</label>
+                                        <input type="text" name="Username" id="txt-username" class="form-control">
+                                    </td>  
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="txt-Password">Password:</label>
+                                        <input type="text" name="Password" id="txt-password" class="form-control">
+                                    </td>  
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="txt-confirmpassword">Confirm Password:</label>
+                                        <input type="text" id="txt-confirmpassword" class="form-control">
+                                    </td> 
+                                    
+                                </tr> 
+                            </table>
+                         </div>
+ 
+                     </div> 
+                      <div class="row group-2">
+                         <div class="col-lg-12"> 
+                            <table class="display main-table" data-table="listpobysupplier" ></table> 
+                         </div>
+ 
+                     </div> 
+                </div>
+
             </div>
         </div>
         <div class="content-group" data-group="inventory">
@@ -168,7 +232,7 @@
     <script type="text/javascript" src='<?=base_url("js/bootstrap/bootstrap.min.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/bootbox.min.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script> 
+    <!-- <script src="https://code.highcharts.com/highcharts.js"></script>  -->
     <script src="<?=base_url('js/navside/main.js');?>"></script>   
     <script src="<?=base_url('js/scripts/admin.js');?>"></script>   
      
