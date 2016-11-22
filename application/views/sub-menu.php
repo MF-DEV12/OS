@@ -32,7 +32,19 @@
 
 
       <?php if($role=="supplier") {?>
-
+          <ul class="request selected-sub-menu">
+                <li class="current" data-content="request"><a href="#">Request List</a></li>
+                <li data-content="sup-neworders"><a href="#">New</a></li>
+                <li data-content="sup-processorders"><a href="#">Processing</a></li>
+                <li data-content="sup-shippedorders"><a href="#">Incomplete</a></li>
+                <li data-content="sup-shippedorders"><a href="#">Shipped</a></li>
+                <li data-content="sup-cancelledorders"><a href="#">Cancelled</a></li>
+          </ul>
+           <ul class="items">
+                <li class="current" data-content="sup-items"><a href="#">Items</a></li>
+                <li data-content="additems"><a href="#">Add Items</a></li>
+                <li data-content="sup-removed"><a href="#">Removed</a></li>
+          </ul>
         
       <?php } ?>
 

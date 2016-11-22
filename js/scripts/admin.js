@@ -227,6 +227,7 @@ $(function(){
         $("#btn-suppliersubmit").click(function(e){
 
             if(!validateData()){ return; }  
+            if(!validateEmail()){return;}
             if(!validatePassword()){return;}
 
             var elem = $(this)
@@ -254,14 +255,17 @@ $(function(){
                 else{
                     toggleMainDisplay(true,elem,"") 
                     bindingDatatoDataTable(response);
-                }
-              
+                } 
+            }, ajaxError)  
+        })
 
-
-            }, ajaxError)
-
-
-
+        $("#btn-supplierback").click(function(e){
+            var elem = $(this)
+            elem.closest(".content-list").find("subheader").text("") 
+            elem.closest(".content-list").find(".content-child").hide();
+            elem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").show();
+            elem.closest(".btn-group").hide();
+            $("#btn-addsupplier").show()
         })
 
 
@@ -335,7 +339,7 @@ $(function(){
 
         })
         if(!isOkay)
-            $("#txt-confirmpassword").after("<p class='label label-danger label-error'>Please input all required field(*).</p>")
+            $(".form-table tr:first-child").before("<p class='label-error'>Please input all required field(*).</p>")
 
        
         return isOkay;
@@ -343,15 +347,53 @@ $(function(){
      function validatePassword(){
 
         if($.trim($("#txt-password").val()).length < 8 && $.trim($("#txt-confirmpassword").val()).length < 8 ){
-            $("#txt-confirmpassword").after("<p class='label label-danger label-error'>Password must be atleast 8 characters.</p>")
+            $("#txt-confirmpassword").after("<p class='label-error'>Password must be atleast 8 characters.</p>")
             return false;
         }
 
         if($("#txt-password").val() != $("#txt-confirmpassword").val()){
-            $("#txt-confirmpassword").after("<p class='label label-danger label-error'>Password entered not matched.</p>")
+            $("#txt-confirmpassword").after("<p class='label-error'>Password does not match the confirm password.</p>")
            return false;
         }
         return true;
+     }
+     function validateEmail() {
+        var email = $("#txt-email").val()
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        
+        if(!re.test(email)){
+             $("#txt-email").after("<p class='label-error'>Email is not valid.</p>")
+             return false;
+        }
+
+        return true;
+     }
+     function viewSupplyItems(sno,elem){
+        var row = elem.closest("tr")
+        var table = listObjTableBinded["suppliers"]
+        var data = table.rows(row).data();
+        data = data[0]
+        var param = new Object();
+        param.sno = sno;
+        callAjaxJson("main/GetSupplyItemsBySupplier", param, function(response){
+            var elem = $("table[data-table=suppliers]");
+            elem.closest(".content-list").find("subheader").text(" - Information") 
+            elem.closest(".content-list").find(".content-child").show();
+            elem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide();
+            //elem.hide();
+            $("#btn-addsupplier").hide()
+            $("#btn-supplierback").closest("div.btn-group").show()
+            //toggleMainDisplay(false,elem,"Supplier information") 
+            elem.closest(".content-list").find(".group-1").hide()
+            elem.closest(".content-list").find(".group-2").show() 
+            $("#label-suppliername").text(data.SupplierName)
+            $("#label-address").text(data.Address)
+            $("#label-contact").text(data.ContactNo)
+            $("#label-email").text(data.Email)
+            bindingDatatoDataTable(response);
+
+
+        }, ajaxError)
      }
 
 

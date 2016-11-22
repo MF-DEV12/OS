@@ -35,8 +35,8 @@
 	 	<?php if($role=="supplier") { ?>
 
 				 
-				<li><a href="<?=base_url('admin/dashboard');?>"><span class="glyphicon glyphicon-download-alt"></span> Requests</a></li>
-				<li><a href="<?=base_url('admin/project');?>"><span class="glyphicon glyphicon-tasks"></span> Items</a></li> 
+				<li><a href="#request"><span class="glyphicon glyphicon-download-alt"></span> Requests</a></li>
+				<li><a href="#items"><span class="glyphicon glyphicon-tasks"></span> Items</a></li> 
 			 
 				<li><a href="<?=base_url('login/clearSession');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li> 
 

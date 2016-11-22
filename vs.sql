@@ -26,11 +26,11 @@ CREATE TABLE `accounts` (
   `Password` varchar(200) DEFAULT NULL,
   `LoginType` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`AccountNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 /*Data for the table `accounts` */
 
-insert  into `accounts`(`AccountNo`,`Username`,`Password`,`LoginType`) values (1,'Rolen','5f4dcc3b5aa765d61d8327deb882cf99','admin'),(2,'JMDMktg','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(3,'VEEnt','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(4,'Voschtech','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(5,'DJZTrd','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(6,'Solarfoam','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(7,'HGCECo','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(8,'mtest','5f4dcc3b5aa765d61d8327deb882cf99','supplier');
+insert  into `accounts`(`AccountNo`,`Username`,`Password`,`LoginType`) values (1,'Rolen','5f4dcc3b5aa765d61d8327deb882cf99','admin'),(2,'JMDMktg','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(3,'VEEnt','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(4,'Voschtech','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(5,'DJZTrd','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(6,'Solarfoam','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(7,'HGCECo','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(8,'mtest','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(9,'TestEmail','25d55ad283aa400af464c76d713c07ad','supplier');
 
 /*Table structure for table `admin` */
 
@@ -188,7 +188,7 @@ CREATE TABLE `itemvariant` (
 
 /*Data for the table `itemvariant` */
 
-insert  into `itemvariant`(`VariantNo`,`ItemNo`,`Size`,`Color`,`Description`,`Stocks`,`LowStock`,`Critical`,`DPOCost`,`SRP`,`Price`,`Removed`,`Owned`,`SupplierNo`,`SRemoved`) values (1,0021,'12mm x 12mm x 12mm','','',NULL,NULL,NULL,12,13,NULL,0,1,NULL,0),(2,0021,'12mm x 1mm x 1mm','','',NULL,12,12,1,2,12,0,1,NULL,0),(3,0021,'10mm x 10mm x 10mm','','',NULL,NULL,NULL,10,11,NULL,0,0,NULL,0),(4,0025,'1mm x 13mm x 5mm','','',NULL,NULL,NULL,12,13,NULL,0,0,NULL,0),(5,0026,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(6,0027,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(7,0027,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(8,0029,'500mL','Red','',NULL,NULL,NULL,100,50,NULL,0,0,4,0),(9,0030,'500mL','Blue','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(12,0031,'2mm','','',128,10,10,10,15,16,0,1,4,0),(13,0031,'1mm','','',NULL,10,10,10,11,15,0,1,4,0),(14,0031,'3mm','','',NULL,NULL,NULL,10,5,NULL,0,0,4,0),(15,0031,'4mm','','',NULL,NULL,NULL,10,5,NULL,0,0,4,0),(16,0031,'5mm','','',NULL,NULL,NULL,10,15,NULL,0,0,4,0),(17,0031,'6mm','','',NULL,NULL,NULL,100,150,NULL,0,0,4,0),(18,0031,'7mm','','',NULL,NULL,NULL,5,10,NULL,0,0,4,0);
+insert  into `itemvariant`(`VariantNo`,`ItemNo`,`Size`,`Color`,`Description`,`Stocks`,`LowStock`,`Critical`,`DPOCost`,`SRP`,`Price`,`Removed`,`Owned`,`SupplierNo`,`SRemoved`) values (1,0021,'12mm x 12mm x 12mm','','',NULL,NULL,NULL,12,13,NULL,0,1,NULL,0),(2,0021,'12mm x 1mm x 1mm','','',NULL,12,12,1,2,12,0,1,NULL,0),(3,0021,'10mm x 10mm x 10mm','','',NULL,NULL,NULL,10,11,NULL,0,0,NULL,0),(4,0025,'1mm x 13mm x 5mm','','',NULL,NULL,NULL,12,13,NULL,0,0,NULL,0),(5,0026,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(6,0027,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(7,0027,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(8,0029,'500mL','Red','',NULL,NULL,NULL,100,50,NULL,0,0,4,0),(9,0030,'500mL','Blue','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(12,0031,'2mm','','',128,10,10,10,15,16,0,1,4,0),(13,0031,'1mm','','',NULL,10,10,10,11,15,0,1,4,0),(14,0031,'3mm','','',NULL,1,2,10,5,5,0,1,4,0),(15,0031,'4mm','','',NULL,NULL,NULL,10,5,NULL,0,0,4,0),(16,0031,'5mm','','',NULL,NULL,NULL,10,15,NULL,0,0,4,0),(17,0031,'6mm','','',NULL,NULL,NULL,100,150,NULL,0,0,4,0),(18,0031,'7mm','','',NULL,NULL,NULL,5,10,NULL,0,0,4,0);
 
 /*Table structure for table `level1` */
 
@@ -324,11 +324,11 @@ CREATE TABLE `supplier` (
   PRIMARY KEY (`SupplierNo`),
   KEY `FKAccount_supplier` (`AccountNo`),
   CONSTRAINT `FKAccount_supplier` FOREIGN KEY (`AccountNo`) REFERENCES `accounts` (`AccountNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 /*Data for the table `supplier` */
 
-insert  into `supplier`(`SupplierNo`,`SupplierName`,`ContactNo`,`Address`,`Email`,`AccountNo`) values (4,'J.MD. Steel Bars Marketing',2147483647,'Unknown','JMD@gmail.com',2),(11,'V.E. Enterprises',2147483647,'Unknown','VEE@gmail.com',3),(12,'Voschtech',2147483647,'Unknown','VS@gmail.com',4),(13,'DJZ Trading',2147483647,'Unknown','DJZ@gmail.com',5),(14,'Solarfoam',2147483647,'Unknown','SF@gmail.com',6),(16,'House Gem Construction Element Corporation',2147483647,'Unknown','HGCEC@gmail.com',7),(17,'Test Company',0,'Address','Email@gmail.com',8);
+insert  into `supplier`(`SupplierNo`,`SupplierName`,`ContactNo`,`Address`,`Email`,`AccountNo`) values (4,'J.MD. Steel Bars Marketing',2147483647,'Unknown','JMD@gmail.com',2),(11,'V.E. Enterprises',2147483647,'Unknown','VEE@gmail.com',3),(12,'Voschtech',2147483647,'Unknown','VS@gmail.com',4),(13,'DJZ Trading',2147483647,'Unknown','DJZ@gmail.com',5),(14,'Solarfoam',2147483647,'Unknown','SF@gmail.com',6),(16,'House Gem Construction Element Corporation',2147483647,'Unknown','HGCEC@gmail.com',7),(17,'Test Company',0,'Address','Email@gmail.com',8),(18,'Test 2',123456789,'Test 2','friazmarkanthony@gmail.com',9);
 
 /*Table structure for table `supply` */
 
@@ -506,6 +506,38 @@ DROP TABLE IF EXISTS `vw_getpurchaseorders`;
  `Action` varchar(39) 
 )*/;
 
+/*Table structure for table `vw_getrequestfromcustomer` */
+
+DROP TABLE IF EXISTS `vw_getrequestfromcustomer`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getrequestfromcustomer` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getrequestfromcustomer` */;
+
+/*!50001 CREATE TABLE  `vw_getrequestfromcustomer`(
+ `OrderNo` int(8) unsigned zerofill ,
+ `Date` datetime ,
+ `Customer` varchar(61) ,
+ `Address` varchar(50) ,
+ `TotalAmount` double ,
+ `Status` varchar(20) 
+)*/;
+
+/*Table structure for table `vw_getrequeststatustotal` */
+
+DROP TABLE IF EXISTS `vw_getrequeststatustotal`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getrequeststatustotal` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getrequeststatustotal` */;
+
+/*!50001 CREATE TABLE  `vw_getrequeststatustotal`(
+ `All` bigint(21) ,
+ `New` bigint(21) ,
+ `Shipped` bigint(21) ,
+ `Cancel` bigint(21) ,
+ `Process` bigint(21) ,
+ `Incomplete` bigint(21) 
+)*/;
+
 /*Table structure for table `vw_getselectedorderdetails` */
 
 DROP TABLE IF EXISTS `vw_getselectedorderdetails`;
@@ -521,6 +553,22 @@ DROP TABLE IF EXISTS `vw_getselectedorderdetails`;
  `Received` varchar(119) ,
  `Requested` int(11) ,
  `QtyReceived` bigint(11) 
+)*/;
+
+/*Table structure for table `vw_getsupplyitemsbysupplier` */
+
+DROP TABLE IF EXISTS `vw_getsupplyitemsbysupplier`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getsupplyitemsbysupplier` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getsupplyitemsbysupplier` */;
+
+/*!50001 CREATE TABLE  `vw_getsupplyitemsbysupplier`(
+ `ItemNo` varchar(22) ,
+ `ItemDescription` varchar(258) ,
+ `Category` varchar(156) ,
+ `DPOCost` double ,
+ `SRP` double ,
+ `SupplierNo` int(11) 
 )*/;
 
 /*Table structure for table `vw_inventory` */
@@ -632,12 +680,33 @@ DROP TABLE IF EXISTS `vw_receivings`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getpurchaseorders` AS (select `sr`.`SupplyRequestNo` AS `SupplyRequestNo`,`s`.`SupplierName` AS `SupplierName`,count(`rl`.`SupplyRequestNo`) AS `NoOfItems`,`sr`.`Date` AS `Date`,concat('<span><a>View</a> | <a>Print</a></span>') AS `Action` from ((`supplyrequest` `sr` join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`rl`.`Quantity` is not null)))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) group by `rl`.`SupplyRequestNo` order by `sr`.`Date` desc) */;
 
+/*View structure for view vw_getrequestfromcustomer */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getrequestfromcustomer` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getrequestfromcustomer` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getrequestfromcustomer` AS (select `o`.`OrderNo` AS `OrderNo`,`o`.`Date` AS `Date`,concat(`c`.`Firstname`,' ',`c`.`Lastname`) AS `Customer`,`c`.`Address` AS `Address`,`o`.`TotalAmount` AS `TotalAmount`,`o`.`Status` AS `Status` from (`tblorder` `o` join `customer` `c` on((`o`.`OrderNo` = `c`.`OrderNo`))) where (`o`.`Status` = 'New')) */;
+
+/*View structure for view vw_getrequeststatustotal */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getrequeststatustotal` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getrequeststatustotal` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getrequeststatustotal` AS (select count(`o`.`Status`) AS `All`,count(`n`.`Status`) AS `New`,count(`s`.`Status`) AS `Shipped`,count(`c`.`Status`) AS `Cancel`,count(`p`.`Status`) AS `Process`,count(`i`.`Status`) AS `Incomplete` from (((((`tblorder` `o` left join `tblorder` `n` on(((`o`.`OrderNo` = `n`.`OrderNo`) and (`n`.`Status` = 'New')))) left join `tblorder` `s` on(((`o`.`OrderNo` = `s`.`OrderNo`) and (`s`.`Status` = 'Ship')))) left join `tblorder` `c` on(((`o`.`OrderNo` = `c`.`OrderNo`) and (`c`.`Status` = 'Cancel')))) left join `tblorder` `p` on(((`o`.`OrderNo` = `p`.`OrderNo`) and (`p`.`Status` = 'Process')))) left join `tblorder` `i` on(((`o`.`OrderNo` = `i`.`OrderNo`) and (`i`.`Status` = 'Incomplete'))))) */;
+
 /*View structure for view vw_getselectedorderdetails */
 
 /*!50001 DROP TABLE IF EXISTS `vw_getselectedorderdetails` */;
 /*!50001 DROP VIEW IF EXISTS `vw_getselectedorderdetails` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getselectedorderdetails` AS (select `sr`.`SupplyRequestNo` AS `SupplyRequestNo`,`rl`.`RequestListNo` AS `RequestListNo`,`iv`.`VariantNo` AS `VariantNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,concat('<input type="text" value="',ifnull(`rl`.`Received`,0),'" class="form-control poreceived" onblur="updatePOReceived(\'',`rl`.`RequestListNo`,'\',this);"/>') AS `Received`,`rl`.`Quantity` AS `Requested`,ifnull(`rl`.`Received`,0) AS `QtyReceived` from (((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`rl`.`VariantNo` = `iv`.`VariantNo`)))) join `supplyrequest` `sr` on((`rl`.`SupplyRequestNo` = `sr`.`SupplyRequestNo`)))) */;
+
+/*View structure for view vw_getsupplyitemsbysupplier */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getsupplyitemsbysupplier` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getsupplyitemsbysupplier` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getsupplyitemsbysupplier` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,concat(`l1`.`Name1`,' > ',`l2`.`Name2`,' > ',`l3`.`Name3`) AS `Category`,`iv`.`DPOCost` AS `DPOCost`,`iv`.`SRP` AS `SRP`,`i`.`SupplierNo` AS `SupplierNo` from ((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`)))) */;
 
 /*View structure for view vw_inventory */
 

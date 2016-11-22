@@ -59,14 +59,30 @@ div.content-child button{
 div.content-child > .row{
   padding-top: 33px !important;
 }
+div.group-2{
+  padding: 2px 10px !important;
+    margin-top: -22px;
+}
 
-.poquantity{
+.poquantity, .poreceived{
   text-align: right !important;
 }
 
 .dataTables tbody td {
 min-height: 20px; /* or whatever height you need to make them all consistent */
 }
+
+.label-error{
+  color: red;
+  font-size: 12px;
+  text-align: right;
+  margin: 0px;
+}
+#label-suppliername{
+  border-bottom: 1px solid #ddd;
+}
+
+
 
 /*DIV STYLE*/
 .polistsupplier-wrap{
@@ -93,6 +109,19 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
   margin: 0px !important;
 }
 
+.order-status > div {
+  height: 60px;
+  background-color: white;
+ 
+  padding: 0px;
+  margin-top: 21px;
+}
+
+.order-status > div > h5 {
+  margin:0px !important;
+
+}
+
 /*BUTTON STYLE*/
 div.content-holder .btn-action{
      background: #f44336;
@@ -113,6 +142,9 @@ div.content-holder .btn-action{
   display: none;
 }
 
+div.padding{
+  width: 50px;
+}
 
 
 /*MAINTENANCE - TABLE*/
@@ -144,6 +176,13 @@ div.table-group{
  
 .form-table tr td{
   padding: 10px;
+}
+#table-suppliersinfo{
+  margin-bottom: 23px;
+}
+
+#table-suppliersinfo tr td:first-child{
+  width: 150px;
 }
 
 

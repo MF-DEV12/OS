@@ -12,6 +12,11 @@ class Main extends CI_Controller {
 	{
 		$data['role'] = $this->session->userdata("role");
 		$data["suppliers"] = $this->GetSuppliers();
+		$role = $this->session->userdata("role");
+		if($role == "supplier"){
+			$data["requeststatus"]  = $this->GetRequestStatusTotal();
+
+		}
 		$this->load->view('index', $data);
 
 
@@ -19,6 +24,11 @@ class Main extends CI_Controller {
 	}
 
 	function initializeAllData(){
+		$data = array();
+		$role = $this->session->userdata("role");
+
+		if($role == "admin"){
+
 			$data["purchaseorder"] = $this->GetListOfPO();
 			$data["receivings"] = $this->GetReceivings();
 			$data["backorders"] = $this->GetBackOrders();
@@ -26,13 +36,21 @@ class Main extends CI_Controller {
 
 			$data["inventory"] = $this->getInventory();
 			$data["items"] = $this->getItems();
-			$data["lowstocks"] = $this->getLowStocks();
+			$data["lowstocks"] = $this->getLowStocks(); 
 
 			// $data["allorders"] = $this->getOrders("");
 			// $data["neworders"] = $this->getOrders("New");
 			// $data["processorders"] = $this->getOrders("Process");
 			// $data["shippedorders"] = $this->getOrders("Ship");
 			// $data["cancelledorders"] = $this->getOrders("Cancel");
+		} 
+
+		else if($role == "supplier"){
+			$data["request"] = $this->GetRequestListFromCustomer();
+
+		}
+			
+			
 
 			echo json_encode($data); 
 	}
@@ -40,8 +58,7 @@ class Main extends CI_Controller {
 
 	 
 // ADMIN SIDE
-	// PURCHASE ORDERS 
-		
+	// PURCHASE ORDERS  
 		function GetListOfPO(){
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "vw_getpurchaseorders";
@@ -283,7 +300,7 @@ class Main extends CI_Controller {
 		function GetSuppliers(){
 			$this->param = $this->param = $this->query_model->param;  
 			$this->param["table"] = "supplier";
-			$this->param["fields"] = "*,CONCAT('<button class=\"btn btn-default\">View Order</button>') AS `Action`"; 
+			$this->param["fields"] = "*,CONCAT('<button class=\"btn btn-default\" onclick=\"viewSupplyItems(',SupplierNo,',this);\">View Order</button>') AS `Action`"; 
 	 	 
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "SupplierNo|Supplier No.,SupplierName|Supplier name,Address|Address,ContactNo|Contact Number,Action|Action";
@@ -330,11 +347,21 @@ class Main extends CI_Controller {
 				$this->query_model->insertData($this->param);
 				
 	 			$data["suppliers"] = $this->GetSuppliers();
-			}
-
-
-
+			}  
 			echo json_encode($data);
+		}
+		function GetSupplyItemsBySupplier(){
+			$SupplierNo = $this->input->post("sno");
+			$this->param = $this->param = $this->query_model->param;  
+			$this->param["table"] = "vw_getsupplyitemsbysupplier";
+			$this->param["fields"] = "*";
+			$this->param["conditions"] = "SupplierNo = '$SupplierNo'";
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ItemNo|ID,ItemDescription|Description,Category|Category,DPOCost|DPO Cost,SRP|SRP"; 
+			
+			$list["listsupplybysupplier"] = $data;
+			echo json_encode($list);
+
 		}
 	///
 
@@ -368,7 +395,6 @@ class Main extends CI_Controller {
 			$data["fields"] = "ItemNo|Item Number,ItemDescription|Item Name,SupplierName|Supplier name,STOCKS|Stocks,LOWSTOCKS|Low Stock Threshold,CRITICAL|Critical";
 			return $data; 
 		}
-		 
 	///
 
 	// ORDERS 
@@ -381,8 +407,27 @@ class Main extends CI_Controller {
 			$data["fields"] = "OrderNo|OR#,Name|Customer Name,Address|Address,Date|Order Date,TotalAmount|Total Amount,Status|Status,Status,Action|Action";
 			return $data; 
 		}
-	 
 	///
 
+
+// SUPPLIER SIDE
+	//REQUEST
+		function GetRequestListFromCustomer(){ 
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getrequestfromcustomer";
+			$this->param["fields"] = "*"; 
+ 
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "OrderNo|Order No,Date|Order Date,Customer|Customer name,Address|Address,TotalAmount|Total Amount,Status|Status";
+			return $data;
+		}
+		function GetRequestStatusTotal(){ 
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getrequeststatustotal";
+			$this->param["fields"] = "*";  
+			$data =  $this->query_model->getData($this->param); 
+			return $data[0];
+		}
+	//	
 
 }
