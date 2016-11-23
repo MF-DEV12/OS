@@ -15,6 +15,7 @@ class Main extends CI_Controller {
 		$role = $this->session->userdata("role");
 		if($role == "supplier"){
 			$data["requeststatus"]  = $this->GetRequestStatusTotal();
+			$data["mostordereditems"] = $this->GetMostOrderedItems();
 
 		}
 		$this->load->view('index', $data);
@@ -427,6 +428,22 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*";  
 			$data =  $this->query_model->getData($this->param); 
 			return $data[0];
+		}
+
+		function GetMostOrderedItems(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getmostordereditems";
+			$this->param["fields"] = "*";  
+			$data =  $this->query_model->getData($this->param); 
+			$total = 0;
+			foreach($data as $row){
+				$total+= $row->Total;
+			}
+			foreach($data as $row){
+				$row->Percentage = round(($row->Total / $total) * 100, 2);
+			}
+			return $data;
+
 		}
 	//	
 

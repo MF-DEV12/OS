@@ -109,6 +109,12 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
   margin: 0px !important;
 }
 
+div[data-content=dashboard] div[class^=col]{
+  margin-left:0px; 
+  padding-left: 0px;
+}
+ 
+
 .order-status > div {
   height: 60px;
   background-color: white;
@@ -121,6 +127,70 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
   margin:0px !important;
 
 }
+
+.dashboard-status > div{
+  margin: 2px;
+  height: 100px;
+  background-color: white;
+}
+
+#dashboard-chart{
+  height: 250px;
+}
+
+dl#list-status{
+  display: inline-flex;
+}
+
+dl#list-status dd{
+    padding: 2px;
+    border-left: 1px solid #6f6f6f;
+    height: 85px;
+    width: 200px;
+}
+dl#list-status dd h2{
+  margin-top: -2px;
+  font-weight: bold;
+
+}
+dl#list-status dd:first-child{ 
+    border-left: 0px !important; 
+}
+
+.list-ordereditems{
+  background-color: white;
+  margin: 0px;
+  padding-right: 0px;
+  height: 275px;
+}
+.list-ordereditems dl{ 
+    margin: 8px auto;
+}
+
+.list-ordereditems dl dd{
+  padding: 7px;
+}
+
+.list-ordereditems dl dd .progress{
+  height: 10px;
+    margin-bottom: 0px !important ;
+}
+.list-ordereditems dl dd .progress-bar{
+  background-color:  #009688 !important ; 
+
+}
+
+
+   
+/*
+dl#list-status dd h2{
+    margin-top: -14px;
+    text-align: right;
+}*/
+
+
+
+
 
 /*BUTTON STYLE*/
 div.content-holder .btn-action{

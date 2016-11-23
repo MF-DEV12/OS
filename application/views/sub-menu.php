@@ -33,8 +33,9 @@
 
       <?php if($role=="supplier") {?>
           <ul class="request selected-sub-menu">
-                <li class="current" data-content="request"><a href="#">Request List</a></li>
-                <li data-content="sup-neworders"><a href="#">New</a></li>
+                <li class="current" data-content="dashboard"><a href="#">Dashboard</a></li>
+                <!-- <li data-content="request"><a href="#">Request List</a></li> -->
+                <li data-content="sup-neworders"><a href="#">New <span class="badge"><?=$requeststatus->New;?></span></a></li>
                 <li data-content="sup-processorders"><a href="#">Processing</a></li>
                 <li data-content="sup-shippedorders"><a href="#">Incomplete</a></li>
                 <li data-content="sup-shippedorders"><a href="#">Shipped</a></li>

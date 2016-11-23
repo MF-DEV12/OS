@@ -157,11 +157,11 @@ CREATE TABLE `item` (
   `SupplierNo` int(11) DEFAULT NULL,
   `SRemoved` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`ItemNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 /*Data for the table `item` */
 
-insert  into `item`(`ItemNo`,`Name`,`Image`,`BoolFields`,`SizeType`,`Removed`,`Owned`,`Level1No`,`Level2No`,`Level3No`,`SupplierNo`,`SRemoved`) values (0031,'Nail',NULL,1,'Length',0,1,12,15,11,4,0);
+insert  into `item`(`ItemNo`,`Name`,`Image`,`BoolFields`,`SizeType`,`Removed`,`Owned`,`Level1No`,`Level2No`,`Level3No`,`SupplierNo`,`SRemoved`) values (0031,'Nail',NULL,1,'Length',0,1,12,15,11,4,0),(0032,'Hammer',NULL,1,'Pieces',0,1,12,15,11,4,0);
 
 /*Table structure for table `itemvariant` */
 
@@ -265,11 +265,11 @@ CREATE TABLE `orderlist` (
   PRIMARY KEY (`OrderListNo`),
   KEY `FKOrder_orderlist` (`OrderNo`),
   KEY `FKItem_orderlist` (`ItemNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 
 /*Data for the table `orderlist` */
 
-insert  into `orderlist`(`OrderListNo`,`Quantity`,`Total`,`ItemNo`,`OrderNo`,`Temp`,`VariantNo`) values (51,100,1600,0031,00000009,0,12),(55,2,0,0031,00000010,0,13);
+insert  into `orderlist`(`OrderListNo`,`Quantity`,`Total`,`ItemNo`,`OrderNo`,`Temp`,`VariantNo`) values (51,100,1600,0031,00000009,0,12),(55,55,0,0032,00000010,0,13),(56,55,0,0031,NULL,1,NULL);
 
 /*Table structure for table `requestlist` */
 
@@ -378,6 +378,7 @@ insert  into `supplyrequest`(`SupplyRequestNo`,`Date`,`SupplierNo`,`isReceived`)
 DROP TABLE IF EXISTS `tblorder`;
 
 CREATE TABLE `tblorder` (
+  `CustomerNo` int(11) DEFAULT NULL,
   `OrderNo` int(8) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `TotalAmount` double DEFAULT NULL,
   `Date` datetime DEFAULT NULL,
@@ -386,12 +387,14 @@ CREATE TABLE `tblorder` (
   `Temp` tinyint(1) DEFAULT NULL,
   `Ship` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`OrderNo`),
-  KEY `FKSales_order` (`SalesNo`)
+  KEY `FKSales_order` (`SalesNo`),
+  KEY `CustomerNo` (`CustomerNo`),
+  CONSTRAINT `tblorder_ibfk_1` FOREIGN KEY (`CustomerNo`) REFERENCES `customer` (`CustomerNo`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tblorder` */
 
-insert  into `tblorder`(`OrderNo`,`TotalAmount`,`Date`,`Status`,`SalesNo`,`Temp`,`Ship`) values (00000009,1600,'2016-10-01 07:28:16','Ship',NULL,0,1),(00000010,0,'2016-11-09 15:06:13','New',NULL,0,0),(00000011,0,'2016-11-09 15:06:29','New',NULL,0,0);
+insert  into `tblorder`(`CustomerNo`,`OrderNo`,`TotalAmount`,`Date`,`Status`,`SalesNo`,`Temp`,`Ship`) values (NULL,00000009,1600,'2016-10-01 07:28:16','Ship',NULL,0,1),(NULL,00000010,0,'2016-11-09 15:06:13','Ship',NULL,0,1),(NULL,00000011,0,'2016-11-09 15:06:29','New',NULL,0,0);
 
 /*Table structure for table `walkin` */
 
@@ -441,6 +444,19 @@ DROP TABLE IF EXISTS `vw_getlowstockbysupplier`;
  `LOWSTOCKS` bigint(11) ,
  `CRITICAL` bigint(11) ,
  `SupplierNo` int(11) 
+)*/;
+
+/*Table structure for table `vw_getmostordereditems` */
+
+DROP TABLE IF EXISTS `vw_getmostordereditems`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_getmostordereditems` */;
+/*!50001 DROP TABLE IF EXISTS `vw_getmostordereditems` */;
+
+/*!50001 CREATE TABLE  `vw_getmostordereditems`(
+ `Name` varchar(50) ,
+ `Total` decimal(32,0) ,
+ `Percentage` int(1) 
 )*/;
 
 /*Table structure for table `vw_getorderbysupplier` */
@@ -651,6 +667,13 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 DROP VIEW IF EXISTS `vw_getlowstockbysupplier` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getlowstockbysupplier` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,ifnull(`iv`.`LowStock`,0) AS `LOWSTOCKS`,ifnull(`iv`.`Critical`,0) AS `CRITICAL`,`iv`.`SupplierNo` AS `SupplierNo` from (`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) where ((`iv`.`Stocks` <= `iv`.`LowStock`) and (`iv`.`Owned` = 1))) */;
+
+/*View structure for view vw_getmostordereditems */
+
+/*!50001 DROP TABLE IF EXISTS `vw_getmostordereditems` */;
+/*!50001 DROP VIEW IF EXISTS `vw_getmostordereditems` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getmostordereditems` AS (select `i`.`Name` AS `Name`,sum(`ol`.`Quantity`) AS `Total`,0 AS `Percentage` from ((`orderlist` `ol` join `tblorder` `o` on(((`ol`.`OrderNo` = `o`.`OrderNo`) and (`o`.`Status` = 'Ship')))) join `item` `i` on((`ol`.`ItemNo` = `i`.`ItemNo`))) group by `i`.`Name` order by sum(`ol`.`Quantity`) desc limit 5) */;
 
 /*View structure for view vw_getorderbysupplier */
 

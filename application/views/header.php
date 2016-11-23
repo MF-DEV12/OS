@@ -26,7 +26,7 @@
 				<li><a href="#reports"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
 				<li><a href="#settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-comment"></span> Forums</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li> 
+				<li><a href="<?=base_url('login/clearSession');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li> 
 				 
 					  
 	 	<?php } ?>
@@ -35,7 +35,7 @@
 	 	<?php if($role=="supplier") { ?>
 
 				 
-				<li><a href="#request"><span class="glyphicon glyphicon-download-alt"></span> Requests</a></li>
+				<li class="active"><a href="#request"><span class="glyphicon glyphicon-download-alt"></span> Requests</a></li>
 				<li><a href="#items"><span class="glyphicon glyphicon-tasks"></span> Items</a></li> 
 			 
 				<li><a href="<?=base_url('login/clearSession');?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li> 

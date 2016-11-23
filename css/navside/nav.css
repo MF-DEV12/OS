@@ -634,6 +634,12 @@ header::before {
   padding: 9px;
   text-align: left;
 }
+
+.dash-header.sub{
+  font-size: 12px;
+  padding: 5px; 
+  margin:0px;
+}
 #loadingchart{
   float:  none !important;
 }
