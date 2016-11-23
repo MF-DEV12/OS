@@ -113,6 +113,20 @@ div[data-content=dashboard] div[class^=col]{
   margin-left:0px; 
   padding-left: 0px;
 }
+.orderstatus-wrap{
+    display: inline-flex;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    margin-top: -8px;
+}
+
+.orderstatus-wrap label{
+      width: 185px;
+    top: 6px;
+    position: relative;
+}
+
  
 
 .order-status > div {
@@ -179,6 +193,8 @@ dl#list-status dd:first-child{
   background-color:  #009688 !important ; 
 
 }
+
+
 
 
    
@@ -253,6 +269,16 @@ div.table-group{
 
 #table-suppliersinfo tr td:first-child{
   width: 150px;
+}
+
+.childtable-wrap{
+  padding:30px 100px;
+}
+
+table.childtable{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
 

@@ -39,11 +39,11 @@ class Main extends CI_Controller {
 			$data["items"] = $this->getItems();
 			$data["lowstocks"] = $this->getLowStocks(); 
 
-			// $data["allorders"] = $this->getOrders("");
-			// $data["neworders"] = $this->getOrders("New");
-			// $data["processorders"] = $this->getOrders("Process");
-			// $data["shippedorders"] = $this->getOrders("Ship");
-			// $data["cancelledorders"] = $this->getOrders("Cancel");
+			$data["allorders"] = $this->getOrders("");
+			$data["neworders"] = $this->getOrders("New");
+			$data["processorders"] = $this->getOrders("Process");
+			$data["shippedorders"] = $this->getOrders("Ship");
+			$data["cancelledorders"] = $this->getOrders("Cancel");
 		} 
 
 		else if($role == "supplier"){
@@ -405,8 +405,24 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
  			if($status != "") { $this->param["conditions"] = "Status = '$status'"; }
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "OrderNo|OR#,Name|Customer Name,Address|Address,Date|Order Date,TotalAmount|Total Amount,Status|Status,Status,Action|Action";
+			$data["fields"] = "ViewItems| ,OrderNo|OR#,CustomerName|Customer Name,Address|Address,OrderDate|Order Date,TotalAmount|Total Amount,Status|Status,Action|Action";
 			return $data; 
+		}
+		function getOrdersJson(){ 
+			$status = $this->input->post("status");
+			$list["allorders"] = $this->getOrders($status);
+			echo json_encode($list);
+		}
+		function getOrderDetails(){
+			$orderno = $this->input->post("orderno");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_orderlistbyorderno";
+			$this->param["fields"] = "*"; 
+ 		    $this->param["conditions"] = "OrderNo = '$orderno'";
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ItemNumber|Item Number,ItemDescription|Description,Quantity|QTY,Price|Price,Total|Total";
+			$list["child-".$orderno] = $data;
+			echo json_encode($list);
 		}
 	///
 

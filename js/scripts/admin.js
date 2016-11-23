@@ -2,7 +2,7 @@ var listObjTableBinded = new Object();
 $(function(){
 
 	callAjaxJson("main/initializeAllData", new Object(), bindingDatatoDataTable, ajaxError)
-    dashboardChart();
+    //dashboardChart();
 
     // PURCHASE ORDER
         // Purchase Order
@@ -269,6 +269,77 @@ $(function(){
         })
 
 
+        //ORDERS
+        $("select#polistorderstatus").change(function(){
+            var elem = $(this)
+            var param = new Object()
+            param.status = elem.val();
+            callAjaxJson("main/getOrdersJson", param, bindingDatatoDataTable, ajaxError)
+        })
+
+        $('table[data-table="allorders"]').on('click', 'td:first-child', function () { 
+            var elem = $(this)
+            var tr = elem.closest('tr');
+            var table = listObjTableBinded["allorders"]
+            var data = table.rows(tr).data()
+            data = data[0]
+            elem.find('span').attr('class','glyphicon glyphicon-menu-down')
+            var row = table.row( tr );
+            var trExists = $("table[data-table=allorders] tr.shown")
+            trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right')
+            var rowExists = table.row( trExists );
+    
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                elem.find('span').attr('class','glyphicon glyphicon-menu-right')
+                tr.removeClass('shown');
+            }
+            else{
+                var param = new Object();
+                param.orderno = data.OrderNo
+
+                callAjaxJson("main/getOrderDetails", param, 
+                    function(response){
+                        var div = $("<div/>") 
+                            div.attr("class","childtable-wrap") 
+                        if(response["child-" +  data.OrderNo].list.length){ 
+                        
+                            var childtable = $("<table/>")
+                            div.append("<h5 class=\"dash-header sub\">Order Item(s):</h5>")
+                            childtable
+                                .attr("id","child-"+data.OrderNo)
+                                .attr("class","display")
+                                .addClass("childtable")
+                                .data("table","child-"+data.OrderNo)
+
+                            bindingDatatoChildDataTable(response,childtable)
+                            div.append(childtable)
+                        }
+                        else{
+                            div.append("<h5>No item(s) found.</h5>")
+
+                        }
+
+                        if ( rowExists.child.isShown() ) {
+                             rowExists.child.hide();
+                             trExists.removeClass('shown');
+                        }  
+                        row.child(div).show();
+                        tr.addClass("shown")
+
+                    }, 
+                ajaxError)
+
+                 
+               
+               
+             
+            }
+
+        })
+
+
+
 
 })
 
@@ -400,7 +471,7 @@ $(function(){
 function bindingDatatoDataTable(response){
 	var data = response
 	for(x in data){
-		console.log(data);
+		// console.log(data);
 
 		var table = jQuery("table[data-table='"+ x +"']")
 		var list = data[x].list
@@ -410,6 +481,51 @@ function bindingDatatoDataTable(response){
 		// console.log(x);
 	}
 
+}
+
+function bindingDatatoChildDataTable(response,table){
+    var data = response
+
+
+    for(x in data){ 
+      
+        var list = data[x].list
+        var tbody = jQuery("<tbody/>")  
+        var thead = jQuery("<thead/>")  
+        var tr = jQuery("<tr/>")   
+        addHeader(tr,"Item Number")
+        addHeader(tr,"Description")
+        addHeader(tr,"Quantity")
+        addHeader(tr,"Price")
+        addHeader(tr,"Total")
+        thead.append(tr)
+
+
+        for(row in list){
+            var tr = jQuery("<tr/>")   
+            addCellData(tr,list[row].ItemNumber)
+            addCellData(tr,list[row].ItemDescription)
+            addCellData(tr,list[row].Quantity)
+            addCellData(tr,list[row].Price)
+            addCellData(tr,list[row].Total)
+            tbody.append(tr)
+        }  
+        table.append(thead)
+        table.append(tbody)
+  
+        // console.log(x);
+    }
+
+}
+function addHeader(tr,value){
+    var th = jQuery("<th/>")  
+    th.text(value)
+    tr.append(th)
+}
+function addCellData(tr,value){
+    var td = jQuery("<td/>")  
+    td.html(value)
+    tr.append(td)
 }
  
 

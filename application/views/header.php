@@ -21,8 +21,8 @@
 	 	<?php if($role=="admin") { ?>
 				 
 				<li class="active"><a href="#purchaseorder"><span class="glyphicon glyphicon-edit"></span> Purchase Order</a></li>
+				<li><a href="#orders"><span class="glyphicon glyphicon-shopping-cart"></span> Customer's Order</a></li>
 				<li><a href="#inventory"><span class="glyphicon glyphicon-glyphicon glyphicon-tasks"></span> Inventory</a></li>
-				<li><a href="#orders"><span class="glyphicon glyphicon-shopping-cart"></span> Orders</a></li>
 				<li><a href="#reports"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
 				<li><a href="#settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-comment"></span> Forums</a></li>

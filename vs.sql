@@ -1,6 +1,6 @@
 /*
-SQLyog Community v12.09 (64 bit)
-MySQL - 10.1.9-MariaDB : Database - lampanohardwaretradings
+SQLyog Ultimate v10.00 Beta1
+MySQL - 5.5.5-10.1.9-MariaDB : Database - lampanohardwaretradings
 *********************************************************************
 */
 
@@ -9,12 +9,9 @@ MySQL - 10.1.9-MariaDB : Database - lampanohardwaretradings
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`lampanohardwaretradings` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-USE `lampanohardwaretradings`;
 
 /*Table structure for table `accounts` */
 
@@ -415,6 +412,24 @@ CREATE TABLE `walkin` (
 
 /*Data for the table `walkin` */
 
+/*Table structure for table `vw_allorders` */
+
+DROP TABLE IF EXISTS `vw_allorders`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_allorders` */;
+/*!50001 DROP TABLE IF EXISTS `vw_allorders` */;
+
+/*!50001 CREATE TABLE  `vw_allorders`(
+ `ViewItems` varchar(52) ,
+ `OrderNo` int(8) unsigned zerofill ,
+ `CustomerName` varchar(61) ,
+ `Address` varchar(50) ,
+ `OrderDate` datetime ,
+ `TotalAmount` double ,
+ `Status` varchar(20) ,
+ `Action` varchar(138) 
+)*/;
+
 /*Table structure for table `vw_getbackorders` */
 
 DROP TABLE IF EXISTS `vw_getbackorders`;
@@ -637,6 +652,22 @@ DROP TABLE IF EXISTS `vw_lowstocks`;
  `CRITICAL` bigint(11) 
 )*/;
 
+/*Table structure for table `vw_orderlistbyorderno` */
+
+DROP TABLE IF EXISTS `vw_orderlistbyorderno`;
+
+/*!50001 DROP VIEW IF EXISTS `vw_orderlistbyorderno` */;
+/*!50001 DROP TABLE IF EXISTS `vw_orderlistbyorderno` */;
+
+/*!50001 CREATE TABLE  `vw_orderlistbyorderno`(
+ `OrderNo` int(8) unsigned zerofill ,
+ `ItemNumber` varchar(22) ,
+ `ItemDescription` varchar(258) ,
+ `Quantity` int(11) ,
+ `Price` double ,
+ `Total` double 
+)*/;
+
 /*Table structure for table `vw_receivings` */
 
 DROP TABLE IF EXISTS `vw_receivings`;
@@ -653,6 +684,13 @@ DROP TABLE IF EXISTS `vw_receivings`;
  `PendingQuantity` int(11) ,
  `Quantity` int(11) 
 )*/;
+
+/*View structure for view vw_allorders */
+
+/*!50001 DROP TABLE IF EXISTS `vw_allorders` */;
+/*!50001 DROP VIEW IF EXISTS `vw_allorders` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_allorders` AS (select '<span class="glyphicon glyphicon-menu-right"></span>' AS `ViewItems`,`o`.`OrderNo` AS `OrderNo`,concat(`c`.`Firstname`,' ',`c`.`Lastname`) AS `CustomerName`,`c`.`Address` AS `Address`,`o`.`Date` AS `OrderDate`,`o`.`TotalAmount` AS `TotalAmount`,`o`.`Status` AS `Status`,(case when (`o`.`Status` = 'New') then '<div class="btn-group" align="center"><button class="btn btn-default">Cancel</button><button class="btn btn-action">Process</button></div>' when (`o`.`Status` = 'Process') then '<button class="btn btn-action">Ship</button>' when (`o`.`Status` = 'Ship') then '<button class="btn btn-default">View</button>' when (`o`.`Status` = 'Cancel') then '<button class="btn btn-default">View</button>' end) AS `Action` from (`tblorder` `o` join `customer` `c` on((`o`.`OrderNo` = `c`.`OrderNo`)))) */;
 
 /*View structure for view vw_getbackorders */
 
@@ -752,6 +790,13 @@ DROP TABLE IF EXISTS `vw_receivings`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_lowstocks` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`s`.`SupplierName` AS `SupplierName`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,ifnull(`iv`.`LowStock`,0) AS `LOWSTOCKS`,ifnull(`iv`.`Critical`,0) AS `CRITICAL` from (((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `supplier` `s` on((`i`.`SupplierNo` = `s`.`SupplierNo`))) where (`iv`.`Owned` = 1)) */;
 
+/*View structure for view vw_orderlistbyorderno */
+
+/*!50001 DROP TABLE IF EXISTS `vw_orderlistbyorderno` */;
+/*!50001 DROP VIEW IF EXISTS `vw_orderlistbyorderno` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_orderlistbyorderno` AS (select `o`.`OrderNo` AS `OrderNo`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNumber`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`o`.`Quantity` AS `Quantity`,`iv`.`Price` AS `Price`,(`o`.`Quantity` * `iv`.`Price`) AS `Total` from ((`orderlist` `o` join `item` `i` on((`o`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`o`.`VariantNo` = `iv`.`VariantNo`)))) */;
+
 /*View structure for view vw_receivings */
 
 /*!50001 DROP TABLE IF EXISTS `vw_receivings` */;
@@ -760,6 +805,5 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_receivings` AS (select `sup`.`SupplyNo` AS `SupplyNo`,`sup`.`DateReceive` AS `DateReceive`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`sup`.`QuantityReceived` AS `QuantityReceived`,`sup`.`PendingQuantity` AS `PendingQuantity`,`rl`.`Quantity` AS `Quantity` from (((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`rl`.`VariantNo` = `iv`.`VariantNo`))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sr`.`isReceived` = 1) order by `sup`.`DateReceive` desc) */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
