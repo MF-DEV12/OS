@@ -640,6 +640,11 @@ header::before {
   padding: 5px; 
   margin:0px;
 }
+.dash-header.sub2{
+  font-size: 14px;
+  padding: 5px; 
+  margin:0px;
+}
 #loadingchart{
   float:  none !important;
 }

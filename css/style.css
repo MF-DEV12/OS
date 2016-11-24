@@ -54,38 +54,51 @@ dl.categories-wrap > dd{
     height: 600px;
     border: 1px solid #ddd;
     width: 350px;
-    margin: 5px;
+    /*margin: 5px;*/
 
 }
 .dd-categories{
   overflow-y: auto;
-      height: 100%;
+      height: 95%;
 }
 .dd-categories dd {
     text-align: left;
     padding: 10px;
     border-bottom: 1px solid #eee;
     font-size: 13px;
+    cursor: pointer;
+
 }
-dl.dd-categories dd.selected  {
-  background: #222;
-  border-top-color: #3a3a3a;
-  box-shadow: 
-    inset -5px 0 0 #3a3a3a,
-    inset 0 20px 0 #282828
-  ;
-  color: #ddd;
-  outline: 0  ; 
+dd.selected {
+     background: #282828;
+    color: white;
+    font-weight: bold;
+    text-decoration: underline;
+
 }
+dd.selected span.action a { 
+    color: white !important;
+}
+dl.dd-categories dd span.selector {
+  display: none;
+}
+
  
-dl.dd-categories dd:hover  {
+/*dl.dd-categories dd:hover  {
     background: #d4d4d4;
     border-top-color: #7b6d6d;
     box-shadow: inset -5px 0 0 #ffffff, inset 0 20px 0 #d8d8d8;
     color: #000;
     outline: 0;
     cursor: pointer;
-    transition: all 100ms;
+    transition: all 100ms; 
+}*/
+dl.dd-categories dd span.action {
+     display: none;
+     cursor: pointer;
+}
+dl.dd-categories dd:hover span.action {
+     display: block;
 }
 
 .main-table td button.btn:first-child:nth-last-child(1){
@@ -255,6 +268,10 @@ dl#list-status dd:first-child{
 .list-ordereditems dl dd .progress-bar{
   background-color:  #009688 !important ; 
 
+}
+
+span.add{
+  cursor: pointer;
 }
 
 

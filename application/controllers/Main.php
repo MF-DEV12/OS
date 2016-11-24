@@ -18,6 +18,11 @@ class Main extends CI_Controller {
 			$data["mostordereditems"] = $this->GetMostOrderedItems();
 
 		}
+		else if($role == "admin"){
+			$data["listfamily"] = $this->getFamily();
+
+		}
+
 		$this->load->view('index', $data);
 
 
@@ -409,6 +414,62 @@ class Main extends CI_Controller {
 			$data["fields"] = "ItemNo|Item Number,ItemDescription|Item Name,SupplierName|Supplier name,STOCKS|Stocks,LOWSTOCKS|Low Stock Threshold,CRITICAL|Critical";
 			return $data; 
 		}
+
+		function getFamily(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "level1";
+			$this->param["fields"] = "*";  
+			$this->param["order"] = "Name1";  
+
+			return $this->query_model->getData($this->param);
+			 
+		}
+
+		function getCategory(){
+			$level1 = $this->input->post("lvl1");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "level2";
+			$this->param["fields"] = "Level2No `id`, Name2 `Name`";  
+			$this->param["conditions"] = "level1No = '$level1'";
+			$this->param["order"] = "Name2";  
+			$data = $this->query_model->getData($this->param);  
+			echo json_encode($data);
+		}
+
+		function getSubCategory(){
+			$level1 = $this->input->post("lvl1");
+			$level2 = $this->input->post("lvl2");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "level3";
+			$this->param["fields"] = "Level3No `id`, Name3 `Name`";  
+			$this->param["conditions"] = "level1No = '$level1' AND level2No = '$level2'";
+			$this->param["order"] = "Name3";  
+			$data = $this->query_model->getData($this->param);  
+			echo json_encode($data);
+		}
+
+		function updateCategory(){
+			$id = $this->input->post("id");
+			$name = $this->input->post("name");
+			$lvl = $this->input->post("lvl");
+			$this->param = $this->query_model->param;  
+			$data["Name". $lvl] = $name; 
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "Level". $lvl;
+			$this->param["conditions"] = "Level". $lvl. "No = '$id'";
+			$result = $this->query_model->updateData($this->param); 
+			echo $result;
+		}
+		function deleteCategory(){
+			$id = $this->input->post("id");
+			$lvl = $this->input->post("lvl");
+			$this->param = $this->query_model->param;  
+			$this->param["table"] = "Level". $lvl;
+			$this->param["conditions"] = "Level". $lvl. "No = '$id'";
+			$result = $this->query_model->removeData($this->param); 
+			echo $result;
+		}
+		 
 	///
 
 	// ORDERS 

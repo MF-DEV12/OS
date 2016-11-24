@@ -333,11 +333,101 @@ $(function(){
         })
 
         //INVENTORY
-        $(".dd-categories dd").click(function(e){
+        $(".dd-categories").on("click","dd",function(e){
             var elem = $(this)
             var dl = elem.closest("dl")
             dl.find("dd.selected").removeClass("selected")
             elem.addClass("selected")
+            var param = new Object();
+            if(dl.data("section") == "level1"){
+                param.lvl1 = elem.data("id")
+                callAjaxJson("main/getCategory", param, 
+                    function(response){
+                        var data = response
+                        setupCategories($("dl.list-categories"),data) 
+                    },  
+                ajaxError)
+            }
+            else if(dl.data("section") == "level2"){
+                param.lvl1 = $("dl.list-family dd.selected").data("id")
+                param.lvl2 = elem.data("id")
+                callAjaxJson("main/getSubCategory", param, 
+                    function(response){
+                        var data = response
+                        setupCategories($("dl.list-subcategories"),data) 
+                    },  
+                ajaxError)
+            }
+                
+
+            
+
+        })
+
+        $(".dd-categories").on("click" ,"dd span a.edit", function(e){
+            var elem = $(this)
+            var dd = elem.closest("dd")
+            var dl = dd.closest("dl")
+            var currentvalue =  dd.find("span.data-edit").text()
+            var ddparent  = dl.closest("dd")
+            var section = ddparent.find("h5")
+            var promptOptions = {
+              title: "Enter a " + $.trim(section.text().replace("Add","")) + ":" ,
+              value: currentvalue,
+              buttons: {
+                confirm: {
+                  label: "Update"
+                }
+              },
+              callback: function(result) {   
+                  if (result) {      
+                        var param = new Object();
+                        param.id = dd.data("id");
+                        param.name = result;
+                        param.lvl = dl.data("section").replace("level","");
+                        callAjaxJson("main/updateCategory", param, 
+                            function(response){
+                                if(response)
+                                    dd.find("span.data-edit").text(result)
+
+                            }, 
+                        ajaxError)                              
+                  } else { 
+
+                  }
+                }
+            };
+
+            bootbox.prompt(promptOptions);
+
+        })
+
+        $(".dd-categories").on("click" ,"dd span a.delete", function(e){
+            var elem = $(this)
+            var dd = elem.closest("dd")
+            var dl = dd.closest("dl")
+            var currentvalue =  elem.closest("dd").find("span.data-edit").text()
+            var ddparent  = elem.closest("dd").closest("dl").closest("dd")
+            var section = ddparent.find("h5")
+            var note = "<br> Note:<br> ";
+            note += "Removing this will remove all the categories under it.<br>";
+            // note += "This Action cannot be undone.";
+            bootbox.confirm("Delete selected " + $.trim(section.text().replace("Add","")) + " <b>\"" + currentvalue + " \"</b> ? <p style=\"font-size:10px;font-style: italic;\">"+ note +"</p>",function(result){
+                if(result){
+                    var param = new Object();
+                    param.id = dd.data("id");
+                    param.lvl = dl.data("section").replace("level","");
+                    callAjaxJson("main/deleteCategory", param, 
+                            function(response){
+                                if(response)
+                                    dd.remove();
+
+                            }, 
+                        ajaxError)  
+
+                    
+                }
+            }) 
 
         })
 
@@ -497,9 +587,23 @@ $(function(){
             }
         };
 
-        bootbox.prompt(promptOptions);
+        bootbox.prompt(promptOptions); 
+    }
 
-      
+    function setupCategories(dl,data){
+        dl.empty();
+        for(x in data){
+            var dd = $("<dd/>");
+            dd.append("<span class=\"data-edit\" >"+ data[x].Name +"</span>")
+            // dd.append("<span class=\"glyphicon glyphicon-menu-right pull-right selector\"></span>")
+            dd.append("<span class=\"action pull-right\"><a class=\"edit\">Edit</a> | <a class=\"delete\">Delete</a></span>")
+            dd.data("id",data[x].id) 
+            dl.append(dd);
+        }
+        if(!data.length){
+            dl.append("<p style=\"padding: 10px;color: #ccc;\">No record(s) found</p>");
+
+        }
     }
 
 

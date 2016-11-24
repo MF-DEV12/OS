@@ -1,6 +1,6 @@
 /*
-SQLyog Community v12.09 (64 bit)
-MySQL - 10.1.9-MariaDB : Database - lampanohardwaretradings
+SQLyog Ultimate v10.00 Beta1
+MySQL - 5.5.5-10.1.9-MariaDB : Database - lampanohardwaretradings
 *********************************************************************
 */
 
@@ -9,12 +9,9 @@ MySQL - 10.1.9-MariaDB : Database - lampanohardwaretradings
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`lampanohardwaretradings` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-USE `lampanohardwaretradings`;
 
 /*Table structure for table `accounts` */
 
@@ -161,7 +158,7 @@ CREATE TABLE `item` (
 
 /*Data for the table `item` */
 
-insert  into `item`(`ItemNo`,`Name`,`Image`,`BoolFields`,`SizeType`,`Removed`,`Owned`,`Level1No`,`Level2No`,`Level3No`,`SupplierNo`,`SRemoved`) values (0031,'Nail',NULL,1,'Length',0,1,12,15,11,4,0),(0032,'Hammer',NULL,1,'Pieces',0,1,12,15,11,4,0);
+insert  into `item`(`ItemNo`,`Name`,`Image`,`BoolFields`,`SizeType`,`Removed`,`Owned`,`Level1No`,`Level2No`,`Level3No`,`SupplierNo`,`SRemoved`) values (0031,'Nail',NULL,1,'Length',0,1,10,15,11,4,0),(0032,'Hammer',NULL,1,'Pieces',0,1,10,15,11,4,0);
 
 /*Table structure for table `itemvariant` */
 
@@ -202,7 +199,7 @@ CREATE TABLE `level1` (
 
 /*Data for the table `level1` */
 
-insert  into `level1`(`Level1No`,`Name1`) values (10,'Appliances'),(11,'Automobile'),(12,'Applianceses'),(13,'Applianceses'),(14,'Applianceses'),(15,'Applianceses'),(16,'Applianceses'),(17,'Applianceses');
+insert  into `level1`(`Level1No`,`Name1`) values (10,'Appliances'),(11,'Automobile');
 
 /*Table structure for table `level2` */
 
@@ -217,7 +214,7 @@ CREATE TABLE `level2` (
 
 /*Data for the table `level2` */
 
-insert  into `level2`(`Level2No`,`Name2`,`Level1No`) values (10,'Cooling',10),(11,'Kitchen Appliances',10),(12,'Utility Equipment ',10),(13,'Car Care',11),(14,'Building Decors',12),(15,'Building Supplies',12),(16,'Ceiling & Wall',12),(17,'Floor',12),(18,'Roofing',12),(19,'Door',13),(20,'Mouldings',13),(21,'Window',13),(22,'Lightings',14),(23,'Electrical Supplies',14),(24,'Electrical Accessories',14),(25,'Chemicals',15),(26,'Equipment/Materials',15),(27,'Paint',15),(28,'Bath & Shower Mixer',16),(29,'Kitchen Sinks',16),(30,'Faucets',16),(31,'Hand Tools',17),(32,'Power Tools',17),(33,'Equipment',17),(35,'test',15);
+insert  into `level2`(`Level2No`,`Name2`,`Level1No`) values (10,'Cooling',10),(11,'Kitchen Appliances',10),(12,'Utility Equipment ',10),(13,'Car Care',11),(14,'Building Decors',10),(15,'Building Supplies',10),(16,'Ceiling & Wall',10),(17,'Floor',10),(18,'Roofing',10),(19,'Door',10),(20,'Mouldings',10),(21,'Window',10),(22,'Lightings',10),(23,'Electrical Supplies',10),(24,'Electrical Accessories',10),(25,'Chemicals',10),(26,'Equipment/Materials',10),(27,'Paint',10),(28,'Bath & Shower Mixer',10),(29,'Kitchen Sinks',10),(30,'Faucets',10),(31,'Hand Tools',10),(32,'Power Tools',10),(33,'Equipment',10),(35,'test',10);
 
 /*Table structure for table `level3` */
 
@@ -233,7 +230,7 @@ CREATE TABLE `level3` (
 
 /*Data for the table `level3` */
 
-insert  into `level3`(`Level3No`,`Name3`,`Level1No`,`Level2No`) values (8,'Safety & Security',17,31),(9,'Cement',12,16),(10,'wood',12,16),(11,'Nail',12,15),(12,'Wire',12,15),(13,'Tile Trim',12,16),(14,'Glass',13,19),(15,'Wood',13,19),(16,'Wood',13,20),(17,'Chargeable Light',14,22),(18,'Decorative',14,22),(19,'Tape',14,23),(20,'Gadgets & Equipments',14,23),(21,'Circuit Breaker',14,24),(22,'Pipes & Fittings',14,24),(23,'Adhesives',15,25),(24,'Additive',15,25),(25,'Sealants',15,25),(26,'Solvent Based',15,25),(27,'Thinner',15,25),(28,'Top Coats',15,25),(29,'Water Based',15,25),(30,'Paint Brush',15,26),(31,'Sundries',15,26),(32,'Equipment',15,26),(33,'Automotive Paints',15,27),(34,'Epoxy',15,27),(35,'Latex (Acrylic)',15,27),(36,'Spray Paint',15,27),(37,'Solvent Based',15,27),(38,'Elastomeric',15,27),(39,'Stainless Sink',16,29),(40,'Kitchen Faucets',16,30),(41,'Lavatory Faucets',16,30),(42,'Bidet Faucets',16,30),(43,'Electrical',17,33),(44,'Electrical',17,32),(45,'Sundries',17,33);
+insert  into `level3`(`Level3No`,`Name3`,`Level1No`,`Level2No`) values (8,'Safety & Security',10,31),(9,'Cement',10,16),(11,'Nail',10,15),(12,'Wire',10,15),(13,'Tile Trim',10,16),(14,'Glass',10,19),(15,'Wood',10,19),(16,'Wood',10,20),(17,'Chargeable Light',10,22),(18,'Decorative',10,22),(19,'Tape',10,23),(20,'Gadgets & Equipments',10,23),(21,'Circuit Breaker',10,24),(22,'Pipes & Fittings',10,24),(23,'Adhesives',10,25),(24,'Additive',10,25),(25,'Sealants',10,25),(26,'Solvent Based',10,25),(27,'Thinner',10,25),(28,'Top Coats',10,25),(29,'Water Based',10,25),(30,'Paint Brush',10,26),(31,'Sundries',10,26),(32,'Equipment',10,26),(33,'Automotive Paints',10,27),(34,'Epoxy',10,27),(35,'Latex (Acrylic)',10,27),(36,'Spray Paint',10,27),(37,'Solvent Based',10,27),(38,'Elastomeric',10,27),(39,'Stainless Sink',10,29),(40,'Kitchen Faucets',10,30),(41,'Lavatory Faucets',10,30),(42,'Bidet Faucets',10,30),(43,'Electrical',10,33),(44,'Electrical',10,32),(45,'Sundries',10,33);
 
 /*Table structure for table `message` */
 
@@ -810,6 +807,5 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_receivings` AS (select `sup`.`SupplyNo` AS `SupplyNo`,`sup`.`DateReceive` AS `DateReceive`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`sup`.`QuantityReceived` AS `QuantityReceived`,`sup`.`PendingQuantity` AS `PendingQuantity`,`rl`.`Quantity` AS `Quantity` from (((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`rl`.`VariantNo` = `iv`.`VariantNo`))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sr`.`isReceived` = 1) order by `sup`.`DateReceive` desc) */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
