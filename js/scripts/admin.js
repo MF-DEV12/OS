@@ -328,13 +328,16 @@ $(function(){
                         tr.addClass("shown")
 
                     }, 
-                ajaxError)
+                ajaxError)  
+            } 
+        })
 
-                 
-               
-               
-             
-            }
+        //INVENTORY
+        $(".dd-categories dd").click(function(e){
+            var elem = $(this)
+            var dl = elem.closest("dl")
+            dl.find("dd.selected").removeClass("selected")
+            elem.addClass("selected")
 
         })
 
@@ -466,6 +469,69 @@ $(function(){
 
         }, ajaxError)
      }
+// INVERNTORY 
+    function physicalCount(variantno){
+        var promptOptions = {
+          title: "Please enter the stock count for " + variantno + ":",
+          buttons: {
+            confirm: {
+              label: "Update"
+            }
+          },
+          callback: function(result) {                
+              if (result) {                                             
+                 var param = new Object();
+                param.vno = variantno;
+                param.qty = result;
+                callAjaxJson("main/physicalCount", param, 
+                    function(response){
+
+                         bindingDatatoDataTable(response);
+                         bootbox.alert("Update Successfully");
+
+                    }, 
+                ajaxError)                              
+              } else { 
+
+              }
+            }
+        };
+
+        bootbox.prompt(promptOptions);
+
+      
+    }
+
+
+//ORDERS
+     function processOrder(orderNo){
+        bootbox.confirm("Do you want to process this order number? <br/><b>#" + orderNo + "</b>", function(result){
+            if(result)
+                 setStatusOrder(orderNo,"Process"); 
+        })
+     }
+     function cancelOrder(orderNo){
+        bootbox.confirm("Do you want to cancel this order number? <br/><b>#" + orderNo + "</b>", function(result){
+            if(result)
+                 setStatusOrder(orderNo,"Cancel"); 
+        })
+     }
+     function shipOrder(orderNo){
+        bootbox.confirm("Do you want to ship this order number? <br/><b>#" + orderNo + "</b>", function(result){
+            if(result)
+                 setStatusOrder(orderNo,"Ship"); 
+        }) 
+     }
+    
+
+     function setStatusOrder(orderNo,status){
+        var param = new Object()
+        param.ono = orderNo;
+        param.curstatus = $("#polistorderstatus option:selected").val();
+        param.newstatus = status;
+        callAjaxJson("main/setStatusOrder", param, bindingDatatoDataTable, ajaxError)
+
+     }
 
 
 function bindingDatatoDataTable(response){
@@ -492,6 +558,7 @@ function bindingDatatoChildDataTable(response,table){
         var list = data[x].list
         var tbody = jQuery("<tbody/>")  
         var thead = jQuery("<thead/>")  
+        var tfoot = jQuery("<tfoot/>")  
         var tr = jQuery("<tr/>")   
         addHeader(tr,"Item Number")
         addHeader(tr,"Description")
@@ -500,7 +567,7 @@ function bindingDatatoChildDataTable(response,table){
         addHeader(tr,"Total")
         thead.append(tr)
 
-
+        var total = 0;
         for(row in list){
             var tr = jQuery("<tr/>")   
             addCellData(tr,list[row].ItemNumber)
@@ -509,10 +576,15 @@ function bindingDatatoChildDataTable(response,table){
             addCellData(tr,list[row].Price)
             addCellData(tr,list[row].Total)
             tbody.append(tr)
+            total += parseFloat(list[row].Total,2);
         }  
         table.append(thead)
         table.append(tbody)
-  
+        var tr = jQuery("<tr/>")   
+        tr.append("<td colspan=\"4\" align=\"right\">Total</td><td align=\"right\" style=\"font-weight:bold;\">"+ total +"</td>")
+        tfoot.append(tr)
+        table.append(tfoot)
+
         // console.log(x);
     }
 
@@ -542,6 +614,7 @@ function setupDataTable(table, data, fields){
 
     dttable = table.DataTable({  
                      "aaData" : data,
+                     "autoWidth": true,
                      "aoColumns" : fields.Columns,  
                       scrollY:        (table.is(".main-table")) ? '60vh' :'30vh',
                       scrollCollapse: false,
@@ -586,7 +659,8 @@ function setupDataTable(table, data, fields){
             var str = list[x].split("|")
             var obj = new Object();
             obj.mDataProp = str[0]
-            obj.title = str[1] 
+            obj.title = str[1]
+            if(str[1]=="Action"){obj.width="120px";} 
             arrlist.push(obj);
         }
 

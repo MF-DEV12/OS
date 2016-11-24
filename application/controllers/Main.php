@@ -373,8 +373,21 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ItemNo|Item Number,ItemDescription|Item Name,Category|Category,STOCKCOMMIT|Available Quantity,STOCKS|Onhand Stocks,COMMIT|Quantity Committed";
+			$data["fields"] = "ItemNo|Item Number,ItemDescription|Item Name,Category|Category,STOCKCOMMIT|Available Quantity,STOCKS|Onhand Stocks,COMMIT|Quantity Committed,Action|Action";
 			return $data; 
+		}
+		function physicalCount(){
+			$variantNo = $this->input->post("vno");
+			$qty = $this->input->post("qty");
+			$this->param = $this->query_model->param;  
+			$data["Stocks"] = $qty; 
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "itemvariant";
+			$this->param["conditions"] = "VariantNo = '$variantNo'";
+			$result = $this->query_model->updateData($this->param); 
+
+			$list["inventory"] = $this->getInventory();
+			echo json_encode($list);
 		}
 
 		function getItems(){
@@ -405,7 +418,7 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
  			if($status != "") { $this->param["conditions"] = "Status = '$status'"; }
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ViewItems| ,OrderNo|OR#,CustomerName|Customer Name,Address|Address,OrderDate|Order Date,TotalAmount|Total Amount,Status|Status,Action|Action";
+			$data["fields"] = "ViewItems|View,OrderNo|OR#,CustomerName|Customer Name,Address|Address,OrderDate|Order Date,TotalAmount|Total Amount,Status|Status,Action|Action";
 			return $data; 
 		}
 		function getOrdersJson(){ 
@@ -424,6 +437,39 @@ class Main extends CI_Controller {
 			$list["child-".$orderno] = $data;
 			echo json_encode($list);
 		}
+		function setStatusOrder(){
+			date_default_timezone_set("Asia/Manila");
+			$date = date('Y-m-d H:i:s');
+			$datetime = date('Y-m-d H:i:s', strtotime($date));
+			$orderno = $this->input->post("ono");
+			$curstatus = $this->input->post("curstatus");
+			$newstatus = $this->input->post("newstatus");
+
+			$this->param = $this->query_model->param; 
+			
+			$data["Ship"] = ($newstatus=='Ship') ? 1 : 0;
+			$data["Status"] = $newstatus;
+			$data["TransactionDate"] = $datetime;
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "tblorder";
+			$this->param["conditions"] = "OrderNo = '$orderno'";
+			$result = $this->query_model->updateData($this->param); 
+
+			if($newstatus == "Ship")
+				$this->updateStocksByOrderNo($orderno);
+
+			$list["allorders"] = $this->getOrders($curstatus);
+			echo json_encode($list);
+		}
+		function updateStocksByOrderNo($orderno){
+			$qry  = "UPDATE itemvariant v ";
+			$qry .= "INNER JOIN orderlist o "; 
+			$qry .= "ON v.VariantNo = o.VariantNo ";
+			$qry .= "SET Stocks = Stocks - Quantity ";
+			$qry .= "WHERE o.OrderNo = '$orderno'";
+			$this->db->query($qry); 
+		}
+
 	///
 
 

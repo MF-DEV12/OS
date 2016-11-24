@@ -151,7 +151,7 @@
             <div class="content-group" data-group="inventory">
                 <div class="content-list show" data-content="inventory">
                     <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Inventory</h5> 
-                    <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> Physical Count</button>
+                    <!-- <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> Physical Count</button> -->
                     <table class="display main-table" data-table="inventory"> </table>
                 </div>
                 <div class="content-list" data-content="items">
@@ -165,8 +165,56 @@
                 </div>
                 <div class="content-list" data-content="categories">
                     <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Categories</h5> 
-                    <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> Add Categorie</button>
-                    <table class="display main-table" data-table="categories"> </table>
+                    <div class="col-md-12" align="center">
+
+                        <dl class="categories-wrap">
+                            <dd>
+                                 <h5 class="dash-header sub">Family</h5>
+                                 <dl class="list-family dd-categories">
+                                     <dd>Family 1 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Family 2 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Family 3 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Family 4 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Family 5 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Family 6 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Family 7 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                      
+                                 </dl>
+                            </dd>
+                            <dd>
+                                 <h5 class="dash-header sub">Category</h5>
+                                 <dl class="list-categories dd-categories">
+                                     <dd>Category 1 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 2 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 3 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 4 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 5 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 6 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 7 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 8 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 9 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                     <dd>Category 10 <span class="glyphicon glyphicon-menu-right pull-right"></span></dd>
+                                 </dl>
+                            </dd>
+                            <dd>
+                                 <h5 class="dash-header sub">Sub-Category</h5>
+                                 <dl class="list-subcategories dd-categories">
+                                     <dd>Sub-category 1 </dd>
+                                     <dd>Sub-category 2 </dd>
+                                     <dd>Sub-category 3 </dd>
+                                     <dd>Sub-category 4 </dd>
+                                     <dd>Sub-category 5 </dd>
+                                     <dd>Sub-category 6 </dd>
+                                     <dd>Sub-category 7 </dd>
+                                     <dd>Sub-category 8 </dd>
+                                     <dd>Sub-category 9 </dd>
+                                     <dd>Sub-category 10 </dd>
+                                 </dl>
+                            </dd>
+
+                        </dl>
+                    </div>
+                       
                 </div>
                  <!--<div class="content-list" data-content="backorders">
                     <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Back Order</h5> 

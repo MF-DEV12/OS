@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v10.00 Beta1
-MySQL - 5.5.5-10.1.9-MariaDB : Database - lampanohardwaretradings
+SQLyog Community v12.09 (64 bit)
+MySQL - 10.1.9-MariaDB : Database - lampanohardwaretradings
 *********************************************************************
 */
 
@@ -9,9 +9,12 @@ MySQL - 5.5.5-10.1.9-MariaDB : Database - lampanohardwaretradings
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`lampanohardwaretradings` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `lampanohardwaretradings`;
 
 /*Table structure for table `accounts` */
 
@@ -67,7 +70,7 @@ CREATE TABLE `customer` (
 
 /*Data for the table `customer` */
 
-insert  into `customer`(`CustomerNo`,`Lastname`,`Firstname`,`ContactNo`,`Email`,`Address`,`OrderNo`) values (1,'abwerv','awerc','121','qcdaw','avwdw',00000005),(2,'abwerv','awerc','1213','qcdaw','avwdw',00000006),(3,'asdf','awdwad','9296940118','wadaw','aweda',00000007),(4,'asdfasdf','asdfasdf','9353040116','','adsfgadfa',00000008),(5,'asd','asd','9111111111','','asd',00000009),(6,'Friaz','Mark Anthony','9124455679','test@gmail.com','MyAddress',00000010),(7,'testorder','testorder','123456788','friazmarkanthony@gmail.com','testaddress',00000010),(8,'testorder1','testorder','99999999999','friazmarkanthony@gmail.com','testaddress',00000011),(9,'test','test','99999999999','test@gmail.com','test',NULL),(10,'test','test2','12312321','test','test',NULL),(11,'testadd','add','4434343','test@gmail.com','5awdad',NULL);
+insert  into `customer`(`CustomerNo`,`Lastname`,`Firstname`,`ContactNo`,`Email`,`Address`,`OrderNo`) values (1,'abwerv','awerc','121','qcdaw','avwdw',00000005),(2,'abwerv','awerc','1213','qcdaw','avwdw',00000006),(3,'asdf','awdwad','9296940118','wadaw','aweda',00000007),(4,'asdfasdf','asdfasdf','9353040116','','adsfgadfa',00000008),(5,'asd','asd','9111111111','','asd',00000009),(6,'Friaz','Mark Anthony','9124455679','test@gmail.com','MyAddress',00000010),(8,'testorder1','testorder','99999999999','friazmarkanthony@gmail.com','testaddress',00000011),(9,'test','test','99999999999','test@gmail.com','test',NULL),(10,'test','test2','12312321','test','test',NULL),(11,'testadd','add','4434343','test@gmail.com','5awdad',NULL);
 
 /*Table structure for table `family` */
 
@@ -185,7 +188,7 @@ CREATE TABLE `itemvariant` (
 
 /*Data for the table `itemvariant` */
 
-insert  into `itemvariant`(`VariantNo`,`ItemNo`,`Size`,`Color`,`Description`,`Stocks`,`LowStock`,`Critical`,`DPOCost`,`SRP`,`Price`,`Removed`,`Owned`,`SupplierNo`,`SRemoved`) values (1,0021,'12mm x 12mm x 12mm','','',NULL,NULL,NULL,12,13,NULL,0,1,NULL,0),(2,0021,'12mm x 1mm x 1mm','','',NULL,12,12,1,2,12,0,1,NULL,0),(3,0021,'10mm x 10mm x 10mm','','',NULL,NULL,NULL,10,11,NULL,0,0,NULL,0),(4,0025,'1mm x 13mm x 5mm','','',NULL,NULL,NULL,12,13,NULL,0,0,NULL,0),(5,0026,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(6,0027,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(7,0027,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(8,0029,'500mL','Red','',NULL,NULL,NULL,100,50,NULL,0,0,4,0),(9,0030,'500mL','Blue','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(12,0031,'2mm','','',128,10,10,10,15,16,0,1,4,0),(13,0031,'1mm','','',NULL,10,10,10,11,15,0,1,4,0),(14,0031,'3mm','','',NULL,1,2,10,5,5,0,1,4,0),(15,0031,'4mm','','',NULL,NULL,NULL,10,5,NULL,0,0,4,0),(16,0031,'5mm','','',NULL,NULL,NULL,10,15,NULL,0,0,4,0),(17,0031,'6mm','','',NULL,NULL,NULL,100,150,NULL,0,0,4,0),(18,0031,'7mm','','',NULL,NULL,NULL,5,10,NULL,0,0,4,0);
+insert  into `itemvariant`(`VariantNo`,`ItemNo`,`Size`,`Color`,`Description`,`Stocks`,`LowStock`,`Critical`,`DPOCost`,`SRP`,`Price`,`Removed`,`Owned`,`SupplierNo`,`SRemoved`) values (1,0021,'12mm x 12mm x 12mm','','',NULL,NULL,NULL,12,13,NULL,0,1,NULL,0),(2,0021,'12mm x 1mm x 1mm','','',NULL,12,12,1,2,12,0,1,NULL,0),(3,0021,'10mm x 10mm x 10mm','','',NULL,NULL,NULL,10,11,NULL,0,0,NULL,0),(4,0025,'1mm x 13mm x 5mm','','',NULL,NULL,NULL,12,13,NULL,0,0,NULL,0),(5,0026,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(6,0027,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(7,0027,'','','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(8,0029,'500mL','Red','',NULL,NULL,NULL,100,50,NULL,0,0,4,0),(9,0030,'500mL','Blue','',NULL,NULL,NULL,12,13,NULL,0,0,4,0),(12,0031,'2mm','','',220,10,10,10,15,16,0,1,4,0),(13,0031,'1mm','','',100,10,10,10,11,15,0,1,4,0),(14,0031,'3mm','','',NULL,1,2,10,5,5,0,1,4,0),(15,0031,'4mm','','',NULL,NULL,NULL,10,5,NULL,0,0,4,0),(16,0031,'5mm','','',NULL,NULL,NULL,10,15,NULL,0,0,4,0),(17,0031,'6mm','','',NULL,NULL,NULL,100,150,NULL,0,0,4,0),(18,0031,'7mm','','',NULL,12,1,5,10,10,0,1,4,0);
 
 /*Table structure for table `level1` */
 
@@ -266,7 +269,7 @@ CREATE TABLE `orderlist` (
 
 /*Data for the table `orderlist` */
 
-insert  into `orderlist`(`OrderListNo`,`Quantity`,`Total`,`ItemNo`,`OrderNo`,`Temp`,`VariantNo`) values (51,100,1600,0031,00000009,0,12),(55,55,0,0032,00000010,0,13),(56,55,0,0031,NULL,1,NULL);
+insert  into `orderlist`(`OrderListNo`,`Quantity`,`Total`,`ItemNo`,`OrderNo`,`Temp`,`VariantNo`) values (51,100,1600,0031,00000009,0,12),(55,55,0,0031,00000010,0,13),(56,55,0,0031,NULL,1,NULL);
 
 /*Table structure for table `requestlist` */
 
@@ -383,6 +386,7 @@ CREATE TABLE `tblorder` (
   `SalesNo` int(4) unsigned zerofill DEFAULT NULL,
   `Temp` tinyint(1) DEFAULT NULL,
   `Ship` tinyint(1) DEFAULT NULL,
+  `TransactionDate` datetime DEFAULT NULL,
   PRIMARY KEY (`OrderNo`),
   KEY `FKSales_order` (`SalesNo`),
   KEY `CustomerNo` (`CustomerNo`),
@@ -391,7 +395,7 @@ CREATE TABLE `tblorder` (
 
 /*Data for the table `tblorder` */
 
-insert  into `tblorder`(`CustomerNo`,`OrderNo`,`TotalAmount`,`Date`,`Status`,`SalesNo`,`Temp`,`Ship`) values (NULL,00000009,1600,'2016-10-01 07:28:16','Ship',NULL,0,1),(NULL,00000010,0,'2016-11-09 15:06:13','Ship',NULL,0,1),(NULL,00000011,0,'2016-11-09 15:06:29','New',NULL,0,0);
+insert  into `tblorder`(`CustomerNo`,`OrderNo`,`TotalAmount`,`Date`,`Status`,`SalesNo`,`Temp`,`Ship`,`TransactionDate`) values (6,00000009,1600,'2016-10-01 07:28:16','New',NULL,0,0,'2016-11-24 13:39:32'),(6,00000010,0,'2016-11-09 15:06:13','Process',NULL,0,0,'2016-11-24 14:15:26'),(6,00000011,0,'2016-11-09 15:06:29','Cancel',NULL,0,0,'2016-11-24 14:17:28');
 
 /*Table structure for table `walkin` */
 
@@ -420,14 +424,14 @@ DROP TABLE IF EXISTS `vw_allorders`;
 /*!50001 DROP TABLE IF EXISTS `vw_allorders` */;
 
 /*!50001 CREATE TABLE  `vw_allorders`(
- `ViewItems` varchar(52) ,
+ `ViewItems` varchar(63) ,
  `OrderNo` int(8) unsigned zerofill ,
  `CustomerName` varchar(61) ,
  `Address` varchar(50) ,
  `OrderDate` datetime ,
  `TotalAmount` double ,
  `Status` varchar(20) ,
- `Action` varchar(138) 
+ `Action` varchar(213) 
 )*/;
 
 /*Table structure for table `vw_getbackorders` */
@@ -616,7 +620,8 @@ DROP TABLE IF EXISTS `vw_inventory`;
  `Category` varchar(156) ,
  `STOCKCOMMIT` decimal(33,0) ,
  `STOCKS` bigint(11) ,
- `COMMIT` decimal(32,0) 
+ `COMMIT` decimal(32,0) ,
+ `Action` varchar(141) 
 )*/;
 
 /*Table structure for table `vw_items` */
@@ -690,7 +695,7 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 DROP TABLE IF EXISTS `vw_allorders` */;
 /*!50001 DROP VIEW IF EXISTS `vw_allorders` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_allorders` AS (select '<span class="glyphicon glyphicon-menu-right"></span>' AS `ViewItems`,`o`.`OrderNo` AS `OrderNo`,concat(`c`.`Firstname`,' ',`c`.`Lastname`) AS `CustomerName`,`c`.`Address` AS `Address`,`o`.`Date` AS `OrderDate`,`o`.`TotalAmount` AS `TotalAmount`,`o`.`Status` AS `Status`,(case when (`o`.`Status` = 'New') then '<div class="btn-group" align="center"><button class="btn btn-default">Cancel</button><button class="btn btn-action">Process</button></div>' when (`o`.`Status` = 'Process') then '<button class="btn btn-action">Ship</button>' when (`o`.`Status` = 'Ship') then '<button class="btn btn-default">View</button>' when (`o`.`Status` = 'Cancel') then '<button class="btn btn-default">View</button>' end) AS `Action` from (`tblorder` `o` join `customer` `c` on((`o`.`OrderNo` = `c`.`OrderNo`)))) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_allorders` AS (select 'View items <span class="glyphicon glyphicon-menu-right"></span>' AS `ViewItems`,`o`.`OrderNo` AS `OrderNo`,concat(`c`.`Firstname`,' ',`c`.`Lastname`) AS `CustomerName`,`c`.`Address` AS `Address`,`o`.`Date` AS `OrderDate`,`o`.`TotalAmount` AS `TotalAmount`,`o`.`Status` AS `Status`,(case when (`o`.`Status` = 'New') then concat('<div class="btn-group" align="center"><button class="btn btn-default" onclick="cancelOrder(\'',`o`.`OrderNo`,'\');">Cancel</button><button class="btn btn-action" onclick="processOrder(\'',`o`.`OrderNo`,'\');">Process</button></div>') when (`o`.`Status` = 'Process') then concat('<button class="btn btn-action" onclick="shipOrder(\'',`o`.`OrderNo`,'\');">Ship</button>') else '' end) AS `Action` from (`tblorder` `o` join `customer` `c` on((`o`.`CustomerNo` = `c`.`CustomerNo`)))) */;
 
 /*View structure for view vw_getbackorders */
 
@@ -774,14 +779,14 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 DROP TABLE IF EXISTS `vw_inventory` */;
 /*!50001 DROP VIEW IF EXISTS `vw_inventory` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_inventory` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,`iv`.`VariantNo` AS `VariantNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,concat(`l1`.`Name1`,' > ',`l2`.`Name2`,' > ',`l3`.`Name3`) AS `Category`,(ifnull(`iv`.`Stocks`,0) - sum(ifnull(`ol`.`Quantity`,0))) AS `STOCKCOMMIT`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,sum(ifnull(`ol`.`Quantity`,0)) AS `COMMIT` from ((((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `orderlist` `ol` on((`iv`.`VariantNo` = `ol`.`VariantNo`))) join `tblorder` `o` on((`ol`.`OrderNo` = `o`.`OrderNo`))) where (`iv`.`Owned` = 1) group by `ol`.`OrderNo`,`ol`.`VariantNo`) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_inventory` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,`iv`.`VariantNo` AS `VariantNo`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,concat(`l1`.`Name1`,' > ',`l2`.`Name2`,' > ',`l3`.`Name3`) AS `Category`,(ifnull(`iv`.`Stocks`,0) - sum(ifnull(`ol`.`Quantity`,0))) AS `STOCKCOMMIT`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,sum(ifnull(`ol`.`Quantity`,0)) AS `COMMIT`,concat('<button class=\'btn btn-action\' onclick="physicalCount(\'',`iv`.`VariantNo`,'\');"><span class=\'glyphicon glyphicon-plus\'></span> Physical Count</button>') AS `Action` from ((((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `orderlist` `ol` on(((`i`.`ItemNo` = `ol`.`ItemNo`) and (`iv`.`VariantNo` = `ol`.`VariantNo`)))) join `tblorder` `o` on((`ol`.`OrderNo` = `o`.`OrderNo`))) where (`iv`.`Owned` = 1) group by `ol`.`OrderNo`,`ol`.`VariantNo`) */;
 
 /*View structure for view vw_items */
 
 /*!50001 DROP TABLE IF EXISTS `vw_items` */;
 /*!50001 DROP VIEW IF EXISTS `vw_items` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_items` AS (select `i`.`ItemNo` AS `ItemNo`,`i`.`Name` AS `Name`,count(`iv`.`VariantNo`) AS `NoOfItems`,`l1`.`Name1` AS `Name1`,`l2`.`Name2` AS `Name2`,`l3`.`Name3` AS `Name3`,`s`.`SupplierName` AS `SupplierName` from (((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `supplier` `s` on((`i`.`SupplierNo` = `s`.`SupplierNo`))) where ((`i`.`Owned` = 1) and (`i`.`Removed` = 0) and (`i`.`SRemoved` = 0)) group by `iv`.`ItemNo`) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_items` AS (select `i`.`ItemNo` AS `ItemNo`,`i`.`Name` AS `Name`,count(ifnull(`iv`.`VariantNo`,0)) AS `NoOfItems`,`l1`.`Name1` AS `Name1`,`l2`.`Name2` AS `Name2`,`l3`.`Name3` AS `Name3`,`s`.`SupplierName` AS `SupplierName` from (((((`item` `i` left join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `supplier` `s` on((`i`.`SupplierNo` = `s`.`SupplierNo`))) where ((`i`.`Owned` = 1) and (`i`.`Removed` = 0) and (`i`.`SRemoved` = 0)) group by `iv`.`ItemNo`) */;
 
 /*View structure for view vw_lowstocks */
 
@@ -805,5 +810,6 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_receivings` AS (select `sup`.`SupplyNo` AS `SupplyNo`,`sup`.`DateReceive` AS `DateReceive`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`iv`.`Size`,' ',`iv`.`Color`,' ',`iv`.`Description`,' ') AS `ItemDescription`,`sup`.`QuantityReceived` AS `QuantityReceived`,`sup`.`PendingQuantity` AS `PendingQuantity`,`rl`.`Quantity` AS `Quantity` from (((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`rl`.`VariantNo` = `iv`.`VariantNo`))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sr`.`isReceived` = 1) order by `sup`.`DateReceive` desc) */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

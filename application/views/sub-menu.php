@@ -13,7 +13,7 @@
                 <li class="current" data-content="inventory"><a href="#">Inventory</a></li>
                 <li data-content="items"><a href="#">Items</a></li>
                 <li data-content="lowstocks"><a href="#">Low Stocks</a></li>
-                <li><a href="#">Categories</a></li>
+                <li data-content="categories"><a href="#">Categories</a></li>
                 <li><a href="#">Removed</a></li>
           </ul>
           <ul class="orders">
