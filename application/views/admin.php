@@ -1,6 +1,7 @@
  <div class="content-group show" data-group="purchaseorder">
-                <div class="content-list show" data-content="purchaseorder">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Purchase Orders <subheader></subheader></h5> 
+                <?php $this->load->view("dashboard");?> 
+                <div class="content-list" data-content="purchaseorder">
+                    <!-- <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Purchase Orders <subheader></subheader></h5>  -->
                     <button id="btn-addrequest" class="btn btn-action main-button btn-action-right"><span class="glyphicon glyphicon-plus"></span> Create Request</button>
                     <div class="btn-group btn-child-group btn-group-mode btn-action-right">
                         <button id="btn-pocancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
@@ -25,14 +26,14 @@
                          </div>
 
                          <div class="col-md-7 posubmit-wrap"> 
-                            <table class="display main-table" data-table="posubmit" ></table>
+                            <table class="display" data-table="posubmit" ></table>
                          </div>
 
                     </div>
                 </div>
+
                 <div class="content-list" data-content="receivings">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Receivings <subheader></subheader></h5> 
-                    <button id="btn-directreceive" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-arrow-right"></span> Direct Receive</button>
+                    <button id="btn-directreceive" class="btn main-button btn-action btn-action-right"><span class="glyphicon glyphicon-arrow-right"></span> Direct Receive</button>
                     <div class="btn-group btn-child-group btn-group-mode btn-action-right">
                         <button id="btn-receivecancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
                         <button id="btn-receivesubmit" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
@@ -52,14 +53,14 @@
                          </div> 
                     </div>
                 </div>
+
                 <div class="content-list" data-content="backorders">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Back Order</h5> 
                     <!-- <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-send"></span> Send Notification</button> -->
                     <table class="display main-table" data-table="backorders"> </table>
                 </div>
+
                 <div class="content-list" data-content="suppliers">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Suppliers <subheader></subheader></h5> 
-                    <button id="btn-addsupplier" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
+                    <button id="btn-addsupplier" class="btn btn-action main-button btn-action-right"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
                     <div class="btn-group btn-child-group btn-group-mode btn-action-right">
                         <button id="btn-suppliercancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
                         <button id="btn-suppliersubmit" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
@@ -147,24 +148,21 @@
                     </div>
 
                 </div>
-            </div>
-            <div class="content-group" data-group="inventory">
-                <div class="content-list show" data-content="inventory">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Inventory</h5> 
+ 
+                <div class="content-list" data-content="inventory">
                     <!-- <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> Physical Count</button> -->
                     <table class="display main-table" data-table="inventory"> </table>
                 </div>
+
                 <div class="content-list" data-content="items">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Items</h5> 
-                    <button id="direct-receive" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button>
+                    <!-- <button id="direct-receive" class="btn btn-action main-button btn-action-right"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button> -->
                     <table class="display main-table" data-table="items"> </table>
                 </div>
+
                 <div class="content-list" data-content="lowstocks">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Low Stocks</h5> 
                     <table class="display main-table" data-table="lowstocks"> </table>
                 </div>
                 <div class="content-list" data-content="categories">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Categories</h5> 
                     <div class="col-md-12" align="center">
 
                         <dl class="categories-wrap">
@@ -172,8 +170,8 @@
                                  <h5 class="dash-header sub2">Family <span class="pull-right add"><span class="glyphicon glyphicon-plus"></span> Add</span></h5>
                                  <dl class="list-family dd-categories" data-section="level1">
                                     <?php foreach($listfamily as $row){ ?>
-                                        <dd data-id="<?=$row->Level1No;?>">
-                                            <span class="data-edit" ><?=$row->Name1;?></span>
+                                        <dd data-id="<?=$row->id;?>">
+                                            <span class="data-edit" ><?=$row->Name;?></span>
                                             <!-- <span class="glyphicon glyphicon-menu-right pull-right selector"></span> -->
                                             <span class="action pull-right"><a class="edit">Edit</a> | <a class="delete">Delete</a></span>  
                                         </dd>
@@ -197,21 +195,8 @@
                     </div>
                        
                 </div>
-                 <!--<div class="content-list" data-content="backorders">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Back Order</h5> 
-                    <button id="" class="btn btn-action"><span class="glyphicon glyphicon-send"></span> Send Notification</button>
-                    <table class="display" data-table="backorders"> </table>
-                </div>
-                <div class="content-list" data-content="suppliers">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Suppliers</h5> 
-                    <button id="" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
-                    <table class="display" data-table="suppliers"> </table>
-                </div> -->
-            </div>
-
-            <div class="content-group" data-group="orders">
-                <div class="content-list show" data-content="allorders">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> List of Orders</h5> 
+        
+                <div class="content-list" data-content="allorders">
 
                      <div class="orderstatus-wrap">
                          <label>Order Status:</label>
@@ -222,10 +207,10 @@
                                 <option value="Ship">Shipped</option>
                                 <option value="Cancel">Cancelled</option> 
                          </select>
-                     </div>
-                     
+                     </div>  
                     <table class="display main-table" data-table="allorders"> </table>
                 </div>
+
                 <!-- <div class="content-list" data-content="neworders">
                     <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> New Orders</h5> 
                     <button id="direct-receive" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button>
@@ -253,4 +238,4 @@
                     <button id="" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
                     <table class="display" data-table="suppliers"> </table>
                 </div> -->
-            </div>
+</div>

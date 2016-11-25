@@ -2,7 +2,7 @@ var listObjTableBinded = new Object();
 $(function(){
 
 	callAjaxJson("main/initializeAllData", new Object(), bindingDatatoDataTable, ajaxError)
-    //dashboardChart();
+    dashboardChart();
 
     // PURCHASE ORDER
         // Purchase Order
@@ -31,6 +31,61 @@ $(function(){
 
             bindingDatatoDataTable(listposupplier)
 
+        })
+
+        $('table[data-table="purchaseorder"]').on('click', 'td:first-child', function () { 
+            var elem = $(this)
+            var tr = elem.closest('tr');
+            var table = listObjTableBinded["purchaseorder"]
+            var data = table.rows(tr).data()
+            data = data[0]
+            elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
+            var row = table.row( tr );
+            var trExists = $("table[data-table=purchaseorder] tr.shown")
+            trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+            var rowExists = table.row( trExists );
+    
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                elem.find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+                tr.removeClass('shown');
+            }
+            else{
+                var param = new Object();
+                param.sno = data.SupplyRequestNo
+
+                callAjaxJson("main/GetSelectedOrderDetailsByPO", param, 
+                    function(response){
+                        var div = $("<div/>") 
+                            div.attr("class","childtable-wrap") 
+                        if(response["child-" +  data.SupplyRequestNo].list.length){ 
+                        
+                            var childtable = $("<table/>")
+                            div.append("<h5 class=\"dash-header sub\">Order Item(s):</h5>")
+                            childtable
+                                .attr("id","child-"+data.SupplyRequestNo)
+                                .attr("class","display")
+                                .addClass("childtable")
+                                .data("table","child-"+data.SupplyRequestNo)
+
+                            bindingDataViewingOrderItems(response,childtable)
+                            div.append(childtable)
+                        }
+                        else{
+                            div.append("<h5>No item(s) found.</h5>")
+
+                        }
+
+                        if ( rowExists.child.isShown() ) {
+                             rowExists.child.hide();
+                             trExists.removeClass('shown');
+                        }  
+                        row.child(div).show();
+                        tr.addClass("shown")
+
+                    }, 
+                ajaxError)  
+            } 
         })
 
         $("#btn-pocancel, #btn-poreset").click(function(){
@@ -129,7 +184,7 @@ $(function(){
         //Receivings
         $("#btn-directreceive").click(function(e){
             var elem = $(this)
-            toggleMainDisplay(false,elem,"PO List to Receive")
+            toggleMainDisplay(false,elem,"Select PO List to Receive")
             var listreceive = new Object()
 
             callAjaxJson("main/GetOrderToReceive", new Object(), bindingDatatoDataTable, ajaxError)
@@ -283,15 +338,15 @@ $(function(){
             var table = listObjTableBinded["allorders"]
             var data = table.rows(tr).data()
             data = data[0]
-            elem.find('span').attr('class','glyphicon glyphicon-menu-down')
+            elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
             var row = table.row( tr );
             var trExists = $("table[data-table=allorders] tr.shown")
-            trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right')
+            trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
             var rowExists = table.row( trExists );
     
             if ( row.child.isShown() ) {
                 row.child.hide();
-                elem.find('span').attr('class','glyphicon glyphicon-menu-right')
+                elem.find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
                 tr.removeClass('shown');
             }
             else{
@@ -339,7 +394,10 @@ $(function(){
             dl.find("dd.selected").removeClass("selected")
             elem.addClass("selected")
             var param = new Object();
+           
             if(dl.data("section") == "level1"){
+                $("dl.list-categories").empty()
+                $("dl.list-subcategories").empty()
                 param.lvl1 = elem.data("id")
                 callAjaxJson("main/getCategory", param, 
                     function(response){
@@ -349,6 +407,7 @@ $(function(){
                 ajaxError)
             }
             else if(dl.data("section") == "level2"){
+                $("dl.list-subcategories").empty()
                 param.lvl1 = $("dl.list-family dd.selected").data("id")
                 param.lvl2 = elem.data("id")
                 callAjaxJson("main/getSubCategory", param, 
@@ -364,6 +423,70 @@ $(function(){
 
         })
 
+        $("span.add").click(function(e){
+            var elem = $(this)
+            var ddparent = elem.closest("dd")
+            var section = ddparent.find("h5")
+            var dl = ddparent.find("dl.dd-categories")
+            var lvl = dl.data("section").replace("level","");
+
+            var param = new Object();
+            param.lvl = lvl;
+
+            if(lvl == "2"){
+                param.Level1No = $("dl.categories-wrap > dd > dl.list-family > dd.selected").data("id");
+                if(param.Level1No === undefined){
+                    bootbox.alert("Please select family first to add.");
+                    return
+                }
+            }
+             if(lvl == "3"){
+                param.Level1No = $("dl.categories-wrap > dd > dl.list-family > dd.selected").data("id");
+                param.Level2No = $("dl.categories-wrap > dd > dl.list-categories > dd.selected").data("id");
+                if(param.Level1No === undefined){
+                    bootbox.alert("Please select family first to add.");
+                    return
+                }
+                 if(param.Level2No === undefined){
+                    bootbox.alert("Please select category first to add.");
+                    return
+                } 
+
+            }
+
+            var promptOptions = {
+              title: "Enter a " + $.trim(section.text().replace("Add","")) + ":" ,
+              value: "",
+              buttons: {
+                confirm: {
+                  label: "Save",
+                  className: "btn-prompt btn-action" 
+                }
+              },
+              callback: function(result) {   
+                  if (result) {       
+                          param.name = result;
+                           callAjaxJson("main/addCategory", param, 
+                                function(response){
+                                    var data = response
+                                    if(!data.Error){
+                                        setupCategories(dl ,data)  
+                                    }
+                                    else{ 
+                                        bootbox.alert($.trim(section.text().replace("Add","")) +" -> \" "+ result +" \" already taken.");
+                                    }
+                                },  
+                            ajaxError)                      
+                  } else { 
+                    $(".bootbox-input").focus()
+                    return false;
+                  }
+                }
+            };
+
+            bootbox.prompt(promptOptions);
+        })
+
         $(".dd-categories").on("click" ,"dd span a.edit", function(e){
             var elem = $(this)
             var dd = elem.closest("dd")
@@ -376,7 +499,9 @@ $(function(){
               value: currentvalue,
               buttons: {
                 confirm: {
-                  label: "Update"
+                  label: "Update", 
+                  className: "btn-prompt btn-action"
+
                 }
               },
               callback: function(result) {   
@@ -393,6 +518,8 @@ $(function(){
                             }, 
                         ajaxError)                              
                   } else { 
+                     $(".bootbox-input").focus()
+                     return false;
 
                   }
                 }
@@ -559,13 +686,14 @@ $(function(){
 
         }, ajaxError)
      }
-// INVERNTORY 
+// INVENTORY 
     function physicalCount(variantno){
         var promptOptions = {
           title: "Please enter the stock count for " + variantno + ":",
           buttons: {
             confirm: {
-              label: "Update"
+              label: "Update", 
+              className: "btn-prompt btn-action"
             }
           },
           callback: function(result) {                
@@ -582,7 +710,8 @@ $(function(){
                     }, 
                 ajaxError)                              
               } else { 
-
+                 $(".bootbox-input").focus()
+                 return false;
               }
             }
         };
@@ -601,11 +730,11 @@ $(function(){
             dl.append(dd);
         }
         if(!data.length){
-            dl.append("<p style=\"padding: 10px;color: #ccc;\">No record(s) found</p>");
+            dl.append("<p class=\"empty\">No record(s) found</p>");
 
         }
     }
-
+  
 
 //ORDERS
      function processOrder(orderNo){
@@ -655,8 +784,7 @@ function bindingDatatoDataTable(response){
 
 function bindingDatatoChildDataTable(response,table){
     var data = response
-
-
+ 
     for(x in data){ 
       
         var list = data[x].list
@@ -687,12 +815,44 @@ function bindingDatatoChildDataTable(response,table){
         var tr = jQuery("<tr/>")   
         tr.append("<td colspan=\"4\" align=\"right\">Total</td><td align=\"right\" style=\"font-weight:bold;\">"+ total +"</td>")
         tfoot.append(tr)
-        table.append(tfoot)
-
-        // console.log(x);
-    }
-
+        table.append(tfoot) 
+    } 
 }
+
+
+
+function bindingDataViewingOrderItems(response,table){
+    var data = response
+ 
+    for(x in data){ 
+      
+        var list = data[x].list
+        var tbody = jQuery("<tbody/>")  
+        var thead = jQuery("<thead/>")  
+        var tr = jQuery("<tr/>")   
+        addHeader(tr,"No")
+        addHeader(tr,"Item Number")
+        addHeader(tr,"Variant Number")
+        addHeader(tr,"Description")
+        addHeader(tr,"Request Qty")
+        thead.append(tr)
+ 
+        for(row in list){
+            var tr = jQuery("<tr/>")   
+            addCellData(tr,list[row].RequestListNo)
+            addCellData(tr,list[row].ItemNo)
+            addCellData(tr,list[row].VariantNo)
+            addCellData(tr,list[row].ItemDescription)
+            addCellData(tr,list[row].Requested)
+            tbody.append(tr)
+        }  
+        table.append(thead)
+        table.append(tbody)
+       
+    } 
+}
+
+
 function addHeader(tr,value){
     var th = jQuery("<th/>")  
     th.text(value)
@@ -718,15 +878,17 @@ function setupDataTable(table, data, fields){
 
     dttable = table.DataTable({  
                      "aaData" : data,
-                     "autoWidth": true,
+                     "bSort" : false,
                      "aoColumns" : fields.Columns,  
-                      scrollY:        (table.is(".main-table")) ? '60vh' :'30vh',
+                      scrollY:        (table.is(".main-table") || table.data("table") == "posubmit") ? '60vh' : ((table.data("table") == "auditlogs") ? "20vh" : "30vh"),
                       scrollCollapse: false,
                       paging:         false,
                       
                 }); 
      
     listObjTableBinded[table.data("table")] = dttable
+    dttable.draw();
+    
     
 
 }
@@ -735,7 +897,7 @@ function setupDataTable(table, data, fields){
 
  function toggleMainDisplay(isShow, elem, header){
     if(isShow){
-        elem.closest(".content-list").find("subheader").text("") 
+        $("div.header-wrap").find("subheader").text("") 
         elem.closest(".content-list").find(".content-child").hide();
         elem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").show();
         elem.closest(".btn-group").hide();
@@ -743,7 +905,7 @@ function setupDataTable(table, data, fields){
 
     }
     else{
-        elem.closest(".content-list").find("subheader").text(" - " + header) 
+        $("div.header-wrap").find("subheader").text(" - " + header) 
         elem.closest(".content-list").find(".content-child").show();
         elem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide();
         elem.hide();
@@ -765,6 +927,8 @@ function setupDataTable(table, data, fields){
             obj.mDataProp = str[0]
             obj.title = str[1]
             if(str[1]=="Action"){obj.width="120px";} 
+            if(str[0]=="ViewItems"){obj.width="80px";} 
+       
             arrlist.push(obj);
         }
 

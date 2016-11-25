@@ -14,7 +14,8 @@ class Query_model extends CI_Model {
 	 						 "dataToInsert" => "",
 	 						 "dataToUpdate" => "",
 	 						 "queryFile" => "",
-	 						 "queryReplace" => ""
+	 						 "queryReplace" => "",
+	 						 "transactionname" =>"" 
 	 				 );
 
 	 function getData($data){
@@ -72,7 +73,7 @@ class Query_model extends CI_Model {
 
 		} 
 
-		$this->session->set_flashdata('result', $this->db->affected_rows() . " row inserted.");
+		$this->insertAuditLogs($data['transactionname'],"Insert");
 		
 		return $result;
 	}
@@ -82,7 +83,8 @@ class Query_model extends CI_Model {
 		if($data['conditions']!=""){$this->db->where($data['conditions']);}
 		$this->db->update($data['table'],$data['dataToUpdate']);
 
-		$this->session->set_flashdata('result', $this->db->affected_rows() . " row updated.");
+	 	if($data['transactionname'] != "") {$this->insertAuditLogs($data['transactionname'],"Update");}
+
 		// $this->setAuditLogs('edit',$data['table']); 
 		return true;
 	}
@@ -90,8 +92,17 @@ class Query_model extends CI_Model {
 	function removeData($data){
 		if($data['conditions']!=""){$this->db->where($data['conditions']);}
 		$this->db->delete($data['table']);
+		if($data['transactionname'] != "") {$this->insertAuditLogs($data['transactionname'],"Delete");}
 		// $this->setAuditLogs('remove',$data['table']); 
 		return true;
+	}
+
+	function insertAuditLogs($transaction,$action){
+		$username = $this->session->userdata("username");
+		$data["Transaction"] = $transaction;
+		$data["ModifiedBy"] = $username;
+		$data["Action"] = $action; 
+		$this->db->insert("tblauditlogs",$data);
 	}
 
 }

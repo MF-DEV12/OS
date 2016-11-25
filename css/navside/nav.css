@@ -21,7 +21,7 @@ body {
 }
 
 a {
-  color: #7e4d7e;
+  /*color: #7e4d7e;*/
   text-decoration: none;
 }
 
@@ -31,9 +31,9 @@ Main Components
 
 -------------------------------- */
 img.company-logo{
-  height: 100%;
-  margin: -12px 0px;
-  width: 200px;
+    height: 100%;
+    width: 200px;
+    padding: 20px;
 }
 
 header {
@@ -596,7 +596,8 @@ header::before {
    img.company-logo{
     height: 34px;
     margin: -12px 0px !important;
-    width: 200px;
+    width: 175px;
+    padding: 0px;
   }
 } 
 
@@ -629,8 +630,8 @@ header::before {
 
 
 .dash-header{
-  background: #005a52;
-  color: white;
+    background: #b9b9b9;
+    color: #404040;
   padding: 9px;
   text-align: left;
 }

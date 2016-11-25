@@ -10,12 +10,20 @@ class Main extends CI_Controller {
  	}
 	public function index()
 	{
+		$data['username'] = $this->session->userdata("username");
 		$data['role'] = $this->session->userdata("role");
 		$data["suppliers"] = $this->GetSuppliers();
 		$role = $this->session->userdata("role");
+
+		$data["requeststatus"]  = $this->GetRequestStatusTotal();
+		$data["mostordereditems"] = $this->GetMostOrderedItems();
+		$data["mostcustomer"] = $this->GetMostCustomer();
+		$data["totalcustomer"] = $this->GetTotalCustomer();
+		$data["totalrevenue"] = $this->restyle_text($this->getTotalRevenue());
+		
+
 		if($role == "supplier"){
-			$data["requeststatus"]  = $this->GetRequestStatusTotal();
-			$data["mostordereditems"] = $this->GetMostOrderedItems();
+			
 
 		}
 		else if($role == "admin"){
@@ -29,10 +37,56 @@ class Main extends CI_Controller {
 
 	}
 
+//DASHBOARD
+	function getAuditLogs(){
+		$this->param = $this->param = $this->query_model->param; 
+		$this->param["table"] = "tblauditlogs";
+		$this->param["fields"] = "*"; 
+		$this->param["order"] = "TransactionDate DESC"; 
+
+		$data["list"] =  $this->query_model->getData($this->param);
+		$data["fields"] = "TransactionDate|Transaction Date,Transaction|Transaction,Action|Action,ModifiedBy|Modified By";
+		return $data; 
+
+	}
+	function getTotalRevenue(){
+		$this->param = $this->param = $this->query_model->param; 
+		$this->param["table"] = "tblorder";
+		$this->param["fields"] = "IFNULL(SUM(TotalAmount),0) Total"; 
+		$this->param["conditions"] = "`Status` = 'Ship'"; 
+		$data =  $this->query_model->getData($this->param); 
+		return $data[0]->Total; 
+
+	}
+
+	function restyle_text($input){
+    $input = number_format($input);
+    $input_count = substr_count($input, ',');
+    if($input_count != '0'){
+        if($input_count == '1'){
+            return substr($input, 0, -4).'K';
+        } else if($input_count == '2'){
+            return substr($input, 0, -8).'M';
+        } else if($input_count == '3'){
+            return substr($input, 0,  -12).'B';
+        } else {
+            return;
+        }
+    } else {
+        return $input;
+    }
+}
+
+	function getAuditLogsJson(){
+		$list["auditlogs"] = $this->getAuditLogs();
+		echo json_encode($list);
+	}
+
+
 	function initializeAllData(){
 		$data = array();
 		$role = $this->session->userdata("role");
-
+		$data["auditlogs"] = $this->getAuditLogs();
 		if($role == "admin"){
 
 			$data["purchaseorder"] = $this->GetListOfPO();
@@ -45,20 +99,43 @@ class Main extends CI_Controller {
 			$data["lowstocks"] = $this->getLowStocks(); 
 
 			$data["allorders"] = $this->getOrders("");
-			$data["neworders"] = $this->getOrders("New");
-			$data["processorders"] = $this->getOrders("Process");
-			$data["shippedorders"] = $this->getOrders("Ship");
-			$data["cancelledorders"] = $this->getOrders("Cancel");
+			// $data["neworders"] = $this->getOrders("New");
+			// $data["processorders"] = $this->getOrders("Process");
+			// $data["shippedorders"] = $this->getOrders("Ship");
+			// $data["cancelledorders"] = $this->getOrders("Cancel");
 		} 
 
 		else if($role == "supplier"){
 			$data["request"] = $this->GetRequestListFromCustomer();
 
-		}
-			
-			
+		} 
 
 			echo json_encode($data); 
+	}
+
+	function getLatestData(){
+		$table = $this->input->post("table");
+		$data = array();
+		if($table == "purchaseorder")
+			$data = $this->GetListOfPO();
+		elseif($table == "receivings")
+			$data = $this->GetReceivings();
+		elseif($table == "backorders")
+			$data = $this->GetBackOrders();
+		elseif($table == "suppliers")
+			$data = $this->GetSuppliers();
+		elseif($table == "inventory")
+			$data = $this->getInventory();
+		elseif($table == "items")
+			$data = $this->getItems();
+		elseif($table == "lowstocks")
+			$data = $this->getLowStocks();
+		elseif($table == "allorders")
+			$data = $this->getOrders(""); 
+
+
+		$list[$table] = $data; 
+		echo json_encode($list); 
 	}
 
 
@@ -71,7 +148,7 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "SupplyRequestNo|No,NoOfItems|No of items,SupplierName|Supplier name,Date|Date Order,Action|Action";
+			$data["fields"] = "ViewItems|View items|SupplyRequestNo|No,NoOfItems|No of items,SupplierName|Supplier name,Date|Date Order";
 			return $data;
 
 		}
@@ -91,6 +168,19 @@ class Main extends CI_Controller {
 			$json["lowstockbysupplier"] = $this->GetLowStockBySupplier($supplierID); 
 
 			echo json_encode($json); 
+		}
+
+	 
+		function GetSelectedOrderDetailsByPO(){
+			$supplierNo = $this->input->post("sno");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getselectedorderdetails";
+			$this->param["fields"] = "*"; 
+ 		    $this->param["conditions"] = "SupplyRequestNo = '$supplierNo'";
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "RequestListNo|No,ItemNo|Item Number,VariantNo|Variant Number,ItemDescription|Description,Requested|Request Qty";
+			$list["child-".$supplierNo] = $data;
+			echo json_encode($list);
 		}
 
 		function addToPO(){
@@ -159,6 +249,7 @@ class Main extends CI_Controller {
 			$data["Date"] = $datetime;
 			$data["SupplierNo"] = $supplierNo;
 			$data["isReceived"] = 0;
+			$this->param["transactionname"] = "Purchase Order";
 			$this->param["dataToInsert"] = $data;
 			$this->param["table"] = "supplyrequest";
 			$this->query_model->insertData($this->param); 
@@ -211,6 +302,7 @@ class Main extends CI_Controller {
 			$data["fields"] = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,DPOCost|DPO Cost,Total|Total";
 			return $data;
 		}
+
 
 		function GetReceivings(){
 			$this->param = $this->param = $this->query_model->param; 
@@ -271,6 +363,7 @@ class Main extends CI_Controller {
 			$qry .= "SELECT Received, (Received-Quantity), '$datetime', RequestListNo, SupplyRequestNo ";
 			$qry .= "FROM requestlist WHERE SupplyRequestNo = '$SupplyRequestNo'";
 			$this->db->query($qry);
+			$this->query_model->insertAuditLogs("New PO Received", "Insert");
 
 			//Update isReceived = 1 for the selected SupplyRequest
 			$this->param = $this->query_model->param; 
@@ -288,6 +381,9 @@ class Main extends CI_Controller {
 			$qry .= "WHERE o.SupplyRequestNo = '$SupplyRequestNo'";
 
 			$this->db->query($qry);
+
+			$this->query_model->insertAuditLogs("Update Stock after PO Received", "Update");
+
   			
   			// Get the latest the list of order to receive
 			$this->GetOrderToReceive();
@@ -336,7 +432,9 @@ class Main extends CI_Controller {
 				$this->param = $this->param = $this->query_model->param;  
 				$this->param["table"] = "accounts";
 				$this->param["dataToInsert"] = $account;
+				$this->param["transactionname"] = "Account for new Supplier";
 				$this->query_model->insertData($this->param);
+
 
 				// GET AccountNo for the Supplier
 				$this->param = $this->param = $this->query_model->param;  
@@ -350,6 +448,7 @@ class Main extends CI_Controller {
 				$this->param = $this->param = $this->query_model->param;  
 				$this->param["table"] = "supplier";
 				$this->param["dataToInsert"] = $supplier;
+				$this->param["transactionname"] = "New Supplier";
 				$this->query_model->insertData($this->param);
 				
 	 			$data["suppliers"] = $this->GetSuppliers();
@@ -389,7 +488,9 @@ class Main extends CI_Controller {
 			$this->param["dataToUpdate"] = $data;
 			$this->param["table"] = "itemvariant";
 			$this->param["conditions"] = "VariantNo = '$variantNo'";
+			$this->param["transactionname"] = "Update Physical Count for Item variant : " . $variantNo ;
 			$result = $this->query_model->updateData($this->param); 
+
 
 			$list["inventory"] = $this->getInventory();
 			echo json_encode($list);
@@ -401,7 +502,7 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,Name1|Family,Name2|Category,Name3|Subcategory,SupplierName|Supplier name";
+			$data["fields"] = "ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,Name1|Family,Name2|Category,Name3|Subcategory,SupplierName|Supplier name,Action|Action";
 			return $data; 
 		}
 		
@@ -415,10 +516,13 @@ class Main extends CI_Controller {
 			return $data; 
 		}
 
-		function getFamily(){
+		function getFamily($name=""){
+			$name = trim($name);
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "level1";
-			$this->param["fields"] = "*";  
+			$this->param["fields"] = "Level1No `id`, Name1 `Name`";  
+			if($name != "")
+				$this->param["conditions"] = "Name1 = '$name'";
 			$this->param["order"] = "Name1";  
 
 			return $this->query_model->getData($this->param);
@@ -427,36 +531,102 @@ class Main extends CI_Controller {
 
 		function getCategory(){
 			$level1 = $this->input->post("lvl1");
-			$this->param = $this->param = $this->query_model->param; 
-			$this->param["table"] = "level2";
-			$this->param["fields"] = "Level2No `id`, Name2 `Name`";  
-			$this->param["conditions"] = "level1No = '$level1'";
-			$this->param["order"] = "Name2";  
-			$data = $this->query_model->getData($this->param);  
-			echo json_encode($data);
+			echo json_encode($this->getDataCategory($level1));
 		}
 
 		function getSubCategory(){
 			$level1 = $this->input->post("lvl1");
 			$level2 = $this->input->post("lvl2");
+			echo json_encode($this->getDataSubCategory($level1,$level2));
+			
+		} 
+
+		function getDataCategory($lvl1,$name=""){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "level2";
+			$this->param["fields"] = "Level2No `id`, Name2 `Name`";  
+			$this->param["conditions"] = "level1No = '$lvl1'";
+			$this->param["order"] = "Name2";  
+			$data = $this->query_model->getData($this->param);  
+			return $data;
+		}
+
+		function getDataSubCategory($lvl1,$lvl2,$name=""){
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "level3";
 			$this->param["fields"] = "Level3No `id`, Name3 `Name`";  
-			$this->param["conditions"] = "level1No = '$level1' AND level2No = '$level2'";
+			$this->param["conditions"] = "level1No = '$lvl1' AND level2No = '$lvl2'";
 			$this->param["order"] = "Name3";  
 			$data = $this->query_model->getData($this->param);  
-			echo json_encode($data);
+			return $data;
+		}
+
+		function addCategory(){
+			$name = $this->input->post("name");
+			$name = trim($name);
+			$lvl = $this->input->post("lvl");
+			$this->param = $this->query_model->param; 
+			$category = ($lvl == "1") ? "Family" : (($lvl == "2") ? "Category" : "Sub-Category"); 
+
+			$data["Name". $lvl] = $name;
+			if($category=="Family"){
+				if(count($this->getFamily($name)) > 0){
+					echo json_encode(array("Error"=>"Already exists"));
+					return;
+				} 
+			}
+			elseif($category=="Category"){
+				$level1 = $this->input->post("Level1No"); 
+				$data["Level1No"] = $level1;  
+				if(count($this->getDataCategory($level1,$name)) > 0){
+					echo json_encode(array("Error"=>"Already exists"));
+					return;
+				} 
+			}
+			elseif($category=="Sub-Category"){
+				$level1 = $this->input->post("Level1No"); 
+				$level2 = $this->input->post("Level2No");
+				$data["Level1No"] = $level1; 
+				$data["Level2No"] = $level2;  
+				if(count($this->getDataSubCategory($level1,$level2,$name)) > 0){
+					echo json_encode(array("Error"=>"Already exists"));
+					return;
+				} 
+			}
+
+			$this->param["dataToInsert"] = $data;
+			$this->param["table"] = "Level". $lvl;
+			$this->param["transactionname"] = "New " . $category;
+			$this->query_model->insertData($this->param); 
+
+			if($category=="Family"){
+				echo json_encode($this->getFamily());
+			}
+			elseif($category=="Category"){
+				$level1 = $this->input->post("Level1No"); 
+				echo json_encode($this->getDataCategory($level1));
+			}
+			elseif($category=="Sub-Category"){
+				$level1 = $this->input->post("Level1No"); 
+				$level2 = $this->input->post("Level2No"); 
+				echo json_encode($this->getDataSubCategory($level1,$level2));
+			}
+
+			 
 		}
 
 		function updateCategory(){
 			$id = $this->input->post("id");
 			$name = $this->input->post("name");
+			$name = trim($name);
 			$lvl = $this->input->post("lvl");
 			$this->param = $this->query_model->param;  
 			$data["Name". $lvl] = $name; 
 			$this->param["dataToUpdate"] = $data;
 			$this->param["table"] = "Level". $lvl;
 			$this->param["conditions"] = "Level". $lvl. "No = '$id'";
+			$category = ($lvl == "1") ? "Family" : (($lvl == "2") ? "Category" : "Sub-Category"); 
+			$this->param["transactionname"] = "Update " . $category;
 			$result = $this->query_model->updateData($this->param); 
 			echo $result;
 		}
@@ -466,8 +636,10 @@ class Main extends CI_Controller {
 			$this->param = $this->query_model->param;  
 			$this->param["table"] = "Level". $lvl;
 			$this->param["conditions"] = "Level". $lvl. "No = '$id'";
+			$category = ($lvl == "1") ? "Family" : (($lvl == "2") ? "Category" : "Sub-Category"); 
+			$this->param["transactionname"] = "Delete $category";
 			$result = $this->query_model->removeData($this->param); 
-			echo $result;
+			echo $result; 
 		}
 		 
 	///
@@ -514,6 +686,7 @@ class Main extends CI_Controller {
 			$this->param["dataToUpdate"] = $data;
 			$this->param["table"] = "tblorder";
 			$this->param["conditions"] = "OrderNo = '$orderno'";
+			$this->param["transactionname"] = "Order number: $orderno " . " set order status to " . $newstatus;
 			$result = $this->query_model->updateData($this->param); 
 
 			if($newstatus == "Ship")
@@ -529,6 +702,7 @@ class Main extends CI_Controller {
 			$qry .= "SET Stocks = Stocks - Quantity ";
 			$qry .= "WHERE o.OrderNo = '$orderno'";
 			$this->db->query($qry); 
+			$this->query_model->insertAuditLogs("Decrease Stock after Order to shipped", "Update");
 		}
 
 	///
@@ -568,6 +742,32 @@ class Main extends CI_Controller {
 			return $data;
 
 		}
+
+		function GetMostCustomer(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getmostcustomer";
+			$this->param["fields"] = "*";  
+			$data =  $this->query_model->getData($this->param); 
+			$total = 0;
+			foreach($data as $row){
+				$total+= $row->Total;
+			}
+			foreach($data as $row){
+				$row->Percentage = round(($row->Total / $total) * 100, 2);
+			}
+			return $data; 
+		}
+
+		function GetTotalCustomer(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "customer";
+			$this->param["fields"] = "*";  
+			$data =  $this->query_model->getData($this->param); 
+			 
+			return count($data); 
+		}
+
+		
 	//	
 
 }

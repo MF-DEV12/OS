@@ -10,10 +10,41 @@
     <link rel="stylesheet" type="text/css" href="<?=base_url('css/login.css');?>">
 </head>
 <body>
+<div class="background-holder"> </div>
 
  <!-- Top content -->
-        <div class="top-content">
-            <!-- <img src="<?=base_url('images/bg.jpg')?>" class="background-holder"> -->
+<div class="company-logo" align="center">
+    <img src="<?=base_url('images/logo.png')?>" width="300px">
+</div>              
+<div class="box">
+   <?php if($this->session->flashdata('error')) {?>
+        <p class="label label-danger"><?=$this->session->flashdata('error');?></p> 
+      <?php }?>
+  <div id="header">
+  <h1 id="logintoregister">Login</h1>
+ 
+  </div> 
+
+   <form action="<?=base_url('login/validateUser')?>" method="post" class="login-form" id="loginform">
+    <div class="group">      
+      <input class="inputMaterial" type="text" name="username" required>
+      <span class="highlight"></span>
+      <span class="bar"></span>
+      <label>Username</label>
+    </div>
+        <div class="group">      
+      <input class="inputMaterial" type="password" name="password"  required>
+      <span class="highlight"></span>
+      <span class="bar"></span>
+      <label>Password</label>
+    </div>
+   
+    <button id="buttonlogintoregister" type="submit">Login</button>
+
+  </form>
+  <div id="footer-box"><p class="footer-text">Not a member?<span class="sign-up"> Sign up now</span></p></div>
+</div>
+   <!--      <div class="top-content">
             <div class="inner-bg">
                 <div class="container">
                      
@@ -28,9 +59,7 @@
 
                                 <div class="form-top-left" align="center">
                                     <h3>Login page</h3>
-                                    <?php if($this->session->flashdata('error')) {?>
-                                        <p class="label label-danger"><?=$this->session->flashdata('error');?></p> 
-                                    <?php }?>
+                                    
                                 </div>
                                 <div class="form-top-right">
                                     <i class="fa fa-lock"></i>
@@ -56,7 +85,7 @@
                 </div>
             </div>
             
-        </div>
+        </div> -->
      
     <script type="text/javascript" src='js/jquery/jquery-1.11.3.js'></script>
     <script type="text/javascript" src='js/bootstrap/bootstrap.min.js'></script>

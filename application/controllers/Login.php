@@ -25,6 +25,7 @@ class Login extends CI_Controller {
 		// $this->session->set_flashdata('error', $this->db->last_query()); // debug purpose
 		if($result){
 			$data["username"] = $result[0]->Username;
+			$data["email"] = $result[0]->email;
 			$data["role"] = $result[0]->LoginType;
 			$this->session->set_userdata($data); 
 			redirect("/main");
