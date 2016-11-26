@@ -161,6 +161,31 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
   border-bottom: 1px solid #ddd;
 }
 
+.itemvariant-wrap{
+    padding: 63px 58px;
+    margin-top: 37px;
+    background: white;
+}
+#addattribute{
+    font-size: 14px;
+    color: #009688;
+
+}
+ 
+
+.bootstrap-tagsinput{
+  width: 100% !important;
+}
+.bootstrap-tagsinput .label.tag {
+    font-size: 14px !important;
+    font-weight: 100 !important;
+    background-color: #048e81;
+}
+.bootstrap-tagsinput input {
+    font-size: 14px !important;
+    font-weight: 100 !important; 
+}
+
 span.content-header{
     font-size: 24px;
     position: absolute;

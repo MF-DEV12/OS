@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Century%20Gothic">
     <link rel="stylesheet" type="text/css" href="<?=base_url('css/bootstrap/bootstrap.min.css');?>">
     <link rel="stylesheet" type="text/css" href="<?=base_url('css/datatables/jquery.dataTables.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?=base_url('js/tagsinput/bootstrap-tagsinput.css');?>">
     <link rel="stylesheet" href="<?=base_url('css/navside/nav.css');?>"> <!-- Resource style -->
     <link rel="stylesheet" href="<?=base_url('css/rsTable.css');?>"> <!-- Resource style -->
     <link rel="stylesheet" href="<?=base_url('css/style.css');?>"> <!-- Resource style -->
@@ -78,6 +79,7 @@
     <script type="text/javascript" src='<?=base_url("js/bootbox.min.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/highcharts.js")?>'></script>
+    <script type="text/javascript" src='<?=base_url("js/tagsinput/bootstrap-tagsinput.js")?>'></script>
     <script src="<?=base_url('js/scripts/admin.js');?>"></script>   
     <script src="<?=base_url('js/navside/main.js');?>"></script>   
      

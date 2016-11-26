@@ -156,7 +156,43 @@
 
                 <div class="content-list" data-content="items">
                     <!-- <button id="direct-receive" class="btn btn-action main-button btn-action-right"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button> -->
+                    <div class="btn-group btn-child-group btn-group-mode btn-action-right">
+                        <button id="btn-itemscancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
+                        <button id="btn-submititemvariant" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
+                    </div>
                     <table class="display main-table" data-table="items"> </table>
+                    <div class="content-child">
+                         <div>
+                             <div class="col-lg-12">  
+                                <div class="itemvariant-wrap">
+                                    <label>Multiple items?</label> 
+                                    <div class="checkbox"> 
+                                      <label><input type="checkbox"  id="chkIsMultiple" value="">Create Attributes and Options</label>
+                                    </div> 
+                                    <table width="50%" id="table-attribute" class="display"> 
+                                        <thead> 
+                                            <tr>
+                                                <td>Attribute</td>
+                                                <td>Options</td>
+                                                <td></td>
+                                            </tr> 
+                                        </thead>
+                                        <tbody>
+                                           
+                                        </tbody>
+                                        
+                                    </table> 
+                                    <span id="addattribute"><span class="glyphicon glyphicon-plus"></span> Add more attribute</span>
+                                </div>
+                               
+
+                                <div class="padding"></div>
+                                    <table class="display main-table" data-table="listitemvariant" ></table> 
+                                </div>
+     
+                         </div> 
+                    </div>
+
                 </div>
 
                 <div class="content-list" data-content="lowstocks">

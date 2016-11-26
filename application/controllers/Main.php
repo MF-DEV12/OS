@@ -641,6 +641,16 @@ class Main extends CI_Controller {
 			$result = $this->query_model->removeData($this->param); 
 			echo $result; 
 		}
+
+
+		function getAttribute(){
+			$isreq = $this->input->post("isreq");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "itemattribute";
+			$this->param["fields"] = "AttributeID, AttributeName"; 
+ 			$this->param["conditions"] = "isRequired = $isreq"; 
+			echo json_encode($this->query_model->getData($this->param)); 
+		}
 		 
 	///
 

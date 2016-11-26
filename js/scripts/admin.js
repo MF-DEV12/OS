@@ -316,7 +316,7 @@ $(function(){
 
         $("#btn-supplierback").click(function(e){
             var elem = $(this)
-            elem.closest(".content-list").find("subheader").text("") 
+            $(".header-wrap").find("subheader").text("") 
             elem.closest(".content-list").find(".content-child").hide();
             elem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").show();
             elem.closest(".btn-group").hide();
@@ -668,7 +668,7 @@ $(function(){
         param.sno = sno;
         callAjaxJson("main/GetSupplyItemsBySupplier", param, function(response){
             var elem = $("table[data-table=suppliers]");
-            elem.closest(".content-list").find("subheader").text(" - Information") 
+            $(".header-wrap").find("subheader").text(" - Information") 
             elem.closest(".content-list").find(".content-child").show();
             elem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide();
             //elem.hide();
@@ -733,6 +733,46 @@ $(function(){
             dl.append("<p class=\"empty\">No record(s) found</p>");
 
         }
+    }
+
+    function addItemVariant(itemNo,elem){
+        var tr = elem.closest("tr")
+        var table = listObjTableBinded["items"]
+        var data = table.rows(tr).data()
+        data = data[0]
+
+        var param = new Object()
+        param.isreq = 1;
+        callAjaxJson("main/getAttribute", param, function(response){
+            if(response){
+                $("#table-attribute tbody").children().remove()
+                var data = response
+                for(x in data){
+                    var tr2 = $("<tr/>")
+                    tr2.append("<td>" + data[x].AttributeName + "</td>")
+                    tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-role=\"tagsinput\" placeholder=\"Type here and Press Enter\"/></td>")
+                    tr2.append("<td><a>&times;</a></td>")
+                    
+                    $("#table-attribute tbody").append(tr2)
+                }
+                $('input[data-role=tagsinput]').tagsinput();
+
+                var tableelem = $("table[data-table=items]");
+                $(".header-wrap").find("subheader").text(" - Add Item Variant for Item: " + data.Name) 
+                tableelem.closest(".content-list").find(".content-child").show();
+                tableelem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide(); 
+                tableelem.closest(".content-list").find("div.btn-group").show()
+
+            }
+            
+
+        },ajaxError)
+
+
+        
+   
+
+
     }
   
 
