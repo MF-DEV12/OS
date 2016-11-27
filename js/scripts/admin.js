@@ -332,15 +332,17 @@ $(function(){
             callAjaxJson("main/getOrdersJson", param, bindingDatatoDataTable, ajaxError)
         })
 
-        $('table[data-table="allorders"]').on('click', 'td:first-child', function () { 
+        $('table[data-table="allorders"],table[data-table="sup-neworders "],table[data-table="sup-processorders"],table[data-table="sup-incompleteorders"],table[data-table="sup-shippedorders"],table[data-table="sup-cancelledorders"]')
+        .on('click', 'td:first-child', function () { 
             var elem = $(this)
             var tr = elem.closest('tr');
-            var table = listObjTableBinded["allorders"]
+            var tableelem = tr.closest("table.main-table")
+            var table = listObjTableBinded[tableelem.attr("data-table")]
             var data = table.rows(tr).data()
             data = data[0]
             elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
             var row = table.row( tr );
-            var trExists = $("table[data-table=allorders] tr.shown")
+            var trExists = tableelem.find("tr.shown")
             trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
             var rowExists = table.row( trExists );
     
@@ -558,6 +560,14 @@ $(function(){
 
         })
 
+//SUPPLIER SIDE
+        //ITEMS
+        $("#btn-additems").click(function(){
+            $("li[data-content='additems'] a").click()
+        })
+
+
+
 
 
 
@@ -638,12 +648,12 @@ $(function(){
      function validatePassword(){
 
         if($.trim($("#txt-password").val()).length < 8 && $.trim($("#txt-confirmpassword").val()).length < 8 ){
-            $("#txt-confirmpassword").after("<p class='label-error'>Password must be atleast 8 characters.</p>")
+           $(".form-table tr:first-child").before("<p class='label-error'>Password must be atleast 8 characters.</p>")
             return false;
         }
 
         if($("#txt-password").val() != $("#txt-confirmpassword").val()){
-            $("#txt-confirmpassword").after("<p class='label-error'>Password does not match the confirm password.</p>")
+            $(".form-table tr:first-child").before("<p class='label-error'>Password does not match the confirm password.</p>")
            return false;
         }
         return true;
@@ -653,7 +663,7 @@ $(function(){
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         
         if(!re.test(email)){
-             $("#txt-email").after("<p class='label-error'>Email is not valid.</p>")
+             $(".form-table tr:first-child").before("<p class='label-error'>Email is not valid.</p>")
              return false;
         }
 
@@ -737,43 +747,60 @@ $(function(){
 
     function addItemVariant(itemNo,elem){
         var tr = elem.closest("tr")
-        var table = listObjTableBinded["items"]
+        var tableelem = tr.closest(".content-list").find(".main-table")
+        console.log(tableelem.length)
+        var table = listObjTableBinded[tableelem.attr("data-table")]
         var data = table.rows(tr).data()
         data = data[0]
 
-        var param = new Object()
-        param.isreq = 1;
-        callAjaxJson("main/getAttribute", param, function(response){
-            if(response){
-                $("#table-attribute tbody").children().remove()
-                var data = response
-                for(x in data){
-                    var tr2 = $("<tr/>")
-                    tr2.append("<td>" + data[x].AttributeName + "</td>")
-                    tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-role=\"tagsinput\" placeholder=\"Type here and Press Enter\"/></td>")
-                    tr2.append("<td><a>&times;</a></td>")
+        $(".header-wrap").find("subheader").text(" - Add Item Variant for Item: " + data.Name) 
+        tableelem.closest(".content-list").find(".content-child").show();
+        tableelem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide(); 
+        tableelem.closest(".content-list").find("div.btn-group").show()
+
+        var arrList = new Object();
+        var list = new Object();
+        arrList.list  = "";
+        arrList.fields = "ItemName|Item Name with Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
+        list["listitemvariant"] = arrList;
+
+        bindingDatatoDataTable(list)
+
+        // var param = new Object()
+        // param.isreq = 1;
+        // callAjaxJson("main/getAttribute", param, function(response){
+        //     if(response){
+        //         $("#table-attribute tbody").children().remove()
+        //         var data = response
+        //         for(x in data){
+        //             var tr2 = $("<tr/>")
+        //             tr2.append("<td>" + data[x].AttributeName + "</td>")
+        //             tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-attribute=\""+ data[x].AttributeName + "\" data-role=\"tagsinput\" placeholder=\"Type here and Press Enter\"/></td>")
+        //             tr2.append("<td><a>&times;</a></td>")
                     
-                    $("#table-attribute tbody").append(tr2)
-                }
-                $('input[data-role=tagsinput]').tagsinput();
+        //             $("#table-attribute tbody").append(tr2)
+        //         }
+        //         $('input[data-role=tagsinput]').tagsinput();
 
-                var tableelem = $("table[data-table=items]");
-                $(".header-wrap").find("subheader").text(" - Add Item Variant for Item: " + data.Name) 
-                tableelem.closest(".content-list").find(".content-child").show();
-                tableelem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide(); 
-                tableelem.closest(".content-list").find("div.btn-group").show()
+        //         $(".header-wrap").find("subheader").text(" - Add Item Variant for Item: " + data.Name) 
+        //         tableelem.closest(".content-list").find(".content-child").show();
+        //         tableelem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide(); 
+        //         tableelem.closest(".content-list").find("div.btn-group").show()
 
-            }
+        //         var arrList = new Object();
+        //         var list = new Object();
+        //         arrList.list  = "";
+        //         arrList.fields = "ItemName|Item Name with Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
+        //         list["listitemvariant"] = arrList;
+
+        //         bindingDatatoDataTable(list)
+
+        //     }
             
-
-        },ajaxError)
-
-
-        
-   
-
+        // },ajaxError)
 
     }
+
   
 
 //ORDERS
@@ -800,9 +827,22 @@ $(function(){
      function setStatusOrder(orderNo,status){
         var param = new Object()
         param.ono = orderNo;
-        param.curstatus = $("#polistorderstatus option:selected").val();
+
+        param.curstatus = ($("#polistorderstatus option:selected").length) ? $("#polistorderstatus option:selected").val() : "";
+
+        if(status == "Process" || status == "Cancel"){
+              param.curstatus = "New"  
+        }
+        if(status == "Ship"){
+              param.curstatus = "Process"  
+        }
+
         param.newstatus = status;
-        callAjaxJson("main/setStatusOrder", param, bindingDatatoDataTable, ajaxError)
+        callAjaxJson("main/setStatusOrder", param, function(response){
+            if(status == "Process" || status == "Cancel")
+                    $("li[data-content='sup-neworders']").find("span.badge").text(response["sup-neworders"].list.length)
+            bindingDatatoDataTable(response)
+        }, ajaxError)
 
      }
 

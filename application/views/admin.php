@@ -76,44 +76,88 @@
                                 <table class="display form-table" width="500px">
                                     <tr>
                                         <td>
-                                            <label for="txt-suppliername">Supplier name:</label>
-                                            <input type="text" name="SupplierName" id="txt-suppliername" class="form-control">
+                                            <div class="group">      
+                                              <input class="inputMaterial" type="text" name="SupplierName" id="txt-suppliername">
+                                              <span class="highlight"></span>
+                                              <span class="bar"></span>
+                                              <label class="formlabel">Supplier name:</label>
+                                            </div>
+
+                                            <!-- <label for="txt-suppliername">Supplier name:</label>
+                                            <input type="text" name="SupplierName" id="txt-suppliername" class="form-control"> -->
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label for="txt-address">Address:</label>
-                                            <input type="text" name="Address" id="txt-address" class="form-control">
+                                            <div class="group">      
+                                              <input class="inputMaterial" type="text"  name="Address" id="txt-address">
+                                              <span class="highlight"></span>
+                                              <span class="bar"></span>
+                                              <label class="formlabel">Address:</label>
+                                            </div>
+
+                                            <!-- <label for="txt-address">Address:</label>
+                                            <input type="text" name="Address" id="txt-address" class="form-control"> -->
                                         </td> 
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label for="txt-contact">Contact:</label>
-                                            <input type="text" name="ContactNo" id="txt-contact" class="form-control">
+                                            <div class="group">      
+                                              <input class="inputMaterial" type="text" name="ContactNo" id="txt-contact" >
+                                              <span class="highlight"></span>
+                                              <span class="bar"></span>
+                                              <label class="formlabel">Contact:</label>
+                                            </div>
+                                            <!-- <label for="txt-contact">Contact:</label>
+                                            <input type="text" name="ContactNo" id="txt-contact" class="form-control"> -->
                                         </td>  
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label for="txt-email">Email Address:</label>
-                                            <input type="text" name="Email" id="txt-email" class="form-control">
+                                            <div class="group">      
+                                              <input class="inputMaterial" type="text" name="Email" id="txt-email">
+                                              <span class="highlight"></span>
+                                              <span class="bar"></span>
+                                              <label class="formlabel">Email Address:</label>
+                                            </div>
+                                            <!-- <label for="txt-email">Email Address:</label>
+                                            <input type="text" name="Email" id="txt-email" class="form-control"> -->
                                         </td>  
                                     </tr>
                                     <tr>
                                         <td>
+                                            <div class="group">      
+                                              <input class="inputMaterial" type="text" name="Username" id="txt-username">
+                                              <span class="highlight"></span>
+                                              <span class="bar"></span>
+                                              <label class="formlabel">Username:</label>
+                                            </div><!-- 
                                             <label for="txt-username">Username:</label>
-                                            <input type="text" name="Username" id="txt-username" class="form-control">
+                                            <input type="text" name="Username" id="txt-username" class="form-control"> -->
                                         </td>  
                                     </tr>
                                     <tr>
                                         <td>
+                                            <div class="group">      
+                                              <input class="inputMaterial" type="password" name="Password" id="txt-password" >
+                                              <span class="highlight"></span>
+                                              <span class="bar"></span>
+                                              <label class="formlabel">Password:</label>
+                                            </div><!-- 
                                             <label for="txt-Password">Password:</label>
-                                            <input type="password" name="Password" id="txt-password" class="form-control">
+                                            <input type="password" name="Password" id="txt-password" class="form-control"> -->
                                         </td>  
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label for="txt-confirmpassword">Confirm Password:</label>
-                                            <input type="password" id="txt-confirmpassword" class="form-control">
+                                            <div class="group">      
+                                              <input class="inputMaterial" type="password" id="txt-confirmpassword">
+                                              <span class="highlight"></span>
+                                              <span class="bar"></span>
+                                              <label class="formlabel">Confirm Password:</label>
+                                            </div>
+                                            <!-- <label for="txt-confirmpassword">Confirm Password:</label>
+                                            <input type="password" id="txt-confirmpassword" class="form-control"> -->
                                         </td> 
                                         
                                     </tr> 
@@ -163,13 +207,12 @@
                     <table class="display main-table" data-table="items"> </table>
                     <div class="content-child">
                          <div>
-                             <div class="col-lg-12">  
-                                <div class="itemvariant-wrap">
+                            <div class="col-lg-4">  
                                     <label>Multiple items?</label> 
                                     <div class="checkbox"> 
                                       <label><input type="checkbox"  id="chkIsMultiple" value="">Create Attributes and Options</label>
                                     </div> 
-                                    <table width="50%" id="table-attribute" class="display"> 
+                                    <table width="100%" id="table-attribute" class="display" style="margin-top:40px;"> 
                                         <thead> 
                                             <tr>
                                                 <td>Attribute</td>
@@ -183,16 +226,17 @@
                                         
                                     </table> 
                                     <span id="addattribute"><span class="glyphicon glyphicon-plus"></span> Add more attribute</span>
-                                </div>
-                               
+                                    <button class="btn btn-action" id="btn-itemvariantgenerate">Generate Item with Variant</button>
 
-                                <div class="padding"></div>
-                                    <table class="display main-table" data-table="listitemvariant" ></table> 
-                                </div>
-     
-                         </div> 
+                            </div>
+
+                            <div class="col-lg-8"> 
+                                <table class="display main-table" data-table="listitemvariant" ></table> 
+                            </div> 
+                          
                     </div>
 
+                    </div>
                 </div>
 
                 <div class="content-list" data-content="lowstocks">

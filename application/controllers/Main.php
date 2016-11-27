@@ -106,7 +106,14 @@ class Main extends CI_Controller {
 		} 
 
 		else if($role == "supplier"){
-			$data["request"] = $this->GetRequestListFromCustomer();
+			$data["requestlist"] = $this->GetRequestListFromCustomer();
+			$data["sup-neworders"] = $this->getOrders("New");
+			$data["sup-processorders"] = $this->getOrders("Process");
+			$data["sup-incompleteorders"] = $this->getOrders("Incomplete");
+			$data["sup-shippedorders"] = $this->getOrders("Ship");
+			$data["sup-cancelledorders"] = $this->getOrders("Cancel");
+			$data["sup-items"] = $this->getItems();
+
 
 		} 
 
@@ -132,6 +139,24 @@ class Main extends CI_Controller {
 			$data = $this->getLowStocks();
 		elseif($table == "allorders")
 			$data = $this->getOrders(""); 
+
+		elseif($table == "requestlist")
+			$data = $this->GetRequestListFromCustomer(); 
+		elseif($table == "sup-neworders")
+			$data = $this->getOrders("New"); 
+		elseif($table == "sup-processorders")
+			$data = $this->getOrders("Process"); 
+		elseif($table == "sup-incompleteorders")
+			$data = $this->getOrders("Incomplete"); 
+		elseif($table == "sup-shippedorders")
+			$data = $this->getOrders("Ship"); 
+		elseif($table == "sup-cancelledorders")
+			$data = $this->getOrders("Cancel"); 
+		elseif($table == "sup-items")
+			$data = $this->getItems(); 
+
+
+
 
 
 		$list[$table] = $data; 
@@ -702,7 +727,24 @@ class Main extends CI_Controller {
 			if($newstatus == "Ship")
 				$this->updateStocksByOrderNo($orderno);
 
-			$list["allorders"] = $this->getOrders($curstatus);
+			$list = array();
+			if($this->session->userdata["role"] == "admin")
+					$list["allorders"] = $this->getOrders($curstatus);
+			else{
+				$returntable = "";
+				if($curstatus=="New")
+					$returntable = "sup-neworders";
+				elseif($curstatus=="Process")
+					$returntable = "sup-processorders";
+				elseif($curstatus=="Incomplete")
+					$returntable = "sup-incompleteorders";
+				elseif($curstatus=="Ship")
+					$returntable = "sup-shippedorders";
+				elseif($curstatus=="Cancel")
+					$returntable = "sup-cancelledorders";
+
+				$list[$returntable] = $this->getOrders($curstatus); 
+			}
 			echo json_encode($list);
 		}
 		function updateStocksByOrderNo($orderno){

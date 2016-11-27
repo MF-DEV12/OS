@@ -41,9 +41,10 @@
           <li>
             <a data-toggle="collapse" data-target="#sup-orders" data-parent="#nav">Request List</a>
             <ul id="sup-orders" class="collapse sub-menu">
+                <li data-content="requestlist" data-header="Request List"><a href="#">Request List</a></li>
                 <li data-content="sup-neworders" data-header="New Order"><a href="#">New <span class="badge"><?=$requeststatus->New;?></span></a></li>
                 <li data-content="sup-processorders" data-header="Processing Orders"><a href="#">Processing</a></li>
-                <li data-content="sup-shippedorders" data-header="Incomplete Orders"><a href="#">Incomplete</a></li>
+                <li data-content="sup-incompleteorders" data-header="Incomplete Orders"><a href="#">Incomplete</a></li>
                 <li data-content="sup-shippedorders" data-header="Shipped Orders"><a href="#">Shipped</a></li>
                 <li data-content="sup-cancelledorders" data-header="Cancelled Orders"><a href="#">Cancelled</a></li>
             </ul>
