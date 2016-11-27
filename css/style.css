@@ -171,10 +171,71 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
     color: #009688;
 
 }
- 
+.variant-wrap{
+    font-size: 14px;
+    border-top: 1px solid #BBB;
+    padding: 42px 29px;
+}
+.varianttable-wrap{
+      background: white;
+    padding: 36px;
 
+} 
+
+#table-attribute  thead td {
+    color: #048e81;
+    padding: 12px;
+}
+#table-attribute tbody td {
+    padding: 5px;
+}
+
+span#addattribute{
+  cursor: pointer;
+}
+
+table#table-attribute ,table#table-attribute tr td{
+    
+}
+table#table-attribute tbody {
+    display:block;
+    height:300px;
+    overflow:auto;
+}
+table#table-attribute thead, table#table-attribute tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;/* even columns width , fix width of table too*/
+}
+table#table-attribute thead {
+    width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+}
+table#table-attribute table {
+    width:100px;
+}
+
+table#table-attribute tbody td:nth-child(2){
+  width: 339px;
+}
+#table-attribute tbody td:last-child {
+    width: 37px;
+}
+table#table-attribute tbody td:last-child a{
+  cursor: pointer;
+}
+
+div.btn-child-button, div.main-button{
+      z-index: 1;
+
+}
+input.numeric{
+  text-align: right;
+}
+
+ 
 .bootstrap-tagsinput{
   width: 100% !important;
+  /*height: 66px !important; */
 }
 .bootstrap-tagsinput .label.tag {
     font-size: 14px !important;

@@ -67,9 +67,9 @@
 
                         </div> -->
 
-                        <div class="col-lg-8"> 
+                       <!--  <div class="col-lg-8"> 
                             <table class="display main-table" data-table="listitemvariant" ></table> 
-                        </div> 
+                        </div>  -->
                       
                     </div>
 
@@ -79,12 +79,12 @@
             <div class="content-list" data-content="additems">
                 <div class="col-md-12">
                     <div class="btn-group main-button btn-group-mode btn-action-right">
-                        <button id="btn-itemscancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
-                        <button id="btn-itemsadd" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
+                      <button id="btn-itemvariantadd" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add items</button>
+                      <button id="btn-submititemvariant" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Save items</button>
                     </div>
                     <div class="row group-1">
 
-                        <div class="col-lg-12"> 
+                        <div class="col-lg-4" style="padding: 66px 29px;"> 
                                 <table class="display form-table" width="500px">
                                     <tr>
                                         <td>
@@ -99,7 +99,11 @@
                                     <tr>
                                         <td>
                                             <div class="group">
-                                              <select class="inputMaterial" id="txt-family">  
+                                              <select class="inputMaterial" id="list-family">  
+                                                 <option value="" selected disabled="">Select one</option>
+                                                 <?php foreach($listfamily as $row){ ?>
+                                                    <option value="<?=$row->id;?>"><?=$row->Name;?></option>
+                                                 <?php }?>
                                               </select>  
                                               <span class="highlight"></span>
                                               <span class="bar"></span>
@@ -110,7 +114,8 @@
                                     <tr>
                                         <td>
                                             <div class="group">
-                                              <select class="inputMaterial" id="txt-category">  
+                                              <select class="inputMaterial" id="list-category"> 
+                                                 <option value="" selected disabled="">Select one</option> 
                                               </select>       
                                               <span class="highlight"></span>
                                               <span class="bar"></span>
@@ -121,7 +126,8 @@
                                     <tr>
                                         <td>
                                             <div class="group"> 
-                                              <select class="inputMaterial" id="txt-subcategory">  
+                                              <select class="inputMaterial" id="list-subcategory">  
+                                                 <option value="" selected disabled="">Select one</option>
                                               </select>      
                                               <span class="highlight"></span>
                                               <span class="bar"></span>
@@ -131,11 +137,77 @@
                                     </tr>
                                      
                                 </table>
+                              <div class="variant-wrap">
+                               <label>Multiple items?</label> 
+                                <div class="checkbox"> 
+                                  <label><input type="checkbox"  id="chkIsMultiple" value="">Create Attributes and Options</label>
+                                </div> 
+                                <div>
+                                  <span id="addattribute" class="pull-right"><span class="glyphicon glyphicon-plus"></span> Add more attribute</span>
+                                   <table width="100%" id="table-attribute" class="display" style="margin-top:10px;"> 
+                                      <thead> 
+                                          <tr>
+                                              <td>Attribute</td>
+                                              <td>Options</td>
+                                              <td></td>
+                                          </tr> 
+                                      </thead>
+                                      <tbody>
+                                         
+                                      </tbody>
+                                      
+                                  </table> 
+                                </div>
+                               
+                                <!-- <button class="btn btn-action" id="btn-itemvariantgenerate">Generate Item with Variant</button>  -->
+                              </div>
+                             
                         </div>
+                        <div class="col-lg-8">
+                            <table class="display main-table" data-table="listitemvariant" ></table> 
+                        </div>
+
                     </div>
       
                 </div> 
                  
             </div> 
          </div>
+</div>
+
+
+
+
+ 
+<!-- Modal -->
+<!-- Attributes/Options setup -->
+<div class="modal fade" id="attributesetup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 20px;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Setup Attributes & Option for <item></item></h4>
+      </div>
+      <div class="modal-body">
+        <table width="100%" id="table-attribute-setup" class="display" style="margin-top:10px;"> 
+            <thead> 
+                <tr>
+                    <td>Attribute</td>
+                    <td>Options</td> 
+                </tr> 
+            </thead>
+            <tbody>
+               
+            </tbody>
+            
+        </table> 
+        <table>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-action" id="btn-saveattributesetup">Add</button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -230,7 +230,7 @@
 
                             </div>
 
-                            <div class="col-lg-8"> 
+                            <div class="col-lg-8 varianttable-wrap"> 
                                 <table class="display main-table" data-table="listitemvariant" ></table> 
                             </div> 
                           

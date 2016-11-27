@@ -564,8 +564,214 @@ $(function(){
         //ITEMS
         $("#btn-additems").click(function(){
             $("li[data-content='additems'] a").click()
+
+
+
         })
 
+
+
+        $("li[data-content='additems'] a").click(function(e){
+ 
+
+            var param = new Object()
+            param.isreq = 1;
+            callAjaxJson("main/getAttribute", param, function(response){
+                if(response){
+                    $("#table-attribute tbody").children().remove()
+                    var data = response
+                    for(x in data){
+                        var tr2 = $("<tr/>")
+                        tr2.append("<td><input type=\"text\" class=\"form-control attribute-name\" value=\"" + data[x].AttributeName + "\"/></td>")
+                        tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-attribute=\""+ data[x].AttributeName + "\" data-role=\"tagsinput\" /></td>")
+                        tr2.append("<td><a>&times;</a></td>")
+                        
+                        $("#table-attribute tbody").append(tr2)
+                    }
+                    $('input[data-role=tagsinput]').tagsinput();
+
+                    
+
+                    var arrList = new Object();
+                    var list = new Object();
+                    arrList.list  = "";
+                    arrList.fields = "ItemName|Item Name,Attributes|Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
+                    list["listitemvariant"] = arrList;
+
+                    bindingDatatoDataTable(list)
+                    var table = listObjTableBinded["listitemvariant"]
+                    table.draw()
+
+                }
+                
+            },ajaxError)
+
+
+        })
+
+        $("span#addattribute").click(function(){
+             var promptOptions = {
+              title: "Enter a new attribute name:",
+              buttons: {
+                confirm: {
+                  label: "Save", 
+                  className: "btn-prompt btn-action"
+                }
+              },
+              callback: function(result) {                
+                  if (result) {          
+                    var tr2 = $("<tr/>")
+                    tr2.append("<td><input type=\"text\" class=\"form-control attribute-name\" value=\"" + result + "\"/></td>")
+                    tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-attribute=\""+ result + "\" data-role=\"tagsinput\" /></td>")
+                    tr2.append("<td><a class=\"delete-attribute\">&times;</a></td>")
+                    $("#table-attribute tbody").append(tr2)   
+                     $("#table-attribute tbody").find("tr:last-child").find("input[data-role=tagsinput]").tagsinput();                             
+                    //  var param = new Object();
+                    // param.vno = variantno;
+                    // param.qty = result;
+                    // callAjaxJson("main/physicalCount", param, 
+                    //     function(response){
+
+                    //          bindingDatatoDataTable(response);
+                    //          bootbox.alert("Update Successfully");
+
+                    //     }, 
+                    // ajaxError)                              
+                  } else { 
+                     $(".bootbox-input").focus()
+                     return false;
+                  }
+                }
+            };
+
+            bootbox.prompt(promptOptions); 
+        })
+
+        $("#table-attribute tbody").on("click", "td a.delete-attribute",function(e){
+            var elem = $(this)
+            var tr = elem.closest("tr")
+            bootbox.confirm("Delete this attribute \" "+ tr.find("input.attribute-name").val() +"\"?",function(result){
+                if(result){
+                    tr.remove();
+                }
+
+            })
+        })
+
+        $("select#list-family").change(function(e){
+            var elem = $(this)
+            var param = new Object()
+            param.lvl1 = elem.val();
+            callAjaxJson("main/getCategory", param, 
+                function(response){
+                    $("select#list-category").empty();
+                    $("select#list-subcategory").empty();
+                    $("select#list-category").append("<option value=\"\" selected disabled>Select one</option>")
+                    $("select#list-subcategory").append("<option value=\"\" selected disabled>Select one</option>")
+                                                 
+
+                    var data = response
+                    for(x in data){
+                        var option = $("<option/>")
+                        option.text(data[x].Name)
+                        option.attr("value",data[x].id)
+                         $("select#list-category").append(option)
+                    }
+
+                }
+                , ajaxError)
+        })
+
+        $("select#list-category").change(function(e){
+            var elem = $(this)
+            var param = new Object()
+            param.lvl1 = $("select#list-family option:selected").val()
+            param.lvl2 = elem.val();
+            callAjaxJson("main/getSubCategory", param, 
+                function(response){
+                    $("select#list-subcategory").empty();
+                    $("select#list-subcategory").append("<option value=\"\" selected disabled>Select one</option>")
+                    var data = response
+                    for(x in data){
+                        var option = $("<option/>")
+                        option.text(data[x].Name)
+                        option.attr("value",data[x].id)
+                         $("select#list-subcategory").append(option)
+                    }
+
+                }
+                , ajaxError)
+        })
+
+        $("button#btn-itemvariantadd").click(function(e){
+            var arrList = new Object();
+            var list = new Object();
+            var arrayData = new Array();
+
+            if($.trim($("#txt-itemname").val()).length == 0){
+                bootbox.alert("Please input the Item Name first");
+                $("#txt-itemname").focus()
+                return;
+            }
+
+            var data = new Object();
+            data.ItemName = $("#txt-itemname").val();
+            data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Attributes/Options Setup...</a>";
+            data.Price = "<input type=\"text\" value=\"0\" class=\"numeric variant-price form-control\"/>";
+            data.LowStocks = "<input type=\"text\" value=\"0\" class=\"numeric variant-lowstocks form-control\"/>";
+            data.Crtical = "<input type=\"text\" value=\"0\" class=\"numeric variant-critical form-control\"/>";
+            arrayData.push(data)
+            arrList.list  = arrayData;
+            arrList.fields = "ItemName|Item Name,Attributes|Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
+            list["listitemvariant"] = arrList;
+
+            bindingDatatoDataTable(list)
+        })
+
+ 
+        var curtrvariant;
+        $("table[data-table='listitemvariant']").on("click", "tbody tr td a.attribute-setup-show", function(e){
+            var elem = $(this)
+            var tr = elem.closest("tr")
+            curtrvariant = tr
+            var table =  $("#table-attribute-setup")
+            $("#table-attribute-setup tbody").empty()
+            $("input.attribute-name").each(function(e){
+                var attrname = $(this)
+                var tr2 = $("<tr/>")
+                tr2.append("<td>"+ attrname.val() +"</td>")
+
+                var optionlist = attrname.closest("tr").find("input.tagsinput").tagsinput('items') 
+
+                var select = $("<select/>") 
+                select.addClass("listoptions")
+
+                select.append("<option value=\"\" selected disabled>Select one</option>")
+                for(x in optionlist){
+                    var option = $("<option/>")
+                    option.text(optionlist[x])
+                    option.attr("value",optionlist[x])
+                    select.append(option)
+                }
+               
+                var td = $('<td/>')
+                td.append(select)
+                tr2.append(td)
+                $("#table-attribute-setup tbody").append(tr2)   
+
+            })
+        })
+
+        $("button#btn-saveattributesetup").click(function(e){
+            var stringAttribute = ""
+            $("#table-attribute-setup tbody tr").each(function(a){
+                var elem = $(this)
+                stringAttribute += elem.find("td:first").text() + ":"
+                stringAttribute += elem.find("select.listoptions option:selected").text() + "; <br>"
+            })
+
+            curtrvariant.closest("tr").find("td:nth-child(2)").html(stringAttribute)
+        })
 
 
 
@@ -766,38 +972,38 @@ $(function(){
 
         bindingDatatoDataTable(list)
 
-        // var param = new Object()
-        // param.isreq = 1;
-        // callAjaxJson("main/getAttribute", param, function(response){
-        //     if(response){
-        //         $("#table-attribute tbody").children().remove()
-        //         var data = response
-        //         for(x in data){
-        //             var tr2 = $("<tr/>")
-        //             tr2.append("<td>" + data[x].AttributeName + "</td>")
-        //             tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-attribute=\""+ data[x].AttributeName + "\" data-role=\"tagsinput\" placeholder=\"Type here and Press Enter\"/></td>")
-        //             tr2.append("<td><a>&times;</a></td>")
+        var param = new Object()
+        param.isreq = 1;
+        callAjaxJson("main/getAttribute", param, function(response){
+            if(response){
+                $("#table-attribute tbody").children().remove()
+                var data = response
+                for(x in data){
+                    var tr2 = $("<tr/>")
+                    tr2.append("<td>" + data[x].AttributeName + "</td>")
+                    tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-attribute=\""+ data[x].AttributeName + "\" data-role=\"tagsinput\" placeholder=\"Type here and Press Enter\"/></td>")
+                    tr2.append("<td><a>&times;</a></td>")
                     
-        //             $("#table-attribute tbody").append(tr2)
-        //         }
-        //         $('input[data-role=tagsinput]').tagsinput();
+                    $("#table-attribute tbody").append(tr2)
+                }
+                $('input[data-role=tagsinput]').tagsinput();
 
-        //         $(".header-wrap").find("subheader").text(" - Add Item Variant for Item: " + data.Name) 
-        //         tableelem.closest(".content-list").find(".content-child").show();
-        //         tableelem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide(); 
-        //         tableelem.closest(".content-list").find("div.btn-group").show()
+                $(".header-wrap").find("subheader").text(" - Add Item Variant for Item: " + data.Name) 
+                tableelem.closest(".content-list").find(".content-child").show();
+                tableelem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide(); 
+                tableelem.closest(".content-list").find("div.btn-group").show()
 
-        //         var arrList = new Object();
-        //         var list = new Object();
-        //         arrList.list  = "";
-        //         arrList.fields = "ItemName|Item Name with Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
-        //         list["listitemvariant"] = arrList;
+                var arrList = new Object();
+                var list = new Object();
+                arrList.list  = "";
+                arrList.fields = "ItemName|Item Name with Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
+                list["listitemvariant"] = arrList;
 
-        //         bindingDatatoDataTable(list)
+                bindingDatatoDataTable(list)
 
-        //     }
+            }
             
-        // },ajaxError)
+        },ajaxError)
 
     }
 

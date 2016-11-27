@@ -78,7 +78,7 @@ jQuery(document).ready(function($){
         // RESET PAGE 
         var currentList = $("div.content .content-group.show .content-list.show")
         currentList.find(".main-button").show();
-        currentList.find(".btn-group").hide(); 
+        currentList.find(".btn-child-group").hide(); 
         currentList.find(".dataTables_wrapper").show();
         currentList.find(".content-child").hide();
 

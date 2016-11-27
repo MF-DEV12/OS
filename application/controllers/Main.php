@@ -22,14 +22,14 @@ class Main extends CI_Controller {
 		$data["totalrevenue"] = $this->restyle_text($this->getTotalRevenue());
 		
 
-		if($role == "supplier"){
+		$data["listfamily"] = $this->getFamily();
+		// if($role == "supplier"){
+
+		// }
+		// else if($role == "admin"){
 			
 
-		}
-		else if($role == "admin"){
-			$data["listfamily"] = $this->getFamily();
-
-		}
+		// }
 
 		$this->load->view('index', $data);
 
@@ -113,6 +113,7 @@ class Main extends CI_Controller {
 			$data["sup-shippedorders"] = $this->getOrders("Ship");
 			$data["sup-cancelledorders"] = $this->getOrders("Cancel");
 			$data["sup-items"] = $this->getItems();
+
 
 
 		} 
@@ -819,6 +820,8 @@ class Main extends CI_Controller {
 			return count($data); 
 		}
 
+	//ITEMS
+	 
 		
 	//	
 
