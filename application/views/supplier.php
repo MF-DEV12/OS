@@ -43,33 +43,7 @@
                 <table class="display main-table" data-table="sup-items"> </table> 
 
                 <div class="content-child">
-                     <!-- <div>
-                        <div class="col-lg-4">  
-                                <label>Multiple items?</label> 
-                                <div class="checkbox"> 
-                                  <label><input type="checkbox"  id="chkIsMultiple" value="">Create Attributes and Options</label>
-                                </div> 
-                                <table width="100%" id="table-attribute" class="display" style="margin-top:40px;"> 
-                                    <thead> 
-                                        <tr>
-                                            <td>Attribute</td>
-                                            <td>Options</td>
-                                            <td></td>
-                                        </tr> 
-                                    </thead>
-                                    <tbody>
-                                       
-                                    </tbody>
-                                    
-                                </table> 
-                                <span id="addattribute"><span class="glyphicon glyphicon-plus"></span> Add more attribute</span>
-                                <button class="btn btn-action" id="btn-itemvariantgenerate">Generate Item with Variant</button>
-
-                        </div> -->
-
-                       <!--  <div class="col-lg-8"> 
-                            <table class="display main-table" data-table="listitemvariant" ></table> 
-                        </div>  -->
+                      
                       
                     </div>
 
@@ -81,7 +55,7 @@
                     <div class="btn-group main-button btn-group-mode btn-action-right">
                       <button id="btn-submititemvariant" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Save items</button>
                     </div> 
-                    <div class="group-1">
+                    <div class="group-1" style="padding-top:10px;">
                       <ul class="stepNav threeWide">
                         <li class="selected" data-view="item-info"><a href="#" title="">Information</a></li>
                         <li data-view="item-variants"><a href="#" title="" >Variants</a></li>
@@ -89,7 +63,7 @@
                       </ul>
                       <div class="step-holder">
                         <div class="step-view col-md-12 show" data-view="item-info" align="center">
-                            <table class="display form-table" width="500px">
+                            <table class="display form-table" width="500px" style="margin-top: 20px;">
                                     <tr>
                                         <td>
                                             <div class="group">      
@@ -100,6 +74,17 @@
                                             </div> 
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="group">      
+                                              <input class="inputMaterial" type="text" id="txt-UOM">
+                                              <span class="highlight"></span>
+                                              <span class="bar"></span>
+                                              <label class="formlabel">Unit of measure (UOM):</label>
+                                            </div> 
+                                        </td>
+                                    </tr>
+                                   
                                     <tr>
                                         <td>
                                             <div class="group">
@@ -151,7 +136,7 @@
                                   <label><input type="checkbox"  id="chkIsMultiple" value="">Create Attributes and Options</label>
                                 </div>  -->
                                 <div>
-                                   <table width="100%" id="table-attribute" class="display table-custom" style="margin-top:10px;"> 
+                                   <table width="100%" id="table-attribute" class="display table-custom" > 
                                       <thead> 
                                           <tr>
                                               <td width="200px">Attribute</td>
@@ -177,7 +162,7 @@
                               </div>
                           </div>
                           <div class="col-lg-7">
-                             <button id="btn-itemvariantadd" class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus"></span> Add items</button>
+                             <button id="btn-itemvariantadd" class="btn btn-default pull-left" style="margin-bottom: 10px;"><span class="glyphicon glyphicon-plus"></span> Add items</button>
 
                             <table class="display main-table" data-table="listitemvariant" ></table> 
                           </div> 
@@ -229,7 +214,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-action" id="btn-saveattributesetup">Add</button>
+        <button type="button" class="btn btn-action" id="btn-saveattributesetup">Save</button>
       </div>
     </div>
   </div>

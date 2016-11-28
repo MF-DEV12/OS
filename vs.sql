@@ -143,7 +143,9 @@ DROP TABLE IF EXISTS `item`;
 CREATE TABLE `item` (
   `ItemNo` int(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) DEFAULT NULL,
-  `Image` varchar(15) DEFAULT NULL,
+  `UOM` varchar(20) DEFAULT NULL,
+  `StockType` varchar(50) DEFAULT NULL,
+  `Image` text,
   `BoolFields` tinyint(1) DEFAULT NULL,
   `SizeType` varchar(20) DEFAULT NULL,
   `Removed` tinyint(1) DEFAULT NULL,
@@ -153,13 +155,12 @@ CREATE TABLE `item` (
   `Level3No` int(11) DEFAULT NULL,
   `SupplierNo` int(11) DEFAULT NULL,
   `SRemoved` tinyint(4) DEFAULT NULL,
-  `HasAttribute` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`ItemNo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 
 /*Data for the table `item` */
 
-insert  into `item`(`ItemNo`,`Name`,`Image`,`BoolFields`,`SizeType`,`Removed`,`Owned`,`Level1No`,`Level2No`,`Level3No`,`SupplierNo`,`SRemoved`,`HasAttribute`) values (0031,'Nail',NULL,1,'Length',0,1,10,15,11,4,0,NULL),(0032,'Hammer',NULL,1,'Pieces',0,1,10,15,11,4,0,NULL),(0033,'test',NULL,5,'Length',0,1,10,15,12,4,0,NULL);
+insert  into `item`(`ItemNo`,`Name`,`UOM`,`StockType`,`Image`,`BoolFields`,`SizeType`,`Removed`,`Owned`,`Level1No`,`Level2No`,`Level3No`,`SupplierNo`,`SRemoved`) values (0031,'Nail',NULL,NULL,NULL,1,'Length',0,1,10,15,11,4,0),(0032,'Hammer',NULL,NULL,NULL,1,'Pieces',0,1,10,15,11,4,0),(0033,'test',NULL,NULL,NULL,5,'Length',0,1,10,15,12,4,0);
 
 /*Table structure for table `itemattribute` */
 
@@ -215,11 +216,11 @@ CREATE TABLE `itemvariant` (
   PRIMARY KEY (`VariantNo`),
   KEY `itemvariant_ibfk_1` (`OptionID`),
   CONSTRAINT `itemvariant_ibfk_1` FOREIGN KEY (`OptionID`) REFERENCES `itemoptions` (`OptionID`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 /*Data for the table `itemvariant` */
 
-insert  into `itemvariant`(`VariantNo`,`ItemNo`,`Size`,`Color`,`Description`,`Stocks`,`LowStock`,`Critical`,`DPOCost`,`SRP`,`Price`,`Removed`,`Owned`,`SupplierNo`,`SRemoved`,`OptionID`) values (12,0031,'2mm','','',120,10,10,10,15,16,0,1,4,0,1),(13,0031,'1mm','','',100,10,10,10,11,15,0,1,4,0,2),(14,0031,'3mm','','',NULL,1,2,10,5,5,0,1,4,0,3),(15,0031,'4mm','','',NULL,22,22,10,5,22,0,1,4,0,4),(16,0031,'5mm','','',NULL,28,28,10,15,28,0,1,4,0,5),(17,0031,'6mm','','',NULL,2,2,100,150,100,0,1,4,0,6),(18,0031,'7mm','','',NULL,12,1,5,10,10,0,1,4,0,7),(19,0033,'1m','','Fiber',NULL,5,5,200,202,5,0,1,4,0,8);
+insert  into `itemvariant`(`VariantNo`,`ItemNo`,`Size`,`Color`,`Description`,`Stocks`,`LowStock`,`Critical`,`DPOCost`,`SRP`,`Price`,`Removed`,`Owned`,`SupplierNo`,`SRemoved`,`OptionID`) values (12,0031,'2mm','','',120,10,10,10,15,16,0,1,4,0,1),(13,0031,'1mm','','',100,10,10,10,11,15,0,1,4,0,2),(14,0031,'3mm','','',NULL,1,2,10,5,5,0,1,4,0,3),(15,0031,'4mm','','',NULL,22,22,10,5,22,0,1,4,0,4),(16,0031,'5mm','','',NULL,28,28,10,15,28,0,1,4,0,5),(17,0031,'6mm','','',NULL,2,2,100,150,100,0,1,4,0,6),(18,0031,'7mm','','',NULL,12,1,5,10,10,0,1,4,0,7),(19,0033,'1m','','Fiber',NULL,5,5,200,202,5,0,1,4,0,8),(20,0031,'10cm','','',NULL,NULL,NULL,10,20,NULL,0,0,4,0,NULL);
 
 /*Table structure for table `level1` */
 

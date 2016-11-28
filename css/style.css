@@ -199,7 +199,7 @@ table.table-custom ,table.table-custom tr td{
 }
 table.table-custom tbody {
     display:block;
-    height:300px;
+    height:446px;
     overflow:auto;
 }
 table.table-custom thead, table.table-custom tbody tr {

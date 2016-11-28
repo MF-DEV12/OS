@@ -114,6 +114,8 @@ class Main extends CI_Controller {
 			$data["sup-cancelledorders"] = $this->getOrders("Cancel");
 			$data["sup-items"] = $this->getItems();
 
+			$data["sup-items"] = $this->getItems();
+
 
 
 		} 
@@ -155,6 +157,9 @@ class Main extends CI_Controller {
 			$data = $this->getOrders("Cancel"); 
 		elseif($table == "sup-items")
 			$data = $this->getItems(); 
+		 
+
+
 
 
 

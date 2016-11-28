@@ -595,12 +595,13 @@ $(function(){
                     var arrList = new Object();
                     var list = new Object();
                     arrList.list  = "";
-                    arrList.fields = "ItemName|Item Name,Attributes|Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
+                    arrList.fields = "ItemName|Item Name,Attributes|Variant,UnitPrice|Unit Price,SRP|Suggested Retail Price(SRP)";
                     list["listitemvariant"] = arrList;
 
                     bindingDatatoDataTable(list)
                     var table = listObjTableBinded["listitemvariant"]
                     table.draw()
+                    $("li[data-view=item-info] a").click();
 
                 }
                 
@@ -717,12 +718,12 @@ $(function(){
             var data = new Object();
             data.ItemName = $("#txt-itemname").val();
             data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Setup variants...</a>";
-            data.Price = "<input type=\"text\" value=\"0\" class=\"numeric variant-price form-control\"/>";
-            data.LowStocks = "<input type=\"text\" value=\"0\" class=\"numeric variant-lowstocks form-control\"/>";
-            data.Crtical = "<input type=\"text\" value=\"0\" class=\"numeric variant-critical form-control\"/>";
+            data.UnitPrice = "<input type=\"text\" class=\"numeric variant-price form-control\"/>";
+            data.SRP = "<input type=\"text\" class=\"numeric variant-srp form-control\"/>";
+             
             arrayData.push(data)
             arrList.list  = arrayData;
-            arrList.fields = "ItemName|Item Name,Attributes|Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
+            arrList.fields = "ItemName|Item Name,Attributes|Variant,UnitPrice|Unit Price,SRP|Suggested Retail Price(SRP)";
             var table = listObjTableBinded["listitemvariant"]
             table.row.add(data).draw()
             // list["listitemvariant"] = arrList;
@@ -735,6 +736,9 @@ $(function(){
         $("table[data-table='listitemvariant']").on("click", "tbody tr td a.attribute-setup-show", function(e){
             var elem = $(this)
             var tr = elem.closest("tr")
+            var listAttributeJSON = tr.attr("data-variant")
+            if(listAttributeJSON !== undefined)
+                listAttributeJSON = JSON.parse(listAttributeJSON);
             curtrvariant = tr
             var table =  $("#table-attribute-setup")
             $("#table-attribute-setup tbody").empty()
@@ -754,6 +758,11 @@ $(function(){
                     var option = $("<option/>")
                     option.text(optionlist[x])
                     option.attr("value",optionlist[x])
+                     if(listAttributeJSON !== undefined){
+                        if(optionlist[x] == listAttributeJSON[attrname.val()])
+                            option.prop("selected",true)
+                     }
+                    
                     select.append(option)
                 }
                
@@ -766,17 +775,21 @@ $(function(){
         })
 
         $("button#btn-saveattributesetup").click(function(e){
-            var stringAttribute = ""
+            var stringAttribute = "";
+            var stringJson = new Object();
             $("#table-attribute-setup tbody tr").each(function(a){
                 var elem = $(this)
-                stringAttribute += elem.find("td:first").text() + ":"
+                stringJson[elem.find("td:first").text()] = elem.find("select.listoptions option:selected").text();
+                stringAttribute += elem.find("td:first").text() + " = "
                 stringAttribute += elem.find("select.listoptions option:selected").text() + "; <br>"
-            })
 
+            })
+            stringAttribute += "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Edit variants</a>";
             curtrvariant.closest("tr").find("td:nth-child(2)").html(stringAttribute)
+            curtrvariant.closest("tr").attr("data-variant", JSON.stringify(stringJson))
+    
             $("div#attributesetup").modal("hide");
         })
-
 
 
 
@@ -970,13 +983,7 @@ $(function(){
         tableelem.closest(".content-list").find(".main-table").closest(".dataTables_wrapper").hide(); 
         tableelem.closest(".content-list").find("div.btn-group").show()
 
-        var arrList = new Object();
-        var list = new Object();
-        arrList.list  = "";
-        arrList.fields = "ItemName|Item Name with Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
-        list["listitemvariant"] = arrList;
-
-        bindingDatatoDataTable(list)
+       
 
         var param = new Object()
         param.isreq = 1;
@@ -1002,7 +1009,7 @@ $(function(){
                 var arrList = new Object();
                 var list = new Object();
                 arrList.list  = "";
-                arrList.fields = "ItemName|Item Name with Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
+                arrList.fields = "ItemName|Item Name,Attributes|Variant,UnitPrice|Unit Price,SRP|Suggested Retail Price(SRP)";
                 list["listitemvariant"] = arrList;
 
                 bindingDatatoDataTable(list)

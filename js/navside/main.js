@@ -50,10 +50,12 @@ jQuery(document).ready(function($){
 
 	$("div.sidebar ul.nav a").click(function(e){
 		var elem = $(this)
+
 		var ul = elem.closest("ul");
 		var li = elem.closest("li");
+		if(li.is(".current")){return;}
 		if(li.data("content") === undefined){return;}
-		ul.find("li.current").removeClass("current")
+		$("div.sidebar ul.nav").find("li.current").removeClass("current")
 		$("div.sidebar ul.nav").find("a.active").removeClass("active")
 		li.addClass("current")
 		elem.addClass("active")
@@ -93,7 +95,14 @@ jQuery(document).ready(function($){
 
 	$(".stepNav li a").click(function(e){
 		var elem = $(this)
-		if(!validateItemVariant(elem.closest("li").data("view"))){return;}
+		if(elem.closest("li").is(".selected")){return;}
+ 
+		if($(".stepNav li.selected").data("view") == "item-info") 
+			if(!validateItemVariant(elem.closest("li").data("view"))){return;}
+ 
+		if($(".stepNav li.selected").data("view") == "item-variants") 
+			if(!validateAttribute(elem.closest("li").data("view"))){return;}
+
 		$(".step-holder > div.show").removeClass("show");
 		$(".stepNav li.selected").removeClass("selected");
 		elem.closest("li").addClass("selected");
@@ -102,8 +111,24 @@ jQuery(document).ready(function($){
 		if(elem.closest("li").data("view") == "item-variants"){
 			var table = listObjTableBinded["listitemvariant"];
 			table.draw()
-			$("table[data-table='listitemvariant']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide()
+			$("table[data-table='listitemvariant']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
 		}
+		if(elem.closest("li").data("view") == "item-review"){
+
+			var listposupplier = new Object()
+
+            var arrList = new Object();
+            arrList.list = "";
+            arrList.fields = "VariantsName|Variant Name,Price|Quantity,Item|Item No.,ItemDescription|Description,DPOCost|DPO Cost,Total|Total"
+            listposupplier["listitemvariant-review"] = arrList; 
+
+            bindingDatatoDataTable(listposupplier)
+
+			var table = listObjTableBinded["listitemvariant-review"];
+			table.draw()
+			$("table[data-table='listitemvariant-review']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
+		}
+
 	})
 
 
@@ -134,14 +159,64 @@ jQuery(document).ready(function($){
 
 
 function validateItemVariant(dataview){
-	 
-	if(dataview == "item-variants"){
-	  if($.trim($("#txt-itemname").val()).length == 0){
-            bootbox.alert("Please input the Item Name first");
-            $("#txt-itemname").focus()
-            return false;
-        }
-	}
+	$("div.step-holder").find("p.label-error").remove()
+    var isOkay = true;
+   	var isOkay2 = true
+	if(dataview != "item-info"){
+	   $("div.step-holder > div.step-view[data-view=item-info]").find("table.form-table .inputMaterial").each(function(e){
+	   		var elem = $(this)
+	   		if($.trim(elem.val()).length == 0)
+	   			isOkay= false;
+	   })		
+	   if(!isOkay)
+	   		$("div.step-holder > div.step-view[data-view=item-info]").find("table.form-table tbody").before("<p class=\"label-error\">Please input all this fields.</p>")
 
-	return true;
+	   if(dataview == "item-review"){
+			 // VALIDATE THE ITEM VARIANT
+		  	var table = listObjTableBinded["listitemvariant"]
+			if(table.data().length == 0){
+				isOkay2= false;
+				$(".stepNav li[data-view=item-variants] a").click();
+			} 
+		}
+		if(!isOkay2)
+			$("div.step-holder > div.step-view[data-view=item-variants]").find("table.form-table").parent("div").before("<p class=\"label-error\">Please setup the variant for the item first.</p>") 
+	    
+	} 
+
+	return (isOkay && isOkay2);
+}
+
+function validateAttribute(dataview){
+	$("div.step-holder").find("p.label-error").remove()
+	var isOkay = true
+	if(dataview=="item-review"){
+		// VALIDATE THE ITEM ATTRIBUTE
+		$("#table-attribute").find("input").each(function(e){
+			var elem = $(this)
+	   		if($.trim(elem.val()).length == 0)
+	   			isOkay= false;
+		})
+		if(!isOkay)
+		   	$("div.step-holder > div.step-view[data-view=item-variants]").find("table.form-table").parent("div").before("<p class=\"label-error\">Please input all this fields.</p>")
+
+		// VALIDATE THE ITEM VARIANT
+		var table = listObjTableBinded["listitemvariant"]
+		if(table.data().length == 0)
+			isOkay= false;
+		else{
+			$("table[data-table=listitemvariant] input.nummeric").each(function(e){
+			var elem = $(this)
+	   		if($.trim(elem.val()).length == 0 && elem.val() == "0")
+	   			isOkay= false;
+		})  
+
+			if(!isOkay)
+		   		$("div.step-holder > div.step-view[data-view=item-variants]").find("#btn-itemvariantadd").after("<p class=\"label-error\">Please complete the variant details below.</p>")
+		}
+		
+	}
+	
+
+	return isOkay;
 }
