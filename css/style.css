@@ -173,7 +173,7 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
 }
 .variant-wrap{
     font-size: 14px;
-    border-top: 1px solid #BBB;
+    /*border-top: 1px solid #BBB;*/
     padding: 42px 29px;
 }
 .varianttable-wrap{
@@ -182,11 +182,11 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
 
 } 
 
-#table-attribute  thead td {
+.table-custom  thead td {
     color: #048e81;
     padding: 12px;
 }
-#table-attribute tbody td {
+.table-custom tbody td {
     padding: 5px;
 }
 
@@ -194,34 +194,40 @@ span#addattribute{
   cursor: pointer;
 }
 
-table#table-attribute ,table#table-attribute tr td{
+table.table-custom ,table.table-custom tr td{
     
 }
-table#table-attribute tbody {
+table.table-custom tbody {
     display:block;
     height:300px;
     overflow:auto;
 }
-table#table-attribute thead, table#table-attribute tbody tr {
+table.table-custom thead, table.table-custom tbody tr {
     display:table;
     width:100%;
     table-layout:fixed;/* even columns width , fix width of table too*/
 }
-table#table-attribute thead {
+table.table-custom thead {
     width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
 }
-table#table-attribute table {
+table.table-custom table {
     width:100px;
 }
 
-table#table-attribute tbody td:nth-child(2){
-  width: 339px;
+table.table-custom tbody td:nth-child(2){
+  /*width: 339px;*/
 }
-#table-attribute tbody td:last-child {
+.table-custom tbody td:last-child {
     width: 37px;
 }
-table#table-attribute tbody td:last-child a{
+table.table-custom tbody td:last-child a{
   cursor: pointer;
+}
+table.table-custom tbody tr {
+    border-top: 1px solid #ddd;
+}
+table.table-custom tfoot tr {
+    border-top: 1px solid #ddd;
 }
 
 div.btn-child-button, div.main-button{

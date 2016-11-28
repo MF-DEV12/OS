@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<?=base_url('css/rsTable.css');?>"> <!-- Resource style -->
     <link rel="stylesheet" href="<?=base_url('css/style.css');?>"> <!-- Resource style -->
     <link rel="stylesheet" href="<?=base_url('css/admin_navi_style.css');?>"> <!-- Resource style -->
+    <link rel="stylesheet" href="<?=base_url('css/stepnavi.css');?>"> <!-- Resource style -->
 
     <link href="<?=base_url('js/bootstrap-datepicker/css/bootstrap-datetimepicker.css');?>" rel="stylesheet" type="text/css" />
 </head>

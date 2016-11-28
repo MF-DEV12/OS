@@ -77,15 +77,19 @@
             </div>
 
             <div class="content-list" data-content="additems">
-                <div class="col-md-12">
+                <div class="col-md-12" style="font-size: 14px;">
                     <div class="btn-group main-button btn-group-mode btn-action-right">
-                      <button id="btn-itemvariantadd" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add items</button>
                       <button id="btn-submititemvariant" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Save items</button>
-                    </div>
-                    <div class="row group-1">
-
-                        <div class="col-lg-4" style="padding: 66px 29px;"> 
-                                <table class="display form-table" width="500px">
+                    </div> 
+                    <div class="group-1">
+                      <ul class="stepNav threeWide">
+                        <li class="selected" data-view="item-info"><a href="#" title="">Information</a></li>
+                        <li data-view="item-variants"><a href="#" title="" >Variants</a></li>
+                        <li data-view="item-review"><a href="#" title="">Review</a></li>
+                      </ul>
+                      <div class="step-holder">
+                        <div class="step-view col-md-12 show" data-view="item-info" align="center">
+                            <table class="display form-table" width="500px">
                                     <tr>
                                         <td>
                                             <div class="group">      
@@ -136,18 +140,21 @@
                                         </td>  
                                     </tr>
                                      
-                                </table>
-                              <div class="variant-wrap">
-                               <label>Multiple items?</label> 
+                            </table>
+                          
+                        </div>
+                        <div class="step-view col-md-12" data-view="item-variants">
+                          <div class="col-md-5" style="background: white;    border: 1px solid #ddd;">
+                            <div class="variant-wrap">
+                               <!-- <label>Multiple items?</label> 
                                 <div class="checkbox"> 
                                   <label><input type="checkbox"  id="chkIsMultiple" value="">Create Attributes and Options</label>
-                                </div> 
+                                </div>  -->
                                 <div>
-                                  <span id="addattribute" class="pull-right"><span class="glyphicon glyphicon-plus"></span> Add more attribute</span>
-                                   <table width="100%" id="table-attribute" class="display" style="margin-top:10px;"> 
+                                   <table width="100%" id="table-attribute" class="display table-custom" style="margin-top:10px;"> 
                                       <thead> 
                                           <tr>
-                                              <td>Attribute</td>
+                                              <td width="200px">Attribute</td>
                                               <td>Options</td>
                                               <td></td>
                                           </tr> 
@@ -155,17 +162,33 @@
                                       <tbody>
                                          
                                       </tbody>
+                                      <tfoot>
+                                        <tr>
+                                            <td colspan="3">
+                                                <span id="addattribute" class="pull-right"><span class="glyphicon glyphicon-plus"></span> Add more attribute</span>
+
+                                            </td>
+                                        </tr>
+                                      </tfoot>
                                       
                                   </table> 
-                                </div>
-                               
+                                </div> 
                                 <!-- <button class="btn btn-action" id="btn-itemvariantgenerate">Generate Item with Variant</button>  -->
                               </div>
-                             
-                        </div>
-                        <div class="col-lg-8">
+                          </div>
+                          <div class="col-lg-7">
+                             <button id="btn-itemvariantadd" class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus"></span> Add items</button>
+
                             <table class="display main-table" data-table="listitemvariant" ></table> 
+                          </div> 
                         </div>
+                        <div class="step-view col-md-12" data-view="item-review">
+                            <table class="display main-table" data-table="listitemvariant-review" ></table> 
+
+                        </div>
+                      </div>
+
+ 
 
                     </div>
       
@@ -186,13 +209,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Setup Attributes & Option for <item></item></h4>
+        <h4 class="modal-title" id="myModalLabel">Create new Variants</h4>
       </div>
       <div class="modal-body">
-        <table width="100%" id="table-attribute-setup" class="display" style="margin-top:10px;"> 
+        <table width="100%" id="table-attribute-setup" class="display table-custom" style="margin-top:10px;"> 
             <thead> 
                 <tr>
-                    <td>Attribute</td>
+                    <td width="200px">Attribute</td>
                     <td>Options</td> 
                 </tr> 
             </thead>

@@ -80,11 +80,7 @@ jQuery(document).ready(function($){
         currentList.find(".main-button").show();
         currentList.find(".btn-child-group").hide(); 
         currentList.find(".dataTables_wrapper").show();
-        currentList.find(".content-child").hide();
-
-
-
-
+        currentList.find(".content-child").hide(); 
 	 	//$('.content').removeClass('isOpen');
 	 
 	})
@@ -93,7 +89,23 @@ jQuery(document).ready(function($){
 	$('span.button').on('click', function() {
 		$('.content').toggleClass('isOpen');
 	});
- 
+ 	
+
+	$(".stepNav li a").click(function(e){
+		var elem = $(this)
+		if(!validateItemVariant(elem.closest("li").data("view"))){return;}
+		$(".step-holder > div.show").removeClass("show");
+		$(".stepNav li.selected").removeClass("selected");
+		elem.closest("li").addClass("selected");
+		$(".step-view[data-view="+ elem.closest("li").data("view") +"]").addClass("show")
+		
+		if(elem.closest("li").data("view") == "item-variants"){
+			var table = listObjTableBinded["listitemvariant"];
+			table.draw()
+			$("table[data-table='listitemvariant']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide()
+		}
+	})
+
 
 
 	// function moveNavigation(){
@@ -119,3 +131,17 @@ jQuery(document).ready(function($){
 
 
 });
+
+
+function validateItemVariant(dataview){
+	 
+	if(dataview == "item-variants"){
+	  if($.trim($("#txt-itemname").val()).length == 0){
+            bootbox.alert("Please input the Item Name first");
+            $("#txt-itemname").focus()
+            return false;
+        }
+	}
+
+	return true;
+}

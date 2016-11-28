@@ -584,7 +584,7 @@ $(function(){
                         var tr2 = $("<tr/>")
                         tr2.append("<td><input type=\"text\" class=\"form-control attribute-name\" value=\"" + data[x].AttributeName + "\"/></td>")
                         tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-attribute=\""+ data[x].AttributeName + "\" data-role=\"tagsinput\" /></td>")
-                        tr2.append("<td><a>&times;</a></td>")
+                        tr2.append("<td><a class=\"delete-attribute\">&times;</a></td>")
                         
                         $("#table-attribute tbody").append(tr2)
                     }
@@ -716,16 +716,18 @@ $(function(){
 
             var data = new Object();
             data.ItemName = $("#txt-itemname").val();
-            data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Attributes/Options Setup...</a>";
+            data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Setup variants...</a>";
             data.Price = "<input type=\"text\" value=\"0\" class=\"numeric variant-price form-control\"/>";
             data.LowStocks = "<input type=\"text\" value=\"0\" class=\"numeric variant-lowstocks form-control\"/>";
             data.Crtical = "<input type=\"text\" value=\"0\" class=\"numeric variant-critical form-control\"/>";
             arrayData.push(data)
             arrList.list  = arrayData;
             arrList.fields = "ItemName|Item Name,Attributes|Variant,Price|Price,LowStocks|Low Stocks Level,Crtical|Critical Level";
-            list["listitemvariant"] = arrList;
+            var table = listObjTableBinded["listitemvariant"]
+            table.row.add(data).draw()
+            // list["listitemvariant"] = arrList;
 
-            bindingDatatoDataTable(list)
+            // bindingDatatoDataTable(list)
         })
 
  
@@ -739,12 +741,13 @@ $(function(){
             $("input.attribute-name").each(function(e){
                 var attrname = $(this)
                 var tr2 = $("<tr/>")
-                tr2.append("<td>"+ attrname.val() +"</td>")
+                tr2.append("<td width=\"10px\">"+ attrname.val() +"</td>")
 
                 var optionlist = attrname.closest("tr").find("input.tagsinput").tagsinput('items') 
 
                 var select = $("<select/>") 
                 select.addClass("listoptions")
+                select.addClass("form-control")
 
                 select.append("<option value=\"\" selected disabled>Select one</option>")
                 for(x in optionlist){
@@ -771,7 +774,10 @@ $(function(){
             })
 
             curtrvariant.closest("tr").find("td:nth-child(2)").html(stringAttribute)
+            $("div#attributesetup").modal("hide");
         })
+
+
 
 
 
