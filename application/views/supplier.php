@@ -53,7 +53,8 @@
             <div class="content-list" data-content="additems">
                 <div class="col-md-12" style="font-size: 14px;">
                     <div class="btn-group main-button btn-group-mode btn-action-right">
-                      <button id="btn-submititemvariant" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Save items</button>
+                      <button id="btn-backitems" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
+                      <button id="btn-submititemvariant" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Save items with variant</button>
                     </div> 
                     <div class="group-1" style="padding-top:10px;">
                       <ul class="stepNav threeWide">
@@ -191,7 +192,7 @@
                             </div>
                            
 
-                            <table class="display main-table" data-table="listitemvariant-review" ></table> 
+                            <table class="display main-table" data-table="listitemvariantreview" ></table> 
 
                         </div>
                       </div>

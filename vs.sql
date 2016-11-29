@@ -18,12 +18,12 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`lampanohardwaretradings` /*!40100 DEFAU
 DROP TABLE IF EXISTS `accounts`;
 
 CREATE TABLE `accounts` (
-  `AccountNo` INT(11) NOT NULL AUTO_INCREMENT,
-  `Username` VARCHAR(16) DEFAULT NULL,
-  `Password` VARCHAR(200) DEFAULT NULL,
-  `LoginType` VARCHAR(30) DEFAULT NULL,
+  `AccountNo` int(11) NOT NULL AUTO_INCREMENT,
+  `Username` varchar(16) DEFAULT NULL,
+  `Password` varchar(200) DEFAULT NULL,
+  `LoginType` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`AccountNo`)
-) ENGINE=INNODB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Data for the table `accounts` */
 
@@ -144,7 +144,6 @@ CREATE TABLE `item` (
   `ItemNo` int(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) DEFAULT NULL,
   `UOM` varchar(20) DEFAULT NULL,
-  `StockType` varchar(50) DEFAULT NULL,
   `Image` text,
   `BoolFields` tinyint(1) DEFAULT NULL,
   `SizeType` varchar(20) DEFAULT NULL,
@@ -156,11 +155,11 @@ CREATE TABLE `item` (
   `SupplierNo` int(11) DEFAULT NULL,
   `SRemoved` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`ItemNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 /*Data for the table `item` */
 
-insert  into `item`(`ItemNo`,`Name`,`UOM`,`StockType`,`Image`,`BoolFields`,`SizeType`,`Removed`,`Owned`,`Level1No`,`Level2No`,`Level3No`,`SupplierNo`,`SRemoved`) values (0031,'Nail',NULL,NULL,NULL,1,'Length',0,1,10,15,11,4,0),(0032,'Hammer',NULL,NULL,NULL,1,'Pieces',0,1,10,15,11,4,0),(0033,'test',NULL,NULL,NULL,5,'Length',0,1,10,15,12,4,0);
+insert  into `item`(`ItemNo`,`Name`,`UOM`,`Image`,`BoolFields`,`SizeType`,`Removed`,`Owned`,`Level1No`,`Level2No`,`Level3No`,`SupplierNo`,`SRemoved`) values (0031,'Nail',NULL,NULL,1,'Length',0,1,10,15,11,4,0),(0032,'Hammer',NULL,NULL,1,'Pieces',0,1,10,15,11,4,0),(0033,'test',NULL,NULL,5,'Length',0,1,10,15,12,4,0),(0037,'Stainless Steel Tool Box ','set',NULL,NULL,NULL,0,1,10,31,8,4,0);
 
 /*Table structure for table `itemattribute` */
 
@@ -177,21 +176,6 @@ CREATE TABLE `itemattribute` (
 
 insert  into `itemattribute`(`AttributeID`,`AttributeName`,`IsRequired`) values (1,'Size',1),(2,'Color',1);
 
-/*Table structure for table `itemoptions` */
-
-DROP TABLE IF EXISTS `itemoptions`;
-
-CREATE TABLE `itemoptions` (
-  `OptionID` int(11) NOT NULL AUTO_INCREMENT,
-  `OptionNameValue` text,
-  `OptionNameValueJson` text,
-  PRIMARY KEY (`OptionID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-
-/*Data for the table `itemoptions` */
-
-insert  into `itemoptions`(`OptionID`,`OptionNameValue`,`OptionNameValueJson`) values (1,'Size:2mm','{\"Size\":\"2mm\"}'),(2,'Size:1mm','{\"Size\":\"1mm\"}'),(3,'Size:3mm','{\"Size\":\"3mm\"}'),(4,'Size:4mm','{\"Size\":\"4mm\"}'),(5,'Size:5mm','{\"Size\":\"5mm\"}'),(6,'Size:6mm','{\"Size\":\"6mm\"}'),(7,'Size:7mm','{\"Size\":\"7mm\"}'),(8,'Size:1m','{\"Size\":\"1m\"}');
-
 /*Table structure for table `itemvariant` */
 
 DROP TABLE IF EXISTS `itemvariant`;
@@ -199,6 +183,8 @@ DROP TABLE IF EXISTS `itemvariant`;
 CREATE TABLE `itemvariant` (
   `VariantNo` int(11) NOT NULL AUTO_INCREMENT,
   `ItemNo` int(4) unsigned zerofill DEFAULT NULL,
+  `VariantName` text,
+  `VariantNameJSON` text,
   `Size` varchar(75) DEFAULT NULL,
   `Color` varchar(50) DEFAULT NULL,
   `Description` varchar(75) DEFAULT NULL,
@@ -212,15 +198,12 @@ CREATE TABLE `itemvariant` (
   `Owned` tinyint(4) DEFAULT NULL,
   `SupplierNo` int(11) DEFAULT NULL,
   `SRemoved` tinyint(4) DEFAULT NULL,
-  `OptionID` int(11) DEFAULT NULL,
-  PRIMARY KEY (`VariantNo`),
-  KEY `itemvariant_ibfk_1` (`OptionID`),
-  CONSTRAINT `itemvariant_ibfk_1` FOREIGN KEY (`OptionID`) REFERENCES `itemoptions` (`OptionID`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`VariantNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 /*Data for the table `itemvariant` */
 
-insert  into `itemvariant`(`VariantNo`,`ItemNo`,`Size`,`Color`,`Description`,`Stocks`,`LowStock`,`Critical`,`DPOCost`,`SRP`,`Price`,`Removed`,`Owned`,`SupplierNo`,`SRemoved`,`OptionID`) values (12,0031,'2mm','','',120,10,10,10,15,16,0,1,4,0,1),(13,0031,'1mm','','',100,10,10,10,11,15,0,1,4,0,2),(14,0031,'3mm','','',NULL,1,2,10,5,5,0,1,4,0,3),(15,0031,'4mm','','',NULL,22,22,10,5,22,0,1,4,0,4),(16,0031,'5mm','','',NULL,28,28,10,15,28,0,1,4,0,5),(17,0031,'6mm','','',NULL,2,2,100,150,100,0,1,4,0,6),(18,0031,'7mm','','',NULL,12,1,5,10,10,0,1,4,0,7),(19,0033,'1m','','Fiber',NULL,5,5,200,202,5,0,1,4,0,8),(20,0031,'10cm','','',NULL,NULL,NULL,10,20,NULL,0,0,4,0,NULL);
+insert  into `itemvariant`(`VariantNo`,`ItemNo`,`VariantName`,`VariantNameJSON`,`Size`,`Color`,`Description`,`Stocks`,`LowStock`,`Critical`,`DPOCost`,`SRP`,`Price`,`Removed`,`Owned`,`SupplierNo`,`SRemoved`) values (12,0031,NULL,NULL,'2mm','','',122,10,10,10,15,16,0,1,4,0),(13,0031,NULL,NULL,'1mm','','',100,10,10,10,11,15,0,1,4,0),(14,0031,NULL,NULL,'3mm','','',NULL,1,2,10,5,5,0,1,4,0),(15,0031,NULL,NULL,'4mm','','',NULL,22,22,10,5,22,0,1,4,0),(16,0031,NULL,NULL,'5mm','','',NULL,28,28,10,15,28,0,1,4,0),(17,0031,NULL,NULL,'6mm','','',NULL,2,2,100,150,100,0,1,4,0),(18,0031,NULL,NULL,'7mm','','',NULL,12,1,5,10,10,0,1,4,0),(19,0033,NULL,NULL,'1m','','Fiber',NULL,5,5,200,202,5,0,1,4,0),(20,0031,NULL,NULL,'10cm','','',NULL,NULL,NULL,10,20,NULL,0,0,4,0),(25,0037,'Size = 15.5 inches<br/>Color = Black<br/>','{\"Size\":\"15.5 inches\",\"Color\":\"Black\"}',NULL,NULL,NULL,2,NULL,NULL,NULL,839,839,0,1,4,0),(26,0037,'Size = 15.5 inches<br/>Color = Gray<br/>','{\"Size\":\"15.5 inches\",\"Color\":\"Gray\"}',NULL,NULL,NULL,NULL,NULL,NULL,NULL,839,839,0,1,4,0),(27,0037,'Size = 15.5 inches<br/>Color = Red<br/>','{\"Size\":\"15.5 inches\",\"Color\":\"Red\"}',NULL,NULL,NULL,NULL,NULL,NULL,NULL,839,839,0,1,4,0),(28,0037,'Size = 20 inches<br/>Color = Black<br/>','{\"Size\":\"20 inches\",\"Color\":\"Black\"}',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1039,1039,0,1,4,0),(29,0037,'Size = 20 inches<br/>Color = Gray<br/>','{\"Size\":\"20 inches\",\"Color\":\"Gray\"}',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1039,1039,0,1,4,0),(30,0037,'Size = 20 inches<br/>Color = Red<br/>','{\"Size\":\"20 inches\",\"Color\":\"Red\"}',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1039,1039,0,1,4,0);
 
 /*Table structure for table `level1` */
 
@@ -321,11 +304,11 @@ CREATE TABLE `requestlist` (
   PRIMARY KEY (`RequestListNo`),
   KEY `FKSupplyRequest_requestlist` (`SupplyRequestNo`),
   KEY `FKItem_requestlist` (`ItemNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=latin1;
 
 /*Data for the table `requestlist` */
 
-insert  into `requestlist`(`RequestListNo`,`Quantity`,`Total`,`Received`,`SupplyRequestNo`,`ItemNo`,`VariantNo`,`Temp`,`createdby`,`createddate`) values (32,10,100,10,24,0031,12,0,NULL,'2016-11-15 15:01:21'),(48,1,10,NULL,27,0031,12,0,NULL,'2016-11-15 15:01:21'),(63,1,10,NULL,29,0031,12,0,NULL,'2016-11-15 15:01:21'),(64,1,10,0,30,0031,12,0,NULL,'2016-11-15 15:01:21'),(66,1,10,NULL,31,0031,12,0,NULL,'2016-11-15 15:01:21'),(81,5,50,NULL,32,0031,12,0,NULL,'2016-11-15 15:01:21'),(82,2,20,2,33,0031,12,0,NULL,'2016-11-15 15:01:21'),(83,3,30,3,33,0031,13,0,NULL,'2016-11-15 15:01:21'),(84,4,40,4,33,0031,14,0,NULL,'2016-11-15 15:01:21'),(85,3,30,2,33,0031,16,0,NULL,'2016-11-15 15:01:21'),(86,5,500,4,33,0031,17,0,NULL,'2016-11-15 15:01:21'),(87,2,10,2,33,0031,18,0,NULL,'2016-11-15 15:01:21'),(88,5,50,NULL,34,0031,13,0,NULL,'2016-11-15 15:01:21'),(89,3,30,5,35,0031,12,0,NULL,'2016-11-15 15:01:21'),(90,4,40,6,35,0031,13,0,NULL,'2016-11-15 15:01:21'),(133,2,NULL,NULL,40,0031,12,0,'Rolen','2016-11-21 15:02:34'),(134,4,NULL,NULL,40,0031,13,0,'Rolen','2016-11-21 15:02:35'),(135,5,NULL,NULL,41,0031,12,0,'Rolen','2016-11-21 15:04:43'),(137,1,NULL,NULL,42,0031,12,0,'Rolen','2016-11-21 15:12:22'),(138,3,NULL,NULL,42,0031,13,0,'Rolen','2016-11-21 15:12:23'),(139,2,NULL,NULL,42,0031,15,0,'Rolen','2016-11-21 15:12:25'),(140,3,NULL,NULL,42,0031,14,0,'Rolen','2016-11-21 15:12:26'),(141,2,NULL,NULL,42,0031,16,0,'Rolen','2016-11-21 15:12:27'),(142,3,NULL,NULL,42,0031,18,0,'Rolen','2016-11-21 15:12:28'),(143,6,NULL,NULL,42,0031,17,0,'Rolen','2016-11-21 15:12:29'),(147,5,NULL,NULL,43,0031,12,0,'Rolen','2016-11-25 18:57:35'),(150,NULL,NULL,NULL,NULL,0031,12,1,'Rolen','2016-11-25 20:23:59');
+insert  into `requestlist`(`RequestListNo`,`Quantity`,`Total`,`Received`,`SupplyRequestNo`,`ItemNo`,`VariantNo`,`Temp`,`createdby`,`createddate`) values (32,10,100,10,24,0031,12,0,NULL,'2016-11-15 15:01:21'),(48,1,10,NULL,27,0031,12,0,NULL,'2016-11-15 15:01:21'),(63,1,10,NULL,29,0031,12,0,NULL,'2016-11-15 15:01:21'),(64,1,10,0,30,0031,12,0,NULL,'2016-11-15 15:01:21'),(66,1,10,NULL,31,0031,12,0,NULL,'2016-11-15 15:01:21'),(81,5,50,NULL,32,0031,12,0,NULL,'2016-11-15 15:01:21'),(82,2,20,2,33,0031,12,0,NULL,'2016-11-15 15:01:21'),(83,3,30,3,33,0031,13,0,NULL,'2016-11-15 15:01:21'),(84,4,40,4,33,0031,14,0,NULL,'2016-11-15 15:01:21'),(85,3,30,2,33,0031,16,0,NULL,'2016-11-15 15:01:21'),(86,5,500,4,33,0031,17,0,NULL,'2016-11-15 15:01:21'),(87,2,10,2,33,0031,18,0,NULL,'2016-11-15 15:01:21'),(88,5,50,NULL,34,0031,13,0,NULL,'2016-11-15 15:01:21'),(89,3,30,5,35,0031,12,0,NULL,'2016-11-15 15:01:21'),(90,4,40,6,35,0031,13,0,NULL,'2016-11-15 15:01:21'),(133,2,NULL,NULL,40,0031,12,0,'Rolen','2016-11-21 15:02:34'),(134,4,NULL,NULL,40,0031,13,0,'Rolen','2016-11-21 15:02:35'),(135,5,NULL,NULL,41,0031,12,0,'Rolen','2016-11-21 15:04:43'),(137,1,NULL,NULL,42,0031,12,0,'Rolen','2016-11-21 15:12:22'),(138,3,NULL,NULL,42,0031,13,0,'Rolen','2016-11-21 15:12:23'),(139,2,NULL,NULL,42,0031,15,0,'Rolen','2016-11-21 15:12:25'),(140,3,NULL,NULL,42,0031,14,0,'Rolen','2016-11-21 15:12:26'),(141,2,NULL,NULL,42,0031,16,0,'Rolen','2016-11-21 15:12:27'),(142,3,NULL,NULL,42,0031,18,0,'Rolen','2016-11-21 15:12:28'),(143,6,NULL,NULL,42,0031,17,0,'Rolen','2016-11-21 15:12:29'),(147,5,NULL,2,43,0031,12,0,'Rolen','2016-11-25 18:57:35'),(151,100,NULL,20,44,0037,25,0,'Rolen','2016-11-30 00:33:29'),(152,100,NULL,20,44,0037,26,0,'Rolen','2016-11-30 00:33:57'),(153,100,NULL,20,44,0037,27,0,'Rolen','2016-11-30 00:34:03'),(154,100,NULL,20,44,0037,28,0,'Rolen','2016-11-30 00:34:04'),(155,100,NULL,20,44,0037,29,0,'Rolen','2016-11-30 00:34:05'),(156,100,NULL,20,44,0037,30,0,'Rolen','2016-11-30 00:34:07'),(157,5,0,2,45,0037,25,0,NULL,'2016-11-30 01:08:05');
 
 /*Table structure for table `sales` */
 
@@ -381,11 +364,11 @@ CREATE TABLE `supply` (
   KEY `FK_supply` (`RequestListNo`),
   CONSTRAINT `FKSupplier_supply` FOREIGN KEY (`SupplierNo`) REFERENCES `supplier` (`SupplierNo`),
   CONSTRAINT `FK_supply` FOREIGN KEY (`RequestListNo`) REFERENCES `requestlist` (`RequestListNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 
 /*Data for the table `supply` */
 
-insert  into `supply`(`SupplyNo`,`QuantityReceived`,`PendingQuantity`,`DateReceive`,`SupplierNo`,`SupplyRequestNo`,`RequestListNo`,`ItemNo`,`Temp`) values (23,10,0,'2016-10-01 09:35:31',NULL,24,32,NULL,NULL),(24,5,5,'2016-10-01 10:01:53',NULL,24,32,NULL,NULL),(25,10,0,'2016-10-01 10:07:10',NULL,24,32,NULL,NULL),(26,0,1,'2016-10-01 10:40:41',NULL,31,66,NULL,NULL),(27,2,0,'2016-11-09 21:07:56',NULL,33,82,NULL,NULL),(28,3,0,'2016-11-09 21:07:56',NULL,33,83,NULL,NULL),(29,4,0,'2016-11-09 21:07:56',NULL,33,84,NULL,NULL),(30,2,1,'2016-11-09 21:07:56',NULL,33,85,NULL,NULL),(31,4,1,'2016-11-09 21:07:56',NULL,33,86,NULL,NULL),(32,2,0,'2016-11-09 21:07:56',NULL,33,87,NULL,NULL),(33,5,-2,'2016-11-11 22:47:56',NULL,35,89,NULL,NULL),(34,6,-2,'2016-11-11 22:47:56',NULL,35,90,NULL,NULL);
+insert  into `supply`(`SupplyNo`,`QuantityReceived`,`PendingQuantity`,`DateReceive`,`SupplierNo`,`SupplyRequestNo`,`RequestListNo`,`ItemNo`,`Temp`) values (23,10,0,'2016-10-01 09:35:31',NULL,24,32,NULL,NULL),(24,5,5,'2016-10-01 10:01:53',NULL,24,32,NULL,NULL),(25,10,0,'2016-10-01 10:07:10',NULL,24,32,NULL,NULL),(26,0,1,'2016-10-01 10:40:41',NULL,31,66,NULL,NULL),(27,2,0,'2016-11-09 21:07:56',NULL,33,82,NULL,NULL),(28,3,0,'2016-11-09 21:07:56',NULL,33,83,NULL,NULL),(29,4,0,'2016-11-09 21:07:56',NULL,33,84,NULL,NULL),(30,2,1,'2016-11-09 21:07:56',NULL,33,85,NULL,NULL),(31,4,1,'2016-11-09 21:07:56',NULL,33,86,NULL,NULL),(32,2,0,'2016-11-09 21:07:56',NULL,33,87,NULL,NULL),(33,5,-2,'2016-11-11 22:47:56',NULL,35,89,NULL,NULL),(34,6,-2,'2016-11-11 22:47:56',NULL,35,90,NULL,NULL),(35,20,-80,'2016-11-30 00:38:12',NULL,44,151,NULL,NULL),(36,20,-80,'2016-11-30 00:38:12',NULL,44,152,NULL,NULL),(37,20,-80,'2016-11-30 00:38:12',NULL,44,153,NULL,NULL),(38,20,-80,'2016-11-30 00:38:12',NULL,44,154,NULL,NULL),(39,20,-80,'2016-11-30 00:38:12',NULL,44,155,NULL,NULL),(40,20,-80,'2016-11-30 00:38:12',NULL,44,156,NULL,NULL),(42,2,3,'2016-11-30 01:08:32',NULL,45,157,NULL,NULL),(43,2,3,'2016-11-30 02:00:33',NULL,43,147,NULL,NULL);
 
 /*Table structure for table `supplyrequest` */
 
@@ -399,11 +382,11 @@ CREATE TABLE `supplyrequest` (
   PRIMARY KEY (`SupplyRequestNo`),
   KEY `FKSupplier_supplyrequest` (`SupplierNo`),
   CONSTRAINT `FKSupplier_supplyrequest` FOREIGN KEY (`SupplierNo`) REFERENCES `supplier` (`SupplierNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
 
 /*Data for the table `supplyrequest` */
 
-insert  into `supplyrequest`(`SupplyRequestNo`,`Date`,`SupplierNo`,`isReceived`) values (24,'2016-10-01 02:17:36',4,1),(25,'2016-10-01 09:45:51',4,0),(26,'2016-10-01 09:52:01',4,0),(27,'2016-10-01 09:52:32',4,0),(28,'2016-10-01 09:53:46',4,0),(29,'2016-10-01 10:30:25',4,0),(30,'2016-10-01 10:30:45',4,0),(31,'2016-10-01 10:34:56',4,1),(32,'2016-11-09 20:38:59',4,0),(33,'2016-11-09 20:53:49',4,1),(34,'2016-11-09 21:05:35',4,0),(35,'2016-11-09 21:25:11',4,1),(40,'2016-11-21 15:02:41',4,0),(41,'2016-11-21 15:05:01',4,0),(42,'2016-11-21 15:12:42',4,0),(43,'2016-11-25 18:57:43',4,0);
+insert  into `supplyrequest`(`SupplyRequestNo`,`Date`,`SupplierNo`,`isReceived`) values (24,'2016-10-01 02:17:36',4,1),(25,'2016-10-01 09:45:51',4,0),(26,'2016-10-01 09:52:01',4,0),(27,'2016-10-01 09:52:32',4,0),(28,'2016-10-01 09:53:46',4,0),(29,'2016-10-01 10:30:25',4,0),(30,'2016-10-01 10:30:45',4,0),(31,'2016-10-01 10:34:56',4,1),(32,'2016-11-09 20:38:59',4,0),(33,'2016-11-09 20:53:49',4,1),(34,'2016-11-09 21:05:35',4,0),(35,'2016-11-09 21:25:11',4,1),(40,'2016-11-21 15:02:41',4,0),(41,'2016-11-21 15:05:01',4,0),(42,'2016-11-21 15:12:42',4,0),(43,'2016-11-25 18:57:43',4,1),(44,'2016-11-30 00:34:21',4,1),(45,'2016-11-30 01:08:16',4,1);
 
 /*Table structure for table `tblauditlogs` */
 
@@ -416,11 +399,11 @@ CREATE TABLE `tblauditlogs` (
   `TransactionDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `ModifiedBy` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tblauditlogs` */
 
-insert  into `tblauditlogs`(`ID`,`Transaction`,`Action`,`TransactionDate`,`ModifiedBy`) values (1,'Update Family','Update','2016-11-25 18:34:29','Rolen'),(2,'Purchase Order','Insert','2016-11-25 18:57:43','Rolen'),(3,'New Family','Insert','2016-11-25 21:32:45','Rolen'),(4,'New Family','Insert','2016-11-25 21:35:24','Rolen'),(5,'New Category','Insert','2016-11-25 21:36:20','Rolen'),(6,'New Category','Insert','2016-11-25 21:41:01','Rolen'),(7,'New Sub-Category','Insert','2016-11-25 21:41:15','Rolen'),(8,'Update Category','Update','2016-11-25 21:49:10','Rolen'),(9,'Update Sub-Category','Update','2016-11-25 21:49:17','Rolen'),(10,'New Sub-Category','Insert','2016-11-25 21:50:05','Rolen'),(11,'Delete Sub-Category','Delete','2016-11-25 21:50:16','Rolen'),(12,'New Category','Insert','2016-11-25 21:50:41','Rolen'),(13,'Delete Category','Delete','2016-11-25 21:50:47','Rolen'),(14,'New Sub-Category','Insert','2016-11-25 22:11:59','Rolen'),(15,'Delete Sub-Category','Delete','2016-11-25 22:12:27','Rolen'),(16,'Delete Sub-Category','Delete','2016-11-25 22:12:33','Rolen'),(17,'Delete Category','Delete','2016-11-25 22:12:35','Rolen'),(18,'Delete Family','Delete','2016-11-25 22:12:39','Rolen'),(19,'Delete Family','Delete','2016-11-25 22:12:41','Rolen'),(20,'Order number: 00000009  set order status to Process','Update','2016-11-26 00:31:10','Rolen'),(21,'Order number: 00000009  set order status to Ship','Update','2016-11-26 00:31:18','Rolen'),(22,'Decrease Stock after Order to shipped','Update','2016-11-26 00:31:18','Rolen');
+insert  into `tblauditlogs`(`ID`,`Transaction`,`Action`,`TransactionDate`,`ModifiedBy`) values (1,'Update Family','Update','2016-11-25 18:34:29','Rolen'),(2,'Purchase Order','Insert','2016-11-25 18:57:43','Rolen'),(3,'New Family','Insert','2016-11-25 21:32:45','Rolen'),(4,'New Family','Insert','2016-11-25 21:35:24','Rolen'),(5,'New Category','Insert','2016-11-25 21:36:20','Rolen'),(6,'New Category','Insert','2016-11-25 21:41:01','Rolen'),(7,'New Sub-Category','Insert','2016-11-25 21:41:15','Rolen'),(8,'Update Category','Update','2016-11-25 21:49:10','Rolen'),(9,'Update Sub-Category','Update','2016-11-25 21:49:17','Rolen'),(10,'New Sub-Category','Insert','2016-11-25 21:50:05','Rolen'),(11,'Delete Sub-Category','Delete','2016-11-25 21:50:16','Rolen'),(12,'New Category','Insert','2016-11-25 21:50:41','Rolen'),(13,'Delete Category','Delete','2016-11-25 21:50:47','Rolen'),(14,'New Sub-Category','Insert','2016-11-25 22:11:59','Rolen'),(15,'Delete Sub-Category','Delete','2016-11-25 22:12:27','Rolen'),(16,'Delete Sub-Category','Delete','2016-11-25 22:12:33','Rolen'),(17,'Delete Category','Delete','2016-11-25 22:12:35','Rolen'),(18,'Delete Family','Delete','2016-11-25 22:12:39','Rolen'),(19,'Delete Family','Delete','2016-11-25 22:12:41','Rolen'),(20,'Order number: 00000009  set order status to Process','Update','2016-11-26 00:31:10','Rolen'),(21,'Order number: 00000009  set order status to Ship','Update','2016-11-26 00:31:18','Rolen'),(22,'Decrease Stock after Order to shipped','Update','2016-11-26 00:31:18','Rolen'),(23,'0','Insert','2016-11-30 00:10:17','JMDMktg'),(24,'0','Insert','2016-11-30 00:13:32','JMDMktg'),(25,'0','Insert','2016-11-30 00:13:32','JMDMktg'),(26,'0','Insert','2016-11-30 00:13:32','JMDMktg'),(27,'0','Insert','2016-11-30 00:26:56','JMDMktg'),(28,'0','Insert','2016-11-30 00:26:56','JMDMktg'),(29,'0','Insert','2016-11-30 00:26:56','JMDMktg'),(30,'0','Insert','2016-11-30 00:31:05','JMDMktg'),(31,'0','Insert','2016-11-30 00:31:05','JMDMktg'),(32,'0','Insert','2016-11-30 00:31:05','JMDMktg'),(33,'0','Insert','2016-11-30 00:31:05','JMDMktg'),(34,'0','Insert','2016-11-30 00:31:06','JMDMktg'),(35,'0','Insert','2016-11-30 00:31:06','JMDMktg'),(36,'0','Insert','2016-11-30 00:31:06','JMDMktg'),(37,'Purchase Order','Insert','2016-11-30 00:34:21','Rolen'),(38,'New PO Received','Insert','2016-11-30 00:38:12','Rolen'),(39,'Update Stock after PO Received','Update','2016-11-30 00:38:12','Rolen');
 
 /*Table structure for table `tblorder` */
 
@@ -703,7 +686,7 @@ DROP TABLE IF EXISTS `vw_items`;
  `Name2` varchar(50) ,
  `Name3` varchar(50) ,
  `SupplierName` varchar(50) ,
- `Action` varchar(148) 
+ `ViewItems` varchar(68) 
 )*/;
 
 /*Table structure for table `vw_lowstocks` */
@@ -767,14 +750,14 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 DROP TABLE IF EXISTS `vw_getbackorders` */;
 /*!50001 DROP VIEW IF EXISTS `vw_getbackorders` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getbackorders` AS (select `rl`.`RequestListNo` AS `RequestListNo`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,`rl`.`Received` AS `Received`,`sup`.`PendingQuantity` AS `PendingQuantity` from ((((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on(((`rl`.`VariantNo` = `iv`.`VariantNo`) and (`i`.`ItemNo` = `iv`.`ItemNo`)))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sup`.`PendingQuantity` > 0)) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getbackorders` AS (select `rl`.`RequestListNo` AS `RequestListNo`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,`rl`.`Received` AS `Received`,`sup`.`PendingQuantity` AS `PendingQuantity` from (((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on(((`rl`.`VariantNo` = `iv`.`VariantNo`) and (`i`.`ItemNo` = `iv`.`ItemNo`)))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sup`.`PendingQuantity` > 0)) */;
 
 /*View structure for view vw_getlowstockbysupplier */
 
 /*!50001 DROP TABLE IF EXISTS `vw_getlowstockbysupplier` */;
 /*!50001 DROP VIEW IF EXISTS `vw_getlowstockbysupplier` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getlowstockbysupplier` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,ifnull(`iv`.`LowStock`,0) AS `LOWSTOCKS`,ifnull(`iv`.`Critical`,0) AS `CRITICAL`,`iv`.`SupplierNo` AS `SupplierNo` from ((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`))) where ((`iv`.`Stocks` <= `iv`.`LowStock`) and (`iv`.`Owned` = 1))) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getlowstockbysupplier` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,ifnull(`iv`.`LowStock`,0) AS `LOWSTOCKS`,ifnull(`iv`.`Critical`,0) AS `CRITICAL`,`iv`.`SupplierNo` AS `SupplierNo` from (`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) where ((`iv`.`Stocks` <= `iv`.`LowStock`) and (`iv`.`Owned` = 1))) */;
 
 /*View structure for view vw_getmostcustomer */
 
@@ -795,14 +778,14 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 DROP TABLE IF EXISTS `vw_getorderbysupplier` */;
 /*!50001 DROP VIEW IF EXISTS `vw_getorderbysupplier` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getorderbysupplier` AS (select concat('<button class="btn btn-success" onclick=\'addtoPo("',`i`.`ItemNo`,'","',`iv`.`VariantNo`,'");\'><span class="glyphicon glyphicon-plus"></span></button>') AS `Action`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `Description`,`iv`.`DPOCost` AS `DPOCost`,`i`.`SupplierNo` AS `SupplierNo` from ((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`)))) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getorderbysupplier` AS (select concat('<button class="btn btn-success" onclick=\'addtoPo("',`i`.`ItemNo`,'","',`iv`.`VariantNo`,'");\'><span class="glyphicon glyphicon-plus"></span></button>') AS `Action`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `Description`,`iv`.`DPOCost` AS `DPOCost`,`i`.`SupplierNo` AS `SupplierNo` from (`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`)))) */;
 
 /*View structure for view vw_getposubmit */
 
 /*!50001 DROP TABLE IF EXISTS `vw_getposubmit` */;
 /*!50001 DROP VIEW IF EXISTS `vw_getposubmit` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getposubmit` AS (select concat('<button class="btn btn-danger" onclick="removePO(\'',`rl`.`RequestListNo`,'\',this);"><span class="glyphicon glyphicon-remove"></span></button>') AS `Remove`,concat('<input type="text" value="',ifnull(`rl`.`Quantity`,0),'" class="form-control poquantity" onblur="updatePOQty(\'',`rl`.`RequestListNo`,'\',this);"/>') AS `ItemQty`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `Item`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,`iv`.`DPOCost` AS `DPOCost`,`rl`.`Total` AS `Total`,`rl`.`createdby` AS `createdby`,`i`.`SupplierNo` AS `SupplierNo`,`rl`.`RequestListNo` AS `RequestListNo` from (((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`iv`.`VariantNo` = `rl`.`VariantNo`)))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`))) where (`rl`.`Temp` = 1)) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getposubmit` AS (select concat('<button class="btn btn-danger" onclick="removePO(\'',`rl`.`RequestListNo`,'\',this);"><span class="glyphicon glyphicon-remove"></span></button>') AS `Remove`,concat('<input type="text" value="',ifnull(`rl`.`Quantity`,0),'" class="form-control poquantity" onblur="updatePOQty(\'',`rl`.`RequestListNo`,'\',this);"/>') AS `ItemQty`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `Item`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,`iv`.`DPOCost` AS `DPOCost`,`rl`.`Total` AS `Total`,`rl`.`createdby` AS `createdby`,`i`.`SupplierNo` AS `SupplierNo`,`rl`.`RequestListNo` AS `RequestListNo` from ((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`iv`.`VariantNo` = `rl`.`VariantNo`)))) where (`rl`.`Temp` = 1)) */;
 
 /*View structure for view vw_getpotoreceive */
 
@@ -837,49 +820,49 @@ DROP TABLE IF EXISTS `vw_receivings`;
 /*!50001 DROP TABLE IF EXISTS `vw_getselectedorderdetails` */;
 /*!50001 DROP VIEW IF EXISTS `vw_getselectedorderdetails` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getselectedorderdetails` AS (select `sr`.`SupplyRequestNo` AS `SupplyRequestNo`,`rl`.`RequestListNo` AS `RequestListNo`,`i`.`ItemNo` AS `ItemNo`,`iv`.`VariantNo` AS `VariantNo`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,concat('<input type="text" value="',ifnull(`rl`.`Received`,0),'" class="form-control poreceived" onblur="updatePOReceived(\'',`rl`.`RequestListNo`,'\',this);"/>') AS `Received`,`rl`.`Quantity` AS `Requested`,ifnull(`rl`.`Received`,0) AS `QtyReceived` from ((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`rl`.`VariantNo` = `iv`.`VariantNo`)))) join `supplyrequest` `sr` on((`rl`.`SupplyRequestNo` = `sr`.`SupplyRequestNo`))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`)))) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getselectedorderdetails` AS (select `sr`.`SupplyRequestNo` AS `SupplyRequestNo`,`rl`.`RequestListNo` AS `RequestListNo`,`i`.`ItemNo` AS `ItemNo`,`iv`.`VariantNo` AS `VariantNo`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,concat('<input type="text" value="',ifnull(`rl`.`Received`,0),'" class="form-control poreceived" onblur="updatePOReceived(\'',`rl`.`RequestListNo`,'\',this);"/>') AS `Received`,`rl`.`Quantity` AS `Requested`,ifnull(`rl`.`Received`,0) AS `QtyReceived` from (((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `requestlist` `rl` on(((`i`.`ItemNo` = `rl`.`ItemNo`) and (`rl`.`VariantNo` = `iv`.`VariantNo`)))) join `supplyrequest` `sr` on((`rl`.`SupplyRequestNo` = `sr`.`SupplyRequestNo`)))) */;
 
 /*View structure for view vw_getsupplyitemsbysupplier */
 
 /*!50001 DROP TABLE IF EXISTS `vw_getsupplyitemsbysupplier` */;
 /*!50001 DROP VIEW IF EXISTS `vw_getsupplyitemsbysupplier` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getsupplyitemsbysupplier` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,concat(`l1`.`Name1`,' > ',`l2`.`Name2`,' > ',`l3`.`Name3`) AS `Category`,`iv`.`DPOCost` AS `DPOCost`,`iv`.`SRP` AS `SRP`,`i`.`SupplierNo` AS `SupplierNo` from (((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`)))) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_getsupplyitemsbysupplier` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,concat(`l1`.`Name1`,' > ',`l2`.`Name2`,' > ',`l3`.`Name3`) AS `Category`,`iv`.`DPOCost` AS `DPOCost`,`iv`.`SRP` AS `SRP`,`i`.`SupplierNo` AS `SupplierNo` from ((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`)))) */;
 
 /*View structure for view vw_inventory */
 
 /*!50001 DROP TABLE IF EXISTS `vw_inventory` */;
 /*!50001 DROP VIEW IF EXISTS `vw_inventory` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_inventory` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,`iv`.`VariantNo` AS `VariantNo`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,concat(`l1`.`Name1`,' > ',`l2`.`Name2`,' > ',`l3`.`Name3`) AS `Category`,(ifnull(`iv`.`Stocks`,0) - sum(ifnull(`ol`.`Quantity`,0))) AS `STOCKCOMMIT`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,sum(ifnull(`ol`.`Quantity`,0)) AS `COMMIT`,concat('<button class=\'btn btn-action\' onclick="physicalCount(\'',`iv`.`VariantNo`,'\');"><span class=\'glyphicon glyphicon-plus\'></span> Physical Count</button>') AS `Action` from (((((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `orderlist` `ol` on(((`i`.`ItemNo` = `ol`.`ItemNo`) and (`iv`.`VariantNo` = `ol`.`VariantNo`)))) join `tblorder` `o` on((`ol`.`OrderNo` = `o`.`OrderNo`))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`))) where (`iv`.`Owned` = 1) group by `ol`.`OrderNo`,`ol`.`VariantNo`) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_inventory` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,`iv`.`VariantNo` AS `VariantNo`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,concat(`l1`.`Name1`,' > ',`l2`.`Name2`,' > ',`l3`.`Name3`) AS `Category`,(ifnull(`iv`.`Stocks`,0) - sum(ifnull(`ol`.`Quantity`,0))) AS `STOCKCOMMIT`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,sum(ifnull(`ol`.`Quantity`,0)) AS `COMMIT`,concat('<button class=\'btn btn-action\' onclick="physicalCount(\'',`iv`.`VariantNo`,'\');"><span class=\'glyphicon glyphicon-plus\'></span> Physical Count</button>') AS `Action` from ((((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `orderlist` `ol` on(((`i`.`ItemNo` = `ol`.`ItemNo`) and (`iv`.`VariantNo` = `ol`.`VariantNo`)))) join `tblorder` `o` on((`ol`.`OrderNo` = `o`.`OrderNo`))) where (`iv`.`Owned` = 1) group by `ol`.`OrderNo`,`ol`.`VariantNo`) */;
 
 /*View structure for view vw_items */
 
 /*!50001 DROP TABLE IF EXISTS `vw_items` */;
 /*!50001 DROP VIEW IF EXISTS `vw_items` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_items` AS (select `i`.`ItemNo` AS `ItemNo`,`i`.`Name` AS `Name`,count(ifnull(`iv`.`VariantNo`,0)) AS `NoOfItems`,`l1`.`Name1` AS `Name1`,`l2`.`Name2` AS `Name2`,`l3`.`Name3` AS `Name3`,`s`.`SupplierName` AS `SupplierName`,concat('<button class="btn btn-action" onclick="addItemVariant(\'',`i`.`ItemNo`,'\',this);"><span class="glyphicon glyphicon-plus"></span> Add Item Variant</button>') AS `Action` from (((((`item` `i` left join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `supplier` `s` on((`i`.`SupplierNo` = `s`.`SupplierNo`))) where ((`i`.`Owned` = 1) and (`i`.`Removed` = 0) and (`i`.`SRemoved` = 0)) group by `iv`.`ItemNo`) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_items` AS (select `i`.`ItemNo` AS `ItemNo`,`i`.`Name` AS `Name`,count(`iv`.`ItemNo`) AS `NoOfItems`,`l1`.`Name1` AS `Name1`,`l2`.`Name2` AS `Name2`,`l3`.`Name3` AS `Name3`,`s`.`SupplierName` AS `SupplierName`,'View <span class="glyphicon glyphicon-menu-right pull-right"></span>' AS `ViewItems` from (((((`item` `i` left join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `supplier` `s` on((`i`.`SupplierNo` = `s`.`SupplierNo`))) where ((`i`.`Owned` = 1) and (`i`.`Removed` = 0) and (`i`.`SRemoved` = 0)) group by `iv`.`ItemNo`) */;
 
 /*View structure for view vw_lowstocks */
 
 /*!50001 DROP TABLE IF EXISTS `vw_lowstocks` */;
 /*!50001 DROP VIEW IF EXISTS `vw_lowstocks` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_lowstocks` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,`s`.`SupplierName` AS `SupplierName`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,ifnull(`iv`.`LowStock`,0) AS `LOWSTOCKS`,ifnull(`iv`.`Critical`,0) AS `CRITICAL` from ((((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `supplier` `s` on((`i`.`SupplierNo` = `s`.`SupplierNo`))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`))) where (`iv`.`Owned` = 1)) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_lowstocks` AS (select concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNo`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,`s`.`SupplierName` AS `SupplierName`,ifnull(`iv`.`Stocks`,0) AS `STOCKS`,ifnull(`iv`.`LowStock`,0) AS `LOWSTOCKS`,ifnull(`iv`.`Critical`,0) AS `CRITICAL` from (((((`item` `i` join `itemvariant` `iv` on((`i`.`ItemNo` = `iv`.`ItemNo`))) join `level1` `l1` on((`i`.`Level1No` = `l1`.`Level1No`))) join `level2` `l2` on((`i`.`Level2No` = `l2`.`Level2No`))) join `level3` `l3` on((`i`.`Level3No` = `l3`.`Level3No`))) join `supplier` `s` on((`i`.`SupplierNo` = `s`.`SupplierNo`))) where (`iv`.`Owned` = 1)) */;
 
 /*View structure for view vw_orderlistbyorderno */
 
 /*!50001 DROP TABLE IF EXISTS `vw_orderlistbyorderno` */;
 /*!50001 DROP VIEW IF EXISTS `vw_orderlistbyorderno` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_orderlistbyorderno` AS (select `o`.`OrderNo` AS `OrderNo`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNumber`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,`o`.`Quantity` AS `Quantity`,`iv`.`Price` AS `Price`,(`o`.`Quantity` * `iv`.`Price`) AS `Total` from (((`orderlist` `o` join `item` `i` on((`o`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`o`.`VariantNo` = `iv`.`VariantNo`))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`)))) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_orderlistbyorderno` AS (select `o`.`OrderNo` AS `OrderNo`,concat(`i`.`ItemNo`,'-',`iv`.`VariantNo`) AS `ItemNumber`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,`o`.`Quantity` AS `Quantity`,`iv`.`Price` AS `Price`,(`o`.`Quantity` * `iv`.`Price`) AS `Total` from ((`orderlist` `o` join `item` `i` on((`o`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`o`.`VariantNo` = `iv`.`VariantNo`)))) */;
 
 /*View structure for view vw_receivings */
 
 /*!50001 DROP TABLE IF EXISTS `vw_receivings` */;
 /*!50001 DROP VIEW IF EXISTS `vw_receivings` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_receivings` AS (select `sup`.`SupplyNo` AS `SupplyNo`,`sup`.`DateReceive` AS `DateReceive`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`io`.`OptionNameValue`) AS `ItemDescription`,`sup`.`QuantityReceived` AS `QuantityReceived`,`sup`.`PendingQuantity` AS `PendingQuantity`,`rl`.`Quantity` AS `Quantity` from ((((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`rl`.`VariantNo` = `iv`.`VariantNo`))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) join `itemoptions` `io` on((`iv`.`OptionID` = `io`.`OptionID`))) where (`sr`.`isReceived` = 1) order by `sup`.`DateReceive` desc) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_receivings` AS (select `sup`.`SupplyNo` AS `SupplyNo`,`sup`.`DateReceive` AS `DateReceive`,`s`.`SupplierName` AS `SupplierName`,concat(`i`.`Name`,'<br/>',`iv`.`VariantName`) AS `ItemDescription`,`sup`.`QuantityReceived` AS `QuantityReceived`,`sup`.`PendingQuantity` AS `PendingQuantity`,`rl`.`Quantity` AS `Quantity` from (((((`supplyrequest` `sr` join `supply` `sup` on((`sr`.`SupplyRequestNo` = `sup`.`SupplyRequestNo`))) join `requestlist` `rl` on(((`sr`.`SupplyRequestNo` = `rl`.`SupplyRequestNo`) and (`sup`.`RequestListNo` = `rl`.`RequestListNo`)))) join `item` `i` on((`rl`.`ItemNo` = `i`.`ItemNo`))) join `itemvariant` `iv` on((`rl`.`VariantNo` = `iv`.`VariantNo`))) join `supplier` `s` on((`sr`.`SupplierNo` = `s`.`SupplierNo`))) where (`sr`.`isReceived` = 1) order by `sup`.`DateReceive` desc) */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

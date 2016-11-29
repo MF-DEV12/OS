@@ -533,7 +533,7 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,Name1|Family,Name2|Category,Name3|Subcategory,SupplierName|Supplier name,Action|Action";
+			$data["fields"] = "ViewItems|Variants,ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,Name1|Family,Name2|Category,Name3|Subcategory,SupplierName|Supplier name";
 			return $data; 
 		}
 		
@@ -826,7 +826,75 @@ class Main extends CI_Controller {
 		}
 
 	//ITEMS
-	 
+	 	function insertNewItemWithVariants(){
+
+	 		$variant = $this->input->post("data");
+	 		$itemname = $this->input->post("itemname");
+	 		$uom = $this->input->post("UOM");
+	 		$family = $this->input->post("family");
+	 		$category = $this->input->post("category");
+	 		$subcategory = $this->input->post("subcategory");
+	 		$supplierno = $this->session->userdata("supplierno");
+	 		$variant = json_decode($variant);
+	 		 
+	 		// Insert to Items
+			$this->param = $this->query_model->param; 
+			$data["Name"] = $itemname;
+			$data["UOM"] = $uom;
+			$data["Level1No"] = $family;
+			$data["Level2No"] = $category;
+			$data["Level3No"] = $subcategory;
+			$data["SRemoved"] = 0;
+			$data["Removed"] = 0;
+			$data["Owned"] = 1;
+			$data["SupplierNo"] = $supplierno;
+			$this->param["transactionname"] = "New items inserted:" + $itemname;
+			$this->param["dataToInsert"] = $data;
+			$this->param["table"] = "item";
+			$this->query_model->insertData($this->param); 
+
+
+			$dataitems = array();
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "item";
+			$this->param["fields"] = "*";  
+			$this->param["conditions"] = "Name = '$itemname'";
+			$dataitems =  $this->query_model->getData($this->param); 
+			$dataitems =  $dataitems[0];
+
+
+			foreach ($variant as $v) {
+				 // Insert to Items Variant
+				$this->param = $this->query_model->param;
+				$datavariant = array(); 
+				$datavariant["ItemNo"] = $dataitems->ItemNo;
+				$datavariant["SRP"] = $v->SRP;
+				$datavariant["Price"] = $v->Price; 
+				$datavariant["VariantName"] = $v->VariantsName; 
+				$datavariant["VariantNameJSON"] = json_encode($v->VariantsNameJSON); 
+				$datavariant["SupplierNo"] = $supplierno;
+				$this->param["transactionname"] = "New items inserted:" + $itemname;
+				$this->param["dataToInsert"] = $datavariant;
+				$this->param["table"] = "itemvariant";
+				$this->query_model->insertData($this->param); 
+			}	
+
+			echo true;
+
+	 	}
+
+	 	function GetVariantsByItemNo(){
+			$itemno = $this->input->post("ino");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "itemvariant";
+			$this->param["fields"] = "*"; 
+ 		    $this->param["conditions"] = "ItemNo = '$itemno'";
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "VariantNo|No,VariantName|Variant name,Price|Unit Price,SRP|Suggested Retail Price (SRP)";
+			$list["child-".$itemno] = $data;
+			echo json_encode($list);
+		}
+
 		
 	//	
 

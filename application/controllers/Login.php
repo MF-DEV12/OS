@@ -27,6 +27,8 @@ class Login extends CI_Controller {
 			$data["username"] = $result[0]->Username;
 			$data["email"] = $result[0]->email;
 			$data["role"] = $result[0]->LoginType;
+			if($data["role"] == "supplier")
+				$data["supplierno"] = $this->getSupplierNoByAccountNo($result[0]->AccountNo);
 			$this->session->set_userdata($data); 
 			redirect("/main");
 		}
@@ -41,5 +43,14 @@ class Login extends CI_Controller {
 		redirect("/login");
 	}
 	
+
+	function getSupplierNoByAccountNo($accountNo){
+		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param["table"] = "supplier";
+ 		$this->param["fields"] = "*";
+		$this->param["conditions"] = " AccountNo = '$accountNo'";
+		$result = $this->query_model->getData($this->param);
+		return $result[0]->SupplierNo;
+	}
 	 
 }

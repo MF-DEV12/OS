@@ -1,11 +1,12 @@
 var listObjTableBinded = new Object();
+var newItemVariantList = new Array();
 $(function(){
 
 	callAjaxJson("main/initializeAllData", new Object(), bindingDatatoDataTable, ajaxError)
     dashboardChart();
 
-    // PURCHASE ORDER
-        // Purchase Order
+// PURCHASE ORDER
+    // Purchase Order
         $("#btn-addrequest").click(function(){
             var elem = $(this)
             toggleMainDisplay(false,elem,"Create Request") 
@@ -181,7 +182,7 @@ $(function(){
             }
         })
 
-        //Receivings
+    //Receivings
         $("#btn-directreceive").click(function(e){
             var elem = $(this)
             toggleMainDisplay(false,elem,"Select PO List to Receive")
@@ -261,7 +262,7 @@ $(function(){
             }
         })
 
-        //Suppliers
+    //Suppliers
         $("#btn-addsupplier").click(function(e){
             var elem = $(this)
             toggleMainDisplay(false,elem,"New")
@@ -324,7 +325,7 @@ $(function(){
         })
 
 
-        //ORDERS
+    //ORDERS
         $("select#polistorderstatus").change(function(){
             var elem = $(this)
             var param = new Object()
@@ -389,7 +390,7 @@ $(function(){
             } 
         })
 
-        //INVENTORY
+    //INVENTORY
         $(".dd-categories").on("click","dd",function(e){
             var elem = $(this)
             var dl = elem.closest("dl")
@@ -560,15 +561,125 @@ $(function(){
 
         })
 
-//SUPPLIER SIDE
-        //ITEMS
-        $("#btn-additems").click(function(){
-            $("li[data-content='additems'] a").click()
+         $('table[data-table="items"]').on('click', 'td:first-child', function () { 
+            var elem = $(this)
+            var tr = elem.closest('tr');
+            var table = listObjTableBinded["items"]
+            var data = table.rows(tr).data()
+            data = data[0]
+            elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
+            var row = table.row( tr );
+            var trExists = $("table[data-table=items] tr.shown")
+            trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+            var rowExists = table.row( trExists );
+    
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                elem.find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+                tr.removeClass('shown');
+            }
+            else{
+                var param = new Object();
+                param.ino = data.ItemNo
 
+                callAjaxJson("main/GetVariantsByItemNo", param, 
+                    function(response){
+                        var div = $("<div/>") 
+                            div.attr("class","childtable-wrap") 
+                        if(response["child-" +  data.ItemNo].list.length){ 
+                        
+                            var childtable = $("<table/>")
+                            div.append("<h5 class=\"dash-header sub\">List of item variant(s):</h5>")
+                            childtable
+                                .attr("id","child-"+data.ItemNo)
+                                .attr("class","display")
+                                .addClass("childtable")
+                                .data("table","child-"+data.ItemNo)
 
+                            bindingDataViewingVariants(response,childtable)
+                            div.append(childtable)
+                        }
+                        else{
+                            div.append("<h5>No variants(s) found.</h5>")
 
+                        }
+
+                        if ( rowExists.child.isShown() ) {
+                             rowExists.child.hide();
+                             trExists.removeClass('shown');
+                        }  
+                        row.child(div).show();
+                        tr.addClass("shown")
+
+                    }, 
+                ajaxError)  
+            } 
         })
 
+//SUPPLIER SIDE
+        //ITEMS
+        $('table[data-table="sup-items"]').on('click', 'td:first-child', function () { 
+            var elem = $(this)
+            var tr = elem.closest('tr');
+            var table = listObjTableBinded["sup-items"]
+            var data = table.rows(tr).data()
+            data = data[0]
+            elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
+            var row = table.row( tr );
+            var trExists = $("table[data-table=sup-items] tr.shown")
+            trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+            var rowExists = table.row( trExists );
+    
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                elem.find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+                tr.removeClass('shown');
+            }
+            else{
+                var param = new Object();
+                param.ino = data.ItemNo
+
+                callAjaxJson("main/GetVariantsByItemNo", param, 
+                    function(response){
+                        var div = $("<div/>") 
+                            div.attr("class","childtable-wrap") 
+                        if(response["child-" +  data.ItemNo].list.length){ 
+                        
+                            var childtable = $("<table/>")
+                            div.append("<h5 class=\"dash-header sub\">List of item variant(s):</h5>")
+                            childtable
+                                .attr("id","child-"+data.ItemNo)
+                                .attr("class","display")
+                                .addClass("childtable")
+                                .data("table","child-"+data.ItemNo)
+
+                            bindingDataViewingVariants(response,childtable)
+                            div.append(childtable)
+                        }
+                        else{
+                            div.append("<h5>No variants(s) found.</h5>")
+
+                        }
+
+                        if ( rowExists.child.isShown() ) {
+                             rowExists.child.hide();
+                             trExists.removeClass('shown');
+                        }  
+                        row.child(div).show();
+                        tr.addClass("shown")
+
+                    }, 
+                ajaxError)  
+            } 
+        })
+
+        $("button#btn-additems").click(function(e){
+            $("div.sidebar ul.nav li[data-content=additems] a").click()
+ 
+        })
+        $("button#btn-backitems").click(function(e){
+            $("div.sidebar ul.nav li[data-content=sup-items] a").click()
+        })
 
 
         $("li[data-content='additems'] a").click(function(e){
@@ -791,6 +902,31 @@ $(function(){
             $("div#attributesetup").modal("hide");
         })
 
+        $("button#btn-submititemvariant").click(function(e){
+            var elem = $(this)
+            if(elem.hasClass("disabled")){ return;}
+            var param = new Object()
+            param.itemname = $("input#txt-itemname").val()
+            param.UOM = $("input#txt-UOM").val()
+            param.family = $("select#list-family option:selected").val()
+            param.category = $("select#list-category option:selected").val()
+            param.subcategory = $("select#list-subcategory option:selected").val()
+            param.data = JSON.stringify(newItemVariantList)
+
+             callAjaxJson("main/insertNewItemWithVariants", param, 
+                function(response){
+                   if(response){
+                        $("div.sidebar ul.nav li[data-content=sup-items] a").click()
+                   }
+
+                }
+                , ajaxError)
+
+          
+
+
+        })
+           
 
 
 
@@ -1019,32 +1155,39 @@ $(function(){
         },ajaxError)
 
     }
+    function bindDataItemVariantForReview(){ 
+        var data = new Array();
+        $("table[data-table=listitemvariant] tbody tr").each(function(e){
 
-    function bindDataItemVariantForReview(table){
-        // var param = new Object();
+            var tr = $(this)
+            var row = new Object()
+            row.VariantsName = jsontoString(tr.data("variant"))     
+            row.VariantsNameJSON = tr.data("variant") 
+            row.Price =  tr.find("input.variant-price").val()        
+            row.SRP = tr.find("input.variant-srp").val()        
+            data.push(row) 
 
-        // param.ItemName = $("#txt-itemname").val()
-        // param.UOM = $("#txt-UOM").val()
-        // param.Family = $("#list-family").val()
-        // param.Category = $("#list-category").val()
-        // param.SubCategory = $("#list-subcategory").val()
-        
-        var data = table.rows().data()
-
-        for(x in data){
-            if($.isNumeric(x)){
-                var variants = $.parseHTML(data[x].Attributes)
-                data[x].Attributes = variants.find("a").replaceWith("")
-                var UnitPrice = $.parseHTML(data[x].UnitPrice)
-                data[x].UnitPrice = UnitPrice.replaceWith(UnitPrice.val())
-                var SRP = $.parseHTML(data[x].SRP)
-                data[x].SRP = SRP.replaceWith(SRP.val())
-            }
-        }
-
-
-
+        })
+        var arrList = new Object();
+        var list = new Object();
+        newItemVariantList = data    
+        arrList.list  = data;
+        arrList.fields = "VariantsName|Item Variant,Price|Unit Price,SRP|Suggessted Retail Price (SRP)"
+        list["listitemvariantreview"] = arrList;
+        bindingDatatoDataTable(list)
+        $("table[data-table='listitemvariantreview']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
     }
+
+    function jsontoString(data){
+        var list = "" 
+        for(x in data){
+            list += x + " = " + data[x] + "<br/>"
+        }
+        return list;
+    }
+
+
+
 
 //ORDERS
      function processOrder(orderNo){
@@ -1103,6 +1246,18 @@ function bindingDatatoDataTable(response){
 		// console.log(x);
 	}
 
+}
+
+function getDataFromDatatable(data){
+    var listData = new Array()
+   
+    for(x in data){
+        var rowData = new Array()
+        if(!$.isNumeric(x)){ break; }
+        rowData = data[x]
+        listData.push(rowData)
+    }
+    return listData;
 }
 
 function bindingDatatoChildDataTable(response,table){
@@ -1175,6 +1330,33 @@ function bindingDataViewingOrderItems(response,table){
     } 
 }
 
+function bindingDataViewingVariants(response,table){
+    var data = response
+     for(x in data){  
+        var list = data[x].list
+        var tbody = jQuery("<tbody/>")  
+        var thead = jQuery("<thead/>")  
+        var tr = jQuery("<tr/>")   
+        addHeader(tr,"No") 
+        addHeader(tr,"Variant name")
+        addHeader(tr,"Unit Price")
+        addHeader(tr,"Suggested Retail Price (SRP)")
+        thead.append(tr)
+ 
+        for(row in list){
+            var tr = jQuery("<tr/>")   
+            addCellData(tr,list[row].VariantNo)
+            addCellData(tr,list[row].VariantName)
+            addCellData(tr,list[row].Price)
+            addCellData(tr,list[row].SRP)
+            tbody.append(tr)
+        }  
+        table.append(thead)
+        table.append(tbody)
+       
+    } 
+}
+
 
 function addHeader(tr,value){
     var th = jQuery("<th/>")  
@@ -1210,10 +1392,7 @@ function setupDataTable(table, data, fields){
                 }); 
      
     listObjTableBinded[table.data("table")] = dttable
-    dttable.draw();
-    
-    
-
+    dttable.draw(); 
 }
 
 

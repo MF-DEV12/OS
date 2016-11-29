@@ -88,6 +88,8 @@ jQuery(document).ready(function($){
         if(li.data("content") == "additems"){
         	$("div.content").find(".content-list[data-content='"+ li.data("content") +"'] .form-table .inputMaterial").val("")
         	$("div.content").find(".content-list[data-content='"+ li.data("content") +"'] .form-table .label-error").remove()
+        	if(!$("button#btn-submititemvariant").is(".disabled"))
+        		$("button#btn-submititemvariant").addClass("disabled")
         }
         // RESET PAGE 
         var currentList = $("div.content .content-group.show .content-list.show")
@@ -107,7 +109,7 @@ jQuery(document).ready(function($){
 
 	$(".stepNav li a").click(function(e){
 		var elem = $(this)
-		$("#btn-submititemvariant").prop("disabled",true)
+		$("#btn-submititemvariant").addClass("disabled")
 		if(elem.closest("li").is(".selected")){return;}
  
 		if($(".stepNav li.selected").data("view") == "item-info") 
@@ -127,14 +129,14 @@ jQuery(document).ready(function($){
 			$("table[data-table='listitemvariant']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
 		}
 		if(elem.closest("li").data("view") == "item-review"){
-			$("#btn-submititemvariant").prop("disabled",false)
+			$("#btn-submititemvariant").removeClass("disabled")
 
 			var listposupplier = new Object()
 
             var arrList = new Object();
             arrList.list = "";
             arrList.fields = "VariantsName|Item Variant,Price|Unit Price,SRP|Suggessted Retail Price (SRP)"
-            listposupplier["listitemvariant-review"] = arrList; 
+            listposupplier["listitemvariantreview"] = arrList; 
             $("input#lbl-itemname").val($("#txt-itemname").val())
             $("input#lbl-uom").val($("#txt-UOM").val())
             var category = ""
@@ -145,9 +147,10 @@ jQuery(document).ready(function($){
             $("input#lbl-category").val(category)
             bindingDatatoDataTable(listposupplier)
 
-			var table = listObjTableBinded["listitemvariant-review"];
+			var table = listObjTableBinded["listitemvariantreview"];
 			table.draw()
-			$("table[data-table='listitemvariant-review']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
+			$("table[data-table='listitemvariantreview']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
+			bindDataItemVariantForReview()
 		}
 
 	})
