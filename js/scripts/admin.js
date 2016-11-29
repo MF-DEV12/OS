@@ -1020,7 +1020,36 @@ $(function(){
 
     }
 
-  
+    function bindDataItemVariantForReview(table){
+        // var param = new Object();
+
+        // param.ItemName = $("#txt-itemname").val()
+        // param.UOM = $("#txt-UOM").val()
+        // param.Family = $("#list-family").val()
+        // param.Category = $("#list-category").val()
+        // param.SubCategory = $("#list-subcategory").val()
+
+        var data = table.rows().data()
+
+        for(x in data){
+            if($.isNumeric(x)){
+                var variants = $.parseHTML(data[x].Attributes)
+                data[x].Attributes = variants.find("a").replaceWith("")
+                var UnitPrice = $.parseHTML(data[x].UnitPrice)
+                data[x].UnitPrice = UnitPrice.replaceWith(UnitPrice.val())
+                var SRP = $.parseHTML(data[x].SRP)
+                data[x].SRP = SRP.replaceWith(SRP.val())
+            }
+        }
+
+         "ItemName|Item Name,Attributes|Variant,UnitPrice|Unit Price,SRP|Suggested Retail Price(SRP)";
+        $("table[data-table=listitemvariant] tbody").children().each(function(e){
+
+
+        })
+
+
+    }
 
 //ORDERS
      function processOrder(orderNo){

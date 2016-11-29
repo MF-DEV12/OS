@@ -244,12 +244,12 @@ input.numeric{
   /*height: 66px !important; */
 }
 .bootstrap-tagsinput .label.tag {
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: 100 !important;
     background-color: #048e81;
 }
 .bootstrap-tagsinput input {
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: 100 !important; 
 }
 
@@ -725,6 +725,16 @@ overflow: hidden;
   border-bottom:1px solid #757575;
 }
 
+.inputMaterial.display              {
+  font-size:12px !important;
+  padding:2px 20px;
+  display:block;
+  width:100%;
+  border:none;
+  background: transparent;
+  /*border-bottom:1px solid #757575;*/
+}
+
 .inputMaterial:focus        { outline:none;}
 
 /* LABEL ======================================= */
@@ -740,6 +750,15 @@ label.formlabel                {
   transition:0.2s ease all; 
   -moz-transition:0.2s ease all; 
   -webkit-transition:0.2s ease all;
+}
+ label.formlabel.display                {
+  top:-20px !important; 
+}
+
+div.item-review-wrap{
+    padding: 61px 12px;
+    background: white;
+    padding-bottom: 10px;
 }
 
 /* active state */

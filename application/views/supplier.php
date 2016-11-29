@@ -136,6 +136,7 @@
                                   <label><input type="checkbox"  id="chkIsMultiple" value="">Create Attributes and Options</label>
                                 </div>  -->
                                 <div>
+                                <span>Create Attribute and Options for the variant:</span>
                                    <table width="100%" id="table-attribute" class="display table-custom" > 
                                       <thead> 
                                           <tr>
@@ -168,6 +169,28 @@
                           </div> 
                         </div>
                         <div class="step-view col-md-12" data-view="item-review">
+                            <div class="col-md-12 item-review-wrap">
+                              <div class="group"> 
+                                <input type="text" class="inputMaterial display" id="lbl-itemname" readonly/>    
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label class="formlabel display">Item Name:</label>
+                              </div>
+                               <div class="group"> 
+                                <input type="text" class="inputMaterial display" id="lbl-uom" readonly/>    
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label class="formlabel display">Unit of Measure (UOM):</label>
+                              </div>
+                               <div class="group"> 
+                                <input type="text" class="inputMaterial display" id="lbl-category" readonly/>    
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label class="formlabel display">Category:</label>
+                              </div>
+                            </div>
+                           
+
                             <table class="display main-table" data-table="listitemvariant-review" ></table> 
 
                         </div>

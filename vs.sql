@@ -18,12 +18,12 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`lampanohardwaretradings` /*!40100 DEFAU
 DROP TABLE IF EXISTS `accounts`;
 
 CREATE TABLE `accounts` (
-  `AccountNo` int(11) NOT NULL AUTO_INCREMENT,
-  `Username` varchar(16) DEFAULT NULL,
-  `Password` varchar(200) DEFAULT NULL,
-  `LoginType` varchar(30) DEFAULT NULL,
+  `AccountNo` INT(11) NOT NULL AUTO_INCREMENT,
+  `Username` VARCHAR(16) DEFAULT NULL,
+  `Password` VARCHAR(200) DEFAULT NULL,
+  `LoginType` VARCHAR(30) DEFAULT NULL,
   PRIMARY KEY (`AccountNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=INNODB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Data for the table `accounts` */
 
