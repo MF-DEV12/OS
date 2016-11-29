@@ -1028,7 +1028,7 @@ $(function(){
         // param.Family = $("#list-family").val()
         // param.Category = $("#list-category").val()
         // param.SubCategory = $("#list-subcategory").val()
-
+        
         var data = table.rows().data()
 
         for(x in data){
@@ -1042,11 +1042,6 @@ $(function(){
             }
         }
 
-         "ItemName|Item Name,Attributes|Variant,UnitPrice|Unit Price,SRP|Suggested Retail Price(SRP)";
-        $("table[data-table=listitemvariant] tbody").children().each(function(e){
-
-
-        })
 
 
     }
