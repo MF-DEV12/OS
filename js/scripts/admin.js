@@ -34,7 +34,7 @@ $(function(){
 
         })
 
-        $('table[data-table="purchaseorder"]').on('click', 'td:first-child', function () { 
+        $('table[data-table="purchaseorder"]').on('click', 'tr[role=row] td:first-child', function () { 
             var elem = $(this)
             var tr = elem.closest('tr');
             var table = listObjTableBinded["purchaseorder"]
@@ -334,7 +334,7 @@ $(function(){
         })
 
         $('table[data-table="allorders"],table[data-table="sup-neworders "],table[data-table="sup-processorders"],table[data-table="sup-incompleteorders"],table[data-table="sup-shippedorders"],table[data-table="sup-cancelledorders"]')
-        .on('click', 'td:first-child', function () { 
+        .on('click', 'tr[role=row] td:first-child', function () { 
             var elem = $(this)
             var tr = elem.closest('tr');
             var tableelem = tr.closest("table.main-table")
@@ -561,7 +561,7 @@ $(function(){
 
         })
 
-         $('table[data-table="items"]').on('click', 'td:first-child', function () { 
+         $('table[data-table="items"]').on('click', 'tr[role=row] td:first-child', function () { 
             var elem = $(this)
             var tr = elem.closest('tr');
             var table = listObjTableBinded["items"]
@@ -618,7 +618,7 @@ $(function(){
 
 //SUPPLIER SIDE
         //ITEMS
-        $('table[data-table="sup-items"]').on('click', 'td:first-child', function () { 
+        $('table[data-table="sup-items"]').on('click', 'tr[role=row] td:first-child', function () { 
             var elem = $(this)
             var tr = elem.closest('tr');
             var table = listObjTableBinded["sup-items"]
@@ -627,7 +627,7 @@ $(function(){
             elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
             var row = table.row( tr );
             var trExists = $("table[data-table=sup-items] tr.shown")
-            trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+            trExists.find('td:first-child > span').attr('class','glyphicon glyphicon-menu-right pull-right')
             var rowExists = table.row( trExists );
     
             if ( row.child.isShown() ) {
@@ -646,6 +646,7 @@ $(function(){
                         if(response["child-" +  data.ItemNo].list.length){ 
                         
                             var childtable = $("<table/>")
+                            // div.append("<button class=\"btn btn-action pull-right btn-editvariants\" style=\"width:100px;\" onclick=\"editVariant('"+  data.ItemNo +"','"+ data.Name +"')\"><span class=\"glyphicon glyphicon-cog\"></span> Edit Variants</button>")
                             div.append("<h5 class=\"dash-header sub\">List of item variant(s):</h5>")
                             childtable
                                 .attr("id","child-"+data.ItemNo)
@@ -695,8 +696,7 @@ $(function(){
                         var tr2 = $("<tr/>")
                         tr2.append("<td><input type=\"text\" class=\"form-control attribute-name\" value=\"" + data[x].AttributeName + "\"/></td>")
                         tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-attribute=\""+ data[x].AttributeName + "\" data-role=\"tagsinput\" /></td>")
-                        tr2.append("<td><a class=\"delete-attribute\">&times;</a></td>")
-                        
+                        tr2.append("<td><a class=\"delete-attribute\"><span class=\"glyphicon glyphicon-remove\"></span></a></td>")
                         $("#table-attribute tbody").append(tr2)
                     }
                     $('input[data-role=tagsinput]').tagsinput();
@@ -706,7 +706,7 @@ $(function(){
                     var arrList = new Object();
                     var list = new Object();
                     arrList.list  = "";
-                    arrList.fields = "ItemName|Item Name,Attributes|Variant,UnitPrice|Unit Price,SRP|Suggested Retail Price(SRP)";
+                    arrList.fields = "Image|Thumbnail,Attributes|Variant,DPOCost|DPO Cost,SRP|Suggested Retail Price(SRP),Action|";
                     list["listitemvariant"] = arrList;
 
                     bindingDatatoDataTable(list)
@@ -732,6 +732,7 @@ $(function(){
               },
               callback: function(result) {                
                   if (result) {          
+                     $("#table-attribute tbody p.empty").remove()
                     var tr2 = $("<tr/>")
                     tr2.append("<td><input type=\"text\" class=\"form-control attribute-name\" value=\"" + result + "\"/></td>")
                     tr2.append("<td><input type=\"text\" name=\"option\" class=\"form-control tagsinput\" data-attribute=\""+ result + "\" data-role=\"tagsinput\" /></td>")
@@ -765,6 +766,10 @@ $(function(){
             bootbox.confirm("Delete this attribute \" "+ tr.find("input.attribute-name").val() +"\"?",function(result){
                 if(result){
                     tr.remove();
+                    if(!$("#table-attribute tbody").children().length){
+                        $("#table-attribute tbody").append("<p class=\"empty\">No Attrbutes and Options found. <br/> Click Add attribute to add.</p>") 
+                    }
+
                 }
 
             })
@@ -827,14 +832,15 @@ $(function(){
             }
 
             var data = new Object();
-            data.ItemName = $("#txt-itemname").val();
-            data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Setup variants...</a>";
-            data.UnitPrice = "<input type=\"text\" class=\"numeric variant-price form-control\"/>";
+            data.Image = ""
+            data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Add variants</a>";
+            data.DPOCost = "<input type=\"text\" class=\"numeric variant-price form-control\"/>";
             data.SRP = "<input type=\"text\" class=\"numeric variant-srp form-control\"/>";
+            data.Action = "<a onclick=\"deleteVariant(this);\"><span class=\"glyphicon glyphicon-remove\"></span></a>";
              
             arrayData.push(data)
             arrList.list  = arrayData;
-            arrList.fields = "ItemName|Item Name,Attributes|Variant,UnitPrice|Unit Price,SRP|Suggested Retail Price(SRP)";
+            arrList.fields = "Image|Thumbnail,Attributes|Variant,DPOCost|DPO Cost,SRP|Suggested Retail Price(SRP),Action|";
             var table = listObjTableBinded["listitemvariant"]
             table.row.add(data).draw()
             // list["listitemvariant"] = arrList;
@@ -842,11 +848,14 @@ $(function(){
             // bindingDatatoDataTable(list)
         })
 
+
+
  
         var curtrvariant;
         $("table[data-table='listitemvariant']").on("click", "tbody tr td a.attribute-setup-show", function(e){
             var elem = $(this)
             var tr = elem.closest("tr")
+            $("#table-attribute-setup").next("p.label-error").remove()
             var listAttributeJSON = tr.attr("data-variant")
             if(listAttributeJSON !== undefined)
                 listAttributeJSON = JSON.parse(listAttributeJSON);
@@ -856,7 +865,7 @@ $(function(){
             $("input.attribute-name").each(function(e){
                 var attrname = $(this)
                 var tr2 = $("<tr/>")
-                tr2.append("<td width=\"10px\">"+ attrname.val() +"</td>")
+                tr2.append("<td width=\"29px\">"+ attrname.val() +"</td>")
 
                 var optionlist = attrname.closest("tr").find("input.tagsinput").tagsinput('items') 
 
@@ -882,12 +891,24 @@ $(function(){
                 tr2.append(td)
                 $("#table-attribute-setup tbody").append(tr2)   
 
+                // 
+
             })
+            if(!tr.find("td:first-child img").length)
+                $("div.image-holder").html("<span class=\"glyphicon glyphicon-picture upload-file\"></span>")
+            else{
+                var img = tr.find("td:first-child img").clone()
+                img.attr("width","200px")
+                $("div.image-holder").html(img)
+            }
         })
 
         $("button#btn-saveattributesetup").click(function(e){
             var stringAttribute = "";
             var stringJson = new Object();
+
+            if(!isOkayToSaveAttribute()){return}
+
             $("#table-attribute-setup tbody tr").each(function(a){
                 var elem = $(this)
                 stringJson[elem.find("td:first").text()] = elem.find("select.listoptions option:selected").text();
@@ -896,6 +917,9 @@ $(function(){
 
             })
             stringAttribute += "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Edit variants</a>";
+            var img = $("div.image-holder img").clone()
+            img.attr("width","100px")
+            curtrvariant.closest("tr").find("td:nth-child(1)").html(img)
             curtrvariant.closest("tr").find("td:nth-child(2)").html(stringAttribute)
             curtrvariant.closest("tr").attr("data-variant", JSON.stringify(stringJson))
     
@@ -920,13 +944,34 @@ $(function(){
                    }
 
                 }
-                , ajaxError)
-
-          
-
+                , ajaxError) 
 
         })
-           
+
+        $("button#btn-saveeditvariants").click(function(e){
+            if(!isOkaytoUpdateVariants()){return;}
+            var variant = new Object()
+            var param = new Object()
+            variant.DPOCost = $("input#txt-editPrice").val().replace(",","")
+            variant.SRP = $("input#txt-editSRP").val().replace(",","")
+
+            param.vno = curVariantNoEdit;
+            param.data = JSON.stringify(variant);
+
+            callAjaxJson("main/UpdateVariant", param, 
+                function(response){
+                    if(response){
+                        var modal =  $("#editvariant")
+                        curTRVariantNoEdit.childNodes[3].innerHTML = modal.find("input#txt-editPrice").val()
+                        curTRVariantNoEdit.childNodes[4].innerHTML = modal.find("input#txt-editSRP").val()
+                       
+                        $("#editvariant").modal("hide")
+                    }
+                },
+            ajaxError)
+        })
+
+
 
 
 
@@ -1061,7 +1106,8 @@ $(function(){
     function physicalCount(variantno){
         var promptOptions = {
           title: "Please enter the stock count for " + variantno + ":",
-          buttons: {
+          inputType: 'number',
+          buttons: { 
             confirm: {
               label: "Update", 
               className: "btn-prompt btn-action"
@@ -1145,7 +1191,7 @@ $(function(){
                 var arrList = new Object();
                 var list = new Object();
                 arrList.list  = "";
-                arrList.fields = "ItemName|Item Name,Attributes|Variant,UnitPrice|Unit Price,SRP|Suggested Retail Price(SRP)";
+                arrList.fields = "Image|Thumbnail,Attributes|Variant,DPOCost|DPO Cost,SRP|Suggested Retail Price(SRP),Action|";
                 list["listitemvariant"] = arrList;
 
                 bindingDatatoDataTable(list)
@@ -1161,9 +1207,11 @@ $(function(){
 
             var tr = $(this)
             var row = new Object()
+            row.FileName = tr.find("img").data("image")
+            row.Image = "<img src=\""+ baseUrl +"images/variant-folder/" + row.FileName + "\" width=\"100px\"/>"
             row.VariantsName = jsontoString(tr.data("variant"))     
             row.VariantsNameJSON = tr.data("variant") 
-            row.Price =  tr.find("input.variant-price").val()        
+            row.DPOCost =  tr.find("input.variant-price").val()        
             row.SRP = tr.find("input.variant-srp").val()        
             data.push(row) 
 
@@ -1172,7 +1220,7 @@ $(function(){
         var list = new Object();
         newItemVariantList = data    
         arrList.list  = data;
-        arrList.fields = "VariantsName|Item Variant,Price|Unit Price,SRP|Suggessted Retail Price (SRP)"
+        arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,DPOCost|DPO Cost,SRP|Suggessted Retail Price (SRP)"
         list["listitemvariantreview"] = arrList;
         bindingDatatoDataTable(list)
         $("table[data-table='listitemvariantreview']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
@@ -1186,7 +1234,66 @@ $(function(){
         return list;
     }
 
+    function isOkayToSaveAttribute(){
+        var isOkay = true
+        $("#table-attribute-setup").next("p.label-error").remove()
+        $("#table-attribute-setup tbody tr").each(function(a){
+            var elem = $(this)
+            if(elem.find("select.listoptions option:selected").val() == "")
+                isOkay = false; 
+        })
 
+        if(!isOkay){
+            $("#table-attribute-setup").after("<p class=\"label-error\">Please select the attribute for the variant</p>") 
+           
+        }
+
+        return isOkay 
+    }
+
+
+    var curVariantNoEdit;
+    var curTRVariantNoEdit;
+    function editVariant(childtable,elem){
+        
+        var tr = elem.closest("tr")
+
+
+        var modal = $("#editvariant")
+        curVariantNoEdit = tr.childNodes[0].innerHTML
+        curTRVariantNoEdit = tr
+  
+        modal.find("p#lbl-variant").html(tr.childNodes[1].innerHTML)
+        modal.find("div.image-variant").html(tr.childNodes[2].innerHTML)
+        modal.find("input#txt-editPrice").val(tr.childNodes[3].innerHTML)
+        modal.find("input#txt-editSRP").val(tr.childNodes[4].innerHTML)
+    }
+
+    function deleteVariant(elem){
+        var tr = elem.closest("tr")
+        bootbox.confirm("Delete selected variant?", function(result){
+            if(result){
+                var table = listObjTableBinded["listitemvariant"]
+                table.row(tr).remove().draw()
+                tr.remove()
+            }
+        })
+    }
+
+    function isOkaytoUpdateVariants(){
+        $("div#editvariant").find("p.label-error").text("")
+        var isOkay = true;
+        if($.trim($("input#txt-editPrice")).length == 0 || $("input#txt-editPrice").val() == "0"){
+            isOkay = false
+        }
+        if($.trim($("input#txt-editSRP")).length == 0 || $("input#txt-editSRP").val() == "0"){
+            isOkay = false
+        }
+
+        if(!isOkay)
+            $("div#editvariant").find("p.label-error").text("Please input all fields.")
+        return isOkay;
+    }
 
 
 //ORDERS
@@ -1330,29 +1437,51 @@ function bindingDataViewingOrderItems(response,table){
     } 
 }
 
+ 
+
 function bindingDataViewingVariants(response,table){
     var data = response
      for(x in data){  
         var list = data[x].list
-        var tbody = jQuery("<tbody/>")  
-        var thead = jQuery("<thead/>")  
-        var tr = jQuery("<tr/>")   
-        addHeader(tr,"No") 
-        addHeader(tr,"Variant name")
-        addHeader(tr,"Unit Price")
-        addHeader(tr,"Suggested Retail Price (SRP)")
-        thead.append(tr)
- 
-        for(row in list){
+        if(list){
+            var tbody = jQuery("<tbody/>")  
+            var thead = jQuery("<thead/>")  
             var tr = jQuery("<tr/>")   
-            addCellData(tr,list[row].VariantNo)
-            addCellData(tr,list[row].VariantName)
-            addCellData(tr,list[row].Price)
-            addCellData(tr,list[row].SRP)
-            tbody.append(tr)
-        }  
-        table.append(thead)
-        table.append(tbody)
+            addHeader(tr,"No") 
+            addHeader(tr,"Thumbnail")
+            addHeader(tr,"Variant name")
+            addHeader(tr,((data.role=="admin") ?  "Price" : "DPO Cost"))
+
+            if(data.role=="admin")
+                addHeader(tr,"DPO Cost")
+
+            if(data.role=="supplier")
+                addHeader(tr,"Suggested Retail Price (SRP)")
+            if(data.isAction) 
+                addHeader(tr,"Action")
+            thead.append(tr)
+     
+            for(row in list){
+                var tr = jQuery("<tr/>")   
+                addCellData(tr,list[row].VariantNo)
+                addCellData(tr,list[row].VariantName) 
+                addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
+                addCellData(tr,((data.role=="admin") ?  list[row].Price : list[row].DPOCost))
+
+                if(data.role=="admin")
+                    addCellData(tr,list[row].DPOCost)
+
+                if(data.role=="supplier")
+                    addCellData(tr,list[row].SRP)
+
+                if(data.isAction) 
+                     addCellData(tr,list[row].Action)
+                tbody.append(tr)
+            }  
+            table.append(thead)
+            table.append(tbody)
+        }
+      
        
     } 
 }

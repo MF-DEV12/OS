@@ -112,11 +112,11 @@ jQuery(document).ready(function($){
 		$("#btn-submititemvariant").addClass("disabled")
 		if(elem.closest("li").is(".selected")){return;}
  
-		if($(".stepNav li.selected").data("view") == "item-info") 
-			if(!validateItemVariant(elem.closest("li").data("view"))){return;}
+		// if($(".stepNav li.selected").data("view") == "item-info") 
+		// 	if(!validateItemVariant(elem.closest("li").data("view"))){return;}
  
-		if($(".stepNav li.selected").data("view") == "item-variants") 
-			if(!validateAttribute(elem.closest("li").data("view"))){return;}
+		// if($(".stepNav li.selected").data("view") == "item-variants") 
+		// 	if(!validateAttribute(elem.closest("li").data("view"))){return;}
 
 		$(".step-holder > div.show").removeClass("show");
 		$(".stepNav li.selected").removeClass("selected");
@@ -135,7 +135,7 @@ jQuery(document).ready(function($){
 
             var arrList = new Object();
             arrList.list = "";
-            arrList.fields = "VariantsName|Item Variant,Price|Unit Price,SRP|Suggessted Retail Price (SRP)"
+            arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,DPOCost|DPO Cost,SRP|Suggessted Retail Price (SRP)"
             listposupplier["listitemvariantreview"] = arrList; 
             $("input#lbl-itemname").val($("#txt-itemname").val())
             $("input#lbl-uom").val($("#txt-UOM").val())

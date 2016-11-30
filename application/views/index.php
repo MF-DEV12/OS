@@ -78,6 +78,8 @@
     <script type="text/javascript" src='<?=base_url("js/bootstrap/bootstrap.min.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/bootbox.min.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
+    <script type="text/javascript" src='<?=base_url("js/utility/helpers.js")?>'></script>
+    <script type="text/javascript" src='<?=base_url("js/maskMoney.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/highcharts.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/tagsinput/bootstrap-tagsinput.js")?>'></script>
     <script src="<?=base_url('js/scripts/admin.js');?>"></script>   

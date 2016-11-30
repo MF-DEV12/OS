@@ -531,9 +531,17 @@ class Main extends CI_Controller {
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "vw_items";
 			$this->param["fields"] = "*"; 
+			$role = $this->session->userdata("role");
+			$sno = $this->session->userdata("supplierno");
+			if($role == "supplier"){
+				$this->param["conditions"] = "SupplierNo = '$sno'"; 
+			}
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ViewItems|Variants,ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,Name1|Family,Name2|Category,Name3|Subcategory,SupplierName|Supplier name";
+			$data["fields"] = "ViewItems|Variants,ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,UOM|UOM,Name1|Family,Name2|Category,Name3|Subcategory";
+			if($role != "supplier")
+				$data["fields"].= ",SupplierName|Supplier name";
+			
 			return $data; 
 		}
 		
@@ -869,7 +877,8 @@ class Main extends CI_Controller {
 				$datavariant = array(); 
 				$datavariant["ItemNo"] = $dataitems->ItemNo;
 				$datavariant["SRP"] = $v->SRP;
-				$datavariant["Price"] = $v->Price; 
+				$datavariant["DPOCost"] = $v->DPOCost; 
+				$datavariant["ImageFile"] = $v->FileName; 
 				$datavariant["VariantName"] = $v->VariantsName; 
 				$datavariant["VariantNameJSON"] = json_encode($v->VariantsNameJSON); 
 				$datavariant["SupplierNo"] = $supplierno;
@@ -884,18 +893,81 @@ class Main extends CI_Controller {
 	 	}
 
 	 	function GetVariantsByItemNo(){
+			$role = $this->session->userdata("role");
 			$itemno = $this->input->post("ino");
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "itemvariant";
-			$this->param["fields"] = "*"; 
+			$action = "";
+			if($role=="supplier")
+				$action = ", CONCAT('<button class=\"btn btn-action pull-right btn-editvariants\" data-toggle=\"modal\" data-target=\"#editvariant\" onclick=\"editVariant(''child-',ItemNo ,''',this);\"><span class=\"glyphicon glyphicon-cog\"></span> Edit</button>') Action";
+
+			$this->param["fields"] = "*" . $action; 
  		    $this->param["conditions"] = "ItemNo = '$itemno'";
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "VariantNo|No,VariantName|Variant name,Price|Unit Price,SRP|Suggested Retail Price (SRP)";
+			$data["fields"] = "VariantNo|No,ThumbNail|ThumbNail,VariantName|Variant name,Price|Unit Price,SRP|Suggested Retail Price (SRP)"; 
+				 
 			$list["child-".$itemno] = $data;
+			$list["isAction"] = ($role=="supplier") ? true : false;
+			$list["role"] = $role;
 			echo json_encode($list);
 		}
 
+		function UpdateVariant(){
+			$vno = $this->input->post("vno");
+			$param = $this->input->post("data");
+			$param = json_decode($param);
+
+			$this->param = $this->query_model->param; 
+			$this->param["dataToUpdate"] = $param;
+			$this->param["table"] = "itemvariant";
+			$this->param["conditions"] = "VariantNo = '$vno'";
+			$result = $this->query_model->updateData($this->param); 
+			echo true;
+		}
+
 		
-	//	
+	//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		function uploadImage()
+		{       
+
+		 
+		    $config['upload_path'] = './images/variant-folder/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			 
+			$new_name = "FILE_" . date("Ymdhis");
+			$config['file_name'] = $new_name;
+
+			$this->load->library('upload', $config);
+
+			if ( ! $this->upload->do_upload())
+			{
+				$error = array('error' => $this->upload->display_errors());
+				echo json_encode($error);
+			}
+			else
+			{
+				$data = $this->upload->data();
+				 
+				$filename = $data["file_name"];
+				$data = array('upload_data' => $data);
+				// $this->load->library('Ftpupload');
+				// $this->ftpupload->upload($filename);
+				echo json_encode($data);
+			}
+		}
 
 }

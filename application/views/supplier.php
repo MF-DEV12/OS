@@ -36,19 +36,16 @@
           <div class="content-list" data-content="sup-items">
             <div class="col-md-12">
                 <button class="btn main-button btn-action btn-action-right" id="btn-additems"><span class="glyphicon glyphicon-plus"></span> Add Items</button>
-             	  <div class="btn-group btn-child-group btn-group-mode btn-action-right">
-                    <button id="btn-itemscancel" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</button>
-                    <button id="btn-submititemvariant" class="btn btn-action"><span class="glyphicon glyphicon-ok-circle"></span> Submit</button>
-                </div>
+             	  
                 <table class="display main-table" data-table="sup-items"> </table> 
 
                 <div class="content-child">
                       
                       
-                    </div>
-
                 </div>
+
             </div>
+          </div>
 
             <div class="content-list" data-content="additems">
                 <div class="col-md-12" style="font-size: 14px;">
@@ -221,20 +218,33 @@
         <h4 class="modal-title" id="myModalLabel">Create new Variants</h4>
       </div>
       <div class="modal-body">
-        <table width="100%" id="table-attribute-setup" class="display table-custom" style="margin-top:10px;"> 
-            <thead> 
-                <tr>
-                    <td width="200px">Attribute</td>
-                    <td>Options</td> 
-                </tr> 
-            </thead>
-            <tbody>
-               
-            </tbody>
-            
-        </table> 
-        <table>
-        </table>
+        <div class="row">
+          <div class="col-md-5 image-variant-wrap" align="center">
+            <div class="image-holder">
+              <span class="glyphicon glyphicon-picture upload-file"></span> 
+            </div>
+            <button class="btn btn-action upload">Upload image</button> 
+            <input type="file" class="file-upload" style="display: none;">
+          </div> 
+
+          <div class="col-md-7">
+            <table width="100%" id="table-attribute-setup" class="display table-custom" style="margin-top:10px;"> 
+                <thead> 
+                    <tr>
+                        <td width="200px">Attribute</td>
+                        <td>Options</td> 
+                    </tr> 
+                </thead>
+                <tbody style="height:225px;">
+                   
+                </tbody>
+                
+            </table> 
+
+          </div>
+
+        </div>
+         
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -243,3 +253,46 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="editvariant" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 20px;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Variants</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4 image-variant">
+              
+            </div> 
+
+             <div class="col-md-8">
+                <label for="lbl-variant">Variant name:</label>
+                <p id="lbl-variant" style="padding-bottom:25px;"></p>
+                <div class="group">
+                 <input class="inputMaterial numeric" type="text" id="txt-editPrice">
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label class="formlabel">Unit Price:</label>
+                </div> 
+
+                <div class="group">      
+                  <input class="inputMaterial numeric" type="text" id="txt-editSRP">
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label class="formlabel">Suggested Retail Price (SRP):</label>
+                </div> 
+                <p class="label-error"></p>
+            </div> 
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-action" id="btn-saveeditvariants">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
