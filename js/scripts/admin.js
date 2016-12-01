@@ -971,6 +971,27 @@ $(function(){
             ajaxError)
         })
 
+        $("button#btn-saveeditvariantsadmin").click(function(e){
+            if(!isOkaytoUpdateVariantsAdmin()){return;}
+            var variant = new Object()
+            var param = new Object()
+            variant.Price = $("input#txt-editPriceAdmin").val().replace(",","")
+
+            param.vno = curVariantNoEditAdmin;
+            param.data = JSON.stringify(variant);
+
+            callAjaxJson("main/UpdateVariant", param, 
+                function(response){
+                    if(response){
+                        var modal =  $("#editvariantadmin")
+                        curTRVariantNoEditAdmin.childNodes[3].innerHTML = modal.find("input#txt-editPriceAdmin").val()
+                       
+                        $("#editvariantadmin").modal("hide")
+                    }
+                },
+            ajaxError)
+        })
+
 
 
 
@@ -1269,6 +1290,22 @@ $(function(){
         modal.find("input#txt-editSRP").val(tr.childNodes[4].innerHTML)
     }
 
+    var curVariantNoEditAdmin;
+    var curTRVariantNoEditAdmin;
+    function editVariantAdmin(childtable,elem){
+        
+        var tr = elem.closest("tr")
+
+
+        var modal = $("div#editvariantadmin")
+        curVariantNoEditAdmin = tr.childNodes[0].innerHTML
+        curTRVariantNoEditAdmin = tr
+  
+        modal.find("p#lbl-variant").html(tr.childNodes[1].innerHTML)
+        modal.find("div.image-variant").html(tr.childNodes[2].innerHTML)
+        modal.find("input#txt-editPriceAdmin").val(tr.childNodes[3].innerHTML) 
+    }
+
     function deleteVariant(elem){
         var tr = elem.closest("tr")
         bootbox.confirm("Delete selected variant?", function(result){
@@ -1292,6 +1329,17 @@ $(function(){
 
         if(!isOkay)
             $("div#editvariant").find("p.label-error").text("Please input all fields.")
+        return isOkay;
+    }
+    function isOkaytoUpdateVariantsAdmin(){
+        $("div#editvariantadmin").find("p.label-error").text("")
+        var isOkay = true;
+        if($.trim($("input#txt-editPriceAdmin")).length == 0 || $("input#txt-editPriceAdmin").val() == "0"){
+            isOkay = false
+        }
+
+        if(!isOkay)
+            $("div#editvariantadmin").find("p.label-error").text("Please input the Unit price.")
         return isOkay;
     }
 
@@ -1457,7 +1505,7 @@ function bindingDataViewingVariants(response,table){
 
             if(data.role=="supplier")
                 addHeader(tr,"Suggested Retail Price (SRP)")
-            if(data.isAction) 
+            // if(data.isAction) 
                 addHeader(tr,"Action")
             thead.append(tr)
      
@@ -1466,15 +1514,15 @@ function bindingDataViewingVariants(response,table){
                 addCellData(tr,list[row].VariantNo)
                 addCellData(tr,list[row].VariantName) 
                 addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
-                addCellData(tr,((data.role=="admin") ?  list[row].Price : list[row].DPOCost))
+                addCellData(tr,((data.role=="admin") ?  toMoney(list[row].Price) : toMoney(list[row].DPOCost)))
 
                 if(data.role=="admin")
-                    addCellData(tr,list[row].DPOCost)
+                    addCellData(tr,toMoney(list[row].DPOCost))
 
                 if(data.role=="supplier")
-                    addCellData(tr,list[row].SRP)
+                    addCellData(tr,toMoney(list[row].SRP))
 
-                if(data.isAction) 
+                // if(data.isAction) 
                      addCellData(tr,list[row].Action)
                 tbody.append(tr)
             }  

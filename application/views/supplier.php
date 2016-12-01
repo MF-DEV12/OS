@@ -274,7 +274,7 @@
                  <input class="inputMaterial numeric" type="text" id="txt-editPrice">
                   <span class="highlight"></span>
                   <span class="bar"></span>
-                  <label class="formlabel">Unit Price:</label>
+                  <label class="formlabel">DPO Cost:</label>
                 </div> 
 
                 <div class="group">      

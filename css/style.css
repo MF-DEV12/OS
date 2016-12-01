@@ -55,8 +55,28 @@ dl.categories-wrap > dd{
     height: 600px;
     border: 1px solid #ddd;
     width: 350px;
-    /*margin: 5px;*/
+    /*margin: 5px;*/ 
+}
 
+dl.list-family span.data-edit{
+    position: absolute;
+    top: 56px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+dl.list-family .image-holder span{
+    font-size:100px;
+}
+
+dl.list-family .image-holder img{
+    height:100px;
+    width:100px;
+} 
+
+dl.list-family .btn-action{
+    font-size:10px;
+    padding:3px 17px; 
 }
 .dd-categories{
   overflow-y: auto;

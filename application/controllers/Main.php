@@ -559,7 +559,7 @@ class Main extends CI_Controller {
 			$name = trim($name);
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "level1";
-			$this->param["fields"] = "Level1No `id`, Name1 `Name`";  
+			$this->param["fields"] = "Level1No `id`, Name1 `Name`, ImageFile";  
 			if($name != "")
 				$this->param["conditions"] = "Name1 = '$name'";
 			$this->param["order"] = "Name1";  
@@ -900,6 +900,9 @@ class Main extends CI_Controller {
 			$action = "";
 			if($role=="supplier")
 				$action = ", CONCAT('<button class=\"btn btn-action pull-right btn-editvariants\" data-toggle=\"modal\" data-target=\"#editvariant\" onclick=\"editVariant(''child-',ItemNo ,''',this);\"><span class=\"glyphicon glyphicon-cog\"></span> Edit</button>') Action";
+			else
+				$action = ", CONCAT('<button class=\"btn btn-action pull-right btn-editvariants\" data-toggle=\"modal\" data-target=\"#editvariantadmin\" onclick=\"editVariantAdmin(''child-',ItemNo ,''',this);\"><span class=\"glyphicon glyphicon-cog\"></span> Edit</button>') Action";
+			
 
 			$this->param["fields"] = "*" . $action; 
  		    $this->param["conditions"] = "ItemNo = '$itemno'";
@@ -925,26 +928,13 @@ class Main extends CI_Controller {
 			echo true;
 		}
 
+
+
 		
 	//
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 		function uploadImage()
-		{       
-
-		 
+		{        
 		    $config['upload_path'] = './images/variant-folder/';
 			$config['allowed_types'] = 'gif|jpg|png';
 			 
@@ -961,13 +951,25 @@ class Main extends CI_Controller {
 			else
 			{
 				$data = $this->upload->data();
-				 
 				$filename = $data["file_name"];
-				$data = array('upload_data' => $data);
+				$result = array('upload_data' => $data);
+				$param = $this->input->get("param");
+				 
+				if($param){
+					$param = json_decode($param);
+					$this->param = $this->query_model->param; 
+					$edit["ImageFile"] = $filename;
+					$this->param["dataToUpdate"] = $edit;
+					$this->param["table"] = $param->table;
+					$this->param["conditions"] = "$param->col = '$param->id'";
+					$this->query_model->updateData($this->param); 
+				}
 				// $this->load->library('Ftpupload');
 				// $this->ftpupload->upload($filename);
-				echo json_encode($data);
+				echo json_encode($result);
 			}
 		}
+
+
 
 }

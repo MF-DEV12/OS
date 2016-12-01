@@ -251,9 +251,22 @@
                                  <dl class="list-family dd-categories" data-section="level1">
                                     <?php foreach($listfamily as $row){ ?>
                                         <dd data-id="<?=$row->id;?>">
-                                            <span class="data-edit" ><?=$row->Name;?></span>
-                                            <!-- <span class="glyphicon glyphicon-menu-right pull-right selector"></span> -->
-                                            <span class="action pull-right"><a class="edit">Edit</a> | <a class="delete">Delete</a></span>  
+                                          <div class="row">
+                                            <div class="col-sm-5" align="center">
+                                              <div class="image-holder">
+                                               <?php $image = base_url('images/variant-folder/' . $row->ImageFile);?>
+
+                                                <img src="<?=$image;?>" onerror="this.src='<?=base_url('images/noimage.gif');?>';"/>
+                                                <!-- <span class="glyphicon glyphicon-picture upload-file"></span>  -->
+                                              </div>
+                                              <button class="btn btn-action upload">Upload image</button> 
+                                              <input type="file" data-col="Level1No" data-id="<?=$row->id;?>" data-table="Level1" class="file-upload" style="display: none;">
+                                            </div> 
+                                            <div class="col-sm-7"> 
+                                              <span class="data-edit" ><?=$row->Name;?></span>
+                                              <span class="action pull-right"><a class="edit">Edit</a> | <a class="delete">Delete</a></span>
+                                            </div> 
+                                          </div> 
                                         </dd>
                                     <?php } ?> 
                                  </dl>
@@ -290,32 +303,7 @@
                      </div>  
                     <table class="display main-table" data-table="allorders"> </table>
                 </div>
-
-                <!-- <div class="content-list" data-content="neworders">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> New Orders</h5> 
-                    <button id="direct-receive" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-arrow-plus"></span> Add Item</button>
-                    <table class="display main-table" data-table="neworders"> </table>
-                </div>
-                <div class="content-list" data-content="processorders">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Processing Orders</h5> 
-                    <table class="display main-table" data-table="processorders"> </table>
-                </div>
-                <div class="content-list" data-content="shippedorders">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Shipped Orders</h5> 
-                    <table class="display main-table" data-table="shippedorders"> </table>
-                </div>
-                <div class="content-list" data-content="cancelledorders">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Cancelled Orders</h5> 
-                    <table class="display main-table" data-table="cancelledorders"> </table>
-                </div> -->
-                 <!--<div class="content-list" data-content="backorders">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Back Order</h5> 
-                    <button id="" class="btn btn-action"><span class="glyphicon glyphicon-send"></span> Send Notification</button>
-                    <table class="display" data-table="backorders"> </table>
-                </div>
-                <div class="content-list" data-content="suppliers">
-                    <h5 class="dash-header"><span class="glyphicon glyphicon-stats"></span> Suppliers</h5> 
-                    <button id="" class="btn btn-action"><span class="glyphicon glyphicon-plus"></span> New Supplier</button>
-                    <table class="display" data-table="suppliers"> </table>
-                </div> -->
+ 
 </div>
+
+

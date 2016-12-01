@@ -72,6 +72,41 @@
     </div>
 
 
+    <div class="modal fade" id="editvariantadmin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 20px;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Edit Variants</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                <div class="col-md-4 image-variant">
+                  
+                </div> 
+
+                 <div class="col-md-8">
+                    <label for="lbl-variant">Variant name:</label>
+                    <p id="lbl-variant" style="padding-bottom:25px;"></p>
+                    <div class="group">
+                     <input class="inputMaterial numeric" type="text" id="txt-editPriceAdmin">
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label class="formlabel">Unit Price:</label>
+                    </div> 
+     
+                    <p class="label-error"></p>
+                </div> 
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-action" id="btn-saveeditvariantsadmin">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript" src='<?=base_url("js/jquery/jquery-1.11.3.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/jquery/jquery-ui.js")?>'></script> 
     <script type="text/javascript" src='<?=base_url("js/datatables/jquery.dataTables.min.js")?>'></script> 
