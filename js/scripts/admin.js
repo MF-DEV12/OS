@@ -843,6 +843,7 @@ $(function(){
             arrList.fields = "Image|Thumbnail,Attributes|Variant,DPOCost|DPO Cost,SRP|Suggested Retail Price(SRP),Action|";
             var table = listObjTableBinded["listitemvariant"]
             table.row.add(data).draw()
+            table.draw()
             // list["listitemvariant"] = arrList;
 
             // bindingDatatoDataTable(list)

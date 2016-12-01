@@ -951,11 +951,11 @@ class Main extends CI_Controller {
 			else
 			{
 				$data = $this->upload->data();
-				$filename = $data["file_name"];
+				$filename = $data["file_name"];	
 				$result = array('upload_data' => $data);
 				$param = $this->input->get("param");
 				 
-				if($param){
+				if($param != "{}"){
 					$param = json_decode($param);
 					$this->param = $this->query_model->param; 
 					$edit["ImageFile"] = $filename;
