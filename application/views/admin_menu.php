@@ -9,7 +9,7 @@
 
       <?php if($role == "admin"){?>
               <li data-menu="supplier">
-                <a data-toggle="collapse" data-target="#supplierorder" data-parent="#nav">Supplier's Order</a>
+                <a data-toggle="collapse" data-target="#supplierorder" data-parent="#nav">Order to Supplier</a>
                 <ul id="supplierorder" class="collapse sub-menu">
                     <li  data-content="purchaseorder" data-header="Purchase Orders"><a href="#">Purchase Order</a></li>
                     <li data-content="receivings" data-header="Receiving Orders"><a href="#">Receiving Orders</a></li>

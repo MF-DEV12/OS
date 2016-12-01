@@ -28,28 +28,28 @@
               <div class="caption">
                 <h1 class="animated fadeInLeftBig">Welcome to <br/><span>Lamparo Hardware</span></h1>
                 <!-- <p class="animated fadeInRightBig">Techniques don't produce quality products and services: People do, people who care,people who are treated as creatively contributing individuals</p> -->
-                <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Start now</a>
+                <a data-scroll class="btn btn-start animated fadeInUpBig" href="#orders">Order now</a>
               </div>
             </div>
             <div class="item" style="background-image: url(images/slider/2.jpg)">
               <div class="caption">
                 <h1 class="animated fadeInLeftBig"><span>Quality</span></h1>
                 <p class="animated fadeInRightBig">Techniques don't produce quality products and services <br/> People do, people who care, <br/>people who are treated as creatively contributing individuals</p>
-                <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Start now</a>
+                <a data-scroll class="btn btn-start animated fadeInUpBig" href="#orders">Order now</a>
               </div>
             </div>
             <div class="item" style="background-image: url(images/slider/3.jpg)">
               <div class="caption">
                 <h1 class="animated fadeInLeftBig"><span>Value</span></h1>
                 <p class="animated fadeInRightBig">Successful companies create value by providing products or services their customers <br/>value more highly than available alternatives</p>
-                <a data-scroll class="btn btn-start animated fadeInUpBig" href="#services">Start now</a>
+                <a data-scroll class="btn btn-start animated fadeInUpBig" href="#orders">Order now</a>
               </div>
             </div>
           </div>
           <a class="left-control" href="#home-slider" data-slide="prev"><i class="fa fa-angle-left"></i></a>
           <a class="right-control" href="#home-slider" data-slide="next"><i class="fa fa-angle-right"></i></a>
 
-          <a id="tohash" href="#services"><i class="fa fa-angle-down"></i></a>
+          <a id="tohash" href="#orders"><i class="fa fa-angle-down"></i></a>
 
         </div><!--/#home-slider-->
         <div class="main-nav">
@@ -88,8 +88,52 @@
       </div> 
     </div>
     <div class="container-fluid" align="center">
-      <div class="row">
+      <div class="row" align="center">
         <?php foreach($family as $key) {?>
+              <div class="col-sm-3">
+                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
+                  <div class="folio-image">
+
+                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
+                  </div> 
+                  <p><?=$key->Name1;?></p>
+                </div>
+              </div>
+        <?php } ?>
+        <?php foreach($family as $key) {?>
+              <div class="col-sm-3">
+                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
+                  <div class="folio-image">
+
+                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
+                  </div> 
+                  <p><?=$key->Name1;?></p>
+                </div>
+              </div>
+        <?php } ?>
+         <?php foreach($family as $key) {?>
+              <div class="col-sm-3">
+                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
+                  <div class="folio-image">
+
+                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
+                  </div> 
+                  <p><?=$key->Name1;?></p>
+                </div>
+              </div>
+        <?php } ?>
+         <?php foreach($family as $key) {?>
+              <div class="col-sm-3">
+                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
+                  <div class="folio-image">
+
+                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
+                  </div> 
+                  <p><?=$key->Name1;?></p>
+                </div>
+              </div>
+        <?php } ?>
+         <?php foreach($family as $key) {?>
               <div class="col-sm-3">
                 <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
                   <div class="folio-image">
@@ -102,6 +146,9 @@
         <?php } ?>
         
       </div>
+      <div class="load-more wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="500ms">
+          <a  class="btn-loadmore"><i class="fa fa-repeat"></i> Load More</a>
+      </div> 
     </div>
     <div id="portfolio-single-wrap">
       <div id="portfolio-single">
@@ -201,7 +248,7 @@
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/bootstrap.min.js")?>"></script>
  
-      <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> -->
+      <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.inview.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/wow.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/mousescroll.js")?>"></script>
@@ -212,7 +259,6 @@
 
 
 
- 
 
  
      

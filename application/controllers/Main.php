@@ -106,7 +106,7 @@ class Main extends CI_Controller {
 		} 
 
 		else if($role == "supplier"){
-			$data["requestlist"] = $this->GetRequestListFromCustomer();
+			$data["requestlist"] = $this->GetRequestListFromAdmin("");
 			$data["sup-neworders"] = $this->getOrders("New");
 			$data["sup-processorders"] = $this->getOrders("Process");
 			$data["sup-incompleteorders"] = $this->getOrders("Incomplete");
@@ -144,7 +144,7 @@ class Main extends CI_Controller {
 			$data = $this->getOrders(""); 
 
 		elseif($table == "requestlist")
-			$data = $this->GetRequestListFromCustomer(); 
+			$data = $this->GetRequestListFromAdmin(""); 
 		elseif($table == "sup-neworders")
 			$data = $this->getOrders("New"); 
 		elseif($table == "sup-processorders")
@@ -179,7 +179,7 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ViewItems|View items|SupplyRequestNo|No,NoOfItems|No of items,SupplierName|Supplier name,Date|Date Order";
+			$data["fields"] = "ViewItems|View items|SupplyRequestNo|No,NoOfItems|No of items,SupplierName|Supplier name,TotalDPOCost|Total Amount,Date|Date Order";
 			return $data;
 
 		}
@@ -433,7 +433,7 @@ class Main extends CI_Controller {
 		function GetSuppliers(){
 			$this->param = $this->param = $this->query_model->param;  
 			$this->param["table"] = "supplier";
-			$this->param["fields"] = "*,CONCAT('<button class=\"btn btn-default\" onclick=\"viewSupplyItems(',SupplierNo,',this);\">View Order</button>') AS `Action`"; 
+			$this->param["fields"] = "*,CONCAT('<button class=\"btn btn-action\" onclick=\"viewSupplyItems(',SupplierNo,',this);\">View items</button>') AS `Action`"; 
 	 	 
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "SupplierNo|Supplier No.,SupplierName|Supplier name,Address|Address,ContactNo|Contact Number,Action|Action";
@@ -785,6 +785,63 @@ class Main extends CI_Controller {
 			$data["fields"] = "OrderNo|Order No,Date|Order Date,Customer|Customer name,Address|Address,TotalAmount|Total Amount,Status|Status";
 			return $data;
 		}
+		function GetRequestListFromAdmin($status){ 
+			$sno = $this->session->userdata("supplierno");
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_requestlistfromadmin";
+			$this->param["fields"] = "*"; 
+			$this->param["conditions"] = "SupplierNo = '$sno'"; 
+ 			
+ 			if($status != "")
+				$this->param["conditions"] .= " AND DeliveredStatus = '$status'"; 
+ 
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ViewItems|Item(s),SupplyRequestNo|Request Order #,OrderDate|Order Date,CustomerName|Customer name,NoOfItems|No of Order items,TotalDPOCost|Total Amount(DPO Cost),Action|Action";
+			return $data;
+		}
+
+		function GetRequestItemBySupplyRequestNo(){
+
+			$role = $this->session->userdata("role"); 
+			$supreqno = $this->input->post("supreqno");  
+			 
+			$this->param = $this->param = $this->query_model->param; 
+
+			$this->param["table"] = "vw_getrequestlistbysupplyrequestno"; 
+			$this->param["fields"] = "*"; 
+			$this->param["conditions"] = "SupplyRequestNo = '$supreqno'"; 
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ItemNo|Item No,ThumbNail|ThumbNail,ItemDescription|Description,DPOCost|DPO Cost,RequestsQty|QTY Request,SubTotal|SubTotal"; 
+				 
+			$list["child-".$supreqno] = $data;
+		 
+			echo json_encode($list);
+		}
+
+		function getRequestListJson(){ 
+			$status = $this->input->post("status");
+			$list["requestlist"] = $this->GetRequestListFromAdmin($status);
+			echo json_encode($list);
+		}
+
+		function setDeliveredRequest(){
+			$status = $this->input->post("status");
+			$supreqno = $this->input->post("supreqno");
+			$this->param = $this->query_model->param;  
+			$data["DeliveredStatus"] = 1;
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "supplyrequest";
+			$this->param["conditions"] = "SupplyRequestNo = '$supreqno'";
+			$this->query_model->updateData($this->param); 
+			$list["requestlist"] = $this->GetRequestListFromAdmin($status);
+			echo json_encode($list);
+		}
+
+
+		
+		
 		function GetRequestStatusTotal(){ 
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "vw_getrequeststatustotal";

@@ -3,6 +3,14 @@
         
         <div class="content-list" data-content="requestlist">
             <div class="col-md-12">
+                  <div class="orderstatus-wrap">
+                     <label>Order Status:</label>
+                     <select id="porequestlist" class="form-control">
+                            <option value="" selected>All</option>
+                            <option value="0">New Request</option>
+                            <option value="1">Delivered</option> 
+                     </select>
+                  </div>  
                 <table class="display main-table" data-table="requestlist"> </table> 
             </div> 
          </div>

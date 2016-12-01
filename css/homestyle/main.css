@@ -429,6 +429,12 @@ section {
   margin-top: 20px;
   margin-right: 5px;
 }
+.folio-item p {
+    background: #002f2b;
+    color: white;
+    text-transform: uppercase;
+    padding: 10px;
+}
 
 .folio-overview a:hover {
   color: #fff;
@@ -450,8 +456,11 @@ section {
 }
 
 .folio-image img {
-  width: 100%;
+    width: 300px;
+    height: 300px;
 }
+      
+
 
 #portfolio .folio-item:hover .overlay {
   opacity: 0.8;

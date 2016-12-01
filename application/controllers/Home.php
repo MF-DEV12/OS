@@ -18,6 +18,7 @@ class Home extends CI_Controller {
  		$this->param["table"] = "Level1";
  		$this->param["fields"] = "*";
 		$this->param["order"] = "Name1";
+		$this->param["limit"] = "8";
 		$result = $this->query_model->getData($this->param);
 		return $result;
  	}

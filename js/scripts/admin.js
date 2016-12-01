@@ -617,6 +617,90 @@ $(function(){
         })
 
 //SUPPLIER SIDE
+        //REQUESTLIST
+        $('table[data-table="requestlist"]').on('click', 'tr[role=row] td:first-child', function () { 
+            var elem = $(this)
+            var tr = elem.closest('tr');
+            var table = listObjTableBinded["requestlist"]
+            var data = table.rows(tr).data()
+            data = data[0]
+            elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
+            var row = table.row( tr );
+            var trExists = $("table[data-table=requestlist] tr.shown")
+            trExists.find('td:first-child > span').attr('class','glyphicon glyphicon-menu-right pull-right')
+            var rowExists = table.row( trExists );
+    
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                elem.find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+                tr.removeClass('shown');
+            }
+            else{
+                var param = new Object();
+                param.supreqno = data.SupplyRequestNo
+
+                callAjaxJson("main/GetRequestItemBySupplyRequestNo", param, 
+                    function(response){
+                        var div = $("<div/>") 
+                            div.attr("class","childtable-wrap") 
+                        if(response["child-" +  data.SupplyRequestNo].list.length){ 
+                        
+                            var childtable = $("<table/>")
+                            // div.append("<button class=\"btn btn-action pull-right btn-editvariants\" style=\"width:100px;\" onclick=\"editVariant('"+  data.ItemNo +"','"+ data.Name +"')\"><span class=\"glyphicon glyphicon-cog\"></span> Edit Variants</button>")
+                            div.append("<h5 class=\"dash-header sub\">List of request item(s):</h5>")
+                            childtable
+                                .attr("id","child-"+data.SupplyRequestNo)
+                                .attr("class","display")
+                                .addClass("childtable")
+                                .data("table","child-"+data.SupplyRequestNo) 
+ 
+                            bindingDataViewingRequestItem(response,childtable)
+                            div.append(childtable)
+                        }
+                        else{
+                            div.append("<h5>No request items(s) found.</h5>")
+
+                        }
+
+                        if ( rowExists.child.isShown() ) {
+                             rowExists.child.hide();
+                             trExists.removeClass('shown');
+                        }  
+                        row.child(div).show();
+                        tr.addClass("shown")
+
+                    }, 
+                ajaxError)  
+            } 
+        })
+
+        $("select#porequestlist").change(function(){
+            var elem = $(this)
+            var param = new Object()
+            param.status = elem.val();
+            callAjaxJson("main/getRequestListJson", param, bindingDatatoDataTable, ajaxError)
+        })
+
+        $("table[data-table=requestlist]").on("click", "tr td:last-child button.btn-deliver",function(){
+            var elem = $(this)
+            var tr = elem.closest("tr")
+            var table = listObjTableBinded["requestlist"]
+            var data = table.rows(tr).data()
+            bootbox.confirm("Do you want to approve and deliver this request?", function(result){
+
+                if(result){
+                    var param = new Object()
+                    param.status = $("select#porequestlist option:selected").val()
+                    param.supreqno = data[0].SupplyRequestNo
+                        callAjaxJson("main/setDeliveredRequest", param, bindingDatatoDataTable, ajaxError)
+                }
+
+
+            })
+
+
+        })
+
         //ITEMS
         $('table[data-table="sup-items"]').on('click', 'tr[role=row] td:first-child', function () { 
             var elem = $(this)
@@ -1459,25 +1543,29 @@ function bindingDataViewingOrderItems(response,table){
     var data = response
  
     for(x in data){ 
-      
         var list = data[x].list
         var tbody = jQuery("<tbody/>")  
         var thead = jQuery("<thead/>")  
         var tr = jQuery("<tr/>")   
-        addHeader(tr,"No")
-        addHeader(tr,"Item Number")
-        addHeader(tr,"Variant Number")
-        addHeader(tr,"Description")
-        addHeader(tr,"Request Qty")
+        addHeader(tr,"Item No") 
+        addHeader(tr,"Thumbnail")
+        addHeader(tr,"Description")  
+        addHeader(tr,"DPO Cost")
+        addHeader(tr,"Qty Requested")
+        addHeader(tr,"Subtotal")
+
         thead.append(tr)
  
         for(row in list){
             var tr = jQuery("<tr/>")   
-            addCellData(tr,list[row].RequestListNo)
             addCellData(tr,list[row].ItemNo)
-            addCellData(tr,list[row].VariantNo)
-            addCellData(tr,list[row].ItemDescription)
-            addCellData(tr,list[row].Requested)
+            addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
+            addCellData(tr,list[row].ItemDescription)  
+            addCellData(tr,toMoney(list[row].DPOCost))
+
+            addCellData(tr,list[row].RequestsQty)
+            addCellData(tr,toMoney(list[row].SubTotal))
+
             tbody.append(tr)
         }  
         table.append(thead)
@@ -1485,6 +1573,7 @@ function bindingDataViewingOrderItems(response,table){
        
     } 
 }
+
 
  
 
@@ -1525,6 +1614,43 @@ function bindingDataViewingVariants(response,table){
 
                 // if(data.isAction) 
                      addCellData(tr,list[row].Action)
+                tbody.append(tr)
+            }  
+            table.append(thead)
+            table.append(tbody)
+        }
+      
+       
+    } 
+}
+
+function bindingDataViewingRequestItem(response,table){
+    var data = response
+     for(x in data){  
+        var list = data[x].list
+        if(list){
+            var tbody = jQuery("<tbody/>")  
+            var thead = jQuery("<thead/>")  
+            var tr = jQuery("<tr/>")   
+            addHeader(tr,"Item No") 
+            addHeader(tr,"Thumbnail")
+            addHeader(tr,"Description")  
+            addHeader(tr,"DPO Cost")
+            addHeader(tr,"Qty Requested")
+            addHeader(tr,"Subtotal")
+ 
+            thead.append(tr)
+     
+            for(row in list){
+                var tr = jQuery("<tr/>")   
+                addCellData(tr,list[row].ItemNo)
+                addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
+                addCellData(tr,list[row].Description)  
+                addCellData(tr,toMoney(list[row].DPOCost))
+
+                addCellData(tr,list[row].RequestsQty)
+                addCellData(tr,toMoney(list[row].SubTotal))
+ 
                 tbody.append(tr)
             }  
             table.append(thead)
