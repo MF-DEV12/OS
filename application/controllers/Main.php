@@ -890,7 +890,7 @@ class Main extends CI_Controller {
 	 	function insertNewItemWithVariants(){
 
 	 		$variant = $this->input->post("data");
-	 		$itemname = $this->input->post("itemname");
+	 		$itemname = trim($this->input->post("itemname"));
 	 		$uom = $this->input->post("UOM");
 	 		$family = $this->input->post("family");
 	 		$category = $this->input->post("category");
@@ -944,6 +944,17 @@ class Main extends CI_Controller {
 			echo true;
 	 	}
 
+	 	function checkItemNameExistsBySupplier(){
+			$supplierno = $this->session->userdata("supplierno");
+			$itemname = trim($this->input->post("iname"));
+	 		$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "item"; 
+			$this->param["fields"] = "*";
+ 		    $this->param["conditions"] = "UPPER(Name) = UPPER('$itemname') and SupplierNo = '$supplierno' ";
+			$data = $this->query_model->getData($this->param);
+			echo (($data) ? 1 : 0);
+	 	}
+
 	 	function GetVariantsByItemNo(){
 			$role = $this->session->userdata("role");
 			$itemno = $this->input->post("ino");
@@ -984,7 +995,7 @@ class Main extends CI_Controller {
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "tbluom";
 			$this->param["fields"] = "*";  
-			$this->param["orderno"] = "Description";  
+			$this->param["order"] = "Description";  
 			$data =  $this->query_model->getData($this->param);
 			return $data;
 		}

@@ -103,7 +103,7 @@
                                                  <?php foreach($listuom as $row){ ?>
                                                     <option value="<?=$row->UOMCode;?>"><?=$row->Description . " (". $row->UOMCode .")";?></option>
                                                  <?php }?>
-                                              </select><span class="pull-right"><a style="cursor:pointer" data-toggle="modal" data-target="#addUOM" style="color: #009688 !important;"><span class="glyphicon glyphicon-plus"></span> Add UOM</a></span>     
+                                              </select><span class="pull-right"><a style="cursor:pointer;color:#009688!important;" data-toggle="modal" data-target="#addUOM"><span class="glyphicon glyphicon-plus"></span> Add UOM</a></span>     
                                               <span class="highlight"></span>
                                               <span class="bar"></span>
                                               <label class="formlabel">Unit of measure (UOM):</label>
@@ -332,7 +332,7 @@
         <h4 class="modal-title" id="myModalLabel">Add UOM</h4>
       </div>
       <div class="modal-body">
-
+          <div class="uom-wrap">
             <div class="group">
               <input class="inputMaterial" type="text" id="txt-uomcode"/>
               <span class="highlight"></span>
@@ -346,7 +346,7 @@
               <span class="bar"></span>
               <label class="formlabel">Description:</label>
             </div> 
-
+          </div> 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

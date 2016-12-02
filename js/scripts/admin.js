@@ -917,7 +917,7 @@ $(function(){
 
             var data = new Object();
             data.Image = ""
-            data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Add variants</a>";
+            data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-backdrop=\"static\"  data-keyboard=\"false\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Add variants</a>";
             data.DPOCost = "<input type=\"text\" class=\"numeric variant-price form-control\"/>";
             data.SRP = "<input type=\"text\" class=\"numeric variant-srp form-control\"/>";
             data.Action = "<a onclick=\"deleteVariant(this);\"><span class=\"glyphicon glyphicon-remove\"></span></a>";
@@ -1002,7 +1002,11 @@ $(function(){
 
             })
             stringAttribute += "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Edit variants</a>";
+           
+
             var img = $("div.image-holder img").clone()
+
+
             img.attr("width","100px")
             curtrvariant.closest("tr").find("td:nth-child(1)").html(img)
             curtrvariant.closest("tr").find("td:nth-child(2)").html(stringAttribute)
@@ -1026,6 +1030,7 @@ $(function(){
                 function(response){
                    if(response){
                         $("div.sidebar ul.nav li[data-content=sup-items] a").click()
+                        bootbox.alert("New item has been created successfully.")
                    }
 
                 }
@@ -1078,7 +1083,27 @@ $(function(){
         })
 
 
+        $("input#txt-itemname").keyup(function(e){
+            var elem = $(this)
+ 
+            var param = new Object()
+            param.iname = elem.val(); 
+            callAjaxJson("main/checkItemNameExistsBySupplier", param, 
+                function(exist){
+                    elem.closest("table.form-table").find("p.label-error").remove()
+                    if(exist == 1){
+                        $("div.step-holder > div.step-view[data-view=item-info]").find("table.form-table tbody").before("<p class=\"label-error\">Item name \" " + param.iname + "\" already exist.</p>")
+                    }    
+            },ajaxError,false) 
+        })
 
+        $("select.inputMaterial").change(function(e){
+            var elem = $(this)
+            if(elem.closest("table.form-table").find("p.label-error").text().indexOf("already exist") == -1)
+                elem.closest("table.form-table").find("p.label-error").remove()
+            
+           
+        })
 
 
 
@@ -1351,7 +1376,12 @@ $(function(){
 
         if(!isOkay){
             $("#table-attribute-setup").after("<p class=\"label-error\">Please select the attribute for the variant</p>") 
-           
+            return isOkay 
+        }
+
+
+        if(!$("div.image-holder img").length){
+            
         }
 
         return isOkay 
@@ -1402,6 +1432,8 @@ $(function(){
         })
     }
 
+
+
     function isOkaytoUpdateVariants(){
         $("div#editvariant").find("p.label-error").text("")
         var isOkay = true;
@@ -1445,7 +1477,7 @@ $(function(){
                             .attr("value", param.UOMCode)
                             .text(param.Description + " ("+  param.UOMCode +")")
                         $("select#list-uom").append(option)
-                        sortOptionlist($("select#list-uom option"))
+                        sortOptionlist($("select#list-uom"),"text","asc")
                     }
                 }
             ,ajaxError)

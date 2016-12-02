@@ -106,17 +106,23 @@ jQuery(document).ready(function($){
 		$('.content').toggleClass('isOpen');
 	});
  	
-
+ 
 	$(".stepNav li a").click(function(e){
 		var elem = $(this)
 		$("#btn-submititemvariant").addClass("disabled")
 		if(elem.closest("li").is(".selected")){return;}
+
  
-		// if($(".stepNav li.selected").data("view") == "item-info") 
-		// 	if(!validateItemVariant(elem.closest("li").data("view"))){return;}
- 
-		// if($(".stepNav li.selected").data("view") == "item-variants") 
-		// 	if(!validateAttribute(elem.closest("li").data("view"))){return;}
+		if($(".stepNav li.selected").data("view") == "item-info"){
+			if($("div.step-holder > div.step-view.show").find("p.label-error").length){return;}
+			if(!validateItemVariant(elem.closest("li").data("view"))){return;} 
+
+		} 
+  
+		
+		if($(".stepNav li.selected").data("view") == "item-variants") 
+			if(!validateAttribute(elem.closest("li").data("view"))){return;}
+
 
 		$(".step-holder > div.show").removeClass("show");
 		$(".stepNav li.selected").removeClass("selected");
@@ -131,7 +137,7 @@ jQuery(document).ready(function($){
 		if(elem.closest("li").data("view") == "item-review"){
 			$("#btn-submititemvariant").removeClass("disabled")
 
-			var listposupplier = new Object()
+			var listposupplier = new Object()	
 
             var arrList = new Object();
             arrList.list = "";
@@ -180,8 +186,7 @@ jQuery(document).ready(function($){
 
 
 });
-
-
+ 
 function validateItemVariant(dataview){
 	$("div.step-holder").find("p.label-error").remove()
     var isOkay = true;
@@ -206,10 +211,13 @@ function validateItemVariant(dataview){
 		if(!isOkay2)
 			$("div.step-holder > div.step-view[data-view=item-variants]").find("table.table-custom").parent("div").before("<p class=\"label-error\">Please setup the variant for the item first.</p>") 
 	    
-	} 
+	}
 
+	 
 	return (isOkay && isOkay2);
 }
+
+ 
 
 function validateAttribute(dataview){
 	$("div.step-holder").find("p.label-error").remove()
@@ -236,10 +244,24 @@ function validateAttribute(dataview){
 		}
 		else{
 			$("table[data-table=listitemvariant] input.numeric").each(function(e){
-			var elem = $(this)
-	   		if($.trim(elem.val()).length == 0 && elem.val() == "0")
-	   			isOkay= false;
-		})  
+				var elem = $(this)
+		   		if($.trim(elem.val()).length == 0 && elem.val() == "0")
+		   			isOkay= false;
+			})  
+
+			$("table[data-table=listitemvariant] input.numeric").each(function(e){
+				var elem = $(this)
+		   		if($.trim(elem.val()).length == 0 && elem.val() == "0")
+		   			isOkay= false;
+			}) 
+
+			$("a.attribute-setup-show").each(function(e){
+				var elem = $(this)
+		   		if(elem.text().indexOf("Add") > 0)
+		   			isOkay= false;
+			})
+
+			
 
 			if(!isOkay)
 		   		$("div.step-holder > div.step-view[data-view=item-variants]").find("#btn-itemvariantadd").after("<p class=\"label-error\">Please complete the variant details below.</p>")
