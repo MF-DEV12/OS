@@ -53,4 +53,22 @@ $(function(){
 		return parseFloat(str,10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
 	}
 
- 
+ 	function sortOptionlist(options){
+	    options.closest("select").find("option:contains('Select one')").remove()
+	    options =  options.closest("select").find("option")
+
+ 		var arr = options.map(function(_, o) {
+	        return {
+	            t: $(o).text()
+	            v: o.value
+	        };
+	    }).get();
+	    arr.sort(function(o1, o2) {
+	        return o1.t.toUpperCase() > o2.t.toUpperCase(), ? 1 : o1.t.toUpperCase(), < o2.t.toUpperCase(), ? -1 : 0;
+	    });
+	    options.each(function(i, o) {
+	        o.value = arr[i].v;
+	        $(o).text(arr[i].t);
+	    });
+	    options.closest("select").prepend("<option value=\"\" disabled selected>Select one</option>")
+ 	}

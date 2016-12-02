@@ -1016,7 +1016,7 @@ $(function(){
             if(elem.hasClass("disabled")){ return;}
             var param = new Object()
             param.itemname = $("input#txt-itemname").val()
-            param.UOM = $("input#txt-UOM").val()
+            param.UOM = $("select#list-uom option:selected").val()
             param.family = $("select#list-family option:selected").val()
             param.category = $("select#list-category option:selected").val()
             param.subcategory = $("select#list-subcategory option:selected").val()
@@ -1427,6 +1427,47 @@ $(function(){
             $("div#editvariantadmin").find("p.label-error").text("Please input the Unit price.")
         return isOkay;
     }
+
+    function saveUOM(){
+        if(!isOkaytoAddUOM()){return;}
+
+        var param = new Object()
+        param.UOMCode = $("input#txt-uomcode").val()
+        param.Description = $("input#txt-uomdesc").val()
+
+        callAjaxJson("main/addUOM", {data:JSON.stringify(param)},
+                function(response){
+                    if(response){
+                        $("div#addUOM").modal("hide");
+                        $("div#addUOM input.inputMaterial").val("")
+                        var option = $("<option/>")
+                        option
+                            .attr("value", param.UOMCode)
+                            .text(param.Description + " ("+  param.UOMCode +")")
+                        $("select#list-uom").append(option)
+                        sortOptionlist($("select#list-uom option"))
+                    }
+                }
+            ,ajaxError)
+
+    }
+
+    function isOkaytoAddUOM()
+    {
+        var isOkay = true;
+        $("div#addUOM").find("p.label-error").remove();
+        $("div#addUOM input.inputMaterial").each(function(e){
+            var elem = $(this)
+            if($.trim(elem.val()).length == 0)
+                isOkay = false
+        })
+        if(!isOkay)
+            $("input#txt-uomdesc").closest("div.group").after("<p class=\"label-error\">Please input all fields.</p>")
+        return isOkay
+    }
+
+
+
 
 
 //ORDERS

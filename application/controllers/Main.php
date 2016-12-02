@@ -23,14 +23,8 @@ class Main extends CI_Controller {
 		
 
 		$data["listfamily"] = $this->getFamily();
-		// if($role == "supplier"){
-
-		// }
-		// else if($role == "admin"){
-			
-
-		// }
-
+		$data["listuom"] = $this->GetUOM();
+		  
 		$this->load->view('index', $data);
 
 
@@ -87,6 +81,7 @@ class Main extends CI_Controller {
 		$data = array();
 		$role = $this->session->userdata("role");
 		$data["auditlogs"] = $this->getAuditLogs();
+
 		if($role == "admin"){
 
 			$data["purchaseorder"] = $this->GetListOfPO();
@@ -107,11 +102,12 @@ class Main extends CI_Controller {
 
 		else if($role == "supplier"){
 			$data["requestlist"] = $this->GetRequestListFromAdmin("");
-			$data["sup-neworders"] = $this->getOrders("New");
-			$data["sup-processorders"] = $this->getOrders("Process");
-			$data["sup-incompleteorders"] = $this->getOrders("Incomplete");
-			$data["sup-shippedorders"] = $this->getOrders("Ship");
-			$data["sup-cancelledorders"] = $this->getOrders("Cancel");
+			$data["allorders"] = $this->getOrders("");
+			// $data["sup-neworders"] = $this->getOrders("New");
+			// $data["sup-processorders"] = $this->getOrders("Process");
+			// $data["sup-incompleteorders"] = $this->getOrders("Incomplete");
+			// $data["sup-shippedorders"] = $this->getOrders("Ship");
+			// $data["sup-cancelledorders"] = $this->getOrders("Cancel");
 			$data["sup-items"] = $this->getItems();
 
 			$data["sup-items"] = $this->getItems();
@@ -946,7 +942,6 @@ class Main extends CI_Controller {
 			}	
 
 			echo true;
-
 	 	}
 
 	 	function GetVariantsByItemNo(){
@@ -983,10 +978,27 @@ class Main extends CI_Controller {
 			$this->param["conditions"] = "VariantNo = '$vno'";
 			$result = $this->query_model->updateData($this->param); 
 			echo true;
+		} 
+
+		function GetUOM(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "tbluom";
+			$this->param["fields"] = "*";  
+			$this->param["orderno"] = "Description";  
+			$data =  $this->query_model->getData($this->param);
+			return $data;
 		}
 
-
-
+		function addUOM(){
+			$this->param = $this->query_model->param; 
+		 	$data = $this->input->post("data");
+		 	$data = json_decode($data);
+			$this->param["transactionname"] = "New UOM";
+			$this->param["dataToInsert"] = $data;
+			$this->param["table"] = "tbluom";
+			$this->query_model->insertData($this->param); 
+			echo true;
+		}
 		
 	//
 

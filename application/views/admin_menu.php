@@ -43,7 +43,10 @@
             <a data-toggle="collapse" data-target="#sup-orders" data-parent="#nav">Request List</a>
             <ul id="sup-orders" class="collapse sub-menu">
                 <li data-content="requestlist" data-header="Request List"><a href="#">Request List</a></li>
-                <li data-content="sup-neworders" data-header="New Order"><a href="#">New 
+                <li data-content="allorders" data-header="Customer's Order">
+                  <a>Customer's Order</a>
+                </li>
+                <!-- <li data-content="sup-neworders" data-header="New Order"><a href="#">New 
                 <?php if($requeststatus->New > 0){?>
                 <span class="badge"><?=$requeststatus->New;?></span>
                 <?php }?>
@@ -51,14 +54,14 @@
                 <li data-content="sup-processorders" data-header="Processing Orders"><a href="#">Processing</a></li>
                 <li data-content="sup-incompleteorders" data-header="Incomplete Orders"><a href="#">Incomplete</a></li>
                 <li data-content="sup-shippedorders" data-header="Shipped Orders"><a href="#">Shipped</a></li>
-                <li data-content="sup-cancelledorders" data-header="Cancelled Orders"><a href="#">Cancelled</a></li>
+                <li data-content="sup-cancelledorders" data-header="Cancelled Orders"><a href="#">Cancelled</a></li>-->
             </ul>
           </li>
 
           <li>
-            <a data-toggle="collapse" data-target="#sup-items" data-parent="#nav">Items</a>
+            <a data-toggle="collapse" data-target="#sup-items" data-parent="#nav">Item master</a>
             <ul id="sup-items" class="collapse sub-menu">
-                <li  data-content="sup-items" data-header="Items"><a href="#">Items</a></li>
+                <li  data-content="sup-items" data-header="Items"><a href="#">List of Items</a></li>
                 <li data-content="additems"><a href="#" data-header="Add Items">Add Items</a></li>
                 <li data-content="sup-removed" data-header="Removed"><a href="#">Removed</a></li>
             </ul>

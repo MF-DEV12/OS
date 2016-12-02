@@ -13,8 +13,23 @@
                   </div>  
                 <table class="display main-table" data-table="requestlist"> </table> 
             </div> 
-         </div>
-         <div class="content-list" data-content="sup-neworders">
+         </div> 
+         
+        <div class="content-list" data-content="allorders">
+
+             <div class="orderstatus-wrap">
+                 <label>Order Status:</label>
+                 <select id="polistorderstatus" class="form-control">
+                        <option value="" selected>All</option>
+                        <option value="New">New</option>
+                        <option value="Process">Process</option>
+                        <option value="Ship">Shipped</option>
+                        <option value="Cancel">Cancelled</option> 
+                 </select>
+             </div>  
+            <table class="display main-table" data-table="allorders"> </table>
+        </div>
+        <!--  <div class="content-list" data-content="sup-neworders">
             <div class="col-md-12">
                 <table class="display main-table" data-table="sup-neworders"> </table> 
             </div> 
@@ -39,7 +54,7 @@
             <div class="col-md-12">
                 <table class="display main-table" data-table="sup-cancelledorders"> </table> 
             </div> 
-         </div>
+         </div> -->
 
           <div class="content-list" data-content="sup-items">
             <div class="col-md-12">
@@ -82,8 +97,13 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <div class="group">      
-                                              <input class="inputMaterial" type="text" id="txt-UOM">
+                                            <div class="group">   
+                                              <select class="inputMaterial" id="list-uom">  
+                                                 <option value="" selected disabled="">Select one</option>
+                                                 <?php foreach($listuom as $row){ ?>
+                                                    <option value="<?=$row->UOMCode;?>"><?=$row->Description . " (". $row->UOMCode .")";?></option>
+                                                 <?php }?>
+                                              </select><span class="pull-right"><a style="cursor:pointer" data-toggle="modal" data-target="#addUOM" style="color: #009688 !important;"><span class="glyphicon glyphicon-plus"></span> Add UOM</a></span>     
                                               <span class="highlight"></span>
                                               <span class="bar"></span>
                                               <label class="formlabel">Unit of measure (UOM):</label>
@@ -302,5 +322,40 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="addUOM" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add UOM</h4>
+      </div>
+      <div class="modal-body">
+
+            <div class="group">
+              <input class="inputMaterial" type="text" id="txt-uomcode"/>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label class="formlabel">UOM Code:</label>
+            </div> 
+
+            <div class="group">      
+              <input class="inputMaterial" type="text" id="txt-uomdesc"/>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label class="formlabel">Description:</label>
+            </div> 
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-action" onclick="saveUOM();" id="btn-saveuom">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
 
  
