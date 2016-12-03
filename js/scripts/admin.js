@@ -3,7 +3,7 @@ var newItemVariantList = new Array();
 $(function(){
 
 	callAjaxJson("main/initializeAllData", new Object(), bindingDatatoDataTable, ajaxError)
-    dashboardChart();
+    bindingDataChart();
 
 // PURCHASE ORDER
     // Purchase Order
@@ -561,15 +561,15 @@ $(function(){
 
         })
 
-         $('table[data-table="items"]').on('click', 'tr[role=row] td:first-child', function () { 
+         $('table[data-table="items"],table[data-table="removeditems"]').on('click', 'tr[role=row] td:first-child', function () { 
             var elem = $(this)
             var tr = elem.closest('tr');
-            var table = listObjTableBinded["items"]
+            var table = listObjTableBinded[tr.closest("table").data("table")]
             var data = table.rows(tr).data()
             data = data[0]
             elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
             var row = table.row( tr );
-            var trExists = $("table[data-table=items] tr.shown")
+            var trExists = $("table[data-table="+tr.closest("table").data("table")+"] tr.shown")
             trExists.find('td:first-child').find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
             var rowExists = table.row( trExists );
     
@@ -702,15 +702,15 @@ $(function(){
         })
 
         //ITEMS
-        $('table[data-table="sup-items"]').on('click', 'tr[role=row] td:first-child', function () { 
+        $('table[data-table="sup-items"],table[data-table="supremove-items"]').on('click', 'tr[role=row] td:first-child', function () { 
             var elem = $(this)
             var tr = elem.closest('tr');
-            var table = listObjTableBinded["sup-items"]
+            var table = listObjTableBinded[tr.closest("table").data("table")]
             var data = table.rows(tr).data()
             data = data[0]
             elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
             var row = table.row( tr );
-            var trExists = $("table[data-table=sup-items] tr.shown")
+            var trExists = $("table[data-table="+tr.closest("table").data("table")+"] tr.shown")
             trExists.find('td:first-child > span').attr('class','glyphicon glyphicon-menu-right pull-right')
             var rowExists = table.row( trExists );
     
@@ -928,6 +928,7 @@ $(function(){
             var table = listObjTableBinded["listitemvariant"]
             table.row.add(data).draw()
             table.draw()
+            $("table[data-table=listitemvariant] tr:last-child").find("input.numeric").maskMoney();
             // list["listitemvariant"] = arrList;
 
             // bindingDatatoDataTable(list)
@@ -1137,13 +1138,21 @@ $(function(){
     }
 
     function updatePOQty(requestlistno,elem){
+        var tr = elem.closest("tr");
+        var table = listObjTableBinded["posubmit"]
+        var data = table.rows(tr).data()
+        data = data[0]
         var param = new Object();
         param.rlno = requestlistno;
         param.qty = elem.value;
+        param.total = parseFloat(elem.value,2) * parseFloat(data.DPOCost.replace(",",""), 2)
         callAjaxJson("main/updatePOQty", param, 
             function(response){
                 if(response){
-                   
+                   data.Total = toMoney(param.total); 
+                   table.draw()
+                   tr.childNodes[5].innerHTML = data.Total
+
                 }
 
             }
@@ -1283,6 +1292,28 @@ $(function(){
         }
     }
 
+    function removeOrRecoverItem(itemno, itemname,elem, status){
+        var tr = elem.closest("tr")
+        var table = listObjTableBinded[tr.closest("table").getAttribute("data-table")]
+        var strAlert = (status == 1) ? "Delete selected item" : "Recover selected item";
+        bootbox.confirm( strAlert + " \"" + itemname + "\" ?",function(result){
+            if(result){
+                var param = new Object()
+                param.itemno = itemno
+                param.status = status
+                callAjaxJson("main/removeOrRecoverItem",param,
+                    function(response){
+                        if(response){ 
+                            table.row(tr).remove().draw() 
+                        }
+
+
+                    },ajaxError)
+            }
+
+        })
+    }
+
     function addItemVariant(itemNo,elem){
         var tr = elem.closest("tr")
         var tableelem = tr.closest(".content-list").find(".main-table")
@@ -1342,8 +1373,8 @@ $(function(){
             row.Image = "<img src=\""+ baseUrl +"images/variant-folder/" + row.FileName + "\" width=\"100px\"/>"
             row.VariantsName = jsontoString(tr.data("variant"))     
             row.VariantsNameJSON = tr.data("variant") 
-            row.DPOCost =  tr.find("input.variant-price").val()        
-            row.SRP = tr.find("input.variant-srp").val()        
+            row.DPOCost =  tr.find("input.variant-price").val().replace(",","")        
+            row.SRP = tr.find("input.variant-srp").val().replace(",","")       
             data.push(row) 
 
         })
@@ -1381,7 +1412,8 @@ $(function(){
 
 
         if(!$("div.image-holder img").length){
-            
+            $("#table-attribute-setup").after("<p class=\"label-error\">You must upload an image for this variant.</p>") 
+            isOkay = false
         }
 
         return isOkay 
@@ -1399,8 +1431,8 @@ $(function(){
         curVariantNoEdit = tr.childNodes[0].innerHTML
         curTRVariantNoEdit = tr
   
-        modal.find("p#lbl-variant").html(tr.childNodes[1].innerHTML)
-        modal.find("div.image-variant").html(tr.childNodes[2].innerHTML)
+        modal.find("div.image-variant").html(tr.childNodes[1].innerHTML)
+        modal.find("p#lbl-variant").html(tr.childNodes[2].innerHTML)
         modal.find("input#txt-editPrice").val(tr.childNodes[3].innerHTML)
         modal.find("input#txt-editSRP").val(tr.childNodes[4].innerHTML)
     }
@@ -1549,7 +1581,7 @@ $(function(){
 function bindingDatatoDataTable(response){
 	var data = response
 	for(x in data){
-		// console.log(data);
+		console.log(data);
 
 		var table = jQuery("table[data-table='"+ x +"']")
 		var list = data[x].list
@@ -1596,15 +1628,15 @@ function bindingDatatoChildDataTable(response,table){
             addCellData(tr,list[row].ItemNumber)
             addCellData(tr,list[row].ItemDescription)
             addCellData(tr,list[row].Quantity)
-            addCellData(tr,list[row].Price)
-            addCellData(tr,list[row].Total)
+            addCellData(tr,toMoney(list[row].Price))
+            addCellData(tr,toMoney(list[row].Total))
             tbody.append(tr)
             total += parseFloat(list[row].Total,2);
         }  
         table.append(thead)
         table.append(tbody)
         var tr = jQuery("<tr/>")   
-        tr.append("<td colspan=\"4\" align=\"right\">Total</td><td align=\"right\" style=\"font-weight:bold;\">"+ total +"</td>")
+        tr.append("<td colspan=\"4\" align=\"right\">Total</td><td align=\"right\" style=\"font-weight:bold;\">"+ toMoney(total) +"</td>")
         tfoot.append(tr)
         table.append(tfoot) 
     } 
@@ -1659,8 +1691,8 @@ function bindingDataViewingVariants(response,table){
             var thead = jQuery("<thead/>")  
             var tr = jQuery("<tr/>")   
             addHeader(tr,"No") 
-            addHeader(tr,"Thumbnail")
-            addHeader(tr,"Variant name")
+            addHeader(tr,"Image")
+            addHeader(tr,"Variant")
             addHeader(tr,((data.role=="admin") ?  "Price" : "DPO Cost"))
 
             if(data.role=="admin")
@@ -1675,8 +1707,8 @@ function bindingDataViewingVariants(response,table){
             for(row in list){
                 var tr = jQuery("<tr/>")   
                 addCellData(tr,list[row].VariantNo)
-                addCellData(tr,list[row].VariantName) 
                 addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
+                addCellData(tr,list[row].VariantName) 
                 addCellData(tr,((data.role=="admin") ?  toMoney(list[row].Price) : toMoney(list[row].DPOCost)))
 
                 if(data.role=="admin")
@@ -1794,7 +1826,7 @@ function setupDataTable(table, data, fields){
 
  }
 
-
+ var listColumnsArray = ["DPOCost","Total","Price"]
  function colJsonConvert(elem){
         var list = elem.split(",")
         var jsonData = new Object();
@@ -1807,6 +1839,8 @@ function setupDataTable(table, data, fields){
             obj.title = str[1]
             if(str[1]=="Action"){obj.width="120px";} 
             if(str[0]=="ViewItems"){obj.width="80px";} 
+            if(listColumnsArray.indexOf(str[0]) > 0 )
+                obj.sType = "numeric"
        
             arrlist.push(obj);
         }
@@ -1815,69 +1849,118 @@ function setupDataTable(table, data, fields){
         return jsonData;
     }
 
- function dashboardChart(){
-      Highcharts.chart('dashboard-chart', {
+
+ // function dashboardChart(){
+ //      Highcharts.chart('dashboard-chart', {
+ //        chart: {
+ //            type: 'area'
+ //        },
+ //        title: {
+ //            text: ''
+ //        },
+         
+ //        xAxis: {
+ //            allowDecimals: false,
+ //            labels: {
+ //                formatter: function () {
+ //                    return this.value; // clean, unformatted number for year
+ //                }
+ //            }
+ //        },
+ //        yAxis: {
+ //            title: {
+ //                text: 'Total'
+ //            },
+ //            labels: {
+ //                formatter: function () {
+ //                    return this.value / 1000 + 'k';
+ //                }
+ //            }
+ //        },
+ //        tooltip: {
+ //            pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+ //        },
+ //        plotOptions: {
+ //            area: {
+ //                pointStart: 1940,
+ //                marker: {
+ //                    enabled: false,
+ //                    symbol: 'circle',
+ //                    radius: 2,
+ //                    states: {
+ //                        hover: {
+ //                            enabled: true
+ //                        }
+ //                    }
+ //                }
+ //            }
+ //        },
+ //        series: [{
+ //            name: 'USA',
+ //            data: [null, null, null, null, null, 6, 11, 32, 110, 235, 369, 640,
+ //                1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468, 20434, 24126,
+ //                27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342, 26662,
+ //                26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
+ //                24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586,
+ //                22380, 21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950,
+ //                10871, 10824, 10577, 10527, 10475, 10421, 10358, 10295, 10104]
+ //        }, {
+ //            name: 'USSR/Russia',
+ //            data: [null, null, null, null, null, null, null, null, null, null,
+ //                5, 25, 50, 120, 150, 200, 426, 660, 869, 1060, 1605, 2471, 3322,
+ //                4238, 5221, 6129, 7089, 8339, 9399, 10538, 11643, 13092, 14478,
+ //                15915, 17385, 19055, 21205, 23044, 25393, 27935, 30062, 32049,
+ //                33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000, 37000,
+ //                35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
+ //                21000, 20000, 19000, 18000, 18000, 17000, 16000]
+ //        }]
+ //    });
+ // }
+
+
+
+function bindingDataChart(){
+    callAjaxJson('main/getDataForChart',
+                  new Object(),
+                  generateChart,
+                  function(data,error){});
+}
+
+function generateChart(data){
+  if(data){
+    $('#dashboard-chart').highcharts({
         chart: {
             type: 'area'
         },
         title: {
-            text: ''
-        },
-         
+            text: ' ',
+            x: -20 //center
+        }, 
         xAxis: {
-            allowDecimals: false,
-            labels: {
-                formatter: function () {
-                    return this.value; // clean, unformatted number for year
-                }
-            }
+            categories: data['showMonth']
         },
         yAxis: {
             title: {
                 text: 'Total'
-            },
-            labels: {
-                formatter: function () {
-                    return this.value / 1000 + 'k';
-                }
-            }
+            } 
         },
         tooltip: {
-            pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+            valueSuffix: ''
         },
-        plotOptions: {
-            area: {
-                pointStart: 1940,
-                marker: {
-                    enabled: false,
-                    symbol: 'circle',
-                    radius: 2,
-                    states: {
-                        hover: {
-                            enabled: true
-                        }
-                    }
-                }
-            }
-        },
+        
         series: [{
-            name: 'USA',
-            data: [null, null, null, null, null, 6, 11, 32, 110, 235, 369, 640,
-                1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468, 20434, 24126,
-                27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342, 26662,
-                26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
-                24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586,
-                22380, 21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950,
-                10871, 10824, 10577, 10527, 10475, 10421, 10358, 10295, 10104]
-        }, {
-            name: 'USSR/Russia',
-            data: [null, null, null, null, null, null, null, null, null, null,
-                5, 25, 50, 120, 150, 200, 426, 660, 869, 1060, 1605, 2471, 3322,
-                4238, 5221, 6129, 7089, 8339, 9399, 10538, 11643, 13092, 14478,
-                15915, 17385, 19055, 21205, 23044, 25393, 27935, 30062, 32049,
-                33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000, 37000,
-                35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
-                21000, 20000, 19000, 18000, 18000, 17000, 16000]
-        }]
+            name: 'Total Sales',
+            data: data['Sales'],
+            color: '#DD2756'
+        },
+        {
+            name: 'Total Customers',
+            data: data['Customers'],
+            color: '#D8900D'
+        }
+        ]
     });
- }
+     jQuery('svg').find('text:contains("Highcharts.com")').remove();
+  } 
+
+}

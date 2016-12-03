@@ -581,6 +581,21 @@ button#btn-add:after {
 }
 
 
+.btn-primary:hover {
+    color: #fff;
+    background-color:#009688 !important  ;
+    border-color: #009688 !important  ;
+}
+.btn.focus, .btn:focus, .btn:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #009688 !important;
+    border-color: #009688 !important;
+}
+
 
 
 /* MOBILE VIEW*/
@@ -654,6 +669,8 @@ button#btn-add:after {
       height: 70px;
       border-radius: 50%
     }
+
+    
 
 
 }

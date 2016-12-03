@@ -27,11 +27,20 @@ $(function(){
 				'main/uploadImage' + ((param) ? "?param=" + JSON.stringify(param) : ""),
 				 form_data,
 				 function(response){
-					file = response['upload_data'];
-					setTimeout(function(e){
-						var image = baseUrl + "images/variant-folder/"  +  file.file_name;
-						elem.closest("div").find("div.image-holder").html("<img src=\""+ image +"\" alt=\"\" data-image=\""+ file.file_name +"\" width=\"200px\"/>")
-					},1500)
+				 	if(response["errormessage"] == ""){
+
+				 		file = response['responseitem'].upload_data;
+						setTimeout(function(e){
+							var image = baseUrl + "images/variant-folder/"  +  file.file_name;
+							elem.closest("div").find("div.image-holder").html("<img src=\""+ image +"\" alt=\"\" data-image=\""+ file.file_name +"\" width=\"200px\"/>")
+						},1500)
+				 	}
+				 	else{
+				 		bootbox.alert(response["errormessage"].error)
+						elem.closest("div").find("div.image-holder").html("<span class=\"glyphicon glyphicon-picture upload-file\"></span> ")
+
+				 	}
+					
 				 },
 				 ajaxError
 			)

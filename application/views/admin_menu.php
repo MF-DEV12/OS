@@ -25,18 +25,18 @@
                     <li data-content="items" data-header="Items"><a href="#">Items</a></li>
                     <li data-content="lowstocks" data-header="Low Stocks"><a href="#">Low Stocks</a></li>
                     <li data-content="categories" data-header="Categories"><a href="#">Categories</a></li>
-                    <li><a href="#">Removed</a></li>
+                    <li data-content="removeditems" data-header="Removed Items"><a href="#">Removed Items</a></li>
                 </ul>
               </li>
               <li data-content="allorders" data-header="Customer's Order">
                 <a>Customer's Order</a>
               </li>
-              <li data-content="forums">
+              <!-- <li data-content="forums">
                 <a>Forums</a>
               </li>  
               <li data-content="settings">
                 <a>Settings</a>
-              </li>
+              </li> -->
       <?php }?>
       <?php if($role == "supplier"){?>
           <li>
@@ -61,9 +61,9 @@
           <li>
             <a data-toggle="collapse" data-target="#sup-items" data-parent="#nav">Item master</a>
             <ul id="sup-items" class="collapse sub-menu">
-                <li  data-content="sup-items" data-header="Items"><a href="#">List of Items</a></li>
+                <li data-content="sup-items" data-header="Items"><a href="#">List of Items</a></li>
                 <li data-content="additems"><a href="#" data-header="Add Items">Add Items</a></li>
-                <li data-content="sup-removed" data-header="Removed"><a href="#">Removed</a></li>
+                <li data-content="supremove-items" data-header="Removed items"><a href="#">Removed Items</a></li>
             </ul>
           </li>
       <?php }?>

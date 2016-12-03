@@ -24,7 +24,7 @@
                         </dl>
                     </div>
                     <div class="col-md-9">
-                            <h5 class="dash-header sub"><span class="glyphicon glyphicon-stats"></span> Items Sales</h5> 
+                            <h5 class="dash-header sub"><span class="glyphicon glyphicon-stats"></span> Monitoring Sales and Customers Stats</h5> 
                         <div id="dashboard-chart">
                             
                         </div> 

@@ -54,22 +54,83 @@ class Main extends CI_Controller {
 	}
 
 	function restyle_text($input){
-    $input = number_format($input);
-    $input_count = substr_count($input, ',');
-    if($input_count != '0'){
-        if($input_count == '1'){
-            return substr($input, 0, -4).'K';
-        } else if($input_count == '2'){
-            return substr($input, 0, -8).'M';
-        } else if($input_count == '3'){
-            return substr($input, 0,  -12).'B';
-        } else {
-            return;
-        }
-    } else {
-        return $input;
-    }
-}
+	    $input = number_format($input);
+	    $input_count = substr_count($input, ',');
+	    if($input_count != '0'){
+	        if($input_count == '1'){
+	            return substr($input, 0, -4).'K';
+	        } else if($input_count == '2'){
+	            return substr($input, 0, -8).'M';
+	        } else if($input_count == '3'){
+	            return substr($input, 0,  -12).'B';
+	        } else {
+	            return;
+	        }
+	    } else {
+	        return $input;
+	    }
+	}
+
+	function getDataForChart(){
+		$resultarray = array(); 
+		$customerStats = $this->getListofCustomersStats();
+		$salesStats = $this->getSalesStats();
+	 
+		$showMonth = array();
+		foreach ($customerStats as $key) {
+			$showMonth[] = $key->DESCRIPTION . ' ' . $key->YEAR;
+		}
+
+		$customers = array();
+		foreach ($customerStats as $key) {
+			$customers[] = (int)$key->TOTAL;
+		}
+		$sales = array();
+		foreach ($salesStats as $key) {
+			$sales[] = (int)$key->TOTAL;
+		} 
+		$resultarray["showMonth"] = $showMonth;
+		  
+		$resultarray['Customers'] = $customers;
+		$resultarray['Sales'] = $sales; 
+		 
+		echo json_encode($resultarray);
+	}
+ 	
+ 	function getListofCustomersStats(){
+ 		$qry = file_get_contents('sp/customerstats.txt'); 
+		
+		$listQry = explode(";", $qry);
+	  
+		foreach ($listQry as $strQry) {
+			if(strlen(trim($strQry)) > 0) 
+				$query = $this->db->query($strQry . ";");
+		 
+			if($strQry == $listQry[count($listQry) - 1])
+				$result = $query->result();  
+		}   
+		 
+ 		return $result;
+ 	}
+
+ 	function getSalesStats(){
+ 		$qry = file_get_contents('sp/salestats.txt'); 
+		
+		$listQry = explode(";", $qry);
+	 	
+	 	$result = array();
+	 
+		foreach ($listQry as $strQry) {
+
+			if(strlen(trim($strQry)) > 0) 
+				$query = $this->db->query($strQry . ";");
+		 
+			if($strQry == $listQry[count($listQry) - 1])
+				$result = $query->result();  
+		}   
+ 		return $result;
+ 	}
+
 
 	function getAuditLogsJson(){
 		$list["auditlogs"] = $this->getAuditLogs();
@@ -90,7 +151,8 @@ class Main extends CI_Controller {
 			$data["suppliers"] = $this->GetSuppliers();
 
 			$data["inventory"] = $this->getInventory();
-			$data["items"] = $this->getItems();
+			$data["items"] = $this->getItems(0);
+			$data["removeditems"] = $this->getItems(1);
 			$data["lowstocks"] = $this->getLowStocks(); 
 
 			$data["allorders"] = $this->getOrders("");
@@ -108,9 +170,9 @@ class Main extends CI_Controller {
 			// $data["sup-incompleteorders"] = $this->getOrders("Incomplete");
 			// $data["sup-shippedorders"] = $this->getOrders("Ship");
 			// $data["sup-cancelledorders"] = $this->getOrders("Cancel");
-			$data["sup-items"] = $this->getItems();
+			$data["sup-items"] = $this->getItems(0);
+			$data["supremove-items"] = $this->getItems(1);
 
-			$data["sup-items"] = $this->getItems();
 
 
 
@@ -133,7 +195,10 @@ class Main extends CI_Controller {
 		elseif($table == "inventory")
 			$data = $this->getInventory();
 		elseif($table == "items")
-			$data = $this->getItems();
+			$data = $this->getItems(0);
+		elseif($table == "removeditems")
+			$data = $this->getItems(1);
+
 		elseif($table == "lowstocks")
 			$data = $this->getLowStocks();
 		elseif($table == "allorders")
@@ -152,7 +217,9 @@ class Main extends CI_Controller {
 		elseif($table == "sup-cancelledorders")
 			$data = $this->getOrders("Cancel"); 
 		elseif($table == "sup-items")
-			$data = $this->getItems(); 
+			$data = $this->getItems(0); 
+		elseif($table == "supremove-items")
+			$data = $this->getItems(1);
 		 
 
 
@@ -245,8 +312,10 @@ class Main extends CI_Controller {
 		function updatePOQty(){
 			$requestlistno = $this->input->post("rlno");
 			$qty = $this->input->post("qty");
+			$total = $this->input->post("total");
 			$this->param = $this->query_model->param; 
 			$data["Quantity"] = $qty;
+			$data["Total"] = $total;
 			$this->param["dataToUpdate"] = $data;
 			$this->param["table"] = "requestlist";
 			$this->param["conditions"] = "RequestListNo = '$requestlistno'";
@@ -523,21 +592,29 @@ class Main extends CI_Controller {
 			echo json_encode($list);
 		}
 
-		function getItems(){
+		function getItems($isRemovedItems){
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "vw_items";
 			$this->param["fields"] = "*"; 
 			$role = $this->session->userdata("role");
 			$sno = $this->session->userdata("supplierno");
+
+			if($role == "supplier")
+				$this->param["conditions"] = "SRemoved = '$isRemovedItems'";  
+			else
+				$this->param["conditions"] = "Removed = '$isRemovedItems'";  
+
+
 			if($role == "supplier"){
-				$this->param["conditions"] = "SupplierNo = '$sno'"; 
+				$this->param["conditions"] .= " AND SupplierNo = '$sno'"; 
 			}
  
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "ViewItems|Variants,ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,UOM|UOM,Name1|Family,Name2|Category,Name3|Subcategory";
 			if($role != "supplier")
 				$data["fields"].= ",SupplierName|Supplier name";
-			
+		 
+			$data["fields"].= ",Action|Action"; 
 			return $data; 
 		}
 		
@@ -978,6 +1055,24 @@ class Main extends CI_Controller {
 			echo json_encode($list);
 		}
 
+		function removeOrRecoverItem(){
+			$itemno = $this->input->post("itemno");  
+			$status = $this->input->post("status");  
+			$role = $this->session->userdata("role");
+ 
+			$this->param = $this->query_model->param; 
+			if($role == "supplier") 
+				$data["SRemoved"] = $status;
+			else
+				$data["Removed"] = $status;
+
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "item";
+			$this->param["conditions"] = "ItemNo = '$itemno'";
+			$result = $this->query_model->updateData($this->param); 
+			echo true;
+		}
+
 		function UpdateVariant(){
 			$vno = $this->input->post("vno");
 			$param = $this->input->post("data");
@@ -1023,10 +1118,14 @@ class Main extends CI_Controller {
 
 			$this->load->library('upload', $config);
 
+			$response = array();
+			$response["responseitem"] = "";
+			$response["errormessage"] = "";
+
 			if ( ! $this->upload->do_upload())
 			{
-				$error = array('error' => $this->upload->display_errors());
-				echo json_encode($error);
+				$error = array('error' => $this->upload->display_errors()); 
+				$response["errormessage"] = $error; 
 			}
 			else
 			{
@@ -1046,9 +1145,11 @@ class Main extends CI_Controller {
 				}
 				// $this->load->library('Ftpupload');
 				// $this->ftpupload->upload($filename);
-				echo json_encode($result);
+				$response["responseitem"] = $result; 
+
 			}
-		}
+			echo json_encode($response);
+		} 
 
 
 

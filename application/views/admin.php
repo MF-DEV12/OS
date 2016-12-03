@@ -288,6 +288,9 @@
                     </div>
                        
                 </div>
+                <div class="content-list" data-content="removeditems"> 
+                    <table class="display main-table" data-table="removeditems"> </table> 
+                </div>
         
                 <div class="content-list" data-content="allorders">
 
