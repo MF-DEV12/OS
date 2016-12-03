@@ -264,6 +264,11 @@ class Main extends CI_Controller {
 			echo json_encode($json); 
 		}
 
+		function generateReportForPO(){
+			$this->load->library("pdf/tcpdf");
+
+		}
+
 	 
 		function GetSelectedOrderDetailsByPO(){
 			$supplierNo = $this->input->post("sno");
@@ -456,7 +461,7 @@ class Main extends CI_Controller {
 
 			// Insert to Supply
 			$qry =  "INSERT INTO supply(QuantityReceived, PendingQuantity, DateReceive, RequestListNo, SupplyRequestNo) ";
-			$qry .= "SELECT Received, (Received-Quantity), '$datetime', RequestListNo, SupplyRequestNo ";
+			$qry .= "SELECT Received, (Quantity - Received), '$datetime', RequestListNo, SupplyRequestNo ";
 			$qry .= "FROM requestlist WHERE SupplyRequestNo = '$SupplyRequestNo'";
 			$this->db->query($qry);
 			$this->query_model->insertAuditLogs("New PO Received", "Insert");
@@ -1151,6 +1156,22 @@ class Main extends CI_Controller {
 			echo json_encode($response);
 		} 
 
-
+		function sendmessage(){
+			$fields = array();
+			$fields["api"] = "1SBXyYFNuQsCZGkbHCou";
+			$fields["number"] = "639278912149"; //safe use 63
+			$fields["message"] = "Test message";
+			$fields["from"] = "Lampano Hardware Tradings";
+			$fields_string = http_build_query($fields);
+			$outbound_endpoint = "http://api.semaphore.co/api/sms";
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $outbound_endpoint);
+			curl_setopt($ch,CURLOPT_POST, count($fields));
+			curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$output = curl_exec($ch);
+			curl_close($ch);
+			echo $output;
+		}
 
 }
