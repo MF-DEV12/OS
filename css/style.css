@@ -751,9 +751,20 @@ transition: 0.5s ease;
 .navbar-content
 {
     width:320px;
-    padding: 15px;
+    /*padding: 15px;*/
     padding-bottom:0px;
 }
+.navbar-content dd {
+    padding: 12px;
+    border-bottom: 1px solid #dadada;
+}
+.navbar-content dd:first-child { 
+    border-top: 1px solid #dadada;
+}
+.navbar-content h5{
+    margin: 8px 8px;
+}
+
 .navbar-content:before, .navbar-content:after
 {
     display: table;
