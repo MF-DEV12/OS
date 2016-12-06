@@ -144,7 +144,7 @@ jQuery(document).ready(function($){
             arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,DPOCost|DPO Cost,SRP|Suggessted Retail Price (SRP)"
             listposupplier["listitemvariantreview"] = arrList; 
             $("input#lbl-itemname").val($("#txt-itemname").val())
-            $("input#lbl-uom").val($("#txt-UOM").val())
+            $("input#lbl-uom").val($("select#list-uom option:selected").val())
             var category = ""
             category += $("#list-family option:selected").text() + " > "
             category += $("#list-category option:selected").text() + " > "

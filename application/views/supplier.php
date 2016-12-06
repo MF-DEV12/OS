@@ -13,7 +13,12 @@
                   </div>  
                 <table class="display main-table" data-table="requestlist"> </table> 
             </div> 
-         </div> 
+        </div> 
+
+        <div class="content-list" data-content="backorders">
+            <!-- <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-send"></span> Send Notification</button> -->
+            <table class="display main-table" data-table="backorders"> </table>
+        </div>
          
         <div class="content-list" data-content="allorders">
 

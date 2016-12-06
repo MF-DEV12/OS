@@ -33,6 +33,7 @@ $(function(){
 						setTimeout(function(e){
 							var image = baseUrl + "images/variant-folder/"  +  file.file_name;
 							elem.closest("div").find("div.image-holder").html("<img src=\""+ image +"\" alt=\"\" data-image=\""+ file.file_name +"\" width=\"200px\"/>")
+							elem.val("")
 						},1500)
 				 	}
 				 	else{

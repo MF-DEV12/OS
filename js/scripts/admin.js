@@ -920,7 +920,7 @@ $(function(){
             var data = new Object();
             data.Image = ""
             data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-backdrop=\"static\"  data-keyboard=\"false\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Add variants</a>";
-            data.DPOCost = "<input type=\"text\" class=\"numeric variant-price form-control\"/>";
+            data.DPOCost = "<input type=\"text\" class=\"numeric variant-dpocost form-control\"/>";
             data.SRP = "<input type=\"text\" class=\"numeric variant-srp form-control\"/>";
             data.Action = "<a onclick=\"deleteVariant(this);\"><span class=\"glyphicon glyphicon-remove\"></span></a>";
              
@@ -1014,6 +1014,8 @@ $(function(){
             curtrvariant.closest("tr").find("td:nth-child(1)").html(img)
             curtrvariant.closest("tr").find("td:nth-child(2)").html(stringAttribute)
             curtrvariant.closest("tr").attr("data-variant", JSON.stringify(stringJson))
+
+            $("div#attributesetup").find("input[type=file]").val("")
     
             $("div#attributesetup").modal("hide");
         })
@@ -1069,6 +1071,8 @@ $(function(){
             var variant = new Object()
             var param = new Object()
             variant.Price = $("input#txt-editPriceAdmin").val().replace(",","")
+            variant.LowStock = $("input#txt-editLowstockAdmin").val().replace(",","")
+            variant.Critical = $("input#txt-editCriticalAdmin").val().replace(",","")
 
             param.vno = curVariantNoEditAdmin;
             param.data = JSON.stringify(variant);
@@ -1077,7 +1081,9 @@ $(function(){
                 function(response){
                     if(response){
                         var modal =  $("#editvariantadmin")
-                        curTRVariantNoEditAdmin.childNodes[3].innerHTML = modal.find("input#txt-editPriceAdmin").val()
+                        curTRVariantNoEditAdmin.childNodes[5].innerHTML = modal.find("input#txt-editPriceAdmin").val()
+                        curTRVariantNoEditAdmin.childNodes[6].innerHTML = modal.find("input#txt-editLowstockAdmin").val()
+                        curTRVariantNoEditAdmin.childNodes[7].innerHTML = modal.find("input#txt-editCriticalAdmin").val()
                        
                         $("#editvariantadmin").modal("hide")
                     }
@@ -1106,6 +1112,26 @@ $(function(){
                 elem.closest("table.form-table").find("p.label-error").remove()
             
            
+        })
+
+
+        $("table[data-table=listitemvariant]").on("blur", "td input.variant-srp, td input.variant-dpocost",function(e){
+            $("div.step-holder > div.step-view[data-view=item-variants]").find("p.label-error").remove()
+            var elem = $(this)
+            var tr = elem.closest("tr")
+            var dpo = tr.find("input.variant-dpocost")
+            var srp = tr.find("input.variant-srp")
+
+            var dpoValue = dpo.val().replace(",","")
+            var srpValue = srp.val().replace(",","")
+
+            if($.trim(dpoValue).length > 0 && $.trim(srpValue).length > 0){
+                if(parseFloat(dpoValue,10) >= parseFloat(srpValue,10)){
+                    $("div.step-holder > div.step-view[data-view=item-variants]").find("#btn-itemvariantadd").after("<p class=\"label-error\">DPO Cost must be lower than to SRP.</p>") 
+                    
+                }  
+            } 
+            
         })
 
 
@@ -1375,7 +1401,7 @@ $(function(){
             row.Image = "<img src=\""+ baseUrl +"images/variant-folder/" + row.FileName + "\" width=\"100px\"/>"
             row.VariantsName = jsontoString(tr.data("variant"))     
             row.VariantsNameJSON = tr.data("variant") 
-            row.DPOCost =  tr.find("input.variant-price").val().replace(",","")        
+            row.DPOCost =  tr.find("input.variant-dpocost").val().replace(",","")        
             row.SRP = tr.find("input.variant-srp").val().replace(",","")       
             data.push(row) 
 
@@ -1450,9 +1476,11 @@ $(function(){
         curVariantNoEditAdmin = tr.childNodes[0].innerHTML
         curTRVariantNoEditAdmin = tr
   
-        modal.find("p#lbl-variant").html(tr.childNodes[1].innerHTML)
-        modal.find("div.image-variant").html(tr.childNodes[2].innerHTML)
-        modal.find("input#txt-editPriceAdmin").val(tr.childNodes[3].innerHTML) 
+        modal.find("div.image-variant").html(tr.childNodes[1].innerHTML)
+        modal.find("p#lbl-variant").html(tr.childNodes[2].innerHTML)
+        modal.find("input#txt-editPriceAdmin").val(tr.childNodes[5].innerHTML) 
+        modal.find("input#txt-editLowstockAdmin").val(tr.childNodes[6].innerHTML) 
+        modal.find("input#txt-editCriticalAdmin").val(tr.childNodes[7].innerHTML) 
     }
 
     function deleteVariant(elem){
@@ -1488,9 +1516,15 @@ $(function(){
         if($.trim($("input#txt-editPriceAdmin")).length == 0 || $("input#txt-editPriceAdmin").val() == "0"){
             isOkay = false
         }
+        if($.trim($("input#txt-editLowstockAdmin")).length == 0 || $("input#txt-editLowstockAdmin").val() == "0"){
+            isOkay = false
+        }
+        if($.trim($("input#txt-editCriticalAdmin")).length == 0 || $("input#txt-editCriticalAdmin").val() == "0"){
+            isOkay = false
+        }
 
         if(!isOkay)
-            $("div#editvariantadmin").find("p.label-error").text("Please input the Unit price.")
+            $("div#editvariantadmin").find("p.label-error").text("Please input all required field(s).")
         return isOkay;
     }
 
@@ -1696,15 +1730,22 @@ function bindingDataViewingVariants(response,table){
             addHeader(tr,"No") 
             addHeader(tr,"Image")
             addHeader(tr,"Variant")
-            addHeader(tr,((data.role=="admin") ?  "Price" : "DPO Cost"))
 
-            if(data.role=="admin")
+            if(data.role=="admin"){ 
                 addHeader(tr,"DPO Cost")
-
-            if(data.role=="supplier")
-                addHeader(tr,"Suggested Retail Price (SRP)")
+                addHeader(tr,"SRP") 
+                addHeader(tr,"Price")
+                addHeader(tr,"Low Stock Level")
+                addHeader(tr,"Critical Level")
+            }
+            else{
+                addHeader(tr,"DPO Cost") 
+                addHeader(tr,"SRP")  
+            }
+ 
+            
             // if(data.isAction) 
-                addHeader(tr,"Action")
+            addHeader(tr,"Action")
             thead.append(tr)
      
             for(row in list){
@@ -1712,16 +1753,21 @@ function bindingDataViewingVariants(response,table){
                 addCellData(tr,list[row].VariantNo)
                 addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
                 addCellData(tr,list[row].VariantName) 
-                addCellData(tr,((data.role=="admin") ?  toMoney(list[row].Price) : toMoney(list[row].DPOCost)))
 
-                if(data.role=="admin")
-                    addCellData(tr,toMoney(list[row].DPOCost))
+                if(data.role=="admin"){ 
+                    addCellData(tr,list[row].DPOCost) 
+                    addCellData(tr,list[row].SRP) 
+                    addCellData(tr,list[row].Price)  
+                    addCellData(tr,list[row].LowStock)  
+                    addCellData(tr,list[row].Critical)  
+                }
+                else{
+                    addCellData(tr,list[row].DPOCost) 
+                    addCellData(tr,list[row].SRP) 
+                }
 
-                if(data.role=="supplier")
-                    addCellData(tr,toMoney(list[row].SRP))
-
-                // if(data.isAction) 
-                     addCellData(tr,list[row].Action)
+  
+                addCellData(tr,list[row].Action)
                 tbody.append(tr)
             }  
             table.append(thead)

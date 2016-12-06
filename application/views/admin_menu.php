@@ -43,9 +43,8 @@
             <a data-toggle="collapse" data-target="#sup-orders" data-parent="#nav">Request List</a>
             <ul id="sup-orders" class="collapse sub-menu">
                 <li data-content="requestlist" data-header="Request List"><a href="#">Request List</a></li>
-                <li data-content="allorders" data-header="Customer's Order">
-                  <a>Customer's Order</a>
-                </li>
+                <!-- <li data-content="allorders" data-header="Customer's Order">  <a>Customer's Order</a>  </li> -->
+                <li data-content="backorders" data-header="Back Orders"><a href="#">Back Orders</a></li>
                 <!-- <li data-content="sup-neworders" data-header="New Order"><a href="#">New 
                 <?php if($requeststatus->New > 0){?>
                 <span class="badge"><?=$requeststatus->New;?></span>

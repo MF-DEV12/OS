@@ -161,7 +161,7 @@ div.group-2{
     margin-top: -22px;
 }
 
-.poquantity, .poreceived{
+.poquantity, .poreceived, .quantity{
   text-align: right !important;
 }
 
@@ -253,7 +253,7 @@ div.btn-child-button, div.main-button{
 
 }
 
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td {
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td:first-child {
     vertical-align: top !important;
 }
 

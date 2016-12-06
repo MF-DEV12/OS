@@ -30,7 +30,7 @@
                 <span class="content-header"><span>Dashboard</span><subheader></subheader></span>
                  <ul class="nav navbar-nav navbar-right">
                     <li><a></a></li>
-                   <!--  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;"><span class="glyphicon glyphicon-bell"></span><span class="badge">10</span> </a>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;"><span class="glyphicon glyphicon-bell"></span><span class="badge">10</span> </a>
                         <ul class="dropdown-menu" style="width:325px;height:300px;"
                             <li>
                                 <div class="navbar-content">
@@ -48,7 +48,7 @@
                                 </div> 
                             </li>
                         </ul>
-                    </li> -->
+                    </li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;"><span class="glyphicon glyphicon-user"></span></span>
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu" style="width:245px;">
@@ -112,6 +112,18 @@
                       <span class="highlight"></span>
                       <span class="bar"></span>
                       <label class="formlabel">Unit Price:</label>
+                    </div> 
+                    <div class="group">
+                     <input class="inputMaterial quantity" type="text" id="txt-editLowstockAdmin" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label class="formlabel">Low stock level:</label>
+                    </div> 
+                    <div class="group">
+                     <input class="inputMaterial quantity" type="text" id="txt-editCriticalAdmin" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                      <span class="highlight"></span>
+                      <span class="bar"></span>
+                      <label class="formlabel">Critical level:</label>
                     </div> 
      
                     <p class="label-error"></p>

@@ -169,7 +169,8 @@ class Main extends CI_Controller {
 
 		else if($role == "supplier"){
 			$data["requestlist"] = $this->GetRequestListFromAdmin("");
-			$data["allorders"] = $this->getOrders("");
+			// $data["allorders"] = $this->getOrders("");
+			$data["backorders"] = $this->GetBackOrders();
 			// $data["sup-neworders"] = $this->getOrders("New");
 			// $data["sup-processorders"] = $this->getOrders("Process");
 			// $data["sup-incompleteorders"] = $this->getOrders("Incomplete");
