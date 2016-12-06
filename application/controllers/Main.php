@@ -71,6 +71,10 @@ class Main extends CI_Controller {
 	    }
 	}
 
+	function getNotification(){
+
+	}
+
 	function getDataForChart(){
 		$resultarray = array(); 
 		$customerStats = $this->getListofCustomersStats();
@@ -154,7 +158,8 @@ class Main extends CI_Controller {
 			$data["items"] = $this->getItems(0);
 			$data["removeditems"] = $this->getItems(1);
 			$data["lowstocks"] = $this->getLowStocks(); 
-
+			
+			$data["categories"] = $this->getCategoryList();
 			$data["allorders"] = $this->getOrders("");
 			// $data["neworders"] = $this->getOrders("New");
 			// $data["processorders"] = $this->getOrders("Process");
@@ -203,6 +208,10 @@ class Main extends CI_Controller {
 			$data = $this->getLowStocks();
 		elseif($table == "allorders")
 			$data = $this->getOrders(""); 
+
+		elseif($table == "categories")
+			$data = $this->getCategoryList();
+
 
 		elseif($table == "requestlist")
 			$data = $this->GetRequestListFromAdmin(""); 
@@ -632,7 +641,22 @@ class Main extends CI_Controller {
 			$data["fields"] = "ItemNo|Item Number,ItemDescription|Item Name,SupplierName|Supplier name,STOCKS|Stocks,LOWSTOCKS|Low Stock Threshold,CRITICAL|Critical";
 			return $data; 
 		}
+ 
 
+		function getCategoryList(){
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getcategories";
+			$img = "CONCAT('<div><p class=\"dash-header\">',Family,'</p><img src=\"images/variant-folder/', ImageFile ,'\" width=\"300px\"></div>') as `Image`";
+			$this->param["fields"] = "*," . $img; 
+ 
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "Image|Family,Category|Category,SubCategory|SubCategory";
+	 
+			return $data; 
+		}
+
+
+	 
 		function getFamily($name=""){
 			$name = trim($name);
 			$this->param = $this->param = $this->query_model->param; 
@@ -640,8 +664,7 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "Level1No `id`, Name1 `Name`, ImageFile";  
 			if($name != "")
 				$this->param["conditions"] = "Name1 = '$name'";
-			$this->param["order"] = "Name1";  
-
+			$this->param["order"] = "Name1";   
 			return $this->query_model->getData($this->param);
 			 
 		}
@@ -907,8 +930,12 @@ class Main extends CI_Controller {
 		function setDeliveredRequest(){
 			$status = $this->input->post("status");
 			$supreqno = $this->input->post("supreqno");
+			date_default_timezone_set("Asia/Manila");
+			$date = date('Y-m-d H:i:s');
+			$datetime = date('Y-m-d H:i:s', strtotime($date));
 			$this->param = $this->query_model->param;  
 			$data["DeliveredStatus"] = 1;
+			$data["DeliveredDate"] = $datetime;
 			$this->param["dataToUpdate"] = $data;
 			$this->param["table"] = "supplyrequest";
 			$this->param["conditions"] = "SupplyRequestNo = '$supreqno'";

@@ -252,8 +252,21 @@ div.btn-child-button, div.main-button{
       z-index: 1;
 
 }
+
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td {
+    vertical-align: top !important;
+}
+
 input.numeric{
   text-align: right;
+}
+
+table[data-table=categories] td span.tr-action{
+  display: none;
+}
+
+table[data-table=categories] td:hover span.tr-action{
+  display: block !important;
 }
 
  
@@ -754,6 +767,17 @@ transition: 0.5s ease;
     padding: 15px;
     padding-bottom:0px;
 }
+.navbar-content dd {
+    padding: 12px;
+    border-bottom: 1px solid #dadada;
+}
+.navbar-content dd:first-child { 
+    border-top: 1px solid #dadada;
+}
+.navbar-content h5{
+    margin: 8px 8px;
+}
+
 .navbar-content:before, .navbar-content:after
 {
     display: table;

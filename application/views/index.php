@@ -29,8 +29,27 @@
                 <span class='button'></span> 
                 <span class="content-header"><span>Dashboard</span><subheader></subheader></span>
                  <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;">
-                        <span><span class="glyphicon glyphicon-user"></span>  <?=$username;?> </span>
+                    <li><a></a></li>
+                   <!--  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;"><span class="glyphicon glyphicon-bell"></span><span class="badge">10</span> </a>
+                        <ul class="dropdown-menu" style="width:325px;height:300px;"
+                            <li>
+                                <div class="navbar-content">
+                                    <h5>Notifications:</h5>
+                                    <div class="row"> 
+                                        <div class="col-md-12" align="center">
+                                             <dl>
+                                                 <dd><a class="notify" data-content="receivings">Purchase Order <span class="badge">10</span></a></dd>
+                                                 <dd><a class="notify" data-content="allorders">Customer Order <span class="badge">10</span></a></dd>
+                                                 <dd>Order</dd> 
+                                             </dl>
+                                        </div>
+                                         
+                                    </div>
+                                </div> 
+                            </li>
+                        </ul>
+                    </li> -->
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;"><span class="glyphicon glyphicon-user"></span></span>
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu" style="width:245px;">
                             <li>
@@ -52,7 +71,7 @@
                                     <div class="navbar-footer-content">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <a href="#" class="btn btn-default btn-sm">Change Passowrd</a>
+                                                <a href="#" class="btn btn-default btn-sm">Change Password</a>
                                             </div>
                                             <div class="col-md-6">
                                                 <a href="<?=base_url('login/clearSession');?>" class="btn btn-sm pull-right btn-action">Log Out</a>
@@ -110,6 +129,7 @@
     <script type="text/javascript" src='<?=base_url("js/jquery/jquery-1.11.3.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/jquery/jquery-ui.js")?>'></script> 
     <script type="text/javascript" src='<?=base_url("js/datatables/jquery.dataTables.min.js")?>'></script> 
+    <script type="text/javascript" src='<?=base_url("js/datatables/datatables-rowsgroup.js")?>'></script> 
     <script type="text/javascript" src='<?=base_url("js/bootstrap/bootstrap.min.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/bootbox.min.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
