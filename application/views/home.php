@@ -93,57 +93,16 @@
               <div class="col-sm-3">
                 <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
                   <div class="folio-image">
-
+                    <a href="<?=base_url('customer?family='.$key->Level1No);?>"> 
                     <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
+                    </a>
                   </div> 
                   <p><?=$key->Name1;?></p>
                 </div>
               </div>
         <?php } ?>
-        <?php foreach($family as $key) {?>
-              <div class="col-sm-3">
-                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
-                  <div class="folio-image">
 
-                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
-                  </div> 
-                  <p><?=$key->Name1;?></p>
-                </div>
-              </div>
-        <?php } ?>
-         <?php foreach($family as $key) {?>
-              <div class="col-sm-3">
-                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
-                  <div class="folio-image">
-
-                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
-                  </div> 
-                  <p><?=$key->Name1;?></p>
-                </div>
-              </div>
-        <?php } ?>
-         <?php foreach($family as $key) {?>
-              <div class="col-sm-3">
-                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
-                  <div class="folio-image">
-
-                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
-                  </div> 
-                  <p><?=$key->Name1;?></p>
-                </div>
-              </div>
-        <?php } ?>
-         <?php foreach($family as $key) {?>
-              <div class="col-sm-3">
-                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
-                  <div class="folio-image">
-
-                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
-                  </div> 
-                  <p><?=$key->Name1;?></p>
-                </div>
-              </div>
-        <?php } ?>
+      
         
       </div>
       <div class="load-more wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="500ms">

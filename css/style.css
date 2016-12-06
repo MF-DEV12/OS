@@ -252,8 +252,21 @@ div.btn-child-button, div.main-button{
       z-index: 1;
 
 }
+
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td {
+    vertical-align: top !important;
+}
+
 input.numeric{
   text-align: right;
+}
+
+table[data-table=categories] td span.tr-action{
+  display: none;
+}
+
+table[data-table=categories] td:hover span.tr-action{
+  display: block !important;
 }
 
  
@@ -751,7 +764,7 @@ transition: 0.5s ease;
 .navbar-content
 {
     width:320px;
-    /*padding: 15px;*/
+    padding: 15px;
     padding-bottom:0px;
 }
 .navbar-content dd {

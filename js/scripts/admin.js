@@ -391,6 +391,8 @@ $(function(){
         })
 
     //INVENTORY
+        
+
         $(".dd-categories").on("click","dd",function(e){
             var elem = $(this)
             var dl = elem.closest("dl")
@@ -1317,7 +1319,7 @@ $(function(){
     function addItemVariant(itemNo,elem){
         var tr = elem.closest("tr")
         var tableelem = tr.closest(".content-list").find(".main-table")
-        console.log(tableelem.length)
+        // console.log(tableelem.length)
         var table = listObjTableBinded[tableelem.attr("data-table")]
         var data = table.rows(tr).data()
         data = data[0]
@@ -1581,7 +1583,7 @@ $(function(){
 function bindingDatatoDataTable(response){
 	var data = response
 	for(x in data){
-		console.log(data);
+		// console.log(data);
 
 		var table = jQuery("table[data-table='"+ x +"']")
 		var list = data[x].list
@@ -1679,6 +1681,7 @@ function bindingDataViewingOrderItems(response,table){
     } 
 }
 
+ 
 
  
 
@@ -1789,7 +1792,8 @@ function setupDataTable(table, data, fields){
         table.empty()
     }
     
-
+    var rowgroup = (table.data("table") == "categories") ? [0,1] : null;
+ 
     dttable = table.DataTable({  
                      "aaData" : data,
                      "bSort" : false,
@@ -1797,6 +1801,7 @@ function setupDataTable(table, data, fields){
                       scrollY:        (table.is(".main-table") || table.data("table") == "posubmit") ? '60vh' : ((table.data("table") == "auditlogs") ? "20vh" : "30vh"),
                       scrollCollapse: false,
                       paging:         false,
+                      rowsGroup: rowgroup,
                       
                 }); 
      
