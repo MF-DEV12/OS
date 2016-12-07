@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<?=base_url('css/style.css');?>"> <!-- Resource style -->
     <link rel="stylesheet" href="<?=base_url('css/admin_navi_style.css');?>"> <!-- Resource style -->
     <link rel="stylesheet" href="<?=base_url('css/stepnavi.css');?>"> <!-- Resource style -->
+    <link rel="stylesheet" href="<?=base_url('css/badgestyle.css');?>"> <!-- Resource style -->
 
     <link href="<?=base_url('js/bootstrap-datepicker/css/bootstrap-datetimepicker.css');?>" rel="stylesheet" type="text/css" />
 </head>
@@ -34,16 +35,22 @@
                         <ul class="dropdown-menu" style="width:325px;height:300px;"
                             <li>
                                 <div class="navbar-content">
-                                    <h5>Notifications:</h5>
+                                    <h5><span class="glyphicon glyphicon-bell"></span> Notifications:</h5>
                                     <div class="row"> 
                                         <div class="col-md-12" align="center">
-                                             <dl>
-                                                 <dd><a class="notify" data-content="receivings">Purchase Order <span class="badge">10</span></a></dd>
-                                                 <dd><a class="notify" data-content="allorders">Customer Order <span class="badge">10</span></a></dd>
-                                                 <dd>Order</dd> 
-                                             </dl>
-                                        </div>
-                                         
+                                             <?php if($notification) { ?>
+                                              
+                                                <dl>
+                                                <?php foreach ($notification as $key) { ?> 
+                                                   <dd><span class="blue badgenew"><?=$key->total;?></span> <a class="notify"><?=$key->notify;?></a></dd> 
+                                                <?php } ?>
+                                                </dl>
+                                            
+                                             <?php }else {  ?>
+                                                <p class="empty">No notifications</p>
+
+                                             <?php } ?>
+                                        </div> 
                                     </div>
                                 </div> 
                             </li>

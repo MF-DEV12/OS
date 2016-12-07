@@ -917,6 +917,12 @@ $(function(){
                 return;
             }
 
+            if($("table[data-table=listitemvariant] td span.label-error").length > 0){
+                //bootbox.alert("Invalid DPO Cost and SRP on the variants."); 
+                return;
+            }
+
+
             var data = new Object();
             data.Image = ""
             data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-backdrop=\"static\"  data-keyboard=\"false\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Add variants</a>";
@@ -1047,8 +1053,8 @@ $(function(){
             if(!isOkaytoUpdateVariants()){return;}
             var variant = new Object()
             var param = new Object()
-            variant.DPOCost = $("input#txt-editPrice").val().replace(",","")
-            variant.SRP = $("input#txt-editSRP").val().replace(",","")
+            variant.DPOCost = toMoneyValue($("input#txt-editDpocost").val())
+            variant.SRP = toMoneyValue($("input#txt-editSRP").val())
 
             param.vno = curVariantNoEdit;
             param.data = JSON.stringify(variant);
@@ -1057,7 +1063,7 @@ $(function(){
                 function(response){
                     if(response){
                         var modal =  $("#editvariant")
-                        curTRVariantNoEdit.childNodes[3].innerHTML = modal.find("input#txt-editPrice").val()
+                        curTRVariantNoEdit.childNodes[3].innerHTML = modal.find("input#txt-editDpocost").val()
                         curTRVariantNoEdit.childNodes[4].innerHTML = modal.find("input#txt-editSRP").val()
                        
                         $("#editvariant").modal("hide")
@@ -1070,9 +1076,9 @@ $(function(){
             if(!isOkaytoUpdateVariantsAdmin()){return;}
             var variant = new Object()
             var param = new Object()
-            variant.Price = $("input#txt-editPriceAdmin").val().replace(",","")
-            variant.LowStock = $("input#txt-editLowstockAdmin").val().replace(",","")
-            variant.Critical = $("input#txt-editCriticalAdmin").val().replace(",","")
+            variant.Price = toMoneyValue($("input#txt-editPriceAdmin").val())
+            variant.LowStock = toMoneyValue($("input#txt-editLowstockAdmin").val())
+            variant.Critical = toMoneyValue($("input#txt-editCriticalAdmin").val())
 
             param.vno = curVariantNoEditAdmin;
             param.data = JSON.stringify(variant);
@@ -1116,18 +1122,16 @@ $(function(){
 
 
         $("table[data-table=listitemvariant]").on("blur", "td input.variant-srp, td input.variant-dpocost",function(e){
-            $("div.step-holder > div.step-view[data-view=item-variants]").find("p.label-error").remove()
+            $("table[data-table=listitemvariant]").find("span.label-error").remove()
             var elem = $(this)
             var tr = elem.closest("tr")
             var dpo = tr.find("input.variant-dpocost")
             var srp = tr.find("input.variant-srp")
-
-            var dpoValue = dpo.val().replace(",","")
-            var srpValue = srp.val().replace(",","")
-
-            if($.trim(dpoValue).length > 0 && $.trim(srpValue).length > 0){
+             if($.trim(dpo.val()).length > 0 && $.trim(srp.val()).length > 0){
+                var dpoValue = toMoneyValue(dpo.val())
+                var srpValue = toMoneyValue(srp.val()) 
                 if(parseFloat(dpoValue,10) >= parseFloat(srpValue,10)){
-                    $("div.step-holder > div.step-view[data-view=item-variants]").find("#btn-itemvariantadd").after("<p class=\"label-error\">DPO Cost must be lower than to SRP.</p>") 
+                   srp.after("<span class=\"label-error\">DPO Cost must be lower than to SRP.</span>") 
                     
                 }  
             } 
@@ -1173,8 +1177,8 @@ $(function(){
         var param = new Object();
         param.rlno = requestlistno;
         param.qty = elem.value;
-        param.total = parseFloat(elem.value,2) * parseFloat(data.DPOCost.replace(",",""), 2)
-        callAjaxJson("main/updatePOQty", param, 
+        param.total = parseFloat(elem.value,2) * parseFloat(toMoneyValue(data.DPOCost), 2)
+        callAjaxJson("main/updatePOQty", param,  
             function(response){
                 if(response){
                    data.Total = toMoney(param.total); 
@@ -1401,8 +1405,10 @@ $(function(){
             row.Image = "<img src=\""+ baseUrl +"images/variant-folder/" + row.FileName + "\" width=\"100px\"/>"
             row.VariantsName = jsontoString(tr.data("variant"))     
             row.VariantsNameJSON = tr.data("variant") 
-            row.DPOCost =  tr.find("input.variant-dpocost").val().replace(",","")        
-            row.SRP = tr.find("input.variant-srp").val().replace(",","")       
+            row.DPOCost =  toMoneyValue(tr.find("input.variant-dpocost").val())        
+            row.DPOCostStr =  tr.find("input.variant-dpocost").val()      
+            row.SRP = toMoneyValue(tr.find("input.variant-srp").val())       
+            row.SRPStr = tr.find("input.variant-srp").val()      
             data.push(row) 
 
         })
@@ -1410,7 +1416,7 @@ $(function(){
         var list = new Object();
         newItemVariantList = data    
         arrList.list  = data;
-        arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,DPOCost|DPO Cost,SRP|Suggessted Retail Price (SRP)"
+        arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,DPOCostStr|DPO Cost,SRPStr|Suggessted Retail Price (SRP)"
         list["listitemvariantreview"] = arrList;
         bindingDatatoDataTable(list)
         $("table[data-table='listitemvariantreview']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
@@ -1461,7 +1467,7 @@ $(function(){
   
         modal.find("div.image-variant").html(tr.childNodes[1].innerHTML)
         modal.find("p#lbl-variant").html(tr.childNodes[2].innerHTML)
-        modal.find("input#txt-editPrice").val(tr.childNodes[3].innerHTML)
+        modal.find("input#txt-editDpocost").val(tr.childNodes[3].innerHTML)
         modal.find("input#txt-editSRP").val(tr.childNodes[4].innerHTML)
     }
 
@@ -1499,15 +1505,25 @@ $(function(){
     function isOkaytoUpdateVariants(){
         $("div#editvariant").find("p.label-error").text("")
         var isOkay = true;
-        if($.trim($("input#txt-editPrice")).length == 0 || $("input#txt-editPrice").val() == "0"){
+        if($.trim($("input#txt-editDpocost")).length == 0 || $("input#txt-editDpocost").val() == "0"){
             isOkay = false
         }
         if($.trim($("input#txt-editSRP")).length == 0 || $("input#txt-editSRP").val() == "0"){
             isOkay = false
         }
 
-        if(!isOkay)
+        if(!isOkay){ 
             $("div#editvariant").find("p.label-error").text("Please input all fields.")
+            return isOkay   
+        }
+
+        if(parseFloat(toMoneyValue($("input#txt-editDpocost").val()),10) >= parseFloat(toMoneyValue($("input#txt-editSRP").val()),10)){
+            $("div#editvariant").find("p.label-error").text("Suggested Retail Price(SRP) must be greater than DPO Cost.")
+            isOkay = false
+        }
+
+
+
         return isOkay;
     }
     function isOkaytoUpdateVariantsAdmin(){
@@ -1522,9 +1538,17 @@ $(function(){
         if($.trim($("input#txt-editCriticalAdmin")).length == 0 || $("input#txt-editCriticalAdmin").val() == "0"){
             isOkay = false
         }
-
-        if(!isOkay)
+        if(!isOkay){
             $("div#editvariantadmin").find("p.label-error").text("Please input all required field(s).")
+            return isOkay;
+        }
+
+
+        if(parseInt($("input#txt-editCriticalAdmin").val(),10) > parseInt($("input#txt-editLowstockAdmin").val(),10)){
+            $("div#editvariantadmin").find("p.label-error").text("Low Stock Level must be greater than the Critical.");
+            isOkay = false
+        }
+ 
         return isOkay;
     }
 
@@ -1755,15 +1779,15 @@ function bindingDataViewingVariants(response,table){
                 addCellData(tr,list[row].VariantName) 
 
                 if(data.role=="admin"){ 
-                    addCellData(tr,list[row].DPOCost) 
-                    addCellData(tr,list[row].SRP) 
-                    addCellData(tr,list[row].Price)  
+                    addCellData(tr,toMoney(list[row].DPOCost)) 
+                    addCellData(tr,toMoney(list[row].SRP)) 
+                    addCellData(tr,toMoney(list[row].Price))  
                     addCellData(tr,list[row].LowStock)  
                     addCellData(tr,list[row].Critical)  
                 }
                 else{
-                    addCellData(tr,list[row].DPOCost) 
-                    addCellData(tr,list[row].SRP) 
+                    addCellData(tr,toMoney(list[row].DPOCost)) 
+                    addCellData(tr,toMoney(list[row].SRP)) 
                 }
 
   

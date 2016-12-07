@@ -49,13 +49,13 @@ $(function(){
 	    }
 	})
 
-	$("input.numeric").maskMoney();
+	$("input.numeric").maskMoney( );
 
  
 
 })
  
-
+		
  
 	function toMoney(str){
 		if(str=="" || !str)
@@ -64,7 +64,9 @@ $(function(){
 	}
 
 
-	 
+	function toMoneyValue(currency){
+		 return Number(currency.replace(/[^0-9\.]+/g,""));
+	} 
 
 	function sortOptionlist(select, attr, order){
  		select.find("option:contains('Select one')").remove()

@@ -135,6 +135,8 @@ jQuery(document).ready(function($){
 			$("table[data-table='listitemvariant']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
 		}
 		if(elem.closest("li").data("view") == "item-review"){
+		
+
 			$("#btn-submititemvariant").removeClass("disabled")
 
 			var listposupplier = new Object()	
@@ -259,12 +261,18 @@ function validateAttribute(dataview){
 				var elem = $(this)
 		   		if(elem.text().indexOf("Add") > 0)
 		   			isOkay= false;
-			})
-
-			
-
-			if(!isOkay)
+			}) 
+			if(!isOkay){
 		   		$("div.step-holder > div.step-view[data-view=item-variants]").find("#btn-itemvariantadd").after("<p class=\"label-error\">Please complete the variant details below.</p>")
+				return	 isOkay	;
+			}
+
+
+ 			if($("table[data-table=listitemvariant] td span.label-error").length > 0){
+                
+		   		//$("div.step-holder > div.step-view[data-view=item-variants]").find("#btn-itemvariantadd").after("<p class=\"label-error\">Invalid DPO Cost and SRP on the variants.</p>")
+                isOkay = false;
+            }	
 		}
 		
 	}

@@ -24,6 +24,9 @@ class Main extends CI_Controller {
 
 		$data["listfamily"] = $this->getFamily();
 		$data["listuom"] = $this->GetUOM();
+		if($role == "supplier")
+			$data["notification"] = $this->getNotificationSupplier();
+
 		  
 		$this->load->view('index', $data);
 
@@ -71,8 +74,23 @@ class Main extends CI_Controller {
 	    }
 	}
 
-	function getNotification(){
-
+	function getNotificationSupplier(){
+		$qry = file_get_contents('sp/notifyforsupplier.txt'); 
+		$supno = $this->session->userdata("supplierno");
+		
+		$listQry = explode(";", $qry); 
+ 
+		foreach ($listQry as $strQry) {
+			if(strlen(trim($strQry)) > 0) {
+				$strQry = str_replace("#supno", $supno, $strQry);
+				$query = $this->db->query($strQry . ";");
+			}
+				
+		 
+			if($strQry == $listQry[count($listQry) - 1])
+				$result = $query->result();  
+		}    
+ 		return $result;
 	}
 
 	function getDataForChart(){
@@ -479,6 +497,7 @@ class Main extends CI_Controller {
 			//Update isReceived = 1 for the selected SupplyRequest
 			$this->param = $this->query_model->param; 
 			$data["isReceived"] = 1;
+			$data["ReceivedDate"] = $datetime;
 			$this->param["dataToUpdate"] = $data;
 			$this->param["table"] = "supplyrequest";
 			$this->param["conditions"] = "SupplyRequestNo = '$SupplyRequestNo'";

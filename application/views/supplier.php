@@ -306,7 +306,7 @@
                 <label for="lbl-variant">Variant name:</label>
                 <p id="lbl-variant" style="padding-bottom:25px;"></p>
                 <div class="group">
-                 <input class="inputMaterial numeric" type="text" id="txt-editPrice">
+                 <input class="inputMaterial numeric" type="text" id="txt-editDpocost">
                   <span class="highlight"></span>
                   <span class="bar"></span>
                   <label class="formlabel">DPO Cost:</label>
