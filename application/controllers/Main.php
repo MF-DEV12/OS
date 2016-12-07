@@ -26,6 +26,8 @@ class Main extends CI_Controller {
 		$data["listuom"] = $this->GetUOM();
 		if($role == "supplier")
 			$data["notification"] = $this->getNotificationSupplier();
+		else
+			$data["notification"] = $this->getNotificationAdmin();
 
 		  
 		$this->load->view('index', $data);
@@ -73,6 +75,9 @@ class Main extends CI_Controller {
 	        return $input;
 	    }
 	}
+	function getNotificationSupplierUpdate(){
+		echo json_encode($this->getNotificationSupplier());
+	}
 
 	function getNotificationSupplier(){
 		$qry = file_get_contents('sp/notifyforsupplier.txt'); 
@@ -87,6 +92,25 @@ class Main extends CI_Controller {
 			}
 				
 		 
+			if($strQry == $listQry[count($listQry) - 1])
+				$result = $query->result();  
+		}    
+ 		return $result;
+	}
+
+	function getNotificationAdminUpdate(){
+		echo json_encode($this->getNotificationAdmin());
+	}
+
+	function getNotificationAdmin(){
+		$qry = file_get_contents('sp/notifyforadmin.txt'); 
+		
+		$listQry = explode(";", $qry); 
+ 
+		foreach ($listQry as $strQry) {
+			if(strlen(trim($strQry)) > 0) {
+				$query = $this->db->query($strQry . ";");
+			} 
 			if($strQry == $listQry[count($listQry) - 1])
 				$result = $query->result();  
 		}    
@@ -507,7 +531,7 @@ class Main extends CI_Controller {
 			$qry = " UPDATE itemvariant iv ";
 			$qry .= "INNER JOIN vw_getselectedorderdetails o ";
 			$qry .= "ON iv.VariantNo = o.VariantNo ";
-			$qry .= "SET iv.Stocks = iv.Stocks - o.QtyReceived ";
+			$qry .= "SET iv.Stocks = IFNULL(iv.Stocks,0) + o.QtyReceived ";
 			$qry .= "WHERE o.SupplyRequestNo = '$SupplyRequestNo'";
 
 			$this->db->query($qry);
@@ -523,6 +547,13 @@ class Main extends CI_Controller {
 			$this->param = $this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getbackorders";
 			$this->param["fields"] = "*"; 
+
+			$role = $this->session->userdata["role"];
+			if($role == "supplier"){
+				$supno = $this->session->userdata["supplierno"]; 
+				$this->param["conditions"] = "SupplierNo = $supno"; 
+			}
+
 	 
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "RequestListNo|No,SupplierName|Supplier name,ItemDescription|Item Description,Received|Qty Received,PendingQuantity|Qty Pending";
@@ -1098,6 +1129,8 @@ class Main extends CI_Controller {
 
 			$this->param["fields"] = "*" . $action; 
  		    $this->param["conditions"] = "ItemNo = '$itemno'";
+ 		    if($role == "admin")
+ 		    	$this->param["conditions"] .= " AND Owned = 1";
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "VariantNo|No,ThumbNail|ThumbNail,VariantName|Variant name,Price|Unit Price,SRP|Suggested Retail Price (SRP)"; 
 				 

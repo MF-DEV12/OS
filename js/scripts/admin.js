@@ -231,10 +231,7 @@ $(function(){
                 if($.trim(elem.val()).length == 0 || parseInt(elem.val()) == 0 ){
                     isOkay = false;
                     return;
-                } 
-
-
-
+                }  
 
             })
 
@@ -250,7 +247,9 @@ $(function(){
                         bindingDatatoDataTable(response);
                         tableSubmit.clear().draw();
                          $("#btn-receivecancel").click();
-                        bootbox.alert("Transaction completed.",function(){})
+                        bootbox.alert("Transaction completed.",function(){
+                             updateNotification("receivings")
+                        })
                     }
 
                 }, ajaxError)
@@ -1079,6 +1078,7 @@ $(function(){
             variant.Price = toMoneyValue($("input#txt-editPriceAdmin").val())
             variant.LowStock = toMoneyValue($("input#txt-editLowstockAdmin").val())
             variant.Critical = toMoneyValue($("input#txt-editCriticalAdmin").val())
+            variant.Owned = 1
 
             param.vno = curVariantNoEditAdmin;
             param.data = JSON.stringify(variant);
@@ -1275,9 +1275,9 @@ $(function(){
         }, ajaxError)
      }
 // INVENTORY 
-    function physicalCount(variantno){
+    function physicalCount(variantno, ItemDescription){
         var promptOptions = {
-          title: "Please enter the stock count for " + variantno + ":",
+          title: "Please enter the stock count for this item: <br/> <br/>" + ItemDescription ,
           inputType: 'number',
           buttons: { 
             confirm: {
@@ -1295,6 +1295,7 @@ $(function(){
 
                          bindingDatatoDataTable(response);
                          bootbox.alert("Update Successfully");
+                         updateNotification("lowstocks");
 
                     }, 
                 ajaxError)                              
@@ -1484,6 +1485,7 @@ $(function(){
   
         modal.find("div.image-variant").html(tr.childNodes[1].innerHTML)
         modal.find("p#lbl-variant").html(tr.childNodes[2].innerHTML)
+        modal.find("p#lbl-srp span").html(tr.childNodes[4].innerHTML)
         modal.find("input#txt-editPriceAdmin").val(tr.childNodes[5].innerHTML) 
         modal.find("input#txt-editLowstockAdmin").val(tr.childNodes[6].innerHTML) 
         modal.find("input#txt-editCriticalAdmin").val(tr.childNodes[7].innerHTML) 
@@ -1543,6 +1545,15 @@ $(function(){
             return isOkay;
         }
 
+        var currentSRPStr = $("p#lbl-srp span").text();
+        var currentSRP = toMoneyValue(currentSRPStr);
+        var inputPrice = toMoneyValue($("input#txt-editPriceAdmin").val());
+
+        if(parseFloat(currentSRP,10) > parseInt(inputPrice,10)){
+            $("div#editvariantadmin").find("p.label-error").text("The Unit price must be greater than the SRP -> " + currentSRPStr + " "); 
+            isOkay = false
+            return isOkay;
+        }
 
         if(parseInt($("input#txt-editCriticalAdmin").val(),10) > parseInt($("input#txt-editLowstockAdmin").val(),10)){
             $("div#editvariantadmin").find("p.label-error").text("Low Stock Level must be greater than the Critical.");
@@ -1877,7 +1888,50 @@ function setupDataTable(table, data, fields){
      
     listObjTableBinded[table.data("table")] = dttable
     dttable.draw(); 
+    updateNotification(table.data("table"))
+
 }
+
+
+ function updateNotification(table){
+    var includeTable = ["requestlist", "receivings", "lowstocks", "backorders"]
+
+    if(includeTable.indexOf(table) < 0) {return;}
+
+    if($("p.role").text() == "admin"){
+        reBindNotication("getNotificationAdminUpdate")
+    }
+    else if($("p.role").text() == "supplier"){
+        reBindNotication("getNotificationSupplierUpdate")
+    }
+
+
+ }
+ function reBindNotication(ctrl){
+    
+    callAjaxJson("main/" + ctrl,new Object(),
+        function(response){
+            $("dl.notify-list").children().remove();
+            var data = response
+            for(x in data){
+                var dd = $("<dd/>")
+                var a = $("<a/>")
+                a
+                    .addClass("notify")
+                    .data("content", data[x].link)
+                    .append("<b>"+ data[x].total +"</b> " + data[x].notify)
+                dd.append(a)
+                $("dl.notify-list").append(dd)
+
+            } 
+            if(data.length == 0){
+                $("dl.notify-list").append("<p class=\"empty\">No notifications.</p>")
+            }
+
+            $("span.notification-count").text(((data.length > 0) ? data.length : ""))
+            
+        })
+ }
 
 
 

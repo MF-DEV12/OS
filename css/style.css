@@ -175,6 +175,17 @@ min-height: 20px; /* or whatever height you need to make them all consistent */
   text-align: right;
   margin: 0px;
 }
+
+span.badge {
+    position: absolute;
+    left: 24px;
+    top: 12px;
+    background: #f44336;
+}
+.notify-list a.notify{
+  cursor: pointer;
+}
+
 #label-suppliername{
   border-bottom: 1px solid #ddd;
 }

@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="<?=base_url('css/style.css');?>"> <!-- Resource style -->
     <link rel="stylesheet" href="<?=base_url('css/admin_navi_style.css');?>"> <!-- Resource style -->
     <link rel="stylesheet" href="<?=base_url('css/stepnavi.css');?>"> <!-- Resource style -->
-    <link rel="stylesheet" href="<?=base_url('css/badgestyle.css');?>"> <!-- Resource style -->
 
     <link href="<?=base_url('js/bootstrap-datepicker/css/bootstrap-datetimepicker.css');?>" rel="stylesheet" type="text/css" />
 </head>
@@ -31,25 +30,27 @@
                 <span class="content-header"><span>Dashboard</span><subheader></subheader></span>
                  <ul class="nav navbar-nav navbar-right">
                     <li><a></a></li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;"><span class="glyphicon glyphicon-bell"></span><span class="badge">10</span> </a>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;"><span class="glyphicon glyphicon-bell"></span><span class="badge notification-count"><?=((count($notification) > 0) ? count($notification) : "");?></span> </a>
                         <ul class="dropdown-menu" style="width:325px;height:300px;"
                             <li>
                                 <div class="navbar-content">
                                     <h5><span class="glyphicon glyphicon-bell"></span> Notifications:</h5>
                                     <div class="row"> 
                                         <div class="col-md-12" align="center">
+                                         <dl class="notify-list">
                                              <?php if($notification) { ?>
                                               
-                                                <dl>
+                                               
                                                 <?php foreach ($notification as $key) { ?> 
-                                                   <dd><span class="blue badgenew"><?=$key->total;?></span> <a class="notify"><?=$key->notify;?></a></dd> 
+                                                   <dd> <a class="notify" data-content="<?=$key->link;?>"> <b><?=$key->total;?></b> <?=$key->notify;?></a></dd> 
                                                 <?php } ?>
-                                                </dl>
+                                              
                                             
                                              <?php }else {  ?>
                                                 <p class="empty">No notifications</p>
 
                                              <?php } ?>
+                                         </dl>
                                         </div> 
                                     </div>
                                 </div> 
@@ -67,7 +68,7 @@
                                         </div>
                                         <div class="col-md-9">
                                             <span><?=$username;?></span>
-                                            <p class="text-muted small"><?=$role;?></p>
+                                            <p class="text-muted small role"><?=$role;?></p>
                                             <div class="divider">
                                             </div>
                                             <!-- <a href="#" class="btn btn-primary btn-sm active">View Profile</a> -->
@@ -114,6 +115,7 @@
                  <div class="col-md-8">
                     <label for="lbl-variant">Variant name:</label>
                     <p id="lbl-variant" style="padding-bottom:25px;"></p>
+                    <p id="lbl-srp" style="padding-bottom:25px;">SRP: <span></span></p>
                     <div class="group">
                      <input class="inputMaterial numeric" type="text" id="txt-editPriceAdmin">
                       <span class="highlight"></span>
