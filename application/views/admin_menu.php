@@ -31,14 +31,14 @@
               <li data-content="allorders" data-header="Customer's Order">
                 <a>Customer's Order</a>
               </li>
-             <!--   <li data-menu="reports">
+               <li data-menu="reports">
                 <a data-toggle="collapse" data-target="#reports" data-parent="#nav">Reports</a>
                 <ul id="reports" class="collapse sub-menu">
-                    <li data-content="items" data-header="Items"><a href="#">List of Customers</a></li>
-                    <li data-content="items" data-header="Items"><a href="#">List of Items</a></li>
+                    <li data-content="rptitems" data-header="List of Items"><a href="#">List of Items</a></li>
+                    <li data-content="rptcustomers" data-header="List of Customers"><a href="#">List of Customers</a></li>
                      
                 </ul>
-              </li> -->
+              </li>
               <!-- <li data-content="forums">
                 <a>Forums</a>
               </li>  

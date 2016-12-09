@@ -29,9 +29,8 @@
                 <span class='button'></span> 
                 <span class="content-header"><span>Dashboard</span><subheader></subheader></span>
                  <ul class="nav navbar-nav navbar-right">
-                    <li><a></a></li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;"><span class="glyphicon glyphicon-bell"></span><span class="badge notification-count"><?=((count($notification) > 0) ? count($notification) : "");?></span> </a>
-                        <ul class="dropdown-menu" style="width:325px;height:300px;"
+                        <ul class="dropdown-menu" style="width:325px;height:300px;">
                             <li>
                                 <div class="navbar-content">
                                     <h5><span class="glyphicon glyphicon-bell"></span> Notifications:</h5>

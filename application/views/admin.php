@@ -26,7 +26,11 @@
                          </div>
 
                          <div class="col-md-7 posubmit-wrap"> 
-                            <table class="display" data-table="posubmit" ></table>
+                            <table class="display" data-table="posubmit" >
+                              
+                             
+                            </table>
+                            <p><totalpo>0.00</totalpo></p>
                          </div>
 
                     </div>
@@ -292,6 +296,14 @@
                     <table class="display main-table" data-table="removeditems"> </table> 
                 </div>
         
+                <div class="content-list" data-content="rptitems"> 
+                    <table class="display main-table" data-table="rptitems"> </table>
+                </div>
+                <div class="content-list" data-content="rptcustomers"> 
+                    <table class="display main-table" data-table="rptcustomers"> </table>
+                </div>
+
+
                 <div class="content-list" data-content="allorders">
 
                      <div class="orderstatus-wrap">

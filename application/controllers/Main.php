@@ -203,6 +203,8 @@ class Main extends CI_Controller {
 			
 			$data["categories"] = $this->getCategoryList();
 			$data["allorders"] = $this->getOrders("");
+
+			$data["rptcustomers"] = $this->getCustomers();
 			// $data["neworders"] = $this->getOrders("New");
 			// $data["processorders"] = $this->getOrders("Process");
 			// $data["shippedorders"] = $this->getOrders("Ship");
@@ -254,7 +256,9 @@ class Main extends CI_Controller {
 
 		elseif($table == "categories")
 			$data = $this->getCategoryList();
-
+		elseif($table == "rptcustomers")
+			$data = $this->getCustomers();
+		  
 
 		elseif($table == "requestlist")
 			$data = $this->GetRequestListFromAdmin(""); 
@@ -272,6 +276,9 @@ class Main extends CI_Controller {
 			$data = $this->getItems(0); 
 		elseif($table == "supremove-items")
 			$data = $this->getItems(1);
+
+
+
 		 
 
 
@@ -453,7 +460,15 @@ class Main extends CI_Controller {
 			$this->param["conditions"] = "createdby = '$createdby' AND SupplierNo = '$supplierNo'";
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,DPOCost|DPO Cost,Total|Total";
+			$data["totalpo"] = $this->getPOTotal($data["list"]);
 			return $data;
+		}
+		
+		function getPOTotal($podata){
+			$total = 0;
+			foreach ($podata as $key) 
+				 $total += $key->Total; 
+			return $total;
 		}
 
 
@@ -930,6 +945,20 @@ class Main extends CI_Controller {
 		}
 
 	///
+
+	// REPORTS
+		function getCustomers(){
+			$this->param = $this->param = $this->query_model->param; 
+
+			$this->param["table"] = "customer"; 
+			$this->param["fields"] = "*"; 
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "CustomerNo|CustomerNo,Lastname|Last name,Firstname|First name,Address|Address,ContactNo|Contact No.,Email|Email Address,CreatedDate|Registered Date";
+			return $data;
+
+		}
+	///	
 
 
 // SUPPLIER SIDE

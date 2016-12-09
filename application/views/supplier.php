@@ -34,32 +34,7 @@
              </div>  
             <table class="display main-table" data-table="allorders"> </table>
         </div>
-        <!--  <div class="content-list" data-content="sup-neworders">
-            <div class="col-md-12">
-                <table class="display main-table" data-table="sup-neworders"> </table> 
-            </div> 
-         </div>
-         <div class="content-list" data-content="sup-processorders">
-            <div class="col-md-12">
-                <table class="display main-table" data-table="sup-processorders"> </table> 
-            </div> 
-         </div>
-         <div class="content-list" data-content="sup-incompleteorders">
-            <div class="col-md-12">
-                <table class="display main-table" data-table="sup-incompleteorders"> </table> 
-            </div> 
-         </div>
-         <div class="content-list" data-content="sup-shippedorders">
-            <div class="col-md-12">
-                <table class="display main-table" data-table="sup-shippedorders"> </table> 
-            </div> 
-         </div>
-
-         <div class="content-list" data-content="sup-cancelledorders">
-            <div class="col-md-12">
-                <table class="display main-table" data-table="sup-cancelledorders"> </table> 
-            </div> 
-         </div> -->
+ 
 
           <div class="content-list" data-content="sup-items">
             <div class="col-md-12">

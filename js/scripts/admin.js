@@ -1097,7 +1097,7 @@ $(function(){
                         curTRVariantNoEditAdmin.childNodes[5].innerHTML = modal.find("input#txt-editPriceAdmin").val()
                         curTRVariantNoEditAdmin.childNodes[6].innerHTML = modal.find("input#txt-editLowstockAdmin").val()
                         curTRVariantNoEditAdmin.childNodes[7].innerHTML = modal.find("input#txt-editCriticalAdmin").val()
-                       
+                        updateNotification("items");
                         $("#editvariantadmin").modal("hide")
                     }
                 },
@@ -1177,26 +1177,40 @@ $(function(){
     }
 
     function updatePOQty(requestlistno,elem){
+        elem  = $(elem)
         var tr = elem.closest("tr");
+
         var table = listObjTableBinded["posubmit"]
         var data = table.rows(tr).data()
         data = data[0]
         var param = new Object();
         param.rlno = requestlistno;
-        param.qty = elem.value;
-        param.total = parseFloat(elem.value,2) * parseFloat(toMoneyValue(data.DPOCost), 2)
+        param.qty = elem.val();
+        param.total = parseFloat(elem.val(),2) * parseFloat(toMoneyValue(data.DPOCost), 2)
         callAjaxJson("main/updatePOQty", param,  
             function(response){
                 if(response){
                    data.Total = toMoney(param.total); 
                    table.draw()
-                   tr.childNodes[5].innerHTML = data.Total
+                   tr.find("td:last-child").text(data.Total)
+                   bindingPOTotalAfterUpdate()
 
                 }
 
             }
         , ajaxError) 
     }
+    function bindingPOTotalAfterUpdate(){
+        var table = $("table[data-table=posubmit]")
+        var total = 0.00
+        table.find("tbody").find("td:last-child").each(function(e){
+            var elem = $(this)
+            total += parseFloat(toMoneyValue(elem.text()),10)
+        })
+        
+        $("totalpo").text(toMoney(total))
+        
+     }
 
     // Receivings
      function updatePOReceived(requestlistno,elem){
@@ -1715,10 +1729,12 @@ function bindingDatatoDataTable(response){
 		// console.log(data);
 
 		var table = jQuery("table[data-table='"+ x +"']")
+        var dataelem = data[x]
 		var list = data[x].list
 		var fields = colJsonConvert(data[x].fields)
-
-		setupDataTable(table, list, fields);
+        if(dataelem !== undefined)
+            setupDataTable(table, dataelem);
+		// setupDataTable(table, list, fields);
 		// console.log(x);
 	}
 
@@ -1925,7 +1941,7 @@ function addCellData(tr,value){
 
 
 
-function setupDataTable(table, data, fields){
+function setupDataTable(table, data){
     var dttable;
     if ($.fn.DataTable.isDataTable( table )) {
         dttable = listObjTableBinded[table.data("table")] 
@@ -1934,27 +1950,37 @@ function setupDataTable(table, data, fields){
     }
     
     var rowgroup = (table.data("table") == "categories") ? [0,1] : null;
+
+    var fields = colJsonConvert(data.fields),
  
     dttable = table.DataTable({  
-                     "aaData" : data,
+                     "aaData" : data.list,
                      "bSort" : false,
                      "aoColumns" : fields.Columns,  
                       scrollY:        (table.is(".main-table") || table.data("table") == "posubmit") ? '60vh' : ((table.data("table") == "auditlogs") ? "20vh" : "30vh"),
                       scrollCollapse: false,
                       paging:         false,
                       rowsGroup: rowgroup,
+                       
                       
                 }); 
      
     listObjTableBinded[table.data("table")] = dttable
     dttable.draw(); 
     updateNotification(table.data("table"))
+    bindingPOTotal(table, data)
 
 }
+ function bindingPOTotal(table,data){
+    if(table.data("table") == "posubmit")
+        $("totalpo").text(toMoney(data.totalpo))
+    
+ }
+
 
 
  function updateNotification(table){
-    var includeTable = ["requestlist", "receivings", "lowstocks", "backorders"]
+    var includeTable = ["requestlist", "receivings", "lowstocks", "backorders","items"]
 
     if(includeTable.indexOf(table) < 0) {return;}
 
