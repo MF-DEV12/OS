@@ -225,13 +225,23 @@ $(function(){
         $("#btn-receivesubmit").click(function(e){
              var isOkay = true
              var isValid = true
-            //VALIDATE THE RECEIVED INPUT
+            //VALIDATE THE RECEIVED INPUT\
+            $("input.poreceived").closest("tr").find("p.label-error").remove();
             $("input.poreceived").each(function(e){
                 var elem = $(this)
                 if($.trim(elem.val()).length == 0 || parseInt(elem.val()) == 0 ){
-                    isOkay = false;
+                    elem.after("<p class=\"label-error\">Please input for the Received.</p>")
+                    isOkay = false; 
                     return;
                 }  
+                var tr = elem.closest("tr")
+                var porequest = parseInt(tr.find("td:last-child").text(),10)
+
+                if(porequest < parseInt(elem.val(),10)){
+                    elem.after("<p class=\"label-error\">Received must not be greater than the Requested.</p>")
+                    isOkay = false; 
+                    return;
+                }
 
             })
 
@@ -255,10 +265,7 @@ $(function(){
                 }, ajaxError)
                     
             }
-            else{
-                bootbox.alert("Please input the Received first.", function(){})
-
-            }
+            
         })
 
     //Suppliers
@@ -1193,6 +1200,8 @@ $(function(){
 
     // Receivings
      function updatePOReceived(requestlistno,elem){
+
+        if(!validateReceived(elem)){return;}
         var param = new Object();
         param.rlno = requestlistno;
         param.rec = elem.value;
@@ -1204,6 +1213,30 @@ $(function(){
 
             }
         , ajaxError) 
+    }
+
+    function validateReceived(elem){
+        var tr = elem.closest("tr")
+       
+        elem = $(elem)
+        tr = $(tr)
+        tr.find("p.label-error").remove()
+        var porequest =  parseInt(tr.find("td:last-child").text(),10)
+        var poreceived =  parseInt(elem.val(),10)
+
+
+        if(porequest < poreceived){
+                     
+            elem.after("<p class=\"label-error\">Received must not be greater than the Requested.</p>")
+            return false
+        }
+        return true;
+
+       
+    }
+
+    function insertAfter(referenceNode, newNode) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
 
     //Suppliers
@@ -1313,16 +1346,43 @@ $(function(){
         dl.empty();
         for(x in data){
             var dd = $("<dd/>");
-            dd.append("<span class=\"data-edit\" >"+ data[x].Name +"</span>")
-            // dd.append("<span class=\"glyphicon glyphicon-menu-right pull-right selector\"></span>")
-            dd.append("<span class=\"action pull-right\"><a class=\"edit\">Edit</a> | <a class=\"delete\">Delete</a></span>")
-            dd.data("id",data[x].id) 
-            dl.append(dd);
+
+            if(!dl.is(".list-family")){
+                dd.append("<span class=\"data-edit\" >"+ data[x].Name +"</span>")
+                // dd.append("<span class=\"glyphicon glyphicon-menu-right pull-right selector\"></span>")
+                dd.append("<span class=\"action pull-right\"><a class=\"edit\">Edit</a> | <a class=\"delete\">Delete</a></span>")
+                dd.data("id",data[x].id) 
+                dl.append(dd);
+            }
+            else{
+                var divrow = $("<div/>");
+                var div7 = $("<div/>");
+                var div5 = $("<div/>");
+
+                divrow.addClass("row")
+                div5.addClass("col-sm-5")
+                div5.attr("align","center")
+                div7.addClass("col-sm-7")
+
+
+                div5.append("<div class=\"image-holder\"><img src=\"" + baseUrl + "images/"+ ((data[x].ImageFile != null) ? "variant-folder/" + data[x].ImageFile : "noimage.gif" ) +"\" onerror=\"this.src='"+ baseUrl  +"/images/noimage.gif';\"/></div>")
+                div5.append("<button class=\"btn btn-action upload\">Upload image</button> <input type=\"file\" data-col=\"Level1No\" data-id=\""+ data[x].id +"\" data-table=\"Level1\" class=\"file-upload\" style=\"display: none;\">")
+
+
+                div7.append("<span class=\"data-edit\" >"+ data[x].Name +"</span>")
+                div7.append("<span class=\"action pull-right\"><a class=\"edit\">Edit</a> | <a class=\"delete\">Delete</a></span>")
+                dd.data("id",data[x].id) 
+                divrow.append(div5)
+                divrow.append(div7)
+                dd.append(divrow)
+                 dl.append(dd);
+            }
+           
         }
         if(!data.length){
             dl.append("<p class=\"empty\">No record(s) found</p>");
 
-        }
+        } 
     }
 
     function removeOrRecoverItem(itemno, itemname,elem, status){

@@ -265,7 +265,8 @@ div.btn-child-button, div.main-button{
 }
 
 table[data-table=categories] td:first-child,
-table[data-table=listitemvariant] td {
+table[data-table=listitemvariant] td 
+{
     vertical-align: top !important;
 }
 

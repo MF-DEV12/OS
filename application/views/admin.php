@@ -243,9 +243,9 @@
                     <table class="display main-table" data-table="lowstocks"> </table>
                 </div>
                 <div class="content-list" data-content="categories">
-                    <button id="btn-addfamily" class="btn btn-action main-button btn-action-right"><span class="glyphicon glyphicon-plus"></span> Add Family</button> 
-                    <table class="display main-table" data-table="categories"></table>
-                    <!-- <div class="col-md-12" align="center"> 
+                    <!-- <button id="btn-addfamily" class="btn btn-action main-button btn-action-right"><span class="glyphicon glyphicon-plus"></span> Add Family</button>  -->
+                    <!-- <table class="display main-table" data-table="categories"></table> -->
+                    <div class="col-md-12" align="center"> 
                         <dl class="categories-wrap">
                             <dd>
                                  <h5 class="dash-header sub2">Family <span class="pull-right add"><span class="glyphicon glyphicon-plus"></span> Add</span></h5>
@@ -285,7 +285,7 @@
                             </dd>
 
                         </dl>
-                    </div> -->
+                    </div>
                        
                 </div>
                 <div class="content-list" data-content="removeditems"> 

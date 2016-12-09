@@ -31,6 +31,14 @@
               <li data-content="allorders" data-header="Customer's Order">
                 <a>Customer's Order</a>
               </li>
+             <!--   <li data-menu="reports">
+                <a data-toggle="collapse" data-target="#reports" data-parent="#nav">Reports</a>
+                <ul id="reports" class="collapse sub-menu">
+                    <li data-content="items" data-header="Items"><a href="#">List of Customers</a></li>
+                    <li data-content="items" data-header="Items"><a href="#">List of Items</a></li>
+                     
+                </ul>
+              </li> -->
               <!-- <li data-content="forums">
                 <a>Forums</a>
               </li>  

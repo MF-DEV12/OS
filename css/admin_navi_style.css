@@ -129,12 +129,18 @@ box-shadow: inset -5px 0 0 hsla(0, 0%, 0%, .2), inset 0 20px 0 #009688;
 #nav li[data-menu='inventory'] a:before{
     content: '\f16b';
 }
-#nav li[data-content=forums] a:before{
+/*#nav li[data-content=forums] a:before{
     content: '\f1d7';
 }
 #nav li[data-content=settings] a:before{
     content: '\f013';
+}*/
+
+#nav li[data-menu=reports] a:before{
+    content: '\f02f';
 }
+
+ 
 #nav > li >a:hover {
   background: #048e81;
 }

@@ -122,6 +122,15 @@ jQuery(document).ready(function($){
 	$("dl.notify-list").on("click","dd a.notify", function(e){
 		var elem = $(this)
 		$("div.sidebar ul.nav li[data-content="+elem.data("content")+"] a").click();
+		// if(elem.data("content") == "receivings"){
+		// 	setTimeout(function(e){
+		// 		toggleMainDisplay(false,$("button#btn-directreceive"),"Select PO List to Receive")
+
+		// 	}, 1000)
+			
+		// 	//$("button#btn-directreceive").click();
+		// }
+
 	})
 
 

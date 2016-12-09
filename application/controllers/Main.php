@@ -531,7 +531,9 @@ class Main extends CI_Controller {
 			$qry = " UPDATE itemvariant iv ";
 			$qry .= "INNER JOIN vw_getselectedorderdetails o ";
 			$qry .= "ON iv.VariantNo = o.VariantNo ";
-			$qry .= "SET iv.Stocks = IFNULL(iv.Stocks,0) + o.QtyReceived ";
+			$qry .= "INNER JOIN item i ";
+			$qry .= "ON iv.ItemNo = i.ItemNo ";
+			$qry .= "SET iv.Stocks = IFNULL(iv.Stocks,0) + o.QtyReceived , iv.Owned = 1, i.Owned = 1 ";
 			$qry .= "WHERE o.SupplyRequestNo = '$SupplyRequestNo'";
 
 			$this->db->query($qry);
@@ -667,7 +669,7 @@ class Main extends CI_Controller {
 			if($role == "supplier")
 				$this->param["conditions"] = "SRemoved = '$isRemovedItems'";  
 			else
-				$this->param["conditions"] = "Removed = '$isRemovedItems'";  
+				$this->param["conditions"] = "Removed = '$isRemovedItems' AND Owned = 1";  
 
 
 			if($role == "supplier"){
@@ -737,6 +739,8 @@ class Main extends CI_Controller {
 			$this->param["table"] = "level2";
 			$this->param["fields"] = "Level2No `id`, Name2 `Name`";  
 			$this->param["conditions"] = "level1No = '$lvl1'";
+			if($name!="") 
+				$this->param["conditions"] .= " AND Name2 = '$name'";
 			$this->param["order"] = "Name2";  
 			$data = $this->query_model->getData($this->param);  
 			return $data;
@@ -747,6 +751,8 @@ class Main extends CI_Controller {
 			$this->param["table"] = "level3";
 			$this->param["fields"] = "Level3No `id`, Name3 `Name`";  
 			$this->param["conditions"] = "level1No = '$lvl1' AND level2No = '$lvl2'";
+			if($name!="") 
+				$this->param["conditions"] .= " AND Name3 = '$name'";
 			$this->param["order"] = "Name3";  
 			$data = $this->query_model->getData($this->param);  
 			return $data;
@@ -1067,7 +1073,7 @@ class Main extends CI_Controller {
 			$data["Level3No"] = $subcategory;
 			$data["SRemoved"] = 0;
 			$data["Removed"] = 0;
-			$data["Owned"] = 1;
+			$data["Owned"] = 0;
 			$data["SupplierNo"] = $supplierno;
 			$this->param["transactionname"] = "New items inserted:" + $itemname;
 			$this->param["dataToInsert"] = $data;
@@ -1095,6 +1101,7 @@ class Main extends CI_Controller {
 				$datavariant["VariantName"] = $v->VariantsName; 
 				$datavariant["VariantNameJSON"] = json_encode($v->VariantsNameJSON); 
 				$datavariant["SupplierNo"] = $supplierno;
+				$datavariant["Owned"] = 0;
 				$this->param["transactionname"] = "New items inserted:" + $itemname;
 				$this->param["dataToInsert"] = $datavariant;
 				$this->param["table"] = "itemvariant";
