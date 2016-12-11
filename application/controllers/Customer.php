@@ -34,6 +34,16 @@ class Customer extends CI_Controller {
 		$result = $this->query_model->getData($this->param);
 		return $result;
  	}
+ 	function getSubCategory($level1no){ 
+ 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param["table"] = "Level2";
+ 		$this->param["fields"] = "*";
+		$this->param["conditions"] = "Level1No = '$level1no'";
+		$this->param["order"] = "Name2";
+		$result = $this->query_model->getData($this->param);
+		return $result;
+ 	}
+
  
 	 
 }

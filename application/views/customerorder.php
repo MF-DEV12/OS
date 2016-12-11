@@ -13,6 +13,7 @@
     <link href="<?=base_url('css/homestyle/font-awesome.min.css');?>" rel="stylesheet">
     <link href="<?=base_url('css/homestyle/lightbox.css');?>" rel="stylesheet">
     <link href="<?=base_url('css/homestyle/main.css');?>"  rel="stylesheet">
+    <link href="<?=base_url('css/treeview-style.css');?>"  rel="stylesheet">
     <link id="css-preset" href="<?=base_url('css/homestyle/presets/preset1.css');?>"  rel="stylesheet">
     <link href="<?=base_url('css/homestyle/responsive.css');?>"  rel="stylesheet">
 
@@ -38,7 +39,7 @@
             </div>
             <div class="collapse navbar-collapse">
               <ul class="nav navbar-nav navbar-right">                 
-                <li class="scroll"><a href="<?=base_url('home#home');?>">Home</a></li>
+                <li class="scroll"><a href="<?=base_url();?>">Home</a></li>
                 <li class="scroll active"><a href="#orders">Orders</a></li>  
                 <li class="scroll"><a href="<?=base_url('home#contact');?>">Contact</a></li>       
               </ul>
@@ -61,17 +62,30 @@
 		  <li class="breadcrumb-item active"><a href="#"><?=$family[0]->Name1;?></a></li>
 		</ol>
       <div class="row" align="center">
-        <?php foreach($category as $key) {?>
-              <div class="col-sm-3">
-                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
-                  <div class="folio-image"> 
-                  	<a href="<?=base_url('customer?family='.$key->Level2No);?>">
-                  		<p><?=$key->Name2;?></p>
-                    </a>
-                  </div> 
-                </div>
-              </div>
-        <?php } ?>
+        <div class="col-sm-3">
+        <ul class="trees">
+         <?php foreach($category as $key) {?>
+          <li class="has-child">
+            <input id="tree-controll1" type="checkbox"><span class="tree-control"></span>
+            <label><?=$key->Name2;?></label>
+            
+          </li>
+         <?php } ?>
+          
+          
+        </ul>
+        <!-- 
+          <?php foreach($category as $key) {?>
+          <?php } ?>
+
+          <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <div class="folio-image"> 
+            	<a href="<?=base_url('customer?family='.$key->Level2No);?>">
+            		<p><?=$key->Name2;?></p>
+              </a>
+            </div> 
+          </div> -->
+        </div>
          
         
       </div>

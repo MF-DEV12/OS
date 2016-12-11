@@ -94,7 +94,7 @@
                 <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
                   <div class="folio-image">
                     <a href="<?=base_url('customer?family='.$key->Level1No);?>"> 
-                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="">
+                    <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="" onerror="this.src='images/noimage.gif';">
                     </a>
                   </div> 
                   <p><?=$key->Name1;?></p>
