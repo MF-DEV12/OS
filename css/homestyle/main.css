@@ -989,3 +989,11 @@ ul.address {
 /*Presets*/
 
 
+
+span.badge {
+    position: absolute;
+    left: 17px;
+    top: 5px;
+    background: #f44336;
+    padding: 3px 4px;
+}

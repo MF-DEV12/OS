@@ -63,7 +63,7 @@
                                   <tr>
                                       <td>
                                           <div class="group">      
-                                            <input class="inputMaterial" type="text" id="txt-itemname">
+                                            <input class="inputMaterial required" type="text" id="txt-itemname">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label class="formlabel">Item name:</label>
@@ -73,7 +73,7 @@
                                   <tr>
                                       <td>
                                           <div class="group">   
-                                            <select class="inputMaterial" id="list-uom">  
+                                            <select class="inputMaterial required" id="list-uom">  
                                                <option value="" selected disabled="">Select one</option>
                                                <?php foreach($listuom as $row){ ?>
                                                   <option value="<?=$row->UOMCode;?>"><?=$row->Description . " (". $row->UOMCode .")";?></option>
@@ -89,7 +89,7 @@
                                   <tr>
                                       <td>
                                           <div class="group">
-                                            <select class="inputMaterial" id="list-family">  
+                                            <select class="inputMaterial required" id="list-family">  
                                                <option value="" selected disabled="">Select one</option>
                                                <?php foreach($listfamily as $row){ ?>
                                                   <option value="<?=$row->id;?>"><?=$row->Name;?></option>

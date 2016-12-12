@@ -8,6 +8,15 @@
 
 }
 
+.navbar-toggle.order {
+	  display: block;
+	  border:1px solid #fff;
+	}
+
+	.navbar-toggle.order .icon-bar {
+	  background-color: #fff;
+	}
+
 /* sm */
 @media (min-width: 768px) and (max-width: 991px) {
  	.navbar-right li a {
@@ -74,6 +83,13 @@
 		font-size: 13px;
 		padding-bottom: 8px;
 		padding-top: 10px;
+	}
+
+	.cart-menu{
+
+	    position: absolute;
+	    right: 0px;
+	    top: 0px;
 	}
 
 	/*services*/

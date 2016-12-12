@@ -141,7 +141,7 @@ function validateItemVariant(dataview){
     var isOkay = true;
    	var isOkay2 = true
 	if(dataview != "item-info"){
-	   $("div.step-holder > div.step-view[data-view=item-info]").find("table.form-table .inputMaterial").each(function(e){
+	   $("div.step-holder > div.step-view[data-view=item-info]").find("table.form-table .inputMaterial.required").each(function(e){
 	   		var elem = $(this)
 	   		if($.trim(elem.val()).length == 0)
 	   			isOkay= false;

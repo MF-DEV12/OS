@@ -55,11 +55,15 @@
         <div class="main-nav">
           <div class="container">
             <div class="navbar-header">
+
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
+              </button>
+               <button type="button" class="navbar-toggle" style="border:0px;color:white;" >
+                <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
               </button>
               <a class="navbar-brand" href="index.html">
                 <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>

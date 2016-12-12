@@ -12,7 +12,10 @@ class Customer extends CI_Controller {
 
  		$level1no = $this->input->get("family");
  		$data["family"] = $this->getFamilyName($level1no);
- 		$data["category"] = $this->getCategoryByFamily($level1no);
+ 		$data["listfamily"] = $this->getListFamily();
+ 		$data["listcategory"] = $this->getCategoryByFamily();
+ 		$data["listsubcategory"] = $this->getSubCategory();
+ 		 
  		$this->load->view('customerorder',$data);
  	}
 
@@ -25,21 +28,30 @@ class Customer extends CI_Controller {
 		$result = $this->query_model->getData($this->param);
 		return $result;
  	}
- 	function getCategoryByFamily($level1no){ 
+
+
+ 	function getListFamily(){ 
+ 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param["table"] = "Level1";
+ 		$this->param["fields"] = "*";
+		$this->param["order"] = "Name1";
+		$result = $this->query_model->getData($this->param);
+		return $result;
+ 	}
+
+ 	function getCategoryByFamily(){ 
  		$this->param = $this->param = $this->query_model->param; 
  		$this->param["table"] = "Level2";
  		$this->param["fields"] = "*";
-		$this->param["conditions"] = "Level1No = '$level1no'";
 		$this->param["order"] = "Name2";
 		$result = $this->query_model->getData($this->param);
 		return $result;
  	}
- 	function getSubCategory($level1no){ 
+ 	function getSubCategory(){ 
  		$this->param = $this->param = $this->query_model->param; 
- 		$this->param["table"] = "Level2";
+ 		$this->param["table"] = "Level3";
  		$this->param["fields"] = "*";
-		$this->param["conditions"] = "Level1No = '$level1no'";
-		$this->param["order"] = "Name2";
+		$this->param["order"] = "Name3";
 		$result = $this->query_model->getData($this->param);
 		return $result;
  	}

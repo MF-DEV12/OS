@@ -14,6 +14,7 @@
     <link href="<?=base_url('css/homestyle/lightbox.css');?>" rel="stylesheet">
     <link href="<?=base_url('css/homestyle/main.css');?>"  rel="stylesheet">
     <link href="<?=base_url('css/treeview-style.css');?>"  rel="stylesheet">
+    <link href="<?=base_url('css/side-menu/side-menu.css');?>"  rel="stylesheet">
     <link id="css-preset" href="<?=base_url('css/homestyle/presets/preset1.css');?>"  rel="stylesheet">
     <link href="<?=base_url('css/homestyle/responsive.css');?>"  rel="stylesheet">
 
@@ -27,26 +28,82 @@
         <div class="main-nav">
           <div class="container">
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="index.html">
+             
+             
+              <a class="navbar-brand" href="<?=base_url();?>">
                 <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>
-              </a>                    
+              </a>   
+
             </div>
-            <div class="collapse navbar-collapse">
-              <ul class="nav navbar-nav navbar-right">                 
-                <li class="scroll"><a href="<?=base_url();?>">Home</a></li>
-                <li class="scroll active"><a href="#orders">Orders</a></li>  
-                <li class="scroll"><a href="<?=base_url('home#contact');?>">Contact</a></li>       
-              </ul>
+            <div class="pull-right cart-menu">
+                 <button type="button" class="navbar-toggle order" id="responsive-menu-button">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <button type="button" class="navbar-toggle order" style="border:0px;color:white;" >
+                  <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
+                </button>
             </div>
           </div>
         </div><!--/#main-nav-->
     </header>
+ 
+
+<div id="navigation" style="display: none;">
+    <nav class="nav">
+        <h4>Select the Category</h4>
+        <ul> 
+          <?php foreach($listfamily as $f) {?>
+          <li>
+            
+             <?php
+                $fno = $f->Level1No;
+                $listcategorybyfamily = array_filter( $listcategory,  function ($e) use ($fno) { return $e->Level1No == $fno; } ); 
+
+             ?>
+
+             <a <?=(($listcategorybyfamily) ? "data-toggle=\"collapse\" data-target=\"#sidr-id-f" . $fno . "\"" : "");?>> <?=$f->Name1;?></a>  
+
+             <?php if($listcategorybyfamily) {?>
+               <ul <?="class=\"collapse\" id=\"f". $fno ."\"";?>>
+               <?php foreach($listcategorybyfamily as $c) {?>
+               
+                   <li>  
+                      <a> <?=$c->Name2;?></a> 
+                      <?php
+                          $cno = $c->Level2No;
+
+                          $listSubcategorybyfamily = array_filter(
+                              $listsubcategory,
+                              function ($e) use ($fno, $cno) {
+                                  return $e->Level1No == $fno && $e->Level2No == $cno; 
+                              }
+                          ); 
+                       ?>
+                       <?php if($listSubcategorybyfamily) {?>
+                         <ul>
+                         <?php foreach($listSubcategorybyfamily as $sc) {?> 
+                             <li><a> <?=$sc->Name3;?></a>   </li> 
+                         <?php } ?>
+                         </ul>
+                       <?php } ?>
+                   </li> 
+               <?php } ?>
+
+               </ul>
+             <?php } ?>
+
+
+
+
+          </li>
+         <?php } ?>
+           
+        </ul>
+    </nav>
+</div>
 
 <section id="orders">
     <!-- <div class="container">
@@ -57,13 +114,8 @@
         </div>
       </div> 
     </div> -->
-    <div class="container-fluid" >
-    	<ol class="breadcrumb">
-		  <li class="breadcrumb-item active"><a href="#"><?=$family[0]->Name1;?></a></li>
-		</ol>
-      <div class="row" align="center">
-        <div class="col-sm-3">
-        <ul class="trees">
+   
+      <!--   <ul class="trees">
          <?php foreach($category as $key) {?>
           <li class="has-child">
             <input id="tree-controll1" type="checkbox"><span class="tree-control"></span>
@@ -73,24 +125,9 @@
          <?php } ?>
           
           
-        </ul>
-        <!-- 
-          <?php foreach($category as $key) {?>
-          <?php } ?>
-
-          <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
-            <div class="folio-image"> 
-            	<a href="<?=base_url('customer?family='.$key->Level2No);?>">
-            		<p><?=$key->Name2;?></p>
-              </a>
-            </div> 
-          </div> -->
-        </div>
-         
+        </ul> -->
         
-      </div>
-      
-    </div>
+     
     <div id="portfolio-single-wrap">
       <div id="portfolio-single">
       </div>
@@ -143,8 +180,15 @@
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.countTo.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/lightbox.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/main.js")?>"></script>
+      <script type="text/javascript" src="<?=base_url("js/side-menu/side-menu.js")?>"></script>
 
-
+      <script type="text/javascript">
+         $('#responsive-menu-button').sidr({
+            name: 'sidr-main',
+            source: '#navigation',
+            side: 'right'
+          });
+      </script>
 
 
  
