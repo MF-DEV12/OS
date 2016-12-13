@@ -1,0 +1,935 @@
+@import url("montserrat/montserrat.css");
+
+@import url("font-awesome-4.7.0/css/font-awesome.css");
+ 
+/*CONTENT STYLE*/
+div.content-holder{
+   left: 222px;
+    top: 78px;
+    width: 83%;
+    position: absolute;
+    border-left: 8px solid white;
+}
+
+div.content .content-group,
+div.content .content-list{
+  display: none;
+  padding: 32px 0px;
+}
+
+
+div.content .show{
+  display: block !important;
+}
+ 
+
+div.content .content-list .main-table{
+    /*height: 800px;*/
+  /*  padding: 37px;*/
+    /*width: auto !important*/
+    background: white !important;
+}
+.main-table td, 
+.main-table th,
+.main-table td button
+.auditlogs table td,
+.auditlogs table th
+{
+  font-size: 12px;
+}
+.main-table td div.btn-group{
+  width: 100%;
+}
+.main-table td button{
+  padding: 3px;
+  text-transform: uppercase;
+  font-size: 10px !important;
+  width: 50%;
+}
+.categories-wrap{
+    display: inline-flex;
+}
+
+dl.categories-wrap > dd{
+    background-color: white;
+    height: 600px;
+    border: 1px solid #ddd;
+    width: 350px;
+    /*margin: 5px;*/ 
+}
+
+dl.list-family span.data-edit{
+    position: absolute;
+    top: 56px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+dl.list-family .image-holder span{
+    font-size:100px;
+}
+
+dl.list-family .image-holder img{
+    height:100px;
+    width:100px;
+} 
+
+dl.list-family .btn-action{
+    font-size:10px;
+    padding:3px 17px; 
+}
+.dd-categories{
+  overflow-y: auto;
+      height: 95%;
+}
+.dd-categories dd {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    cursor: pointer;
+
+}
+dd.selected {
+     background: #282828;
+    color: white;
+    font-weight: bold;
+    text-decoration: underline;
+
+}
+dd.selected span.action a { 
+    color: white !important;
+}
+dl.dd-categories dd span.selector {
+  display: none;
+}
+
+ 
+/*dl.dd-categories dd:hover  {
+    background: #d4d4d4;
+    border-top-color: #7b6d6d;
+    box-shadow: inset -5px 0 0 #ffffff, inset 0 20px 0 #d8d8d8;
+    color: #000;
+    outline: 0;
+    cursor: pointer;
+    transition: all 100ms; 
+}*/
+dl.dd-categories dd span.action {
+     display: none;
+     cursor: pointer;
+}
+dl.dd-categories dd:hover span.action {
+     display: block;
+}
+
+.main-table td button.btn:first-child:nth-last-child(1){
+  width: 100% !important;
+
+}
+
+
+div.content .dataTables_filter{
+  float: left;
+}
+
+
+totalpo{
+  float: right;
+    font-weight: bold;
+    padding: 5px;
+    font-size: 21px;
+}
+totalpo:before {
+    content: "Total";
+    font-size: 10px;
+    top: -6px;
+    position: relative;
+    left: -28px;
+}
+
+div.content .content-child{
+  display: none;
+}
+
+div.content-child .dataTables_filter,
+div.content-child .dataTables_info{
+  display: none;
+}
+/*div.content table td,*/
+div.content-child table td,
+div.content-holder table td,{
+  padding: 2px 0px !important;
+  font-size: 12px !important;
+}
+
+div.content-child button{
+    padding: 2px !important;
+    font-size: 10px;
+}
+div.content-child > .row{
+  padding-top: 33px !important;
+}
+div.group-2{
+  padding: 2px 10px !important;
+    margin-top: -22px;
+}
+
+.poquantity, .poreceived, .quantity{
+  text-align: right !important;
+}
+
+.dataTables tbody td {
+min-height: 20px; /* or whatever height you need to make them all consistent */
+}
+
+.label-error{
+  color: red;
+  font-size: 12px;
+  text-align: right;
+  margin: 0px;
+}
+
+span.badge {
+    position: absolute;
+    left: 24px;
+    top: 12px;
+    background: #f44336;
+}
+.notify-list a.notify{
+  cursor: pointer;
+}
+
+#label-suppliername{
+  border-bottom: 1px solid #ddd;
+}
+
+.itemvariant-wrap{
+    padding: 63px 12px;
+    margin-top: 37px;
+    background: white;
+}
+#addattribute{
+    font-size: 14px;
+    color: #009688;
+
+}
+.variant-wrap{
+    font-size: 14px;
+    /*border-top: 1px solid #BBB;*/
+    padding: 42px 29px;
+}
+.varianttable-wrap{
+      background: white;
+    padding: 36px;
+
+} 
+
+.table-custom  thead td {
+    color: #048e81;
+    padding: 12px;
+}
+.table-custom tbody td {
+    padding: 5px;
+}
+
+span#addattribute{
+  cursor: pointer;
+}
+
+table.table-custom ,table.table-custom tr td{
+    
+}
+table.table-custom tbody {
+    display:block;
+    height:446px;
+    overflow:auto;
+}
+table.table-custom thead, table.table-custom tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;/* even columns width , fix width of table too*/
+}
+table.table-custom thead {
+    width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+}
+table.table-custom table {
+    width:100px;
+}
+
+table.table-custom tbody td:nth-child(2){
+  /*width: 339px;*/
+}
+.table-custom tbody td:last-child {
+    width: 37px;
+}
+table.table-custom tbody td:last-child a{
+  cursor: pointer;
+}
+table.table-custom tbody tr {
+    border-top: 1px solid #ddd;
+}
+table.table-custom tfoot tr {
+    border-top: 1px solid #ddd;
+}
+
+div.btn-child-button, div.main-button{
+      z-index: 1;
+
+}
+
+table[data-table=categories] td:first-child,
+table[data-table=listitemvariant] td 
+{
+    vertical-align: top !important;
+}
+
+input.numeric{
+  text-align: right;
+}
+
+table[data-table=categories] td span.tr-action{
+  display: none;
+}
+
+table[data-table=categories] td:hover span.tr-action{
+  display: block !important;
+}
+
+ 
+.bootstrap-tagsinput{
+  width: 100% !important;
+  /*height: 66px !important; */
+}
+.bootstrap-tagsinput .label.tag {
+    font-size: 12px !important;
+    font-weight: 100 !important;
+    background-color: #048e81;
+}
+.bootstrap-tagsinput input {
+    font-size: 12px !important;
+    font-weight: 100 !important; 
+}
+
+span.content-header{
+    font-size: 24px;
+    position: absolute;
+    margin: 10px 30px;
+}
+
+
+/*DIV STYLE*/
+.polistsupplier-wrap{
+   margin-top: 6px;
+}
+.polistsupplier-wrap{
+    height: 50%;
+    font-size: 12px; 
+}
+.polistsupplier-holder{
+    margin:  -17px 0px 9px 0px;
+}
+
+.posubmit-wrap{
+  background: white;
+  margin-top: 33px;
+  font-size: 12px;
+}
+.posubmit-wrap table tbody td{
+  text-align: center;
+  padding: 2px 0px !important;
+  margin: 0px !important;
+}
+
+div[data-content=dashboard] div[class^=col]{
+  margin-left:0px; 
+  padding-left: 0px;
+}
+.orderstatus-wrap{
+    display: inline-flex;
+    position: absolute;
+    right: 29px;
+    z-index: 1;
+    margin-top: -8px;
+}
+
+.orderstatus-wrap label{
+      width: 267px;
+    top: 6px;
+    position: relative;
+}
+div.header-wrap{
+  z-index: 99999;
+}
+
+ 
+
+.order-status > div {
+  height: 60px;
+  background-color: white;
+ 
+  padding: 0px;
+  margin-top: 21px;
+}
+
+.order-status > div > h5 {
+  margin:0px !important;
+
+}
+
+.dashboard-status > div{
+  margin: 2px;
+  height: 100px;
+  background-color: white;
+}
+
+#dashboard-chart{
+  height: 250px;
+  width:  100%;
+}
+
+dl#list-status{
+  display: inline-flex;
+}
+
+dl#list-status dd{
+    padding: 2px;
+    border-left: 1px solid #ffffff;
+    height: 85px;
+    width: 200px;
+    background: white;
+    background: #009688;
+    box-shadow: inset -0px 0 0 hsla(0, 0%, 0%, .2), inset 0 41px 0 #048e81;
+    color: white;
+}
+dl#list-status dd h2{
+      margin-top: -2px;
+    font-weight: bold;
+    color: white;
+    font-size: 29px;
+
+}
+dl#list-status dd:first-child{ 
+    border-left: 0px !important; 
+}
+
+.list-ordereditems{
+  background-color: white;
+  margin: 0px;
+  padding-right: 0px;
+  height: 275px;
+}
+.list-ordereditems dl{ 
+    margin: 8px auto;
+}
+
+.list-ordereditems dl dd{
+  padding: 7px;
+}
+
+.list-ordereditems dl dd .progress{
+  height: 10px;
+    margin-bottom: 0px !important ;
+}
+.list-ordereditems dl dd .progress-bar{
+  background-color:  #009688 !important ; 
+
+}
+
+span.add{
+  cursor: pointer;
+}
+
+p.empty{
+    text-align: center;
+    font-size: 12px;
+    color: #ccc;
+
+}
+
+ span.upload-file{
+    font-size: 200px;
+    color: #ddd; 
+ }
+ 
+button.upload{
+  margin-top: 10px;
+}
+   
+
+span.glyphicon-remove{
+  color:#ff3b30;
+  font-size: 10px;
+}
+
+div.image-variant img{
+  width: 100% !important;
+}   
+
+/*
+dl#list-status dd h2{
+    margin-top: -14px;
+    text-align: right;
+}*/
+
+
+
+
+
+/*BUTTON STYLE*/
+.btn-action{
+     background: #009688;
+    border: 1px solid #009688;
+    color: white;
+    cursor: pointer;
+    z-index: 4;
+  
+}
+
+.btn-action-right{
+    position: absolute;
+    right: 31px;
+    margin-top: -5px;
+}
+
+.btn-child-group{
+  display: none;
+}
+
+div.padding{
+  width: 50px;
+}
+
+
+/*MAINTENANCE - TABLE*/
+
+div.table-wrap{
+ 
+  padding: 10px;
+}
+.dataTables_scrollHeadInner{
+  width: auto !important;
+}
+
+div.table-group{
+  padding-top: 12px;
+}
+
+.main-table tbody tr:hover{
+  cursor: pointer;
+}
+
+.main-table tbody tr.selected td{
+  background-color: #282828 !important;
+  color: white !important;
+}
+
+thead th {
+    background: #293d42;
+    box-shadow: inset -0px 0 0 hsla(0, 0%, 0%, 0.2), inset 0 20px 0 #30484c;
+    font-size: 14px !important;
+    color: white;
+        border-right: 1px solid;
+}
+ 
+.form-table tr td{
+  padding: 10px;
+}
+#table-suppliersinfo{
+  margin-bottom: 23px;
+}
+
+#table-suppliersinfo tr td:first-child{
+  width: 150px;
+}
+
+.childtable-wrap{
+  padding:30px 100px;
+}
+
+table.childtable{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.uom-wrap{
+  padding: 46px 24px 2px;
+}
+
+/*ROW EDIT STYLE*/
+table.list-table tbody tr.on-edit{
+     /*background-color: #fffff2 !important; */
+}
+
+table.list-table tbody tr.on-edit > td:not(:first-child){
+    text-align: left !important;
+     background-color: #fffff2 ;   
+}
+
+ 
+/*MODAL STYLE*/
+
+.form-wrap{
+  padding: 35px 20px;
+}
+
+
+span.enter-here{
+  font-style: italic;
+  color: gray;
+}
+td.required:before{
+  content: "*";
+  width: 10px;
+  color:red;
+}
+
+td.required input{
+  background-color:#fff2f2 !important; 
+}
+
+p.message{
+  color: red;
+  font-size: 12px; 
+  display: none;
+}
+
+asterisk{
+  color: red;
+}
+
+div#editvariant div.row,
+div#editvariant div.row label,
+div#editvariant div.row input,
+div#editvariant div.row label.form-label
+{
+    font-size: 12px;
+}
+
+
+
+/*BUTTON STYLE*/
+button#btn-add{
+  margin-left: 10px !important;
+  background-color:   #4caf50 !important;
+  border-color:   #4caf50 !important;
+}
+
+button#btn-add:after {
+    content: " ADD";
+}
+
+
+.btn-primary:hover {
+    color: #fff;
+    background-color:#009688 !important  ;
+    border-color: #009688 !important  ;
+}
+.btn.focus, .btn:focus, .btn:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #009688 !important;
+    border-color: #009688 !important;
+}
+
+
+
+
+
+/* MOBILE VIEW*/
+ @media screen and (max-width: 767px) {
+   div.table-wrap{
+    width: 100%;
+    padding: 0px !important;
+
+   }
+   .btn-action-group{
+    float: right;
+   }
+   .btn-action-right{
+    margin-top: -43px !important;
+   }
+  div.content .content-group,
+  div.content .content-list{
+    display: none;
+    padding: 48px 0px;
+  }
+
+   /*ROW EDIT STYLE */
+   table.list-table tbody tr.on-edit  > td:not(:first-child){
+      text-align: right !important;
+   }
+
+   /*MODAL DIALOG STYLE*/
+   .modal-dialog.form {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .modal-content.form {
+      height: auto;
+      min-height: 100%;
+      border-radius: 0;
+    }
+    .modal-body.form {
+      width: 100%;
+      max-height: calc(100vh - 140px);
+      overflow-y: auto;
+      overflow: auto;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    .modal-footer.form{
+      bottom: 0;
+      position: absolute;
+      width: 100%;
+
+    }
+
+    /*BUTTON STYLE*/
+    button#btn-add:after {
+        content: "" !important;
+    }
+
+    button#btn-add{
+      position: fixed !important;
+      bottom: 10px;
+      right: 10px;
+      z-index: 1049;
+      opacity: 0.8;
+      background-color:   #4caf50 !important;
+      border-color:   #4caf50 !important;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%
+    }
+
+    
+
+
+}
+
+
+span[data-mode=edit]{
+    display:none;
+}
+
+
+
+
+
+
+
+/*SCROLL BAR*/
+::-webkit-scrollbar {
+width: 10px;
+height: 15px;
+}
+
+
+::-webkit-scrollbar-track-piece  {
+background-color: #fff;
+filter: alpha(opacity=40); /* internet explorer */
+opacity: 0.4; /* fx, safari, opera, chrome */
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=40)"; /*IE8*/
+}
+
+::-webkit-scrollbar-thumb:vertical {
+height: 20px;
+border-radius: 5px;
+width: 5px;
+background-color: #ccc;
+filter: alpha(opacity=40); /* internet explorer */
+opacity: 0.4; /* fx, safari, opera, chrome */
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=40)"; /*IE8*/
+
+transition: 0.5s ease;
+    -webkit-transition: 0.5s ease;
+    -moz-transition: 0.5s ease;
+    -ms-transition: 0.5s ease;
+    -o-transition: 0.5s ease;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+  background-color: #666;
+  transition: 0.5s ease;
+    -webkit-transition: 0.5s ease;
+    -moz-transition: 0.5s ease;
+    -ms-transition: 0.5s ease;
+    -o-transition: 0.5s ease;
+} 
+
+
+
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-top: 20px;
+}
+
+/* Flip around the padding for proper display in narrow viewports */
+.navbar-wrapper .container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.navbar-wrapper .navbar {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.navbar-content
+{
+    width:320px;
+    padding: 15px;
+    padding-bottom:0px;
+}
+.navbar-content dd {
+    padding: 12px;
+    border-bottom: 1px solid #dadada;
+}
+.navbar-content dd:first-child { 
+    border-top: 1px solid #dadada;
+}
+.navbar-content h5{
+    margin: 8px 8px;
+}
+
+.navbar-content:before, .navbar-content:after
+{
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.navbar-nav.navbar-right:last-child {
+margin-right: 15px !important;
+}
+.navbar-footer 
+{
+    background-color:#DDD;
+}
+.navbar-footer-content { padding:15px 15px 15px 15px; }
+.dropdown-menu {
+padding: 0px;
+overflow: hidden;
+}
+
+/* FORM INPUT ANIMATION*/
+
+.group            { 
+  position:relative; 
+  margin-bottom: 35px; 
+  /*margin-left: 40px;*/
+}
+
+.inputMaterial              {
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:100%;
+  border:none;
+  border-bottom:1px solid #757575;
+}
+
+.inputMaterial.display              {
+  font-size:12px !important;
+  padding:2px 20px;
+  display:block;
+  width:100%;
+  border:none;
+  background: transparent;
+  /*border-bottom:1px solid #757575;*/
+}
+
+.inputMaterial:focus        { outline:none;}
+
+/* LABEL ======================================= */
+
+label.formlabel                {
+  color:#999; 
+  font-size:14px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+ label.formlabel.display                {
+  top:-20px !important; 
+}
+
+div.item-review-wrap{
+    padding: 61px 12px;
+    background: white;
+    padding-bottom: 10px;
+}
+
+
+
+/* active state */
+.inputMaterial:focus ~ label.formlabel , .inputMaterial:valid ~ label.formlabel       {
+  top:-20px;
+  font-size:14px;
+  color: #009688;
+}
+
+/* BOTTOM BARS ================================= */
+.bar    { position:relative; display:block; width:100%; }
+.bar:before, .bar:after     {
+  content:'';
+  height:2px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background: #009688; 
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+/* active state */
+.inputMaterial:focus ~ .bar:before, .inputMaterial:focus ~ .bar:after {
+  width:50%;
+}
+
+
+/* active state */
+.inputMaterial:focus ~ .highlight {
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}

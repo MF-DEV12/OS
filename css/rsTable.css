@@ -1,0 +1,98 @@
+﻿  body {
+    font-family: arial;
+  }
+
+  table.list-table {
+    border: 1px solid #ccc;
+    width: 100%;
+    margin:0;
+    padding:0;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  table.list-table tr {
+    border: 1px solid #ddd;
+    padding: 0px;
+  }
+
+  table.list-table th, table.list-table td {
+    padding: 0px;
+    text-align: center;
+    border-top: 0px !important;
+  }
+
+  table.list-table th {
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  @media screen and (max-width: 767px) {
+
+    table.list-table {
+      border: 0;
+    }
+
+    table.list-table tbody td:first-child  span a{
+        color: white; 
+    }
+
+    .btn-primary{
+        background-color: #4cd964 !important;
+        border-color: #4cd964;
+    }
+
+    table.list-table tbody td:first-child  {
+        background-color: #4cd964 !important;
+        color: white;
+        border-bottom: 0px; 
+    }
+
+    table.list-table thead {
+      display: none;
+    }
+
+    table.list-table tr {
+      margin-bottom: 0px;
+      display: block;
+      border: 0px !important;
+    }
+    table.list-table tr:last-child {
+      border-bottom: 1px solid #ddd;
+    }
+
+    table.list-table td {
+      display: block;
+      text-align: right;
+      font-size: 13px;
+      border-bottom: 1px dotted #ccc;
+      white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+      white-space: -pre-wrap;      /* Opera 4-6 */
+      white-space: -o-pre-wrap;    /* Opera 7 */
+      white-space: pre-wrap;       /* css-3 */
+      word-wrap: break-word;       /* Internet Explorer 5.5+ */
+      white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+      word-break: break-all;
+      white-space: normal;
+      padding:5px 10px !important;
+      border: 0px;
+    }
+
+    table.list-table td:last-child {
+      border-bottom: 0;
+    }
+
+    table.list-table tr > td:not(:first-child):before {
+      content: attr(data-label)  ":    ";
+      display: block;
+      font-size: 9px;
+      text-transform: uppercase;
+      text-align: left;
+    }
+
+    .dataTables_filter, .dataTables_length{
+      display: none;
+
+    }
+  }
