@@ -44,6 +44,9 @@ jQuery(document).ready(function($){
         	if(!$("button#btn-submititemvariant").is(".disabled"))
         		$("button#btn-submititemvariant").addClass("disabled")
         }
+
+        document.title = 'Lampano Hardware - '  + li.data("header");
+
         // RESET PAGE 
         var currentList = $("div.content .content-group.show .content-list.show")
         currentList.find(".main-button").show();

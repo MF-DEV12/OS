@@ -3,7 +3,7 @@
       <img class="company-logo" src="<?=base_url('images/logo.png');?>" alt=""/> 
     </div>
     <ul class='nav accordion' id="nav">
-      <li data-content="dashboard">
+      <li data-content="dashboard" data-header="Dashboard">
         <a class='active'>Dashboard</a>
       </li>
 

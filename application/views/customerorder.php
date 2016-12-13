@@ -106,28 +106,20 @@
 </div>
 
 <section id="orders">
-    <!-- <div class="container">
+    <div class="container">
       <div class="row">
         <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
 
-          <h2>Select the Category</h2>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><?=$family[0]->Name1;?></li>
+          </ol>
+
+
         </div>
       </div> 
-    </div> -->
+    </div>
    
-      <!--   <ul class="trees">
-         <?php foreach($category as $key) {?>
-          <li class="has-child">
-            <input id="tree-controll1" type="checkbox"><span class="tree-control"></span>
-            <label><?=$key->Name2;?></label>
-            
-          </li>
-         <?php } ?>
-          
-          
-        </ul> -->
-        
-     
+ 
     <div id="portfolio-single-wrap">
       <div id="portfolio-single">
       </div>

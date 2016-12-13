@@ -264,7 +264,7 @@
                                                 <img src="<?=$image;?>" onerror="this.src='<?=base_url('images/noimage.gif');?>';"/>
                                               </div>
                                               <button class="btn btn-action upload">Upload image</button> 
-                                              <input type="file" data-col="Level1No" data-id="<?=$row->id;?>" data-table="Level1" class="file-upload" style="display: none;">
+                                              <input type="file" data-col="Level1No" data-id="<?=$row->id;?>" data-table="level1" class="file-upload" style="display: none;">
                                             </div> 
                                             <div class="col-sm-7"> 
                                               <span class="data-edit" ><?=$row->Name;?></span>
@@ -297,9 +297,11 @@
                 </div>
         
                 <div class="content-list" data-content="rptitems"> 
+                    <button class="btn btn-action main-button btn-action-right btn-print"><span class="glyphicon glyphicon-print"></span> Print</button>
                     <table class="display main-table" data-table="rptitems"> </table>
                 </div>
                 <div class="content-list" data-content="rptcustomers"> 
+                    <button class="btn btn-action main-button btn-action-right  btn-print"><span class="glyphicon glyphicon-print"></span> Print</button>
                     <table class="display main-table" data-table="rptcustomers"> </table>
                 </div>
 

@@ -15,7 +15,7 @@ class Home extends CI_Controller {
 
  	function getFamilyName(){ 
  		$this->param = $this->param = $this->query_model->param; 
- 		$this->param["table"] = "Level1";
+ 		$this->param["table"] = "level1";
  		$this->param["fields"] = "*";
 		$this->param["order"] = "Name1";
 		$this->param["limit"] = "8";

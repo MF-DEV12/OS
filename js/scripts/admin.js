@@ -623,6 +623,10 @@ $(function(){
                 ajaxError)  
             } 
         })
+        $("button.btn-print").click(function(e){
+            var elem = $(this)
+            elem.closest("div.content-list").find("a.buttons-print").click();
+        })
 
 //SUPPLIER SIDE
         //REQUESTLIST
@@ -1961,6 +1965,8 @@ function setupDataTable(table, data){
                       scrollCollapse: false,
                       paging:         false,
                       rowsGroup: rowgroup,
+                      dom: 'Bfrtip',
+                        buttons: [ 'print' ]
                        
                       
                 }); 

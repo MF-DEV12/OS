@@ -205,6 +205,7 @@ class Main extends CI_Controller {
 			$data["allorders"] = $this->getOrders("");
 
 			$data["rptcustomers"] = $this->getCustomers();
+			$data["rptitems"] = $this->getRptItems();
 			// $data["neworders"] = $this->getOrders("New");
 			// $data["processorders"] = $this->getOrders("Process");
 			// $data["shippedorders"] = $this->getOrders("Ship");
@@ -258,6 +259,8 @@ class Main extends CI_Controller {
 			$data = $this->getCategoryList();
 		elseif($table == "rptcustomers")
 			$data = $this->getCustomers();
+		elseif($table == "rptitems")
+			$data = $this->getRptItems();
 		  
 
 		elseif($table == "requestlist")
@@ -958,6 +961,20 @@ class Main extends CI_Controller {
 			return $data;
 
 		}
+
+		function getRptItems(){
+			$this->param = $this->param = $this->query_model->param; 
+
+			$this->param["table"] = "vw_printsallitems"; 
+			$this->param["fields"] = "*"; 
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ItemNo|Item No.,Name|Name,VariantName|Description,UOM|UOM,Stocks|Stocks,FamilyName|Family,Category|Category,SubCategory|Sub-Category";
+			return $data;
+
+		}
+
+		
 	///	
 
 
