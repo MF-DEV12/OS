@@ -523,12 +523,17 @@ div.table-group{
   color: white !important;
 }
 
-thead th {
+.main-table thead th {
     background: #293d42;
     box-shadow: inset -0px 0 0 hsla(0, 0%, 0%, 0.2), inset 0 20px 0 #30484c;
     font-size: 14px !important;
     color: white;
-        border-right: 1px solid;
+    border-right: 1px solid;
+    border-top:  1px solid;
+}
+
+.main-table thead th:first-child {
+    border-left:  1px solid;
 }
  
 .form-table tr td{
@@ -636,7 +641,9 @@ button#btn-add:after {
 }
 
 
-
+.dt-buttons {
+    display: none;
+}
 
 
 /* MOBILE VIEW*/

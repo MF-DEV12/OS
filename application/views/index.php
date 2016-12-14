@@ -159,6 +159,11 @@
     <script type="text/javascript" src='<?=base_url("js/tagsinput/bootstrap-tagsinput.js")?>'></script>
     <script src="<?=base_url('js/scripts/admin.js');?>"></script>   
     <script src="<?=base_url('js/navside/main.js');?>"></script>   
+
+
+    <script src="<?=base_url('js/print/dataTables.buttons.min.js');?>"></script>    
+    <script src="<?=base_url('js/print/buttons.print.min.js');?>"></script>   
+
      
 </body>
     

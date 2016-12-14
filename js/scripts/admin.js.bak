@@ -623,10 +623,6 @@ $(function(){
                 ajaxError)  
             } 
         })
-        $("button.btn-print").click(function(e){
-            var elem = $(this)
-            elem.closest("div.content-list").find("a.buttons-print").click();
-        })
 
 //SUPPLIER SIDE
         //REQUESTLIST
@@ -1384,7 +1380,7 @@ $(function(){
 
 
                 div5.append("<div class=\"image-holder\"><img src=\"" + baseUrl + "images/"+ ((data[x].ImageFile != null) ? "variant-folder/" + data[x].ImageFile : "noimage.gif" ) +"\" onerror=\"this.src='"+ baseUrl  +"/images/noimage.gif';\"/></div>")
-                div5.append("<button class=\"btn btn-action upload\">Upload image</button> <input type=\"file\" data-col=\"Level1No\" data-id=\""+ data[x].id +"\" data-table=\"Level1\" class=\"file-upload\" style=\"display: none;\">")
+                div5.append("<button class=\"btn btn-action upload\">Upload image</button> <input type=\"file\" data-col=\"Level1No\" data-id=\""+ data[x].id +"\" data-table=\"level1\" class=\"file-upload\" style=\"display: none;\">")
 
 
                 div7.append("<span class=\"data-edit\" >"+ data[x].Name +"</span>")
@@ -1965,8 +1961,6 @@ function setupDataTable(table, data){
                       scrollCollapse: false,
                       paging:         false,
                       rowsGroup: rowgroup,
-                      dom: 'Bfrtip',
-                        buttons: [ 'print' ]
                        
                       
                 }); 
