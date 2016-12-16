@@ -91,6 +91,10 @@
 	    right: 0px;
 	    top: 0px;
 	}
+	div.search-holder,
+	div.cart-holder{
+		display: none;
+	}
 
 	/*services*/
 	section {

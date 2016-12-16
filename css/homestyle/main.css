@@ -989,11 +989,52 @@ ul.address {
 /*Presets*/
 
 
-
+/*CUSTOMER SIDE*/
 span.badge {
     position: absolute;
     left: 17px;
     top: 5px;
     background: #f44336;
     padding: 3px 4px;
+}
+
+div.search-holder{
+    margin: 14px 233px;
+    position: absolute;
+    width: 530px;
+    background: white;
+}
+div.search-holder > input{
+  padding-right: 56px;
+}
+div.search-holder > span{
+    position: absolute;
+    right: 0px;
+    font-size: 20px;
+    top: 0px;
+    background: #f44336;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+}
+
+div.cart-holder{
+    position: absolute;
+    right: -50px;
+    top: 12px;
+    font-size: 20px;
+}
+
+div.cart-holder > span {
+  font-size: 26px;
+}
+
+div.cart-holder > button{
+      border: 0px;
+    color: white;
+    background: transparent;
+}
+div.cart-holder span.badge{
+  top: -2px !important;
+  padding: 3px 7px !important;
 }

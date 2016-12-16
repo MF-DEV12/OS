@@ -62,14 +62,27 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-               <button type="button" class="navbar-toggle" style="border:0px;color:white;" >
+               <button type="button" class="navbar-toggle cart" style="border:0px;color:white;" >
                 <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
               </button>
               <a class="navbar-brand" href="index.html">
                 <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>
-              </a>                    
+              </a> 
             </div>
             <div class="collapse navbar-collapse">
+
+              <div class="search-holder">    
+                <input type="text" name="search" class="form-control" placeholder="Search for items" > 
+                <span class="glyphicon glyphicon-search"></span> 
+                  <div class="cart-holder">
+                    <button type="button" class="cart" style="border:0px;color:white;" >
+                        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
+                    </button>
+                  </div>
+              </div>
+          
+              
+
               <ul class="nav navbar-nav navbar-right">                 
                 <li class="scroll active"><a href="#home">Home</a></li>
                 <li class="scroll"><a href="#orders">Orders</a></li> 
@@ -86,8 +99,8 @@
     <div class="container">
       <div class="row">
         <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <h2>Quality</h2>
-          <p>Techniques don't produce quality products and services:<br/> People do, people who care,people who are treated as creatively contributing individuals</p>
+          <h2>List of Categories</h2>
+          <p>Select the Categories</p>
         </div>
       </div> 
     </div>
