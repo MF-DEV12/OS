@@ -1038,3 +1038,26 @@ div.cart-holder span.badge{
   top: -2px !important;
   padding: 3px 7px !important;
 }
+
+ div.customer-header{
+    height: 81px;
+ }
+
+div.list-items{
+  margin-top: -20px;
+}
+
+.row.list-items > div:first-child {
+    border-top: 1px solid #ddd; 
+}
+.row.list-items > div {
+    border-bottom: 1px solid #ddd;
+    padding: 16px;
+}
+.row.list-items > div  a{ 
+   text-align:  left;
+}
+
+.row.list-items > div > h5:before{ 
+   
+}

@@ -26,7 +26,7 @@
     <header id="home">
          
         <div class="main-nav">
-          <div class="container">
+          <div class="container customer-header" >
             <div class="navbar-header">
              
              
@@ -35,14 +35,28 @@
               </a>   
 
             </div>
+            <div class="filter-holder">
+
+              <div class="search-holder">    
+                <input type="text" name="search" class="form-control" placeholder="Search for items" > 
+                <span class="glyphicon glyphicon-search"></span> 
+                  <div class="cart-holder">
+                    <button type="button" class="cart" style="border:0px;color:white;" >
+                        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
+                    </button>
+                  </div>
+              </div> 
+              
+            </div>
+
             <div class="pull-right cart-menu">
-                 <button type="button" class="navbar-toggle order" id="responsive-menu-button">
+                 <button type="button" class="navbar-toggle category-menu" id="responsive-menu-button">
                   <span class="sr-only">Toggle navigation</span>
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <button type="button" class="navbar-toggle order" style="border:0px;color:white;" >
+                <button type="button" class="navbar-toggle cart" style="border:0px;color:white;" >
                   <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
                 </button>
             </div>
@@ -64,14 +78,15 @@
 
              ?>
 
-             <a <?=(($listcategorybyfamily) ? "data-toggle=\"collapse\" data-target=\"#sidr-id-f" . $fno . "\"" : "");?>> <?=$f->Name1;?></a>  
+             <a  <?=(($listcategorybyfamily) ? "data-toggle=\"collapse\" class=\"collapsed\" data-target=\"#sidr-id-f" . $fno . "\"" : "");?>> <?=$f->Name1;?></a>  
 
              <?php if($listcategorybyfamily) {?>
-               <ul <?="class=\"collapse\" id=\"f". $fno ."\"";?>>
+               <ul <?="class=\"collapse\" id=\"f". $fno ."\"";?> aria-expanded="false" style="height: 1px;">
                <?php foreach($listcategorybyfamily as $c) {?>
                
                    <li>  
-                      <a> <?=$c->Name2;?></a> 
+                   <?php $url = base_url('customer?family='. $fno .'&category='. $c->Level2No);?>
+                      <a href = "<?=$url;?>"> <?=$c->Name2;?></a> 
                       <?php
                           $cno = $c->Level2No;
 
@@ -105,14 +120,67 @@
     </nav>
 </div>
 
-<section id="orders">
+<div id="orders">
     <div class="container">
+      <div class="search-mobile">
+        <input type="text" placeholder="Search for items.." class="form-control"/>
+      </div>
       <div class="row">
-        <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+          
+        <div class="heading text-center col-sm-12 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item <?=((!$category) ? "active" : "");?>"><?=$family[0]->Name1;?></li>
+            <?php if($category) {?>
+              <li class="breadcrumb-item <?=((!$subcategory) ? "active" : "");?>"><?=$category[0]->Name2;?></li>
+            <?php } ?>
+            <?php if($subcategory) {?>
+              <li class="breadcrumb-item active"><?=$category[0]->Name2;?></li>
+            <?php } ?>
 
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><?=$family[0]->Name1;?></li>
           </ol>
+        <div class="row list-items">
+          
+          <?php if(!$category) {?>
+             <?php
+                $fno = $family[0]->Level1No; 
+                $listcategorybyfamily = array_filter( $listcategory,  function ($e) use ($fno) { return $e->Level1No == $fno; } );  
+             ?>
+             <?php if($listcategorybyfamily) {?>
+              
+               <?php foreach($listcategorybyfamily as $c) {
+                  $url = base_url('customer?family='. $fno .'&category='. $c->Level2No);
+                ?> 
+                    <div class="col-md-12">
+                      <a href="<?=$url?>"><h5><?=$c->Name2;?></h5></a>
+                    </div> 
+               <?php } ?>
+               
+             <?php } else { echo "<p class=\"empty\">No data(s) found.</p>"; } ?>
+          <?php } else { ?>
+             <?php
+                $fno = $family[0]->Level1No; 
+                $cno = $category[0]->Level2No; 
+                $listsubcategorybyfamily = array_filter( $listsubcategory,  function ($e) use ($fno, $cno) { return $e->Level1No == $fno && $e->Level2No == $cno;  } );  
+             ?>
+             <?php if($listsubcategorybyfamily) {?>
+              
+               <?php foreach($listsubcategorybyfamily as $sc) 
+                   
+               {?> 
+                    <div class="col-md-12">
+                      <h5><?=$sc->Name3;?></h5>
+                    </div> 
+               <?php } ?>
+               
+             <?php } else { echo "<p class=\"empty\">No data(s) found.</p>"; } ?>
+
+
+
+          <?php } ?>
+
+           
+        </div>
+          
 
 
         </div>

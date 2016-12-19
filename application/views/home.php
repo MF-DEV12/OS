@@ -94,7 +94,9 @@
           </div>
         </div><!--/#main-nav-->
     </header>
-
+    <div class="search-mobile">
+      <input type="text" placeholder="Search for items.." class="form-control"/>
+    </div>
 <section id="orders">
     <div class="container">
       <div class="row">

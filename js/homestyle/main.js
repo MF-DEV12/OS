@@ -4,6 +4,8 @@ jQuery(function($) {
 	var preloader = $('.preloader');
 	$(window).load(function(){
 		preloader.remove();
+	 
+
 	});
 
 	//#main-slider
@@ -106,6 +108,8 @@ jQuery(function($) {
 			});
 		});
 	});
+
+
 
 	// Close Portfolio Single View
 	$('#portfolio-single-wrap').on('click', '.close-folio-item',function(event) {
