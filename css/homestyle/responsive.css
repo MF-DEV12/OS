@@ -2,10 +2,23 @@
  div.search-mobile{
   display: none;
  }
+ button.category-menu{
+ 	display: none;
+ }
  div.search-mobile input{
  	border: 1px solid #ddd;
     margin: 2px;
  }
+ div.category-treeview{
+ 	display: block;
+ }
+ div.action-holder-mobile{
+	display: none;
+    position: absolute;
+	right: 0px;
+   
+ }
+
 
 /* lg */ 
 @media (min-width: 1200px) {
@@ -19,10 +32,8 @@
 }
 
 	button.category-menu {
-	  display: block;
-	  border:1px solid #fff;
+	  /*border:1px solid #fff;*/
       position: relative;
-	  top: 12px;
 	}
 
 	button.category-menu .icon-bar {
@@ -52,6 +63,20 @@
 	}
 	.btn-signup {
 		padding: 10px 20px;
+	}
+	button.category-menu{
+	 	display: block !important;
+	}
+	div.action-holder,
+	div.category-treeview{
+		display: none;
+	}
+	div.action-holder-mobile{
+		display:block !important;
+	   
+	}
+	div.customer-header{
+	    height: auto;
 	}
 	  
 }
@@ -87,10 +112,7 @@
 	.navbar-brand {
 		padding: 0 15px 15px;
 	}
-	.navbar-toggle {
-	  border:1px solid #fff;
-	}
-
+	 
 	.navbar-toggle .icon-bar {
 	  background-color: #fff;
 	}
@@ -104,19 +126,23 @@
 	  display: block !important;
 	 }
 
-	.cart-menu{
+	 button.category-menu{
+	 	display: block !important;
+	 }
 
-	    position: absolute;
-	    right: 0px;
-	    top: 0px;
+	div.action-holder-mobile{
+		display:block !important;
+	   
 	}
+
+
 
 	button.category-menu { 
 	  top: 0px;
 	}
-	div.search-holder,
-	div.filter-holder,
-	div.cart-holder{
+
+	div.action-holder,
+	div.category-treeview{
 		display: none;
 	}
 

@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
       
-    <title>Lampano Hardware - Items</title>
+    <title>Lampano Hardware - My Shopping Cart</title>
 
 
     <link href="<?=base_url('css/homestyle/bootstrap.min.css');?>" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?=base_url('css/datatables/jquery.dataTables.css');?>">
     <link href="<?=base_url('css/homestyle/animate.min.css');?>"  rel="stylesheet"> 
     <link href="<?=base_url('css/homestyle/font-awesome.min.css');?>" rel="stylesheet">
     <link href="<?=base_url('css/homestyle/lightbox.css');?>" rel="stylesheet">
@@ -31,7 +32,7 @@
              
              
               <a class="navbar-brand" href="<?=base_url();?>">
-                <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>
+                <h1><img class="img-responsive" src="<?=base_url('images/logo-home.png');?>" alt="logo"></h1>
               </a>   
 
             </div>
@@ -98,7 +99,7 @@
                <?php foreach($listcategorybyfamily as $c) {?>
                
                    <li>  
-                   <?php $url = base_url('items?family='. $fno .'&category='. $c->Level2No);?>
+                   <?php $url = base_url('customer?family='. $fno .'&category='. $c->Level2No);?>
                       <?php
                           $cno = $c->Level2No;
 
@@ -135,74 +136,71 @@
 
 <div id="orders">
     <div class="container">
-      <div class="search-mobile">
-        <input type="text" placeholder="Search for items.." class="form-control"/>
-      </div>
       <div class="row">
-        <div class="col-sm-3 category-treeview">
+        <div class="col-sm-12 col-md-8">
+          <h5>My Shopping Cart</h5>
+          <table class="display table" id="table-cart">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th></th> 
+                </tr>
+              </thead>
+              <tbody>
+                <?php $total = 0.00;?>
+                <?php if($itemsoncart) {?>
 
-          <div id="collapseDVR3" class="panel-collapse">
+                    <?php foreach($itemsoncart as $key) {?>
+                    <tr>
+                      <td>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <img src="../images/variant-folder/<?=$key->ImageFile;?>" width="100px" height="100px" alt=""/>
+                          </div>
+                          <div class="col-sm-8">
+                            <h5><?=$key->Name?></h5> 
+                            <h6><?=$key->VariantName?></h6>
+                          </div>
+                        </div> 
+                      </td>
+                      <td>&#8369; <span class="cart-price"><?=$key->Price?></span></td>
+                      <td>
+                        <div class="btn-group cartqty" data-item="<?=$key->ItemNumber;?>">
+                          <button class="btn btn-default dec" onclick="incDecQty(this,-1);">-</button>
+                          <button class="btn btn-default qty disabled"><?=$key->Quantity?></button>
+                          <button class="btn btn-default inc" onclick="incDecQty(this,1);">+</button>
+                        </div>  
+                      </td>
+                      <td>&#8369; <span class="cart-total"><?=($key->Price * $key->Quantity);?></span></td>
+                      <td>&times;</td>
+                    </tr>
+                    <?php $total += ($key->Price * $key->Quantity);?>
+                    <?php }?>
+              <?php } else{ ?>
+                <tr>
+                  <td colspan="5" align="center">
+                    <p class="empty">No item(s) on the cart.</p>
+                  </td>
+                  
+                </tr>
 
-              <div class="tree ">
-                  <h4>Select Category:</h4>
-                   <ul> 
-                      <?php foreach($listfamily as $f) {?>
-                      <li> 
-                         <?php
-                            $fno = $f->Level1No;
-                            $listcategorybyfamily = array_filter( $listcategory,  function ($e) use ($fno) { return $e->Level1No == $fno; } ); 
+              <?php }?>
 
-                         ?> 
-                           <span data-id='{"l1":"<?=$fno;?>"}' data-name='["<?=$f->Name1?>"]'><i <?=(($listcategorybyfamily) ? "class=\"fa fa-plus-square\"" : "")?>></i> <?=$f->Name1;?></span> 
-
-                         <?php if($listcategorybyfamily) {?>
-                           <ul>
-                           <?php foreach($listcategorybyfamily as $c) {?>
-                           
-                               <li>  
-                                  <?php
-                                      $cno = $c->Level2No; 
-                                      $listSubcategorybyfamily = array_filter( $listsubcategory,  function ($e) use ($fno, $cno) { return $e->Level1No == $fno && $e->Level2No == $cno;  } ); 
-                                  ?>
-                                   <span data-id='{"l1":"<?=$fno;?>","l2":"<?=$cno;?>"}' data-name='["<?=$f->Name1?>","<?=$c->Name2?>"]'><i <i <?=(($listSubcategorybyfamily) ? "class=\"fa fa-plus-square\"" : "")?>></i> <?=$c->Name2;?></span>  
-                                   <?php if($listSubcategorybyfamily) {?>
-                                     <ul>
-                                     <?php foreach($listSubcategorybyfamily as $sc) {?> 
-                                         <li><span data-id='{"l1":"<?=$fno;?>","l2":"<?=$cno;?>","l3":"<?=$sc->Level3No;?>"}' data-name='["<?=$f->Name1?>","<?=$c->Name2?>","<?=$sc->Name3?>"]'><i></i> <?=$sc->Name3;?></span></li> 
-                                     <?php } ?>
-                                     </ul>
-                                   <?php } ?>
-                               </li> 
-                           <?php } ?>
-
-                           </ul>
-                         <?php } ?>
-
-
-
-
-                      </li>
-                     <?php } ?>
-                       
-                    </ul>
-                 
-              </div>
-          </div>
-
+              </tbody>
+          </table>
         </div>
-          
-        <div class="heading text-center col-xs-12 col-sm-12 col-md-9 col-lg-9 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item <?=((!$category) ? "active" : "");?>"><?=$family[0]->Name1;?></li>  
-        </ol>
-        <div class="row list-items">
-         
+        <div class="col-sm-12 col-md-4" style="padding-top:31px;">
+          <h5>Order Summary</h5>
+          <dl id="order-summary">
+            <dd style="padding: 34px 10px; border-bottom: 1px solid #dcdcdc;border-top: 1px solid #dcdcdc;">Subtotal: <span class="subtotal pull-right">&#8369; <?=$total;?></span></dd>
+            <dd style="padding: 6px 10px;"><b>Total:</b>  <span class="total pull-right"><b>&#8369; <?=$total;?></b></span></dd>
+            <dd><button class="btn btn-action btn-checkout" ><span class="glyphicon glyphicon-saved"></span> PROCEED TO CHECKOUT</button></dd>
+          </dl> 
         </div>
-          
-
-
-        </div>
-      </div> 
+      </div>
     </div>
    
  
@@ -277,4 +275,4 @@
      
 </body>
     
-</html>         
+</html> 

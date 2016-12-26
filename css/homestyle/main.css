@@ -998,10 +998,20 @@ span.badge {
     padding: 3px 4px;
 }
 
-div.search-holder{
-    margin: 14px 233px;
-    position: absolute;
-    width: 530px;
+
+div.action-holder{ 
+    margin-top: 14px;
+}
+
+div.action-holder > div {
+    display: inline-flex;
+    position: relative;
+    margin-left: 10px;
+}
+
+/*SEARCH */ 
+div.search-holder{ 
+    width: 379px;
     background: white;
 }
 div.search-holder > input{
@@ -1018,11 +1028,10 @@ div.search-holder > span{
     cursor: pointer;
 }
 
-div.cart-holder{
-    position: absolute;
-    right: -50px;
-    top: 12px;
-    font-size: 20px;
+/*CART */
+
+div.cart-holder{ 
+    font-size: 18px;
 }
 
 div.cart-holder > span {
@@ -1039,6 +1048,26 @@ div.cart-holder span.badge{
   padding: 3px 7px !important;
 }
 
+/* ACCOUNT*/
+div.account-holder{ 
+}
+div.account-holder > button{
+    background: transparent;
+}
+
+
+
+
+div.action-holder-mobile > button {
+ 
+    position: relative;
+    margin-left: -13px;
+}
+
+
+
+
+
  div.customer-header{
     height: 81px;
  }
@@ -1047,6 +1076,9 @@ div.list-items{
   margin-top: -20px;
 }
 
+
+
+/*
 .row.list-items > div:first-child {
     border-top: 1px solid #ddd; 
 }
@@ -1056,8 +1088,64 @@ div.list-items{
 }
 .row.list-items > div  a{ 
    text-align:  left;
+}*/
+ 
+.preloader2 > i {
+
+    position: absolute;
+    font-size: 35px;
+    top: 24%;
+    left: 50%; 
 }
 
-.row.list-items > div > h5:before{ 
-   
+p.empty {
+    margin: 32px;
+    color: #cccccc;
+}
+
+ol.breadcrumb{
+  text-align: left;
+  background-color: transparent;
+}
+
+button.btn-checkout,
+button.btn-addtocart{
+  color:white;
+  background: #f44336;
+  margin: 18px auto;
+  width: 100%;
+}
+button.btn-addtocart{
+  width: auto !important;
+}
+
+.btn-group.cartqty > button {
+    padding: 2px 4px;
+}
+
+.btn-group.cartqty > button:not(.disabled) {
+    border:1px solid #ddd;
+}
+div.item{
+  cursor: pointer;
+}
+dl#list-variation{
+  display: inline-flex;
+}
+dl#list-variation dd { 
+    margin: 10px 8px;
+     border: 0px;
+}
+
+dl#list-variation dd:hover,
+dl#list-variation dd.active
+ {
+     border: 1px solid #048e81;
+     cursor: pointer; 
+
+}
+
+ol.item-category{
+    padding: 0px;
+    font-size: 12px;
 }

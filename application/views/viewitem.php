@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
       
-    <title>Lampano Hardware - Items</title>
+    <title>Lampano Hardware</title>
 
 
     <link href="<?=base_url('css/homestyle/bootstrap.min.css');?>" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?=base_url('css/datatables/jquery.dataTables.css');?>">
     <link href="<?=base_url('css/homestyle/animate.min.css');?>"  rel="stylesheet"> 
     <link href="<?=base_url('css/homestyle/font-awesome.min.css');?>" rel="stylesheet">
     <link href="<?=base_url('css/homestyle/lightbox.css');?>" rel="stylesheet">
@@ -31,7 +32,7 @@
              
              
               <a class="navbar-brand" href="<?=base_url();?>">
-                <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>
+                <h1><img class="img-responsive" src="<?=base_url('images/logo-home.png');?>" alt="logo"></h1>
               </a>   
 
             </div>
@@ -98,7 +99,7 @@
                <?php foreach($listcategorybyfamily as $c) {?>
                
                    <li>  
-                   <?php $url = base_url('items?family='. $fno .'&category='. $c->Level2No);?>
+                   <?php $url = base_url('customer?family='. $fno .'&category='. $c->Level2No);?>
                       <?php
                           $cno = $c->Level2No;
 
@@ -134,75 +135,55 @@
 </div>
 
 <div id="orders">
+    <?php $items = $items[0];?>
     <div class="container">
-      <div class="search-mobile">
-        <input type="text" placeholder="Search for items.." class="form-control"/>
-      </div>
       <div class="row">
-        <div class="col-sm-3 category-treeview">
-
-          <div id="collapseDVR3" class="panel-collapse">
-
-              <div class="tree ">
-                  <h4>Select Category:</h4>
-                   <ul> 
-                      <?php foreach($listfamily as $f) {?>
-                      <li> 
-                         <?php
-                            $fno = $f->Level1No;
-                            $listcategorybyfamily = array_filter( $listcategory,  function ($e) use ($fno) { return $e->Level1No == $fno; } ); 
-
-                         ?> 
-                           <span data-id='{"l1":"<?=$fno;?>"}' data-name='["<?=$f->Name1?>"]'><i <?=(($listcategorybyfamily) ? "class=\"fa fa-plus-square\"" : "")?>></i> <?=$f->Name1;?></span> 
-
-                         <?php if($listcategorybyfamily) {?>
-                           <ul>
-                           <?php foreach($listcategorybyfamily as $c) {?>
-                           
-                               <li>  
-                                  <?php
-                                      $cno = $c->Level2No; 
-                                      $listSubcategorybyfamily = array_filter( $listsubcategory,  function ($e) use ($fno, $cno) { return $e->Level1No == $fno && $e->Level2No == $cno;  } ); 
-                                  ?>
-                                   <span data-id='{"l1":"<?=$fno;?>","l2":"<?=$cno;?>"}' data-name='["<?=$f->Name1?>","<?=$c->Name2?>"]'><i <i <?=(($listSubcategorybyfamily) ? "class=\"fa fa-plus-square\"" : "")?>></i> <?=$c->Name2;?></span>  
-                                   <?php if($listSubcategorybyfamily) {?>
-                                     <ul>
-                                     <?php foreach($listSubcategorybyfamily as $sc) {?> 
-                                         <li><span data-id='{"l1":"<?=$fno;?>","l2":"<?=$cno;?>","l3":"<?=$sc->Level3No;?>"}' data-name='["<?=$f->Name1?>","<?=$c->Name2?>","<?=$sc->Name3?>"]'><i></i> <?=$sc->Name3;?></span></li> 
-                                     <?php } ?>
-                                     </ul>
-                                   <?php } ?>
-                               </li> 
-                           <?php } ?>
-
-                           </ul>
-                         <?php } ?>
-
-
-
-
-                      </li>
-                     <?php } ?>
-                       
-                    </ul>
-                 
-              </div>
+        <div class="col-sm-12 col-md-5">
+          <h3 style="margin-bottom: 0px;"><?=$items->Name;?></h3>
+          <ol class="breadcrumb item-category">
+            <li class="breadcrumb-item"><?=$items->Name1?></li>  
+            <?php if($items->Name2) { ?> 
+              <li class="breadcrumb-item"><?=$items->Name2?></li>  
+            <?php } ?> 
+            <?php if($items->Name3) { ?> 
+              <li class="breadcrumb-item"><?=$items->Name3?></li>  
+            <?php } ?> 
+           
+          </ol>
+          <div align="center" style="padding: 35px;">
+            <img id="item-image" src="<?=base_url('images/variant-folder/'. $items->ImageFile);?>" alt="" height="70%" width="90%">
+            
           </div>
-
         </div>
-          
-        <div class="heading text-center col-xs-12 col-sm-12 col-md-9 col-lg-9 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item <?=((!$category) ? "active" : "");?>"><?=$family[0]->Name1;?></li>  
-        </ol>
-        <div class="row list-items">
-         
+        <div class="col-sm-12 col-md-7">
+          <h5>Item Specification:</h5>
+          <dl id="items-specs">
+            <dd style="border-bottom: 1px solid #ddd;">
+              <ul>
+                 <?php $variantname = json_decode($items->VariantNameJSON);?>
+                 <?php foreach($variantname as $key => $value){ ?> 
+                  <li><?=$key?> : <?=$value;?></li>
+                 <?php } ?> 
+              </ul>
+            </dd>
+            <?php if(count($itemvariant) > 1) {?>
+              <dd style="border-bottom: 1px solid #ddd;">
+                <h6>Choose a Variation:</h6>
+                <dl id="list-variation"> 
+                   <?php foreach($itemvariant as $key){ ?> 
+                      <dd data-item="<?=$key->ItemNo?>" data-variant="<?=$key->VariantNo?>"<?=(($items->ItemNumber == $key->ItemNo . "-" . $key->VariantNo) ? "class=\"active\"" : "");?>> <img src="<?=base_url('images/variant-folder/'. $key->ImageFile);?>" alt="" width="80px" height="80px"/></dd>
+                   <?php } ?> 
+                </dl>
+              </dd>
+            <?php } ?> 
+            <dd align="right">
+              <h6>Item price:</h6>
+              <h4> &#8369; <span class="item-price"><?=$items->Price?></span></h4>
+              <button class="btn btn-addtocart" data-item="<?=$items->ItemNo?>" onclick="orderItem('<?=$items->ItemNumber?>');"><span class="glyphicon glyphicon-plus"></span> ADD TO CART</button>
+            </dd>
+          </dl> 
         </div>
-          
-
-
-        </div>
-      </div> 
+      </div>
     </div>
    
  
@@ -277,4 +258,4 @@
      
 </body>
     
-</html>         
+</html> 

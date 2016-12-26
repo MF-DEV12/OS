@@ -15,6 +15,11 @@ jQuery(function($) {
 	$(window).resize(function(){'use strict',
 		$('#home-slider .item').css('height',slideHeight);
 	});
+
+
+	$("div.list-items")
+		.height(slideHeight)
+		.css("overflow-y","auto")
 	
 	//Scroll Menu
 	$(window).on('scroll', function(){
