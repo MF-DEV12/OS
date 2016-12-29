@@ -78,7 +78,7 @@
 
                   <div class="search-holder">    
                     <input type="text" name="search" class="form-control" placeholder="Search for items" > 
-                    <span class="glyphicon glyphicon-search"></span> 
+                    <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
                      
                   </div> 
                   <div class="cart-holder">
@@ -116,6 +116,7 @@
     </header>
     <div class="search-mobile">
       <input type="text" placeholder="Search for items.." class="form-control"/>
+      <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
     </div>
 <section id="orders">
     <div class="container">
@@ -245,6 +246,7 @@
 
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/bootstrap.min.js")?>"></script>
+      <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
  
       <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.inview.min.js")?>"></script>

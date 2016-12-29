@@ -13,18 +13,28 @@ class Items extends CI_Controller {
  		$level1no = $this->input->get("family");
  		$level2no = $this->input->get("category");
  		$level3no = $this->input->get("subcategory");
- 		$data["family"] = $this->getFamilyName($level1no);
+ 		$item = $this->input->get("name");
+ 		$data["family"] = ($level1no) ? $this->getFamilyName($level1no) : array();
  		$data["category"] = ($level2no) ? $this->getCategoryName($level2no) : array();
  		$data["subcategory"] = ($level3no) ? $this->getSubCategoryName($level2no) : array();
  		$data["listfamily"] = $this->getListFamily();
  		$data["listcategory"] = $this->getCategoryByFamily();
  		$data["listsubcategory"] = $this->getSubCategory();
- 		$this->session->sess_destroy();
+ 		// $this->session->sess_destroy();
+
+ 		// Get Items
+ 		$id = "{"; 
+ 		$id .= ($level1no) ? "\"l1\": \"$level1no\"" : ""; 
+ 		$id .= ($level2no) ? ",\"l2\": \"$level2no\"" : ""; 
+ 		$id .= ($level3no) ? ",\"l3\": \"$level3no\"" : ""; 
+ 		$id .= ($item) ? "\"name\": \"$item\"" : ""; 
+ 		$id .= "}"; 
+ 		$data["items"] = $this->getItemsForSale($id);
 
  		$listItemsInCart = $this->session->userdata("cartitems");
  		$data["totalItemCart"] = ($listItemsInCart) ? count($listItemsInCart) : "";
 
- 		$this->load->view('customerorder',$data);
+ 		$this->load->view('items',$data);
  	}
 
  	function getFamilyName($level1no = ""){ 
@@ -112,30 +122,41 @@ class Items extends CI_Controller {
 
  	function getItems(){
  		$data = $this->input->post("id");
+ 		 
+		echo json_encode($this->getItemsForSale($data)); 
+ 	}
+
+ 	function getItemsForSale($id){
+ 		$data = $id; 
  		$data = json_decode($data);
- 		// print_r($data);
- 		// die($data->l2);
+ 		 
  		$this->param = $this->param = $this->query_model->param; 
  		$this->param["table"] = "vw_itemsforsale";
  		$this->param["fields"] = "*";
-		$this->param["conditions"] = "Level1No = '$data->l1'";
+		$this->param["conditions"] = "";
+		if(isset($data->l1))
+			$this->param["conditions"] .= " Level1No = '$data->l1'";
 		if(isset($data->l2))
 			$this->param["conditions"] .= " AND Level2No = '$data->l2'";
 		if(isset($data->l3))
 			$this->param["conditions"] .= " AND Level3No = '$data->l3'";
 
+
+		if(isset($data->name))
+			$this->param["conditions"] .= " Name like '%$data->name%'";
+
+
 		$this->param["groups"] = "ItemNo, ItemNoV";
 		$this->param["order"] = "Name";
 		 
-		$result = $this->query_model->getData($this->param);
-		echo json_encode($result); 
+		return $this->query_model->getData($this->param);
  	}
 
  	function getItemVariant($item){ 
  		$this->param = $this->param = $this->query_model->param; 
  		$this->param["table"] = "itemvariant";
  		$this->param["fields"] = "*";
- 		$this->param["conditions"] = "ItemNo = '$item'";
+ 		$this->param["conditions"] = "ItemNo = '$item' and Owned = 1 and Price is not null";
 		$result = $this->query_model->getData($this->param);
 		return $result;
  	}
@@ -194,7 +215,10 @@ class Items extends CI_Controller {
  		
  		$listItemsInCart = $this->session->userdata("cartitems");
 
- 		echo count($listItemsInCart);
+ 		$data["carttotal"] = count($listItemsInCart);
+ 		$data["item"] = $this->getItemsByItemNo("'" . $item . "'");
+ 		$data["itemstotal"] = $this->getTotalPriceFromCart($listItemsInCart);
+ 		echo json_encode($data);
  	}
 	 
 	function updateItemQtyonCart(){
@@ -205,4 +229,40 @@ class Items extends CI_Controller {
  		$this->session->set_userdata('cartitems', $listItemsInCart); 
  		echo true;
 	}
+
+	function getTotalPriceFromCart($listItemsInCart){
+	  
+		$listitemkeys = array_keys($listItemsInCart);
+		$listitem = implode(",", $listitemkeys);
+	 
+ 		
+ 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param["table"] = "vw_itemsforsale";
+ 		$this->param["fields"] = "*,0 Quantity";
+		$this->param["conditions"] = "ItemNumber IN($listitem)";
+		$this->param["order"] = "Name";
+		$result = $this->query_model->getData($this->param);
+		
+		$total = 0.00;
+		foreach ($result as $key) 
+			$total += (int)$listItemsInCart["'" . $key->ItemNumber . "'"] * (float)$key->Price;
+		 
+		return $total;
+	}
+
+	function removeCart(){
+		$item = $this->input->post("id");
+ 		$listItemsInCart = $this->session->userdata("cartitems"); 
+ 		unset($listItemsInCart["'" . $item . "'"]);
+ 		$this->session->set_userdata('cartitems', $listItemsInCart); 
+ 		$listItemsInCart = $this->session->userdata("cartitems"); 
+ 		$data["carttotal"] = (count($listItemsInCart) == 0)  ?  "" : count($listItemsInCart);
+ 		$data["itemstotal"] = (count($listItemsInCart) == 0)  ?  array() : $this->getTotalPriceFromCart($listItemsInCart);
+ 		
+
+ 		echo json_encode($data);
+	}
+
+
+
 }

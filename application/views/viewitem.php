@@ -136,7 +136,7 @@
 
 <div id="orders">
     <?php $items = $items[0];?>
-    <div class="container">
+    <div class="container" style="height: 700px;">
       <div class="row">
         <div class="col-sm-12 col-md-5">
           <h3 style="margin-bottom: 0px;"><?=$items->Name;?></h3>
@@ -171,15 +171,15 @@
                 <h6>Choose a Variation:</h6>
                 <dl id="list-variation"> 
                    <?php foreach($itemvariant as $key){ ?> 
-                      <dd data-item="<?=$key->ItemNo?>" data-variant="<?=$key->VariantNo?>"<?=(($items->ItemNumber == $key->ItemNo . "-" . $key->VariantNo) ? "class=\"active\"" : "");?>> <img src="<?=base_url('images/variant-folder/'. $key->ImageFile);?>" alt="" width="80px" height="80px"/></dd>
+                      <dd data-item="<?=$key->ItemNo?>" data-price="<?=$key->Price?>" data-variant="<?=$key->VariantNo?>"<?=(($items->ItemNumber == $key->ItemNo . "-" . $key->VariantNo) ? "class=\"active\"" : "");?>> <img src="<?=base_url('images/variant-folder/'. $key->ImageFile);?>" alt="" width="80px" height="80px"/></dd>
                    <?php } ?> 
                 </dl>
               </dd>
             <?php } ?> 
             <dd align="right">
               <h6>Item price:</h6>
-              <h4> &#8369; <span class="item-price"><?=$items->Price?></span></h4>
-              <button class="btn btn-addtocart" data-item="<?=$items->ItemNo?>" onclick="orderItem('<?=$items->ItemNumber?>');"><span class="glyphicon glyphicon-plus"></span> ADD TO CART</button>
+              <h4> &#8369; <span class="item-price"><?=number_format($items->Price,2)?></span></h4>
+              <button class="btn btn-addtocart" data-item="<?=$items->ItemNo?>" data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#confirmcart" onclick="orderItem('<?=$items->ItemNumber?>');"><span class="glyphicon glyphicon-plus"></span> ADD TO CART</button>
             </dd>
           </dl> 
         </div>
@@ -226,7 +226,48 @@
     </div>
 </footer>
 
- 
+ <div class="modal fade" id="confirmcart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 20px;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-body">
+              <h4 style="color:#048e81;"><span class="glyphicon glyphicon-ok"></span> This item has been added to your cart.</h4>
+              <div class="row">
+                <div class="col-xs-12 col-md-6 item-wrap">
+                    <div class="row">
+                        <div class="col-xs-5 col-md-5">
+                          <img src="<?=base_url('');?>" class="cart-img" width="80px" height="80px"/>
+                        </div>
+                        <div class="col-xs-7 col-md-7">
+                          <h4><name></name></h4>
+                          <h6><category></category></h6>
+                          <h5>&#8369; <price></price></h5>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="col-xs-12 col-md-6" style="border-left: 1px solid #ddd; padding-top: 10px;">
+                    <h5>My Shopping Cart <a href="<?=base_url('items/cart')?>" title="Click to view your cart"><carttotal></carttotal> item(s)</a> </h5>
+                    <dl style="font-size: 12px;">
+                      <dd style="padding: 10px 2px; border-bottom: 1px solid #ddd; border-top: 1px solid #ddd;">
+                        Subtotal: <span class="pull-right">&#8369; <subtotal></subtotal></span>
+                      </dd>
+
+                      <dd style="padding: 4px 2px; font-size: 14px !important;">
+                        Total: <span class="pull-right">&#8369; <b><total></total></b></span>
+                      </dd>
+
+                    </dl>
+                </div> 
+              </div>
+          </div>
+          <div class="modal-footer">
+            <a type="button" class="btn btn-default" data-dismiss="modal">Continue to Shopping</a>
+            <button type="button" class="btn btn-action" id="btn-proceed">Proceed to Checkout</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/bootstrap.min.js")?>"></script>

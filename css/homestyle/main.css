@@ -1027,6 +1027,22 @@ div.search-holder > span{
     padding: 15px;
     cursor: pointer;
 }
+div.search-mobile.navbar-fixed-top{
+    top: 49px;
+    background: white;
+    height: 59px;
+}
+div.search-mobile > span{
+    position: relative;
+    right: -2px;
+    float: right;
+    font-size: 20px;
+    top: -53px;
+    background: #f44336;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+}
 
 /*CART */
 
@@ -1103,9 +1119,10 @@ p.empty {
     color: #cccccc;
 }
 
-ol.breadcrumb{
+ol.breadcrumb.item-header{
   text-align: left;
   background-color: transparent;
+  border-bottom: 1px solid #ddd;
 }
 
 button.btn-checkout,
@@ -1115,6 +1132,18 @@ button.btn-addtocart{
   margin: 18px auto;
   width: 100%;
 }
+
+button#btn-proceed{
+  color:white;
+  background: #f44336;
+}
+
+div.item-holder:hover + div button.btn-buy, button.btn-buy:hover{
+  color:white;
+  background: #048e81;
+  transition: background 0.5s ease;
+}
+
 button.btn-addtocart{
   width: auto !important;
 }
@@ -1148,4 +1177,16 @@ dl#list-variation dd.active
 ol.item-category{
     padding: 0px;
     font-size: 12px;
+}
+
+p.category{
+    margin: 0px;
+    font-size: 10px;
+    margin-top: -15px;
+}
+
+span.removeCart{
+  color: #f44336;
+  cursor: pointer;
+  font-size: 10px;
 }

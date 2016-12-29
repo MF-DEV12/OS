@@ -52,7 +52,14 @@
           var elem = $(this)
           $("dl#list-variation dd.active").removeClass("active");
           elem.addClass("active");
+          $("span.item-price").text(toMoney(elem.data("price")))
           $("button.btn-addtocart").attr("onclick", "orderItem('"+   elem.data("item")  + "-"+  elem.data("variant") +"');")
+      })
+
+      $("span.btn-itemsearch").click(function(e){
+        var elem = $(this)
+        if($.trim(elem.prev("input").val()).length > 0 )
+          location.href = baseUrl + "items?name=" + elem.prev("input").val()
       })
      
   });
@@ -80,14 +87,14 @@ function getItemsResponse(response){
                 var item = ""
                 item += "   <div class=\"col-xs-12 col-sm-6 col-md-4 col-lg-3 item\" title=\"Click to view\">"
                 item += "      <div class=\"row\">"
-                item += "        <div class=\"col-sm-12\"  onclick=\"viewItems('"+ data[x].ItemNumber +"');\">"
+                item += "        <div class=\"col-sm-12  item-holder\"  onclick=\"viewItems('"+ data[x].ItemNumber +"');\">"
                 item += "          <img width=\"200px\" height=\"200px\" src=\"images/variant-folder/"+ data[x].ImageFile +"\" alt=\"\" onerror=\"this.src='"+ baseUrl  +"/images/noimage.gif';\"/>"
                
                 item += "          <h4>"+ data[x].Name +"</h4>"
-                item += "          <b>"+ toMoney(data[x].Price) +"</b>"
+                item += "          <b>&#8369; "+ toMoney(data[x].Price) +"</b>"
                 item += "        </div>"
                 item += "        <div class=\"col-sm-12\">"
-                item += "          <button class=\"btn btn-action\" onclick=\"orderItem('"+ data[x].ItemNumber +"');\"  style=\"width:100%;\">Buy</button> "
+                item += "          <button class=\"btn btn-action btn-buy\" onclick=\"orderItem('"+ data[x].ItemNumber +"');\"  data-toggle=\"modal\" data-backdrop=\"static\"  data-keyboard=\"false\" data-target=\"#confirmcart\" style=\"width:100%;\">Buy</button> "
                 item += "        </div> "
                 item += "      </div>"
                 item += "   </div>"
@@ -116,7 +123,17 @@ function orderItem(item){
 
 function orderToCart(response){
     var data = response;
-    $("span.countCart").text(data)
+
+    var modal = $("div#confirmcart")
+    var item = data.item[0]
+    $("span.countCart").text(data.carttotal)
+    modal.find("carttotal").text(data.carttotal)
+    modal.find(".cart-img").attr("src", baseUrl + "images/variant-folder/" + item.ImageFile)
+    modal.find("name").text(item.Name)
+    modal.find("category").text(item.Category)
+    modal.find("price").text(toMoney(item.Price))
+    modal.find("subtotal").text(toMoney(data.itemstotal))
+    modal.find("total").text(toMoney(data.itemstotal))
 }
 
 function incDecQty(elem, qty){
@@ -135,12 +152,12 @@ function incDecQty(elem, qty){
         function(response){
             if(response){
               qtyElem.text(newqty)
-              tr.find("span.cart-total").text( toMoney(parseFloat(tr.find("span.cart-price").text(),2) * parseFloat(newqty,2)) )
+              tr.find("span.cart-total").text( toMoney(parseFloat(toMoneyValue(tr.find("span.cart-price").text()),2) * parseFloat(newqty,2)) )
 
               var total = 0;
               $("table#table-cart").find("span.cart-total").each(function(e){
                   var row = $(this)
-                  total += parseFloat(toMoneyValue(row.text()),10)
+                  total += parseFloat(toMoneyValue(row.text()),2)
               })
               $("dl#order-summary").find("span.subtotal").html("&#8369; " + toMoney(total))
               $("dl#order-summary").find("span.total").html("<b>&#8369; " + toMoney(total) + "</b>")
@@ -155,3 +172,26 @@ function incDecQty(elem, qty){
 function viewItems(item){
    location.href = baseUrl + "items/view?id="+item
 }
+
+function removeCart(elem, item){
+    bootbox.re
+    elem = $(elem)
+    var tr = elem.closest("tr")
+    var param = new Object()
+    param.id = item;
+    callAjaxJson("Items/removeCart", param, 
+        function(response){
+           var data = response
+            if(data){
+              $("span.countCart").text(data.carttotal)
+              $("carttotal").text(data.carttotal)
+              $("span.subtotal").html("&#8369; " + toMoney(data.itemstotal))
+              $("span.total").html("<b>&#8369; " + toMoney(data.itemstotal) + "</b>")
+              tr.remove()
+            }
+            
+        }
+      , ajaxError) 
+
+}
+ 

@@ -39,7 +39,7 @@
 
               <div class="search-holder">    
                 <input type="text" name="search" class="form-control" placeholder="Search for items" > 
-                <span class="glyphicon glyphicon-search"></span> 
+                <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
                  
               </div> 
               <div class="cart-holder">
@@ -137,6 +137,7 @@
     <div class="container">
       <div class="search-mobile">
         <input type="text" placeholder="Search for items.." class="form-control"/>
+        <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
       </div>
       <div class="row">
         <div class="col-sm-3 category-treeview">
@@ -144,16 +145,19 @@
           <div id="collapseDVR3" class="panel-collapse">
 
               <div class="tree ">
-                  <h4>Select Category:</h4>
+                  <h5>Select Category:</h5>
                    <ul> 
                       <?php foreach($listfamily as $f) {?>
                       <li> 
                          <?php
                             $fno = $f->Level1No;
                             $listcategorybyfamily = array_filter( $listcategory,  function ($e) use ($fno) { return $e->Level1No == $fno; } ); 
-
+                            $setFamilyActive = "";
+                            if(count($family) > 0){
+                              $setFamilyActive = ($family[0]->Level1No == $fno) ? "class=\"active\"" : "";
+                            }
                          ?> 
-                           <span data-id='{"l1":"<?=$fno;?>"}' data-name='["<?=$f->Name1?>"]'><i <?=(($listcategorybyfamily) ? "class=\"fa fa-plus-square\"" : "")?>></i> <?=$f->Name1;?></span> 
+                           <span data-id='{"l1":"<?=$fno;?>"}' data-name='["<?=$f->Name1?>"]' <?=$setFamilyActive;?>><i <?=(($listcategorybyfamily) ? "class=\"fa fa-plus-square\"" : "")?>></i> <?=$f->Name1;?></span> 
 
                          <?php if($listcategorybyfamily) {?>
                            <ul>
@@ -192,11 +196,34 @@
         </div>
           
         <div class="heading text-center col-xs-12 col-sm-12 col-md-9 col-lg-9 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item <?=((!$category) ? "active" : "");?>"><?=$family[0]->Name1;?></li>  
-        </ol>
+        <?php if(count($family) > 0){ ?>
+          <ol class="breadcrumb item-header">
+              <li class="breadcrumb-item <?=((!$category) ? "active" : "");?>"><?=$family[0]->Name1;?></li>  
+          </ol>
+        <?php } else{ ?>
+          <ol class="breadcrumb item-header">
+              <li class="breadcrumb-item"><span class="glyphicon glyphicon-info-sign"></span> <?=count($items)?> item(s) result found.</li>  
+          </ol>
+        <?php } ?>
         <div class="row list-items">
-         
+          <?php if($items){ ?>
+            <?php foreach($items as $key) {?>
+                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 item" title="Click to view">
+                      <div class="row">
+                        <div class="col-sm-12 item-holder"  onclick="viewItems('<?=$key->ItemNumber?>');">
+                          <img width="200px" height="200px" src="images/variant-folder/<?=$key->ImageFile?>" alt="" onerror="this.src='<?=base_url("images/noimage.gif")?>';"/>
+                          <h4><?=$key->Name?></h4>
+                          <p class="category"><?=$key->Category?></p>
+                          <b>&#8369; <?=number_format($key->Price,2)?></b>
+                        </div>
+                        <div class="col-sm-12">
+                          <button class="btn btn-action btn-buy"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#confirmcart" onclick="orderItem('<?=$key->ItemNumber?>');"  style="width:100%;">Buy</button> 
+                        </div> 
+                      </div>
+                   </div>
+            <?php } ?>
+          <?php }  ?>
+            
         </div>
           
 
@@ -245,6 +272,49 @@
     </div>
 </footer>
 
+
+  <div class="modal fade" id="confirmcart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 20px;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-body">
+              <h4 style="color:#048e81;"><span class="glyphicon glyphicon-ok"></span> This item has been added to your cart.</h4>
+              <div class="row">
+                <div class="col-xs-12 col-md-6 item-wrap">
+                    <div class="row">
+                        <div class="col-xs-5 col-md-5">
+                          <img src="<?=base_url('');?>" class="cart-img" width="80px" height="80px"/>
+                        </div>
+                        <div class="col-xs-7 col-md-7">
+                          <h4><name></name></h4>
+                          <h6><category></category></h6>
+                          <h5>&#8369; <price></price></h5>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="col-xs-12 col-md-6" style="border-left: 1px solid #ddd; padding-top: 10px;">
+                    <h5>My Shopping Cart <a href="<?=base_url('items/cart')?>" title="Click to view your cart"><carttotal></carttotal> item(s)</a> </h5>
+                    <dl style="font-size: 12px;">
+                      <dd style="padding: 10px 2px; border-bottom: 1px solid #ddd; border-top: 1px solid #ddd;">
+                        Subtotal: <span class="pull-right">&#8369; <subtotal></subtotal></span>
+                      </dd>
+
+                      <dd style="padding: 4px 2px; font-size: 14px !important;">
+                        Total: <span class="pull-right">&#8369; <b><total></total></b></span>
+                      </dd>
+
+                    </dl>
+                </div> 
+              </div>
+          </div>
+          <div class="modal-footer">
+            <a type="button" class="btn btn-default" data-dismiss="modal">Continue to Shopping</a>
+            <button type="button" class="btn btn-action" id="btn-proceed">Proceed to Checkout</button>
+          </div>
+        </div>
+      </div>
+    </div>
  
 
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.js")?>"></script>
@@ -268,7 +338,7 @@
          $('#responsive-menu-button').sidr({
             name: 'sidr-main',
             source: '#navigation',
-            side: 'left'
+            side: 'right'
           });
       </script>
 

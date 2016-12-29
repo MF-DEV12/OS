@@ -40,7 +40,7 @@
 
               <div class="search-holder">    
                 <input type="text" name="search" class="form-control" placeholder="Search for items" > 
-                <span class="glyphicon glyphicon-search"></span> 
+                <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
                  
               </div> 
               <div class="cart-holder">
@@ -138,7 +138,8 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-12 col-md-8">
-          <h5>My Shopping Cart</h5>
+          <h5 style="margin-bottom: 0px"><b>My Shopping Cart</b></h5>
+          <h6 style="margin-bottom: 0px"><carttotal><?=$totalItemCart?></carttotal> item(s)</h6>
           <table class="display table" id="table-cart">
               <thead>
                 <tr>
@@ -166,7 +167,7 @@
                           </div>
                         </div> 
                       </td>
-                      <td>&#8369; <span class="cart-price"><?=$key->Price?></span></td>
+                      <td>&#8369; <span class="cart-price"><?=number_format($key->Price,2)?></span></td>
                       <td>
                         <div class="btn-group cartqty" data-item="<?=$key->ItemNumber;?>">
                           <button class="btn btn-default dec" onclick="incDecQty(this,-1);">-</button>
@@ -174,8 +175,8 @@
                           <button class="btn btn-default inc" onclick="incDecQty(this,1);">+</button>
                         </div>  
                       </td>
-                      <td>&#8369; <span class="cart-total"><?=($key->Price * $key->Quantity);?></span></td>
-                      <td>&times;</td>
+                      <td>&#8369; <span class="cart-total"><?=number_format(($key->Price * $key->Quantity),2);?></span></td>
+                      <td><span class="glyphicon glyphicon-remove removeCart" onclick="removeCart(this,'<?=$key->ItemNumber;?>');"></span></td>
                     </tr>
                     <?php $total += ($key->Price * $key->Quantity);?>
                     <?php }?>
@@ -195,8 +196,8 @@
         <div class="col-sm-12 col-md-4" style="padding-top:31px;">
           <h5>Order Summary</h5>
           <dl id="order-summary">
-            <dd style="padding: 34px 10px; border-bottom: 1px solid #dcdcdc;border-top: 1px solid #dcdcdc;">Subtotal: <span class="subtotal pull-right">&#8369; <?=$total;?></span></dd>
-            <dd style="padding: 6px 10px;"><b>Total:</b>  <span class="total pull-right"><b>&#8369; <?=$total;?></b></span></dd>
+            <dd style="padding: 34px 10px; border-bottom: 1px solid #dcdcdc;border-top: 1px solid #dcdcdc;">Subtotal: <span class="subtotal pull-right">&#8369; <?=number_format($total,2);?></span></dd>
+            <dd style="padding: 6px 10px;"><b>Total:</b>  <span class="total pull-right"><b>&#8369; <?=number_format($total,2);?></b></span></dd>
             <dd><button class="btn btn-action btn-checkout" ><span class="glyphicon glyphicon-saved"></span> PROCEED TO CHECKOUT</button></dd>
           </dl> 
         </div>
@@ -242,6 +243,8 @@
       </div>
     </div>
 </footer>
+
+
 
  
 
