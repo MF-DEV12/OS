@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
       
-    <title>Lampano Hardware</title>
+    <title>Lampano Hardware - Home</title>
 
 
     <link href="<?=base_url('css/homestyle/bootstrap.min.css');?>" rel="stylesheet">
@@ -55,23 +55,42 @@
         <div class="main-nav">
           <div class="container">
             <div class="navbar-header">
-
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-               <button type="button" class="navbar-toggle cart" style="border:0px;color:white;" >
-                <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
-              </button>
+            <div class="pull-right action-holder-mobile">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                 <button type="button" class="navbar-toggle cart" style="border:0px;color:white;" >
+                  <span class="glyphicon glyphicon-shopping-cart"></span> 
+                  <span class="badge countCart"><?=$totalItemCart?></span>
+                </button>
+               
+            </div>
+              
               <a class="navbar-brand" href="index.html">
                 <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>
               </a> 
             </div>
             <div class="collapse navbar-collapse">
+               <div class="action-holder" style="position: absolute;margin-left: 252px;">
 
-              <div class="search-holder">    
+                  <div class="search-holder">    
+                    <input type="text" name="search" class="form-control" placeholder="Search for items" > 
+                    <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
+                     
+                  </div> 
+                  <div class="cart-holder">
+                    <button type="button" class="cart" style="border:0px;color:white;" >
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        <span class="badge countCart"><?=$totalItemCart?></span>
+                    </button>
+                  </div>
+                  
+                </div>
+
+              <!-- <div class="search-holder">    
                 <input type="text" name="search" class="form-control" placeholder="Search for items" > 
                 <span class="glyphicon glyphicon-search"></span> 
                   <div class="cart-holder">
@@ -79,7 +98,7 @@
                         <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
                     </button>
                   </div>
-              </div>
+              </div> -->
           
               
 
@@ -89,6 +108,7 @@
                 <!-- <li class="scroll"><a href="#forums">Forums</a></li>                      -->
                 <!-- <li class="scroll"><a href="#about-us">About Us</a></li>      -->
                 <li class="scroll"><a href="#contact">Contact</a></li>       
+                <li><a href="<?=base_url('login');?>">Login</a></li>       
               </ul>
             </div>
           </div>
@@ -96,6 +116,7 @@
     </header>
     <div class="search-mobile">
       <input type="text" placeholder="Search for items.." class="form-control"/>
+      <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
     </div>
 <section id="orders">
     <div class="container">
@@ -112,7 +133,7 @@
               <div class="col-sm-3">
                 <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
                   <div class="folio-image">
-                    <a href="<?=base_url('customer?family='.$key->Level1No);?>"> 
+                    <a href="<?=base_url('items?family='.$key->Level1No);?>"> 
                     <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="" onerror="this.src='images/noimage.gif';">
                     </a>
                   </div> 
@@ -225,6 +246,7 @@
 
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/bootstrap.min.js")?>"></script>
+      <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
  
       <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.inview.min.js")?>"></script>

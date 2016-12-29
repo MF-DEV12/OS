@@ -952,6 +952,7 @@ $(function(){
 
             // bindingDatatoDataTable(list)
         })
+        
 
 
 

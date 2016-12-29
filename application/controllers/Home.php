@@ -10,6 +10,8 @@ class Home extends CI_Controller {
 
  	function index(){
  		$data["family"] = $this->getFamilyName();
+		$listItemsInCart = $this->session->userdata("cartitems");
+ 		$data["totalItemCart"] = ($listItemsInCart) ? count($listItemsInCart) : "";
  		$this->load->view('home',$data);
  	}
 
