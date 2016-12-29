@@ -625,7 +625,8 @@ $(function(){
         })
         $("button.btn-print").click(function(e){
             var elem = $(this)
-            elem.closest("div.content-list").find("a.buttons-print").click();
+            window.open(baseUrl + "main/" + elem.data("print"));
+            //elem.closest("div.content-list").find("a.buttons-print").click();
         })
 
 //SUPPLIER SIDE

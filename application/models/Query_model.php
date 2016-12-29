@@ -15,7 +15,8 @@ class Query_model extends CI_Model {
 	 						 "dataToUpdate" => "",
 	 						 "queryFile" => "",
 	 						 "queryReplace" => "",
-	 						 "transactionname" =>"" 
+	 						 "transactionname" =>"", 
+	 						 "isArrayReturn" => false 
 	 				 );
 
 	 function getData($data){
@@ -51,7 +52,11 @@ class Query_model extends CI_Model {
 	 	}
 
 	 	$query = $this->db->query($qry); 
-	 	return $query->result();
+	 	if($data["isArrayReturn"])
+	 		return $query->result_array();
+	 	else
+	 		return $query->result();
+
 	 	
 
 	 }

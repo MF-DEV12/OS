@@ -436,9 +436,27 @@ class Main extends CI_Controller {
 			$this->param["conditions"] = "RequestListNo IN ($requestlistno)";
 			$result = $this->query_model->updateData($this->param); 
 
+			// SEND EMAIL FOR SUPPLIER
+			$this->load->library("Email_Lib");
+			$this->param = $this->param = $this->query_model->param; 
+
+			$this->param["table"] = "vw_getrequestlistbysupplyrequestno"; 
+			$this->param["fields"] = "*"; 
+			$this->param["conditions"] = "SupplyRequestNo = '$SupplyRequestNo'"; 
+			$result = $this->query_model->getData($this->param); 
+			$emailData["item"] = $result;
+			$emailData["supplierno"] = $SupplyRequestNo;
+			$emailresult = $this->email_lib->sendPurchaseOrder($emailData);
+			if(!$emailresult){
+				echo "not success";
+			}
+
+
 			$data = array();
 
 			$data["purchaseorder"] = $this->GetListOfPO();
+
+
 
 			echo json_encode($data); 
 		}
@@ -570,6 +588,7 @@ class Main extends CI_Controller {
 
 			$role = $this->session->userdata["role"];
 			if($role == "supplier"){
+				$this->param["fields"] .= ", CONCAT('<button class=\"btn btn-action\">Deliver</button>')"; 
 				$supno = $this->session->userdata["supplierno"]; 
 				$this->param["conditions"] = "SupplierNo = $supno"; 
 			}
@@ -588,6 +607,25 @@ class Main extends CI_Controller {
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "SupplierNo|Supplier No.,SupplierName|Supplier name,Address|Address,ContactNo|Contact Number,Action|Action";
 			return $data; 
+		}
+
+		function generateListSupplier(){
+			$this->load->library("GeneratePDF");
+			
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "supplier";
+			$this->param["fields"] = "*"; 
+			$this->param["isArrayReturn"] = true; 
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$columns["SupplierNo"] = "Supplier ID";
+			$columns["SupplierName"] = "Name";
+			$columns["Address"] = "Address";
+			$columns["ContactNo"] = "Contact No";
+			$data["columns"] =  $columns; 
+			$data["title"] =  "List of Suppliers"; 
+
+			$this->generatepdf->generate($data); 
 		}
 
 		function addSupplier(){
@@ -702,6 +740,28 @@ class Main extends CI_Controller {
 			$data["fields"].= ",Action|Action"; 
 			return $data; 
 		}
+
+		function generateListItems(){
+			$this->load->library("GeneratePDF");
+			
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_items";
+			$this->param["fields"] = "*"; 
+			$this->param["conditions"] = "Removed = 0 AND Owned = 1";  
+			$this->param["isArrayReturn"] = true;
+			$data["list"] =  $this->query_model->getData($this->param);
+			$columns["ItemNo"] = "Item Number";
+			$columns["Name"] = "Name";
+			$columns["UOM"] = "UOM";
+			$columns["Name1"] = "Family";
+			$columns["Name2"] = "Category";
+			$columns["Name3"] = "Sub Category";
+			$data["columns"] =  $columns; 
+			$data["title"] =  "List of Items"; 
+
+			$this->generatepdf->generate($data); 
+		}
+
 		
 		function getLowStocks(){
 			$this->param = $this->param = $this->query_model->param; 
