@@ -1967,8 +1967,8 @@ function setupDataTable(table, data){
                       scrollCollapse: false,
                       paging:         false,
                       rowsGroup: rowgroup,
-                      dom: 'Bfrtip',
-                        buttons: [ 'print' ]
+                      // dom: 'Bfrtip',
+                      //   buttons: [ 'print' ]
                        
                       
                 }); 
@@ -2071,6 +2071,11 @@ function setupDataTable(table, data){
         jsonData.Columns = arrlist
         return jsonData;
     }
+
+function print(elem){
+    elem = $(elem)
+    window.open(baseUrl + "main/" + elem.data("print"));
+}
 
 
  // function dashboardChart(){

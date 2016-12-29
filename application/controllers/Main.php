@@ -301,12 +301,35 @@ class Main extends CI_Controller {
 		function GetListOfPO(){
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "vw_getpurchaseorders";
-			$this->param["fields"] = "*"; 
+			$this->param["fields"] = "*,CONCAT('<button class=\"btn btn-action btn-print\" data-print=\"generateListPOItems/',SupplyRequestNo,'\" onclick=\"print(this);\">Print</button>') Action"; 
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ViewItems|View items|SupplyRequestNo|No,NoOfItems|No of items,SupplierName|Supplier name,TotalDPOCost|Total Amount,Date|Date Order";
+			$data["fields"] = "ViewItems|View items,SupplyRequestNo|PO #,NoOfItems|No of items,SupplierName|Supplier name,TotalDPOCost|Total Amount,Date|Date Order,Action|Action";
 			return $data;
 
+		}
+
+		function generateListPOItems($pono=""){
+			$this->load->library("GeneratePDF");
+			
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_getrequestlistbysupplyrequestno"; 
+			$this->param["fields"] = "*"; 
+			if($pono!="")
+				$this->param["conditions"] = "SupplyRequestNo = '$pono'"; 
+			$this->param["isArrayReturn"] = true; 
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$columns["ItemNo"] = "Item #";
+			$columns["ItemDescription"] = "Name & Description";
+			$columns["DPOCost"] = "DPOCost";
+			$columns["RequestsQty"] = "Quantity";
+			$columns["SubTotal"] = "Sub Total";
+			$data["columns"] =  $columns; 
+			$data["title"] =  "Purchase Order: $pono"; 
+ 
+
+			$this->generatepdf->generate($data); 
 		}
 
 		function getSupplierOrder(){
@@ -326,11 +349,7 @@ class Main extends CI_Controller {
 			echo json_encode($json); 
 		}
 
-		function generateReportForPO(){
-			$this->load->library("pdf/tcpdf");
-
-		}
-
+	 
 	 
 		function GetSelectedOrderDetailsByPO(){
 			$supplierNo = $this->input->post("sno");
@@ -1061,7 +1080,7 @@ class Main extends CI_Controller {
  
 
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ViewItems|Item(s),SupplyRequestNo|Request Order #,OrderDate|Order Date,CustomerName|Customer name,NoOfItems|No of Order items,TotalDPOCost|Total Amount(DPO Cost),Action|Action";
+			$data["fields"] = "ViewItems|Item(s),SupplyRequestNo|PO #,OrderDate|Order Date,CustomerName|Customer name,NoOfItems|No of Order items,TotalDPOCost|Total Amount(DPO Cost),Action|Action";
 			return $data;
 		}
 
