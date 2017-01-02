@@ -1126,7 +1126,8 @@ ol.breadcrumb.item-header{
 }
 
 button.btn-checkout,
-button.btn-addtocart{
+button.btn-addtocart,
+button.btn-submitorder{
   color:white;
   background: #f44336;
   margin: 18px auto;
@@ -1189,4 +1190,152 @@ span.removeCart{
   color: #f44336;
   cursor: pointer;
   font-size: 10px;
+}
+
+
+/* FORM INPUT ANIMATION*/
+
+.group            { 
+  position:relative; 
+  margin-bottom: 35px; 
+  /*margin-left: 40px;*/
+}
+
+.inputMaterial              {
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:100%;
+  border:none;
+  border-bottom:1px solid #757575;
+}
+
+.inputMaterial.display              {
+  font-size:12px !important;
+  padding:2px 20px;
+  display:block;
+  width:100%;
+  border:none;
+  background: transparent;
+  /*border-bottom:1px solid #757575;*/
+}
+
+.inputMaterial:focus        { outline:none;}
+
+/* LABEL ======================================= */
+
+label.formlabel                {
+  color:#999; 
+  font-size:14px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+ label.formlabel.display                {
+  top:-20px !important; 
+}
+
+div.item-review-wrap{
+    padding: 61px 12px;
+    background: white;
+    padding-bottom: 10px;
+}
+
+
+
+/* active state */
+.inputMaterial:focus ~ label.formlabel , .inputMaterial:valid ~ label.formlabel,      
+.inputMaterial:read-only ~ label.formlabel      {
+  top:-20px;
+  font-size:14px;
+  color: #009688;
+}
+
+/* BOTTOM BARS ================================= */
+.bar    { position:relative; display:block; width:100%; }
+.bar:before, .bar:after     {
+  content:'';
+  height:2px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background: #009688; 
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+/* active state */
+.inputMaterial:not([readonly]):focus ~ .bar:before, .inputMaterial:not([readonly]):focus ~ .bar:after {
+  width:50%;
+}
+
+
+/* active state */
+.inputMaterial:focus ~ .highlight {
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+
+
+div.customer-form{
+  padding-top: 10px;
+}
+
+.row.customer-form > div {
+    margin-bottom: 18px;
+}
+
+div.chk-sameaddress{
+  margin-top:   -32px;
+
+}
+
+div.chk-sameaddress label{
+  font-size: 12px;
+}
+
+div.chk-termcondition{
+  
+  margin-bottom:  -15px;
+}
+
+div.chk-termcondition label{
+  font-size: 12px;
+}
+
+div.chk-termcondition input{
+  margin-top: 3px;
+}
+
+div.alert-success{
+  color: #048e81 !important;
+  background-color:  #c8efeb !important;
+  border-color:  #c8efeb !important;
 }

@@ -18,7 +18,16 @@
 	right: 0px;
    
  }
+ 
+ li.account-desktop{
+ 	display:block;	
+ }
+ li.account-mobile{
+ 	display:none;	
+ }
 
+
+ 
 
 /* lg */ 
 @media (min-width: 1200px) {
@@ -40,7 +49,8 @@
 	  background-color: #fff;
 	}
 
-	 
+
+ 
 
 /* sm */
 @media (min-width: 768px) and (max-width: 991px) {
@@ -78,6 +88,24 @@
 	div.customer-header{
 	    height: auto;
 	}
+
+
+	div.action-holder-mobile{
+		display:block !important;
+	   
+	}
+	div.action-holder{
+		display:none !important;
+	   
+	}
+
+
+	li.account-mobile{
+	 	display:block !important;	
+	}
+	li.account-desktop{
+ 		display:none !important	;	
+ 	}
 	  
 }
 
@@ -112,6 +140,12 @@
 	.navbar-brand {
 		padding: 0 15px 15px;
 	}
+	li.account-mobile{
+	 	display:block !important;	
+	}
+	li.account-desktop{
+ 		display:none !important	;	
+ 	}
 	 
 	.navbar-toggle .icon-bar {
 	  background-color: #fff;

@@ -9,6 +9,9 @@ class Home extends CI_Controller {
  	}
 
  	function index(){
+ 		$data['username'] = $this->session->userdata("username");
+		$data['role'] = $this->session->userdata("role");
+		$data['name'] = $this->session->userdata("name");
  		$data["family"] = $this->getFamilyName();
 		$listItemsInCart = $this->session->userdata("cartitems");
  		$data["totalItemCart"] = ($listItemsInCart) ? count($listItemsInCart) : "";

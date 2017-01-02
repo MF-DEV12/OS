@@ -339,7 +339,7 @@ $(function(){
             callAjaxJson("main/getOrdersJson", param, bindingDatatoDataTable, ajaxError)
         })
 
-        $('table[data-table="allorders"],table[data-table="sup-neworders "],table[data-table="sup-processorders"],table[data-table="sup-incompleteorders"],table[data-table="sup-shippedorders"],table[data-table="sup-cancelledorders"]')
+        $('table[data-table="allorders"]')
         .on('click', 'tr[role=row] td:first-child', function () { 
             var elem = $(this)
             var tr = elem.closest('tr');
@@ -1721,8 +1721,8 @@ $(function(){
 
         param.newstatus = status;
         callAjaxJson("main/setStatusOrder", param, function(response){
-            if(status == "Process" || status == "Cancel")
-                    $("li[data-content='sup-neworders']").find("span.badge").text(response["sup-neworders"].list.length)
+            //if(status == "Process" || status == "Cancel")
+                   // $("li[data-content='sup-neworders']").find("span.badge").text(response["sup-neworders"].list.length)
             bindingDatatoDataTable(response)
         }, ajaxError)
 

@@ -40,7 +40,7 @@
 
               <div class="search-holder">    
                 <input type="text" name="search" class="form-control" placeholder="Search for items" > 
-                <span class="glyphicon glyphicon-search"></span> 
+                <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
                  
               </div> 
               <div class="cart-holder">

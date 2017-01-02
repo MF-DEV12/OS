@@ -14,7 +14,7 @@
 
  <!-- Top content -->
 <div class="company-logo" align="center">
-    <img src="<?=base_url('images/logo.png')?>" width="300px">
+    <img src="<?=base_url('images/logo.png')?>" width="250px">
 </div>              
 <div class="box">
    <?php if($this->session->flashdata('error')) {?>
@@ -30,7 +30,7 @@
       <input class="inputMaterial" type="text" name="username" required>
       <span class="highlight"></span>
       <span class="bar"></span>
-      <label>Username</label>
+      <label>Username or Email</label>
     </div>
         <div class="group">      
       <input class="inputMaterial" type="password" name="password"  required>
@@ -42,7 +42,9 @@
     <button id="buttonlogintoregister" type="submit">Login</button>
 
   </form>
-  <div id="footer-box"><p class="footer-text">Not a member?<span class="sign-up"> Sign up now</span></p></div>
+  <div id="footer-box">
+  <!-- <p class="footer-text">Not a member?<span class="sign-up"> Sign up now</span></p> -->
+  </div>
 </div>
    <!--      <div class="top-content">
             <div class="inner-bg">

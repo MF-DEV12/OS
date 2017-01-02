@@ -264,5 +264,140 @@ class Items extends CI_Controller {
 	}
 
 
+	// CHECKOUT
+	function checkout(){ 
+ 	  
+ 		$data["listfamily"] = $this->getListFamily();
+ 		$data["listcategory"] = $this->getCategoryByFamily();
+ 		$data["listsubcategory"] = $this->getSubCategory();
+ 		$listItemsInCart = $this->session->userdata("cartitems");
+ 		$data["totalItemCart"] = ($listItemsInCart) ? count($listItemsInCart) : "";
+ 		$email = $this->session->userdata("username");
+ 		$data["customer"] = ($email) ? $this->getCustomerDetailsByEmail($email) : array();
+ 		$data["itemsoncart"] = array();
+ 		if($listItemsInCart)	 
+ 			$data["itemsoncart"] = $this->getItemsByItemNo($listItemsInCart);
+
+ 		$this->load->view("checkout", $data);
+ 	
+ 	}
+
+ 	function submitOrder(){
+ 	 	date_default_timezone_set("Asia/Manila");
+		$date = date('Y-m-d H:i:s');
+		$datetime = date('Y-m-d H:i:s', strtotime($date));
+
+ 		$data = $this->input->post("data");
+ 		$data = json_decode($data);
+		$username = $this->session->userdata("username");
+		if(!$username){ 
+			//Insert Customer
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "customer";
+			$this->param["dataToInsert"] = $data;
+			$this->param["transactionname"] = "New customer";
+			$this->query_model->insertData($this->param);
+
+			//Insert Account
+			$password = 'password';//$this->randomPassword();
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "accounts";
+			$account["Username"] = $data->Email;
+			$account["LastName"] = $data->LastName;
+			$account["FirstName"] =$data->FirstName;
+			$account["Password"] = md5($password);
+			$account["LoginType"] = 'customer'; 
+			$this->param["dataToInsert"] = $account;
+			$this->query_model->insertData($this->param);
+		}
+
+
+		// Get CustomerNo by Email
+		$this->param = $this->param = $this->query_model->param; 
+		$this->param["table"] = "customer";
+		$this->param["fields"] = "*";
+		if(!$username)
+			$this->param["conditions"] = "Email = '$data->Email'"; 
+		else
+			$this->param["conditions"] = "Email = '$username'"; 
+
+		$result = $this->query_model->getData($this->param);
+		$customerNo = $result[0]->CustomerNo;
+		$shippingaddress = $data->ShipAddress;
+
+		//Insert tblOrder 
+		$data = array();
+		$this->param = $this->param = $this->query_model->param; 
+		$this->param["table"] = "tblorder";
+		$data["CustomerNo"] = $customerNo;
+		$data["Date"] = $datetime;
+		$data["ShipAddress"] = $shippingaddress;
+		$this->param["dataToInsert"] = $data;
+		$this->param["transactionname"] = "New Order";
+		$this->query_model->insertData($this->param);
+
+		// Get OrderNo by Date and CustomerNo
+		$this->param = $this->param = $this->query_model->param; 
+		$this->param["table"] = "tblorder";
+		$this->param["fields"] = "*";
+		$this->param["conditions"] = "Date = '$datetime' and CustomerNo = '$customerNo'";
+		$result = $this->query_model->getData($this->param);
+		$OrderNo = $result[0]->OrderNo;
+ 
+
+		$listItemsInCart = $this->session->userdata("cartitems"); 
+		$itemsoncart = $this->getItemsByItemNo($listItemsInCart);
+
+		$total = 0.00;
+
+		// INSERT ORDER ITEM DETAILS - tblorderdetails
+		foreach ($itemsoncart as $key) {
+			$data = array();
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "tblorderdetails";
+			$data["OrderNo"] = $OrderNo;
+			$data["ItemVariantNo"] = $key->ItemNumber;
+			$data["Quantity"] = $key->Quantity;
+			$data["Price"] = $key->Price;
+			$data["SubTotal"] = (float)$key->Price * $key->Quantity;
+			$this->param["dataToInsert"] = $data; 
+			$this->query_model->insertData($this->param);
+
+			$total += (float)$key->Price * $key->Quantity;
+		}
+		
+
+		//Update TotalAmount from tblorder
+		$data = array();
+		$this->param = $this->param = $this->query_model->param; 
+		$this->param["table"] = "tblorder";
+		$this->param["conditions"] = "Date = '$datetime' and CustomerNo = '$customerNo'";
+		$data["TotalAmount"] = $total;
+		$this->param["dataToUpdate"] = $data;
+		$this->query_model->updateData($this->param);
+ 		
+		$this->session->unset_userdata('cartitems');
+
+  		echo true;
+ 	}
+
+ 	function randomPassword() {
+	    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+	    $pass = array(); //remember to declare $pass as an array
+	    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+	    for ($i = 0; $i < 6; $i++) {
+	        $n = rand(0, $alphaLength);
+	        $pass[] = $alphabet[$n];
+	    }
+	    return implode($pass); //turn the array into a string
+	}
+
+	function getCustomerDetailsByEmail($email){
+		$this->param = $this->param = $this->query_model->param; 
+		$this->param["table"] = "customer";
+		$this->param["fields"] = "*";
+		$this->param["conditions"] = "Email = '$email'";
+		return $this->query_model->getData($this->param);	 
+	}
 
 }

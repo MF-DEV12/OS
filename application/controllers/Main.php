@@ -32,8 +32,6 @@ class Main extends CI_Controller {
 		  
 		$this->load->view('index', $data);
 
-
-
 	}
 
 //DASHBOARD
@@ -314,19 +312,33 @@ class Main extends CI_Controller {
 			
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "vw_getrequestlistbysupplyrequestno"; 
-			$this->param["fields"] = "*"; 
+			$this->param["fields"] = "*,0 No"; 
 			if($pono!="")
 				$this->param["conditions"] = "SupplyRequestNo = '$pono'"; 
 			$this->param["isArrayReturn"] = true; 
+			$result =  $this->query_model->getData($this->param);
 
-			$data["list"] =  $this->query_model->getData($this->param);
+			//REPLACE break line to \n
+			$total = 0.00;
+			for($i = 0; $i < count($result);$i++){
+				$result[$i]["No"] = $i + 1;
+				$result[$i]["ItemDescription"] = str_replace("<br/>", "\n", $result[$i]["ItemDescription"]); 
+				$total +=  (float)str_replace(",", "", $result[$i]["SubTotal"]);
+			}
+			
+		 
+
+			$data["list"] = $result;
+			$columns["No"] = "No";
 			$columns["ItemNo"] = "Item #";
 			$columns["ItemDescription"] = "Name & Description";
 			$columns["DPOCost"] = "DPOCost";
 			$columns["RequestsQty"] = "Quantity";
 			$columns["SubTotal"] = "Sub Total";
 			$data["columns"] =  $columns; 
-			$data["title"] =  "Purchase Order: $pono"; 
+			$data["table-title"] =  "Purchase Order: $pono"; 
+			$data["title"] =  "PURCHASE ORDER"; 
+			$data["footer"] =  "Total : Php " . number_format($total,2); 
  
 
 			$this->generatepdf->generate($data); 
@@ -642,6 +654,7 @@ class Main extends CI_Controller {
 			$columns["Address"] = "Address";
 			$columns["ContactNo"] = "Contact No";
 			$data["columns"] =  $columns; 
+			$data["table-title"] =  "List of Suppliers"; 
 			$data["title"] =  "List of Suppliers"; 
 
 			$this->generatepdf->generate($data); 
@@ -718,6 +731,37 @@ class Main extends CI_Controller {
 			$data["fields"] = "ItemNo|Item Number,ItemDescription|Item Name,Category|Category,STOCKCOMMIT|Available Quantity,STOCKS|Onhand Stocks,COMMIT|Quantity Committed,Action|Action";
 			return $data; 
 		}
+
+		function generateListInventory(){
+			$this->load->library("GeneratePDF");
+			
+			$this->param = $this->param = $this->query_model->param; 
+			$this->param["table"] = "vw_inventory";
+			$this->param["fields"] = "*"; 
+			$this->param["isArrayReturn"] = true; 
+
+			$result =  $this->query_model->getData($this->param);
+
+			for($i = 0; $i < count($result);$i++){
+				$result[$i]["ItemDescription"] = str_replace("<br/>", "\n", $result[$i]["ItemDescription"]); 
+			}
+
+			$data["list"] =  $result;
+
+
+			$columns["ItemNo"] = "Item Number";
+			$columns["ItemDescription"] = "Name & Description";
+			$columns["Category"] = "Category";
+			$columns["STOCKCOMMIT"] = "Available Quantity";
+			$columns["STOCKS"] = "Onhand Stocks";
+			$columns["COMMIT"] = "Quantity Committed";
+			$data["columns"] =  $columns; 
+			$data["table-title"] =  "Inventory"; 
+			$data["title"] =  "INVENTORY"; 
+
+			$this->generatepdf->generate($data); 
+		}
+
 		function physicalCount(){
 			$variantNo = $this->input->post("vno");
 			$qty = $this->input->post("qty");
@@ -776,6 +820,7 @@ class Main extends CI_Controller {
 			$columns["Name2"] = "Category";
 			$columns["Name3"] = "Sub Category";
 			$data["columns"] =  $columns; 
+			$data["table-title"] =  "List of Items"; 
 			$data["title"] =  "List of Items"; 
 
 			$this->generatepdf->generate($data); 
@@ -1018,8 +1063,8 @@ class Main extends CI_Controller {
 		}
 		function updateStocksByOrderNo($orderno){
 			$qry  = "UPDATE itemvariant v ";
-			$qry .= "INNER JOIN orderlist o "; 
-			$qry .= "ON v.VariantNo = o.VariantNo ";
+			$qry .= "INNER JOIN tblorderdetails o "; 
+			$qry .= "ON CONCAT(v.ItemNo, '-', v.VariantNo) = o.ItemVariantNo ";
 			$qry .= "SET Stocks = Stocks - Quantity ";
 			$qry .= "WHERE o.OrderNo = '$orderno'";
 			$this->db->query($qry); 
@@ -1036,7 +1081,7 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
 
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "CustomerNo|CustomerNo,Lastname|Last name,Firstname|First name,Address|Address,ContactNo|Contact No.,Email|Email Address,CreatedDate|Registered Date";
+			$data["fields"] = "CustomerNo|CustomerNo,Lastname|Last name,Firstname|First name,HomeAddress|Address,ContactNo|Contact No.,Email|Email Address,CreatedDate|Registered Date";
 			return $data;
 
 		}
@@ -1059,15 +1104,15 @@ class Main extends CI_Controller {
 
 // SUPPLIER SIDE
 	//REQUEST
-		function GetRequestListFromCustomer(){ 
-			$this->param = $this->param = $this->query_model->param; 
-			$this->param["table"] = "vw_getrequestfromcustomer";
-			$this->param["fields"] = "*"; 
+		// function GetRequestListFromCustomer(){ 
+		// 	$this->param = $this->param = $this->query_model->param; 
+		// 	$this->param["table"] = "vw_getrequestfromcustomer";
+		// 	$this->param["fields"] = "*"; 
  
-			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "OrderNo|Order No,Date|Order Date,Customer|Customer name,Address|Address,TotalAmount|Total Amount,Status|Status";
-			return $data;
-		}
+		// 	$data["list"] =  $this->query_model->getData($this->param);
+		// 	$data["fields"] = "OrderNo|Order No,Date|Order Date,Customer|Customer name,Address|Address,TotalAmount|Total Amount,Status|Status";
+		// 	return $data;
+		// }
 		function GetRequestListFromAdmin($status){ 
 			$sno = $this->session->userdata("supplierno");
 			$this->param = $this->param = $this->query_model->param; 

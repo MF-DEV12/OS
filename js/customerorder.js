@@ -61,6 +61,35 @@
         if($.trim(elem.prev("input").val()).length > 0 )
           location.href = baseUrl + "items?name=" + elem.prev("input").val()
       })
+
+      $("button.btn-checkout, button#btn-proceed").click(function(e){
+        location.href = baseUrl + "items/checkout";
+      })
+
+      $("button.btn-submitorder").click(function(e){
+          if(!isValidCustomer()) {return;}
+          var param = new Object()
+          var param2 = new Object()
+          param.LastName = $("#txt-lastname").val()
+          param.FirstName = $("#txt-firstname").val()
+          param.HomeAddress = $("#txt-homeaddress").val()
+          param.ShipAddress = $("#txt-shipaddress").val()
+          param.Email = $("#txt-email").val()
+          param.ContactNo = $("#txt-contact").val()
+          param2.data = JSON.stringify(param)
+
+          callAjaxJson("items/submitOrder", param2, 
+            function(response){
+                if(response){
+                  bootbox.alert("Your Order has been submitted. <br/>Please wait for the approval by admin via email and for your password has been sent to your email address",function(e){
+                    location.href = baseUrl
+                  })
+                }
+            }, 
+          ajaxError)
+
+
+      })
      
   });
 
@@ -195,3 +224,39 @@ function removeCart(elem, item){
 
 }
  
+
+function isValidCustomer(){
+  var isOkay = true
+  $("div.customer-form input[type=text]").each(function(e){
+      var elem = $(this)
+      if($.trim(elem.val()).length == 0){
+        if(elem.attr("id") == "txt-shipaddress"){
+          if(!$("div.chk-sameaddress input").prop("checked")){
+              isOkay= false
+          }
+        }else{
+          isOkay = false
+
+        }
+      } 
+  })
+
+  if(!isOkay){
+    bootbox.alert("Please input all required field(s)");
+    return isOkay
+  }
+
+  if(!isEmailValid($("#txt-email").val())){
+    bootbox.alert("Email address is invalid");
+    isOkay = false;
+     return isOkay
+  }
+
+  if(!$("div.chk-termcondition input").prop("checked")){
+    bootbox.alert("Please check the \"I agree to the term and conditions\"");
+    isOkay = false;
+     return isOkay
+  }
+
+  return isOkay;
+}

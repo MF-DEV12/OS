@@ -66,10 +66,11 @@
                   <span class="glyphicon glyphicon-shopping-cart"></span> 
                   <span class="badge countCart"><?=$totalItemCart?></span>
                 </button>
-               
+                
+ 
             </div>
               
-              <a class="navbar-brand" href="index.html">
+              <a class="navbar-brand" href="#">
                 <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>
               </a> 
             </div>
@@ -107,8 +108,51 @@
                 <li class="scroll"><a href="#orders">Orders</a></li> 
                 <!-- <li class="scroll"><a href="#forums">Forums</a></li>                      -->
                 <!-- <li class="scroll"><a href="#about-us">About Us</a></li>      -->
-                <li class="scroll"><a href="#contact">Contact</a></li>       
-                <li><a href="<?=base_url('login');?>">Login</a></li>       
+                <li class="scroll"><a href="#contact">Contact</a></li>   
+             
+                <?php if($this->session->userdata("username")){ ?>    
+                   <li class="account-mobile"><a href="<?=base_url('mypurchase')?>">My Purchase</a></li>
+                   <li class="account-mobile"><a>Change Password</a></li>
+                   <li class="account-mobile"><a href="<?=base_url('login/logout');?>">Logout</a></li>
+                   <li class="dropdown account-desktop"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;"><span class="glyphicon glyphicon-user"></span></span>
+                        <b class="caret"></b></a>
+                        <ul class="dropdown-menu" style="width:245px;">
+                            <li>
+                               <a style="color: gray;padding:12px;" href="<?=base_url('mypurchase')?>">My Purchase</a>
+                            </li>
+                            <li>
+                                <div class="navbar-content" style="padding:12px;">
+                                    <div class="row"> 
+                                        <div class="col-md-3" align="center">
+                                        <span class="glyphicon glyphicon-user" style="font-size:40px;"></span> 
+                                        </div>
+                                        <div class="col-md-9">
+                                            <span><?=$name;?></span>
+                                            <!-- <p class="text-muted small role"><?=$role;?></p> -->
+                                            <div class="divider">
+                                            </div>
+                                            <!-- <a href="#" class="btn btn-primary btn-sm active">View Profile</a> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="navbar-footer">
+                                    <div class="navbar-footer-content">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button class="btn btn-default btn-sm">Change Password</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button class="btn btn-sm pull-right btn-action">Log Out</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                <?php } else {?>    
+                  <li><a href="<?=base_url('login');?>">Login</a></li>       
+                <?php } ?>    
               </ul>
             </div>
           </div>
