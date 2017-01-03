@@ -166,7 +166,12 @@ class Items extends CI_Controller {
 
  	function view(){
  		$item = $this->input->get("id"); 
-
+		$level1no = $this->input->get("family");
+ 		$level2no = $this->input->get("category");
+ 		$level3no = $this->input->get("subcategory");
+		$data["family"] = ($level1no) ? $this->getFamilyName($level1no) : array();
+ 		$data["category"] = ($level2no) ? $this->getCategoryName($level2no) : array();
+ 		$data["subcategory"] = ($level3no) ? $this->getSubCategoryName($level2no) : array();
  		$data["listfamily"] = $this->getListFamily();
  		$data["listcategory"] = $this->getCategoryByFamily();
  		$data["listsubcategory"] = $this->getSubCategory();
@@ -183,7 +188,9 @@ class Items extends CI_Controller {
 
  	// CART
 	function cart(){ 
- 	  
+ 	  	$data['username'] = $this->session->userdata("username");
+		$data['role'] = $this->session->userdata("role");
+		$data['name'] = $this->session->userdata("name");
  		$data["listfamily"] = $this->getListFamily();
  		$data["listcategory"] = $this->getCategoryByFamily();
  		$data["listsubcategory"] = $this->getSubCategory();

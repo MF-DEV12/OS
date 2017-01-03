@@ -25,60 +25,8 @@
 <body>
     
     <div class="preloader"> <i class="fa fa-circle-o-notch fa-spin"></i></div>
-    <header id="home">
-         
-        <div class="main-nav">
-          <div class="container customer-header" >
-            <div class="navbar-header">
-             
-             
-              <a class="navbar-brand" href="<?=base_url();?>">
-                <h1><img class="img-responsive" src="<?=base_url('images/logo-home.png');?>" alt="logo"></h1>
-              </a>   
-
-            </div>
-            <div class="action-holder pull-right">
-
-              <div class="search-holder">    
-                <input type="text" name="search" class="form-control" placeholder="Search for items" > 
-                <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
-                 
-              </div> 
-              <div class="cart-holder">
-                <button type="button" class="cart" style="border:0px;color:white;" >
-                    <span class="glyphicon glyphicon-shopping-cart"></span> 
-                    <span class="badge countCart"><?=$totalItemCart?></span>
-                </button>
-              </div>
-              <div class="account-holder">
-                <button type="button" class="account" style="border:0px;color:white;" >
-                    <span class="glyphicon glyphicon-user"></span>
-                </button>
-              </div>
-
-              
-            </div>
-
-            <div class="pull-right action-holder-mobile" style="top:0px;">
-                 <button type="button" class="navbar-toggle category-menu" id="responsive-menu-button">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                 <button type="button" class="navbar-toggle" style="border:0px;color:white;" >
-                    <span class="glyphicon glyphicon-user"></span>
-                </button>
-                <button type="button" class="navbar-toggle cart" style="border:0px;color:white;" >
-                  <span class="glyphicon glyphicon-shopping-cart"></span>
-                  <span class="badge countCart"><?=$totalItemCart?></span>
-                  
-                </button>
-               
-            </div>
-          </div>
-        </div><!--/#main-nav-->
-    </header>
+    <?php $this->load->view("header_home");?>
+    
  
  
 <div id="navigation" style="display: none;">
