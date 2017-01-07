@@ -166,7 +166,7 @@
 
                           <?php foreach($neworders as $key) {?>
                           <tr>
-                            <td>
+                             <td onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">
                               <div class="row">
                                 <div class="col-xs-6">
                                   <h4 style="color:#048e81;">#<?=$key->OrderNo?></h4> 
@@ -183,10 +183,9 @@
                           <?php }?>
                       <?php } else{ ?>
                           <tr>
-                            <td colspan="5" align="center">
+                            <td align="center">
                               <p class="empty">No orders yet.</p>
-                            </td>
-                            
+                            </td> 
                           </tr> 
                       <?php }?>
 
@@ -208,7 +207,7 @@
 
                           <?php foreach($process as $key) {?>
                           <tr>
-                            <td>
+                             <td onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">
                               <div class="row">
                                 <div class="col-xs-6">
                                   <h4 style="color:#048e81;">#<?=$key->OrderNo?></h4> 
@@ -225,11 +224,10 @@
                           <?php }?>
                       <?php } else{ ?>
                           <tr>
-                            <td colspan="5" align="center">
+                            <td align="center">
                               <p class="empty">No orders yet.</p>
-                            </td>
-                            
-                          </tr> 
+                            </td> 
+                          </tr>  
                       <?php }?>
 
                     </tbody>
@@ -249,7 +247,7 @@
 
                           <?php foreach($shipping as $key) {?>
                           <tr>
-                            <td>
+                            <td onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">
                               <div class="row">
                                 <div class="col-xs-6">
                                   <h4 style="color:#048e81;">#<?=$key->OrderNo?></h4> 
@@ -265,11 +263,10 @@
                           </tr>
                           <?php }?>
                       <?php } else{ ?>
-                          <tr>
-                            <td colspan="5" align="center">
+                         <tr>
+                            <td align="center">
                               <p class="empty">No orders yet.</p>
-                            </td>
-                            
+                            </td> 
                           </tr> 
                       <?php }?>
 
@@ -290,7 +287,7 @@
 
                           <?php foreach($delivered as $key) {?>
                           <tr>
-                            <td>
+                             <td onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">
                               <div class="row">
                                 <div class="col-xs-6">
                                   <h4 style="color:#048e81;">#<?=$key->OrderNo?></h4> 
@@ -306,11 +303,10 @@
                           </tr>
                           <?php }?>
                       <?php } else{ ?>
-                          <tr>
-                            <td colspan="5" align="center">
+                         <tr>
+                            <td align="center">
                               <p class="empty">No orders yet.</p>
-                            </td>
-                            
+                            </td> 
                           </tr> 
                       <?php }?>
 
@@ -331,7 +327,7 @@
 
                           <?php foreach($cancelled as $key) {?>
                           <tr>
-                            <td>
+                            <td onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">
                               <div class="row">
                                 <div class="col-xs-6">
                                   <h4 style="color:#048e81;">#<?=$key->OrderNo?></h4> 
@@ -348,10 +344,9 @@
                           <?php }?>
                       <?php } else{ ?>
                           <tr>
-                            <td colspan="5" align="center">
+                            <td align="center">
                               <p class="empty">No orders yet.</p>
-                            </td>
-                            
+                            </td> 
                           </tr> 
                       <?php }?>
 
@@ -409,7 +404,32 @@
     </div>
 </footer>
 
-
+ 
+    <div class="modal fade" id="viewOrderList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 20px;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content"> 
+          <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12 image-variant">
+                  <table class="display table" id="table-orderlist">
+                    <thead>
+                      <tr>
+                        <th>Order List - #<orderno></orderno></th> 
+                      </tr>
+                    </thead>
+                    <tbody>
+                     
+                    </tbody>
+                </table>
+                </div>   
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
  
 

@@ -169,9 +169,19 @@ class MyPurchase extends CI_Controller {
  		$this->param["fields"] = "*";
  		$this->param["conditions"] = "CustomerNo = '$CustomerNo' and Status = '$status'";
 		$result = $this->query_model->getData($this->param);
-		return $result;
-
+		return $result; 
  	}
+
+ 	function viewOrderDetails(){
+		$orderno = $this->input->post("orderno");
+		$this->param = $this->param = $this->query_model->param; 
+		$this->param["table"] = "vw_orderlistbyorderno";
+		$this->param["fields"] = "*"; 
+		    $this->param["conditions"] = "OrderNo = '$orderno'";
+		$result = $this->query_model->getData($this->param);
+		echo json_encode($result);
+	 
+	}
  
 
 }
