@@ -14,22 +14,23 @@
     <link href="<?=base_url('css/homestyle/lightbox.css');?>" rel="stylesheet">
     <link href="<?=base_url('css/homestyle/main.css');?>"  rel="stylesheet">
     <link href="<?=base_url('css/treeview-style.css');?>"  rel="stylesheet">
-    <link href="<?=base_url('css/side-menu/side-menu.css');?>"  rel="stylesheet">
+    <link rel="stylesheet" href="<?=base_url('css/category_menu.css');?>">  
     <link id="css-preset" href="<?=base_url('css/homestyle/presets/preset1.css');?>"  rel="stylesheet">
     <link href="<?=base_url('css/homestyle/responsive.css');?>"  rel="stylesheet">
 
    
 </head>
 <body>
-    
+
+<?php $this->load->view("category_menu");?>
+
+<div id="main">
     <div class="preloader"> <i class="fa fa-circle-o-notch fa-spin"></i></div>
     <header id="home">
          
         <div class="main-nav">
           <div class="container customer-header" >
             <div class="navbar-header">
-             
-             
               <a class="navbar-brand" href="<?=base_url();?>">
                 <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>
               </a>   
@@ -58,7 +59,7 @@
             </div>
 
             <div class="pull-right action-holder-mobile" style="top:0px;">
-                 <button type="button" class="navbar-toggle category-menu" id="responsive-menu-button">
+                 <button type="button" class="navbar-toggle category-menu" onclick="openNav();" id="responsive-menu-button">
                   <span class="sr-only">Toggle navigation</span>
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
@@ -79,61 +80,8 @@
     </header>
  
 
-<div id="navigation" style="display: none;">
-    <nav class="nav">
-        <h4>Select the Category</h4>
-        <ul> 
-          <?php foreach($listfamily as $f) {?>
-          <li> 
-             <?php
-                $fno = $f->Level1No;
-                $listcategorybyfamily = array_filter( $listcategory,  function ($e) use ($fno) { return $e->Level1No == $fno; } ); 
 
-             ?>
-
-             <a  data-id='{"l1":"<?=$fno;?>"}' data-name='["<?=$f->Name1?>"]'  <?=(($listcategorybyfamily) ? "data-toggle=\"collapse\" class=\"collapsed\" data-target=\"#sidr-id-f" . $fno . "\"" : "");?> onclick="categorymenuClick(this);"> <?=$f->Name1;?></a>  
-
-             <?php if($listcategorybyfamily) {?>
-               <ul <?="class=\"collapse\" id=\"f". $fno ."\"";?> aria-expanded="false" style="height: 1px;">
-               <?php foreach($listcategorybyfamily as $c) {?>
-               
-                   <li>  
-                   <?php $url = base_url('items?family='. $fno .'&category='. $c->Level2No);?>
-                      <?php
-                          $cno = $c->Level2No;
-
-                          $listSubcategorybyfamily = array_filter(
-                              $listsubcategory,
-                              function ($e) use ($fno, $cno) {
-                                  return $e->Level1No == $fno && $e->Level2No == $cno; 
-                              }
-                          ); 
-                       ?>
-                      <a  data-id='{"l1":"<?=$fno;?>","l2":"<?=$cno;?>"}' data-name='["<?=$f->Name1?>","<?=$c->Name2?>"]' onclick="categorymenuClick(this);"> <?=$c->Name2;?></a> 
-                       <?php if($listSubcategorybyfamily) {?>
-                         <ul>
-                         <?php foreach($listSubcategorybyfamily as $sc) {?> 
-                             <li><a data-id='{"l1":"<?=$fno;?>","l2":"<?=$cno;?>","l3":"<?=$sc->Level3No;?>"}' data-name='["<?=$f->Name1?>","<?=$c->Name2?>","<?=$sc->Name3?>"]' onclick="categorymenuClick(this);"> <?=$sc->Name3;?></a>   </li> 
-                         <?php } ?>
-                         </ul>
-                       <?php } ?>
-                   </li> 
-               <?php } ?>
-
-               </ul>
-             <?php } ?>
-
-
-
-
-          </li>
-         <?php } ?>
-           
-        </ul>
-    </nav>
-</div>
-
-<div id="orders">
+<section id="orders" style="padding-top: 0px;">
     <div class="container">
       <div class="search-mobile">
         <input type="text" placeholder="Search for items.." class="form-control"/>
@@ -314,8 +262,8 @@
           </div>
         </div>
       </div>
-    </div>
- 
+  </div>
+</div> 
 
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/bootstrap.min.js")?>"></script>
@@ -334,13 +282,7 @@
       <script type="text/javascript" src="<?=base_url("js/side-menu/side-menu.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/customerorder.js")?>"></script>
 
-      <script type="text/javascript">
-         $('#responsive-menu-button').sidr({
-            name: 'sidr-main',
-            source: '#navigation',
-            side: 'right'
-          });
-      </script>
+      
 
 
  

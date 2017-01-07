@@ -139,7 +139,7 @@ jQuery(function($) {
   	})
 
 	$("button.cart").click(function(e){
-      location.href= baseUrl + "/Items/cart";
+      location.href= baseUrl + "Items/cart";
   	})
 
 
@@ -186,3 +186,18 @@ jQuery(function($) {
 	
 });
 
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    $(".sidenav").css("width","80%");
+    // $("#main").css("background-color","rgba(0,0,0,0.4)");
+    // $("#main").css("margin-left","250px");
+    // $(".navbar-brand").hide()
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    $(".sidenav").css("width","0px");
+    // $("#main").css("background-color","white");
+    // $("#main").css("margin-left","0px");
+    // $(".navbar-brand").show()
+}

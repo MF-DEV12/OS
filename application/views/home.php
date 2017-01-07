@@ -103,7 +103,7 @@
           
               
 
-              <ul class="nav navbar-nav navbar-right">                 
+              <ul class="nav navbar-nav navbar-right" style="z-index: 99999;">                 
                 <li class="scroll active"><a href="#home">Home</a></li>
                 <li class="scroll"><a href="#orders">Orders</a></li> 
                 <!-- <li class="scroll"><a href="#forums">Forums</a></li>                      -->

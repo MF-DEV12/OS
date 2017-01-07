@@ -990,12 +990,17 @@ ul.address {
 
 
 /*CUSTOMER SIDE*/
-span.badge {
+span.badge.countCart {
     position: absolute;
     left: 17px;
     top: 5px;
     background: #f44336;
     padding: 3px 4px;
+}
+span.badge.countCart-mobile {
+   
+    background: #f44336;
+     
 }
 
 
@@ -1031,6 +1036,7 @@ div.search-mobile.navbar-fixed-top{
     top: 49px;
     background: white;
     height: 59px;
+    z-index: 3;
 }
 div.search-mobile > span{
     position: relative;
@@ -1338,4 +1344,9 @@ div.alert-success{
   color: #048e81 !important;
   background-color:  #c8efeb !important;
   border-color:  #c8efeb !important;
+}
+
+.navbar-footer{
+   border-top: 1px solid #ddd;
+    padding: 8px;
 }
