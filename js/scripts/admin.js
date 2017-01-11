@@ -687,6 +687,62 @@ $(function(){
             } 
         })
 
+         $('table[data-table="pendingorders"]').on('click', 'tr[role=row] td:first-child', function () { 
+            var elem = $(this)
+            var tr = elem.closest('tr');
+            var table = listObjTableBinded["pendingorders"]
+            var data = table.rows(tr).data()
+            data = data[0]
+            elem.find('span').attr('class','glyphicon glyphicon-menu-down pull-right')
+            var row = table.row( tr );
+            var trExists = $("table[data-table=pendingorders] tr.shown")
+            trExists.find('td:first-child > span').attr('class','glyphicon glyphicon-menu-right pull-right')
+            var rowExists = table.row( trExists );
+    
+            if ( row.child.isShown() ) {
+                row.child.hide();
+                elem.find('span').attr('class','glyphicon glyphicon-menu-right pull-right')
+                tr.removeClass('shown');
+            }
+            else{
+                var param = new Object();
+                param.supreqno = data.SupplyRequestNo
+
+                callAjaxJson("main/GetPendingItemsBySupplyRequestNo", param, 
+                    function(response){
+                        var div = $("<div/>") 
+                            div.attr("class","childtable-wrap") 
+                        if(response["child-" +  data.SupplyRequestNo].list.length){ 
+                        
+                            var childtable = $("<table/>")
+                            // div.append("<button class=\"btn btn-action pull-right btn-editvariants\" style=\"width:100px;\" onclick=\"editVariant('"+  data.ItemNo +"','"+ data.Name +"')\"><span class=\"glyphicon glyphicon-cog\"></span> Edit Variants</button>")
+                            div.append("<h5 class=\"dash-header sub\">List of item(s):</h5>")
+                            childtable
+                                .attr("id","child-"+data.SupplyRequestNo)
+                                .attr("class","display")
+                                .addClass("childtable")
+                                .data("table","child-"+data.SupplyRequestNo) 
+ 
+                            bindingDataViewingPendingItems(response,childtable)
+                            div.append(childtable)
+                        }
+                        else{
+                            div.append("<h5>No request items(s) found.</h5>")
+
+                        }
+
+                        if ( rowExists.child.isShown() ) {
+                             rowExists.child.hide();
+                             trExists.removeClass('shown');
+                        }  
+                        row.child(div).show();
+                        tr.addClass("shown")
+
+                    }, 
+                ajaxError)  
+            } 
+        })
+
         $("select#porequestlist").change(function(){
             var elem = $(this)
             var param = new Object()
@@ -706,12 +762,24 @@ $(function(){
                     param.status = $("select#porequestlist option:selected").val()
                     param.supreqno = data[0].SupplyRequestNo
                         callAjaxJson("main/setDeliveredRequest", param, bindingDatatoDataTable, ajaxError)
-                }
+                } 
+            }) 
+        })
 
+        $("table[data-table=pendingorders]").on("click", "tr td:last-child button.btn-deliverpending",function(){
+            var elem = $(this)
+            var tr = elem.closest("tr")
+            var table = listObjTableBinded["pendingorders"]
+            var data = table.rows(tr).data()
+            bootbox.confirm("Do you want to deliver this pending orders?", function(result){
 
-            })
-
-
+                if(result){
+                    var param = new Object()
+                    param.status = $("select#porequestlist option:selected").val()
+                    param.supreqno = data[0].SupplyRequestNo
+                        callAjaxJson("main/setDeliveredPendingOrders", param, bindingDatatoDataTable, ajaxError)
+                } 
+            }) 
         })
 
         //ITEMS
@@ -1728,6 +1796,16 @@ $(function(){
 
      }
 
+     function DeliverPendingOrder(rlno){
+        param.newstatus = status;
+        callAjaxJson("main/setStatusOrder", param, function(response){
+            //if(status == "Process" || status == "Cancel")
+                   // $("li[data-content='sup-neworders']").find("span.badge").text(response["sup-neworders"].list.length)
+            bindingDatatoDataTable(response)
+        }, ajaxError)
+
+     }
+
 
 function bindingDatatoDataTable(response){
 	var data = response
@@ -1916,11 +1994,11 @@ function bindingDataViewingRequestItem(response,table){
                 var tr = jQuery("<tr/>")   
                 addCellData(tr,list[row].ItemNo)
                 addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
-                addCellData(tr,list[row].Description)  
-                addCellData(tr,toMoney(list[row].DPOCost))
+                addCellData(tr,list[row].ItemDescription)  
+                addCellData(tr,list[row].DPOCost)
 
                 addCellData(tr,list[row].RequestsQty)
-                addCellData(tr,toMoney(list[row].SubTotal))
+                addCellData(tr,list[row].SubTotal)
  
                 tbody.append(tr)
             }  
@@ -1932,6 +2010,44 @@ function bindingDataViewingRequestItem(response,table){
     } 
 }
 
+function bindingDataViewingPendingItems(response,table){
+    var data = response
+     for(x in data){  
+        var list = data[x].list
+        if(list){
+            var tbody = jQuery("<tbody/>")  
+            var thead = jQuery("<thead/>")  
+            var tr = jQuery("<tr/>")   
+            addHeader(tr,"Item No") 
+            addHeader(tr,"Thumbnail")
+            addHeader(tr,"Description")  
+            addHeader(tr,"DPO Cost")
+            addHeader(tr,"Qty Requested")
+            addHeader(tr,"Qty Received")
+            addHeader(tr,"Subtotal")
+ 
+            thead.append(tr)
+     
+            for(row in list){
+                var tr = jQuery("<tr/>")   
+                addCellData(tr,list[row].ItemNo)
+                addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
+                addCellData(tr,list[row].ItemDescription)  
+                addCellData(tr,list[row].DPOCost)
+
+                addCellData(tr,list[row].RequestsQty)
+                addCellData(tr,list[row].Received)
+                addCellData(tr,list[row].SubTotal)
+ 
+                tbody.append(tr)
+            }  
+            table.append(thead)
+            table.append(tbody)
+        }
+      
+       
+    } 
+}
 
 function addHeader(tr,value){
     var th = jQuery("<th/>")  

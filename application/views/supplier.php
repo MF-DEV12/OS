@@ -15,9 +15,9 @@
             </div> 
         </div> 
 
-        <div class="content-list" data-content="backorders">
+        <div class="content-list" data-content="pendingorders">
             <!-- <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-send"></span> Send Notification</button> -->
-            <table class="display main-table" data-table="backorders"> </table>
+            <table class="display main-table" data-table="pendingorders"> </table>
         </div>
          
         <div class="content-list" data-content="allorders">

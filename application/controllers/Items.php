@@ -273,7 +273,9 @@ class Items extends CI_Controller {
 
 	// CHECKOUT
 	function checkout(){ 
- 	  
+ 	  	$data['username'] = $this->session->userdata("username");
+		$data['role'] = $this->session->userdata("role");
+		$data['name'] = $this->session->userdata("name");
  		$data["listfamily"] = $this->getListFamily();
  		$data["listcategory"] = $this->getCategoryByFamily();
  		$data["listsubcategory"] = $this->getSubCategory();
@@ -405,6 +407,10 @@ class Items extends CI_Controller {
 		$this->param["fields"] = "*";
 		$this->param["conditions"] = "Email = '$email'";
 		return $this->query_model->getData($this->param);	 
+	}
+
+	function termsandconditions(){
+		$this->load->view("termsandconditions");
 	}
 
 }

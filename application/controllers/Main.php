@@ -36,7 +36,7 @@ class Main extends CI_Controller {
 
 //DASHBOARD
 	function getAuditLogs(){
-		$this->param = $this->param = $this->query_model->param; 
+		$this->param = $this->query_model->param;  
 		$this->param["table"] = "tblauditlogs";
 		$this->param["fields"] = "*"; 
 		$this->param["order"] = "TransactionDate DESC"; 
@@ -47,7 +47,7 @@ class Main extends CI_Controller {
 
 	}
 	function getTotalRevenue(){
-		$this->param = $this->param = $this->query_model->param; 
+		$this->param = $this->query_model->param;  
 		$this->param["table"] = "tblorder";
 		$this->param["fields"] = "IFNULL(SUM(TotalAmount),0) Total"; 
 		$this->param["conditions"] = "`Status` = 'Ship'"; 
@@ -213,7 +213,7 @@ class Main extends CI_Controller {
 		else if($role == "supplier"){
 			$data["requestlist"] = $this->GetRequestListFromAdmin("");
 			// $data["allorders"] = $this->getOrders("");
-			$data["backorders"] = $this->GetBackOrders();
+			$data["pendingorders"] = $this->GetPendingOrders();
 			// $data["sup-neworders"] = $this->getOrders("New");
 			// $data["sup-processorders"] = $this->getOrders("Process");
 			// $data["sup-incompleteorders"] = $this->getOrders("Incomplete");
@@ -263,16 +263,19 @@ class Main extends CI_Controller {
 
 		elseif($table == "requestlist")
 			$data = $this->GetRequestListFromAdmin(""); 
-		elseif($table == "sup-neworders")
-			$data = $this->getOrders("New"); 
-		elseif($table == "sup-processorders")
-			$data = $this->getOrders("Process"); 
-		elseif($table == "sup-incompleteorders")
-			$data = $this->getOrders("Incomplete"); 
-		elseif($table == "sup-shippedorders")
-			$data = $this->getOrders("Ship"); 
-		elseif($table == "sup-cancelledorders")
-			$data = $this->getOrders("Cancel"); 
+		elseif($table == "pendingorders")
+			$data = $this->GetPendingOrders(); 
+
+		// elseif($table == "sup-neworders")
+		// 	$data = $this->getOrders("New"); 
+		// elseif($table == "sup-processorders")
+		// 	$data = $this->getOrders("Process"); 
+		// elseif($table == "sup-incompleteorders")
+		// 	$data = $this->getOrders("Incomplete"); 
+		// elseif($table == "sup-shippedorders")
+		// 	$data = $this->getOrders("Ship"); 
+		// elseif($table == "sup-cancelledorders")
+		// 	$data = $this->getOrders("Cancel"); 
 		elseif($table == "sup-items")
 			$data = $this->getItems(0); 
 		elseif($table == "supremove-items")
@@ -297,12 +300,12 @@ class Main extends CI_Controller {
 // ADMIN SIDE
 	// PURCHASE ORDERS  
 		function GetListOfPO(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getpurchaseorders";
 			$this->param["fields"] = "*,CONCAT('<button class=\"btn btn-action btn-print\" data-print=\"generateListPOItems/',SupplyRequestNo,'\" onclick=\"print(this);\">Print</button>') Action"; 
  
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ViewItems|View items,SupplyRequestNo|PO #,NoOfItems|No of items,SupplierName|Supplier name,TotalDPOCost|Total Amount,Date|Date Order,Action|Action";
+			$data["fields"] = "ViewItems|View items,SupplyRequestNo|PO #,NoOfItems|No of items,SupplierName|Supplier name,TotalDPOCost|Total Amount,Status|Status,Date|Date Order,Action|Action";
 			return $data;
 
 		}
@@ -310,7 +313,7 @@ class Main extends CI_Controller {
 		function generateListPOItems($pono=""){
 			$this->load->library("GeneratePDF");
 			
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getrequestlistbysupplyrequestno"; 
 			$this->param["fields"] = "*,0 No"; 
 			if($pono!="")
@@ -346,7 +349,7 @@ class Main extends CI_Controller {
 
 		function getSupplierOrder(){
 			$supplierID = $this->input->post("sid");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getorderbysupplier";
 			$this->param["fields"] = "*"; 
 		 
@@ -365,12 +368,12 @@ class Main extends CI_Controller {
 	 
 		function GetSelectedOrderDetailsByPO(){
 			$supplierNo = $this->input->post("sno");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getselectedorderdetails";
 			$this->param["fields"] = "*"; 
  		    $this->param["conditions"] = "SupplyRequestNo = '$supplierNo'";
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "RequestListNo|No,ItemNo|Item Number,VariantNo|Variant Number,ItemDescription|Description,Requested|Request Qty";
+			$data["fields"] = "RequestListNo|No,ItemNo|Item Number,VariantNo|Variant Number,ItemDescription|Description,RequestsQty|Request Qty";
 			$list["child-".$supplierNo] = $data;
 			echo json_encode($list);
 		}
@@ -469,7 +472,7 @@ class Main extends CI_Controller {
 
 			// SEND EMAIL FOR SUPPLIER
 			$this->load->library("Email_Lib");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 
 			$this->param["table"] = "vw_getrequestlistbysupplyrequestno"; 
 			$this->param["fields"] = "*"; 
@@ -494,7 +497,7 @@ class Main extends CI_Controller {
 
 		function GetLowStockBySupplier($supid){
 
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getlowstockbysupplier";
 			$this->param["fields"] = "*";
 			$this->param["conditions"] = "SupplierNo = '$supid'";
@@ -506,7 +509,7 @@ class Main extends CI_Controller {
 
 		function GetPOSubmit($supplierNo){
 			$createdby = $this->session->userdata("username");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getposubmit";
 			$this->param["fields"] = "*";
 			$this->param["conditions"] = "createdby = '$createdby' AND SupplierNo = '$supplierNo'";
@@ -525,7 +528,7 @@ class Main extends CI_Controller {
 
 
 		function GetReceivings(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_receivings";
 			$this->param["fields"] = "*";  
 
@@ -536,7 +539,7 @@ class Main extends CI_Controller {
 		}
 
 		function GetOrderToReceive(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getpotoreceive";
 			$this->param["fields"] = "*";  
 
@@ -548,10 +551,11 @@ class Main extends CI_Controller {
 
 		function GetSelectedOrderDetails(){
 			$supplierNo = $this->input->post("sno");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getselectedorderdetails";
 			$this->param["fields"] = "*";  
-			$this->param["conditions"] = "SupplyRequestNo = '$supplierNo'";  
+			$this->param["conditions"] = "SupplyRequestNo = '$supplierNo' AND isPending = IsDeliverPending";  
+
 
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "RequestListNo|No,ItemDescription|Item,Received|Received,Requested|Requested";
@@ -562,13 +566,15 @@ class Main extends CI_Controller {
 		function updatePOReceived(){
 			$requestlistno = $this->input->post("rlno");
 			$rec = $this->input->post("rec");
-			$this->param = $this->query_model->param; 
-			$data["Received"] = $rec;
-			$this->param["dataToUpdate"] = $data;
-			$this->param["table"] = "requestlist";
-			$this->param["conditions"] = "RequestListNo = '$requestlistno'";
-			$result = $this->query_model->updateData($this->param); 
-			echo $result; 
+
+			$qry = " UPDATE requestlist "; 
+			$qry .= "SET  TempReceived = (CASE WHEN isPending = 1 THEN  $rec ELSE 0 END), ";
+			$qry .= "Received = (CASE WHEN isPending = 1 THEN Received ELSE $rec END) ";
+			$qry .= "WHERE RequestListNo = '$requestlistno' ";
+
+			$this->db->query($qry);
+ 
+			echo true; 
 		}
 
 		function submitPOReceived(){
@@ -578,12 +584,45 @@ class Main extends CI_Controller {
 
 			$SupplyRequestNo = $this->input->post("sno");
 
-			// Insert to Supply
-			$qry =  "INSERT INTO supply(QuantityReceived, PendingQuantity, DateReceive, RequestListNo, SupplyRequestNo) ";
-			$qry .= "SELECT Received, (Quantity - Received), '$datetime', RequestListNo, SupplyRequestNo ";
-			$qry .= "FROM requestlist WHERE SupplyRequestNo = '$SupplyRequestNo'";
-			$this->db->query($qry);
-			$this->query_model->insertAuditLogs("New PO Received", "Insert");
+			if($this->CheckSupplyBySupplyRequestNo($SupplyRequestNo)){
+
+				//undo stocks of the received items
+				$qry = " UPDATE itemvariant iv ";
+				$qry .= "INNER JOIN requestlist rl ";
+				$qry .= "ON rl.ItemNo = iv.ItemNo AND rl.VariantNo = iv.VariantNo ";
+				$qry .= "INNER JOIN supply s ";
+				$qry .= "ON s.RequestListNo = rl.RequestListNo ";
+				$qry .= "SET iv.Stocks = IFNULL(iv.Stocks,0) - s.QuantityReceived ";
+				$qry .= "WHERE s.SupplyRequestNo = '$SupplyRequestNo' and rl.isPending = 1";
+
+				$this->db->query($qry);
+
+				// for pending orders
+				$qry =  "UPDATE supply s " ;
+				$qry .= "INNER JOIN requestlist rl on s.RequestListNo = rl.RequestListNo " ;
+				$qry .= "SET s.QuantityReceived  = s.QuantityReceived + rl.TempReceived , s.PendingQuantity = (rl.Quantity - (rl.Received + rl.TempReceived)) ,rl.Received = rl.Received + rl.TempReceived, s.DateReceive = '$datetime' ";
+				$qry .= "WHERE s.SupplyRequestNo = '$SupplyRequestNo'";
+				$this->db->query($qry);
+				$this->query_model->insertAuditLogs("Update Pending PO Received", "Insert");
+			}
+			else{
+				// Insert to Supply
+				$qry =  "INSERT INTO supply(QuantityReceived, PendingQuantity, DateReceive, RequestListNo, SupplyRequestNo) ";
+				$qry .= "SELECT Received, (Quantity - Received), '$datetime', RequestListNo, SupplyRequestNo ";
+				$qry .= "FROM requestlist WHERE SupplyRequestNo = '$SupplyRequestNo' ";
+				$this->db->query($qry);
+				$this->query_model->insertAuditLogs("New PO Received", "Insert");
+ 
+				
+			}
+
+			// check if the items has pending
+			$qry =  "UPDATE requestlist rl ";
+			$qry .=  "INNER JOIN supplyrequest s ON s.SupplyRequestNo = rl.SupplyRequestNo ";
+			$qry .=  "SET isPending = case when  rl.Quantity <> rl.Received then 1 else 0 end , isPendingItems =  case when rl.Quantity <> rl.Received then 1 else 0 end, s.IsDeliverPending = 0  ";
+			$qry .=  "WHERE rl.SupplyRequestNo = '$SupplyRequestNo' "; 
+			$this->db->query($qry);  
+		
 
 			//Update isReceived = 1 for the selected SupplyRequest
 			$this->param = $this->query_model->param; 
@@ -612,14 +651,25 @@ class Main extends CI_Controller {
 			$this->GetOrderToReceive();
 		}
 
+		function CheckSupplyBySupplyRequestNo($sno){
+			$this->param = $this->query_model->param;   
+			$this->param["table"] = "supply";
+			$this->param["fields"] = "*"; 
+			$this->param["conditions"] = " SupplyRequestNo = '$sno'"; 
+
+			$result =  $this->query_model->getData($this->param);
+
+			return ($result) ? true : false;
+		}
+
 		function GetBackOrders(){
-			$this->param = $this->param = $this->query_model->param;  
+			$this->param = $this->query_model->param;   
 			$this->param["table"] = "vw_getbackorders";
 			$this->param["fields"] = "*"; 
 
 			$role = $this->session->userdata["role"];
 			if($role == "supplier"){
-				$this->param["fields"] .= ", CONCAT('<button class=\"btn btn-action\">Deliver</button>')"; 
+				$this->param["fields"] .= ", CONCAT('<button class=\"btn btn-action\" onclick=\"DeliverPendingOrder(', RequestListNo ,');\">Deliver Pending Order</button>') Action"; 
 				$supno = $this->session->userdata["supplierno"]; 
 				$this->param["conditions"] = "SupplierNo = $supno"; 
 			}
@@ -627,11 +677,14 @@ class Main extends CI_Controller {
 	 
 			$data["list"] =  $this->query_model->getData($this->param);
 			$data["fields"] = "RequestListNo|No,SupplierName|Supplier name,ItemDescription|Item Description,Received|Qty Received,PendingQuantity|Qty Pending";
+			if($role == "supplier"){
+				$data["fields"] .= ",Action|Action";
+			}
 			return $data; 
 		}
 
 		function GetSuppliers(){
-			$this->param = $this->param = $this->query_model->param;  
+			$this->param = $this->query_model->param;   
 			$this->param["table"] = "supplier";
 			$this->param["fields"] = "*,CONCAT('<button class=\"btn btn-action\" onclick=\"viewSupplyItems(',SupplierNo,',this);\">View items</button>') AS `Action`"; 
 	 	 
@@ -643,7 +696,7 @@ class Main extends CI_Controller {
 		function generateListSupplier(){
 			$this->load->library("GeneratePDF");
 			
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "supplier";
 			$this->param["fields"] = "*"; 
 			$this->param["isArrayReturn"] = true; 
@@ -671,7 +724,7 @@ class Main extends CI_Controller {
 
 
 			//Check username if already taken in Accounts
-			$this->param = $this->param = $this->query_model->param;  
+			$this->param = $this->query_model->param;   
 			$this->param["table"] = "accounts";
 			$this->param["fields"] = "*";
 			$this->param["conditions"] = "Username = '$account->Username'";
@@ -680,7 +733,7 @@ class Main extends CI_Controller {
 				$data["errormessage"] = "Username has already taken";
 			else{
 				//INSERT INTO Accounts
-				$this->param = $this->param = $this->query_model->param;  
+				$this->param = $this->query_model->param;   
 				$this->param["table"] = "accounts";
 				$this->param["dataToInsert"] = $account;
 				$this->param["transactionname"] = "Account for new Supplier";
@@ -688,7 +741,7 @@ class Main extends CI_Controller {
 
 
 				// GET AccountNo for the Supplier
-				$this->param = $this->param = $this->query_model->param;  
+				$this->param = $this->query_model->param;   
 				$this->param["table"] = "accounts";
 				$this->param["fields"] = "*";
 				$this->param["conditions"] = "Username = '$account->Username'";
@@ -696,7 +749,7 @@ class Main extends CI_Controller {
 
 				//INSERT INTO Supplier
 				$supplier->AccountNo = $result[0]->AccountNo;
-				$this->param = $this->param = $this->query_model->param;  
+				$this->param = $this->query_model->param;   
 				$this->param["table"] = "supplier";
 				$this->param["dataToInsert"] = $supplier;
 				$this->param["transactionname"] = "New Supplier";
@@ -708,7 +761,7 @@ class Main extends CI_Controller {
 		}
 		function GetSupplyItemsBySupplier(){
 			$SupplierNo = $this->input->post("sno");
-			$this->param = $this->param = $this->query_model->param;  
+			$this->param = $this->query_model->param;   
 			$this->param["table"] = "vw_getsupplyitemsbysupplier";
 			$this->param["fields"] = "*";
 			$this->param["conditions"] = "SupplierNo = '$SupplierNo'";
@@ -723,7 +776,7 @@ class Main extends CI_Controller {
 
 	// INVENTORY 
 		function getInventory(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_inventory";
 			$this->param["fields"] = "*"; 
  
@@ -735,7 +788,7 @@ class Main extends CI_Controller {
 		function generateListInventory(){
 			$this->load->library("GeneratePDF");
 			
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_inventory";
 			$this->param["fields"] = "*"; 
 			$this->param["isArrayReturn"] = true; 
@@ -779,7 +832,7 @@ class Main extends CI_Controller {
 		}
 
 		function getItems($isRemovedItems){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_items";
 			$this->param["fields"] = "*"; 
 			$role = $this->session->userdata("role");
@@ -807,7 +860,7 @@ class Main extends CI_Controller {
 		function generateListItems(){
 			$this->load->library("GeneratePDF");
 			
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_items";
 			$this->param["fields"] = "*"; 
 			$this->param["conditions"] = "Removed = 0 AND Owned = 1";  
@@ -828,7 +881,7 @@ class Main extends CI_Controller {
 
 		
 		function getLowStocks(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_lowstocks";
 			$this->param["fields"] = "*"; 
  
@@ -839,7 +892,7 @@ class Main extends CI_Controller {
  
 
 		function getCategoryList(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getcategories";
 			$img = "CONCAT('<div><p class=\"dash-header\">',Family,'</p><img src=\"images/variant-folder/', ImageFile ,'\" width=\"300px\"></div>') as `Image`";
 			$this->param["fields"] = "*," . $img; 
@@ -854,7 +907,7 @@ class Main extends CI_Controller {
 	 
 		function getFamily($name=""){
 			$name = trim($name);
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "level1";
 			$this->param["fields"] = "Level1No `id`, Name1 `Name`, ImageFile";  
 			if($name != "")
@@ -877,7 +930,7 @@ class Main extends CI_Controller {
 		} 
 
 		function getDataCategory($lvl1,$name=""){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "level2";
 			$this->param["fields"] = "Level2No `id`, Name2 `Name`";  
 			$this->param["conditions"] = "level1No = '$lvl1'";
@@ -889,7 +942,7 @@ class Main extends CI_Controller {
 		}
 
 		function getDataSubCategory($lvl1,$lvl2,$name=""){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "level3";
 			$this->param["fields"] = "Level3No `id`, Name3 `Name`";  
 			$this->param["conditions"] = "level1No = '$lvl1' AND level2No = '$lvl2'";
@@ -984,7 +1037,7 @@ class Main extends CI_Controller {
 
 		function getAttribute(){
 			$isreq = $this->input->post("isreq");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "itemattribute";
 			$this->param["fields"] = "AttributeID, AttributeName"; 
  			$this->param["conditions"] = "isRequired = $isreq"; 
@@ -995,7 +1048,7 @@ class Main extends CI_Controller {
 
 	// ORDERS 
 		function getOrders($status){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_allorders";
 			$this->param["fields"] = "*"; 
  			if($status != "") { $this->param["conditions"] = "Status = '$status'"; }
@@ -1010,7 +1063,7 @@ class Main extends CI_Controller {
 		}
 		function getOrderDetails(){
 			$orderno = $this->input->post("orderno");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_orderlistbyorderno";
 			$this->param["fields"] = "*"; 
  		    $this->param["conditions"] = "OrderNo = '$orderno'";
@@ -1075,7 +1128,7 @@ class Main extends CI_Controller {
 
 	// REPORTS
 		function getCustomers(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 
 			$this->param["table"] = "customer"; 
 			$this->param["fields"] = "*"; 
@@ -1087,7 +1140,7 @@ class Main extends CI_Controller {
 		}
 
 		function getRptItems(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 
 			$this->param["table"] = "vw_printsallitems"; 
 			$this->param["fields"] = "*"; 
@@ -1105,7 +1158,7 @@ class Main extends CI_Controller {
 // SUPPLIER SIDE
 	//REQUEST
 		// function GetRequestListFromCustomer(){ 
-		// 	$this->param = $this->param = $this->query_model->param; 
+		// 	$this->param = $this->query_model->param;  
 		// 	$this->param["table"] = "vw_getrequestfromcustomer";
 		// 	$this->param["fields"] = "*"; 
  
@@ -1115,7 +1168,7 @@ class Main extends CI_Controller {
 		// }
 		function GetRequestListFromAdmin($status){ 
 			$sno = $this->session->userdata("supplierno");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_requestlistfromadmin";
 			$this->param["fields"] = "*"; 
 			$this->param["conditions"] = "SupplierNo = '$sno'"; 
@@ -1134,7 +1187,7 @@ class Main extends CI_Controller {
 			$role = $this->session->userdata("role"); 
 			$supreqno = $this->input->post("supreqno");  
 			 
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 
 			$this->param["table"] = "vw_getrequestlistbysupplyrequestno"; 
 			$this->param["fields"] = "*"; 
@@ -1175,7 +1228,7 @@ class Main extends CI_Controller {
 		
 		
 		function GetRequestStatusTotal(){ 
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getrequeststatustotal";
 			$this->param["fields"] = "*";  
 			$data =  $this->query_model->getData($this->param); 
@@ -1183,7 +1236,7 @@ class Main extends CI_Controller {
 		}
 
 		function GetMostOrderedItems(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getmostordereditems";
 			$this->param["fields"] = "*";  
 			$data =  $this->query_model->getData($this->param); 
@@ -1199,7 +1252,7 @@ class Main extends CI_Controller {
 		}
 
 		function GetMostCustomer(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "vw_getmostcustomer";
 			$this->param["fields"] = "*";  
 			$data =  $this->query_model->getData($this->param); 
@@ -1214,13 +1267,67 @@ class Main extends CI_Controller {
 		}
 
 		function GetTotalCustomer(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "customer";
 			$this->param["fields"] = "*";  
 			$data =  $this->query_model->getData($this->param); 
 			 
 			return count($data); 
 		}
+
+		function GetPendingOrders(){
+			$this->param = $this->query_model->param;   
+			$this->param["table"] = "vw_pendingorders";
+			$this->param["fields"] = "*";  
+			 
+			$supno = $this->session->userdata["supplierno"]; 
+			$this->param["conditions"] = "SupplierNo = $supno"; 
+			   
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ViewItems|Item(s),SupplyRequestNo|PO #,OrderDate|Order Date,CustomerName|Customer name,NoOfItems|No of Order items,TotalDPOCost|Total Amount(DPO Cost),Action|Action";
+			 
+		 
+			return $data; 
+		}
+
+		function GetPendingItemsBySupplyRequestNo(){
+
+			$role = $this->session->userdata("role"); 
+			$supreqno = $this->input->post("supreqno");  
+			 
+			$this->param = $this->query_model->param;  
+
+			$this->param["table"] = "vw_getpendingitemsbysupplyrequestno	"; 
+			$this->param["fields"] = "*"; 
+			$this->param["conditions"] = "SupplyRequestNo = '$supreqno'"; 
+
+			$data["list"] =  $this->query_model->getData($this->param);
+			$data["fields"] = "ItemNo|Item No,ThumbNail|ThumbNail,ItemDescription|Description,DPOCost|DPO Cost,RequestsQty|Requested QTY,Received|Received QTY ,SubTotal|SubTotal"; 
+				 
+			$list["child-".$supreqno] = $data;
+		 
+			echo json_encode($list);
+		}
+
+		function setDeliveredPendingOrders(){
+			$status = $this->input->post("status");
+			$supreqno = $this->input->post("supreqno");
+			date_default_timezone_set("Asia/Manila");
+			$date = date('Y-m-d H:i:s');
+			$datetime = date('Y-m-d H:i:s', strtotime($date));
+			$this->param = $this->query_model->param;  
+			$data["DeliveredStatus"] = 1;
+			$data["DeliveredDate"] = $datetime;
+			$data["IsDeliverPending"] = 1;
+			$this->param["dataToUpdate"] = $data;
+			$this->param["table"] = "supplyrequest";
+			$this->param["conditions"] = "SupplyRequestNo = '$supreqno'";
+			$this->query_model->updateData($this->param); 
+			$list["pendingorders"] = $this->GetPendingItemsBySupplyRequestNo();
+			echo json_encode($list);
+		}
+
+		 
 
 	//ITEMS
 	 	function insertNewItemWithVariants(){
@@ -1252,7 +1359,7 @@ class Main extends CI_Controller {
 
 
 			$dataitems = array();
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "item";
 			$this->param["fields"] = "*";  
 			$this->param["conditions"] = "Name = '$itemname'";
@@ -1284,7 +1391,7 @@ class Main extends CI_Controller {
 	 	function checkItemNameExistsBySupplier(){
 			$supplierno = $this->session->userdata("supplierno");
 			$itemname = trim($this->input->post("iname"));
-	 		$this->param = $this->param = $this->query_model->param; 
+	 		$this->param = $this->query_model->param;  
 			$this->param["table"] = "item"; 
 			$this->param["fields"] = "*";
  		    $this->param["conditions"] = "UPPER(Name) = UPPER('$itemname') and SupplierNo = '$supplierno' ";
@@ -1295,7 +1402,7 @@ class Main extends CI_Controller {
 	 	function GetVariantsByItemNo(){
 			$role = $this->session->userdata("role");
 			$itemno = $this->input->post("ino");
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "itemvariant";
 			$action = "";
 			if($role=="supplier")
@@ -1349,7 +1456,7 @@ class Main extends CI_Controller {
 		} 
 
 		function GetUOM(){
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param;  
 			$this->param["table"] = "tbluom";
 			$this->param["fields"] = "*";  
 			$this->param["order"] = "Description";  

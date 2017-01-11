@@ -1,4 +1,4 @@
-<div id="collapseDVR3" class="panel-collapse sidenav">
+<div id="collapseDVR3" class="panel-collapse sidenav" style="padding-top: 0px;">
               <div class="tree" >
                   <h4>Select Category:</h4>
                   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
