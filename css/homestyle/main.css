@@ -989,11 +989,364 @@ ul.address {
 /*Presets*/
 
 
-
-span.badge {
+/*CUSTOMER SIDE*/
+span.badge.countCart {
     position: absolute;
     left: 17px;
     top: 5px;
     background: #f44336;
     padding: 3px 4px;
+}
+span.badge.countCart-mobile {
+   
+    background: #f44336;
+     
+}
+
+
+div.action-holder{ 
+    margin-top: 14px;
+}
+
+div.action-holder > div {
+    display: inline-flex;
+    position: relative;
+    margin-left: 10px;
+}
+
+/*SEARCH */ 
+div.search-holder{ 
+    width: 379px;
+    background: white;
+}
+div.search-holder > input{
+  padding-right: 56px;
+}
+div.search-holder > span{
+    position: absolute;
+    right: 0px;
+    font-size: 20px;
+    top: 0px;
+    background: #f44336;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+}
+div.search-mobile.navbar-fixed-top{
+    top: 49px;
+    background: white;
+    height: 59px;
+    z-index: 3;
+}
+div.search-mobile > span{
+    position: relative;
+    right: -2px;
+    float: right;
+    font-size: 20px;
+    top: -53px;
+    background: #f44336;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+}
+
+/*CART */
+
+div.cart-holder{ 
+    font-size: 18px;
+}
+
+div.cart-holder > span {
+  font-size: 26px;
+}
+
+div.cart-holder > button{
+      border: 0px;
+    color: white;
+    background: transparent;
+}
+div.cart-holder span.badge{
+  top: -2px !important;
+  padding: 3px 7px !important;
+}
+
+/* ACCOUNT*/
+div.account-holder{ 
+}
+div.account-holder > button{
+    background: transparent;
+}
+
+
+
+
+div.action-holder-mobile > button {
+ 
+    position: relative;
+    margin-left: -13px;
+}
+
+
+
+
+
+ div.customer-header{
+    height: 81px;
+ }
+
+div.list-items{
+  margin-top: -20px;
+}
+
+
+
+/*
+.row.list-items > div:first-child {
+    border-top: 1px solid #ddd; 
+}
+.row.list-items > div {
+    border-bottom: 1px solid #ddd;
+    padding: 16px;
+}
+.row.list-items > div  a{ 
+   text-align:  left;
+}*/
+ 
+.preloader2 > i {
+
+    position: absolute;
+    font-size: 35px;
+    top: 24%;
+    left: 50%; 
+}
+
+p.empty {
+    margin: 32px;
+    color: #cccccc;
+}
+
+ol.breadcrumb.item-header{
+  text-align: left;
+  background-color: transparent;
+  border-bottom: 1px solid #ddd;
+}
+
+button.btn-checkout,
+button.btn-addtocart,
+button.btn-submitorder{
+  color:white;
+  background: #f44336;
+  margin: 18px auto;
+  width: 100%;
+}
+
+button#btn-proceed{
+  color:white;
+  background: #f44336;
+}
+
+div.item-holder:hover + div button.btn-buy, button.btn-buy:hover{
+  color:white;
+  background: #048e81;
+  transition: background 0.5s ease;
+}
+
+button.btn-addtocart{
+  width: auto !important;
+}
+
+.btn-group.cartqty > button {
+    padding: 2px 4px;
+}
+
+.btn-group.cartqty > button:not(.disabled) {
+    border:1px solid #ddd;
+}
+div.item{
+  cursor: pointer;
+}
+dl#list-variation{
+  display: inline-flex;
+}
+dl#list-variation dd { 
+    margin: 10px 8px;
+     border: 0px;
+}
+
+dl#list-variation dd:hover,
+dl#list-variation dd.active
+ {
+     border: 1px solid #048e81;
+     cursor: pointer; 
+
+}
+
+ol.item-category{
+    padding: 0px;
+    font-size: 12px;
+}
+
+p.category{
+    margin: 0px;
+    font-size: 10px;
+    margin-top: -15px;
+}
+
+span.removeCart{
+  color: #f44336;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+
+/* FORM INPUT ANIMATION*/
+
+.group            { 
+  position:relative; 
+  margin-bottom: 35px; 
+  /*margin-left: 40px;*/
+}
+
+.inputMaterial              {
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:100%;
+  border:none;
+  border-bottom:1px solid #757575;
+}
+
+.inputMaterial.display              {
+  font-size:12px !important;
+  padding:2px 20px;
+  display:block;
+  width:100%;
+  border:none;
+  background: transparent;
+  /*border-bottom:1px solid #757575;*/
+}
+
+.inputMaterial:focus        { outline:none;}
+
+/* LABEL ======================================= */
+
+label.formlabel                {
+  color:#999; 
+  font-size:14px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+ label.formlabel.display                {
+  top:-20px !important; 
+}
+
+div.item-review-wrap{
+    padding: 61px 12px;
+    background: white;
+    padding-bottom: 10px;
+}
+
+
+
+/* active state */
+.inputMaterial:focus ~ label.formlabel , .inputMaterial:valid ~ label.formlabel,      
+.inputMaterial:read-only ~ label.formlabel      {
+  top:-20px;
+  font-size:14px;
+  color: #009688;
+}
+
+/* BOTTOM BARS ================================= */
+.bar    { position:relative; display:block; width:100%; }
+.bar:before, .bar:after     {
+  content:'';
+  height:2px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background: #009688; 
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+/* active state */
+.inputMaterial:not([readonly]):focus ~ .bar:before, .inputMaterial:not([readonly]):focus ~ .bar:after {
+  width:50%;
+}
+
+
+/* active state */
+.inputMaterial:focus ~ .highlight {
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+    from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+
+
+div.customer-form{
+  padding-top: 10px;
+}
+
+.row.customer-form > div {
+    margin-bottom: 18px;
+}
+
+div.chk-sameaddress{
+  margin-top:   -32px;
+
+}
+
+div.chk-sameaddress label{
+  font-size: 12px;
+}
+
+div.chk-termcondition{
+  
+  margin-bottom:  -15px;
+}
+
+div.chk-termcondition label{
+  font-size: 12px;
+}
+
+div.chk-termcondition input{
+  margin-top: 3px;
+}
+
+div.alert-success{
+  color: #048e81 !important;
+  background-color:  #c8efeb !important;
+  border-color:  #c8efeb !important;
+}
+
+.navbar-footer{
+   border-top: 1px solid #ddd;
+    padding: 8px;
 }

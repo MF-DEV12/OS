@@ -25,12 +25,22 @@ class Login extends CI_Controller {
 		// $this->session->set_flashdata('error', $this->db->last_query()); // debug purpose
 		if($result){
 			$data["username"] = $result[0]->Username;
-			$data["email"] = $result[0]->email;
+			$data["name"] = $result[0]->FirstName;
+			$data["email"] = $result[0]->Username;
 			$data["role"] = $result[0]->LoginType;
 			if($data["role"] == "supplier")
 				$data["supplierno"] = $this->getSupplierNoByAccountNo($result[0]->AccountNo);
+			if($data["role"] == "customer")
+				$data["customerno"] = $this->getCustomerNoByEmail($result[0]->Username);
 			$this->session->set_userdata($data); 
-			redirect("/main");
+			if($data["role"] != "customer")
+				redirect("/main");
+			else{
+				if($this->input->get("t"))
+					redirect("/items/checkout");
+				else
+					redirect("");
+			}
 		}
 		else
 			$this->session->set_flashdata('error', "Username and password did not match.");
@@ -42,6 +52,13 @@ class Login extends CI_Controller {
 		$this->session->sess_destroy();
 		redirect("/login");
 	}
+
+
+	function logOut(){
+
+		$this->session->sess_destroy();
+		redirect("");
+	}
 	
 
 	function getSupplierNoByAccountNo($accountNo){
@@ -51,6 +68,16 @@ class Login extends CI_Controller {
 		$this->param["conditions"] = " AccountNo = '$accountNo'";
 		$result = $this->query_model->getData($this->param);
 		return $result[0]->SupplierNo;
+	}
+
+	function getCustomerNoByEmail($email){
+		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param["table"] = "customer";
+ 		$this->param["fields"] = "*";
+		$this->param["conditions"] = " Email = '$email'";
+		$result = $this->query_model->getData($this->param);
+
+		return $result[0]->CustomerNo;
 	}
 	 
 }

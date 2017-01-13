@@ -4,6 +4,8 @@ jQuery(function($) {
 	var preloader = $('.preloader');
 	$(window).load(function(){
 		preloader.remove();
+	 
+
 	});
 
 	//#main-slider
@@ -13,15 +15,24 @@ jQuery(function($) {
 	$(window).resize(function(){'use strict',
 		$('#home-slider .item').css('height',slideHeight);
 	});
+
+
+	$("div.list-items")
+		.height(slideHeight)
+		.css("overflow-y","auto")
 	
 	//Scroll Menu
 	$(window).on('scroll', function(){
 		if( $(window).scrollTop()>slideHeight ){
 			$('.main-nav').addClass('navbar-fixed-top');
+			$('div.search-mobile').addClass('navbar-fixed-top');
 		} else {
 			$('.main-nav').removeClass('navbar-fixed-top');
+			$('div.search-mobile').removeClass('navbar-fixed-top');
 		}
 	});
+
+
 	
 	// Navigation Scroll
 	$(window).scroll(function(event) {
@@ -107,6 +118,8 @@ jQuery(function($) {
 		});
 	});
 
+
+
 	// Close Portfolio Single View
 	$('#portfolio-single-wrap').on('click', '.close-folio-item',function(event) {
 		event.preventDefault();
@@ -118,6 +131,17 @@ jQuery(function($) {
 		$('html, body').animate({scrollTop:target_top}, 600);
 		$("#portfolio-single").slideUp(500);
 	});
+
+   	$("span.btn-itemsearch").click(function(e){
+      var elem = $(this)
+      if($.trim(elem.prev("input").val()).length > 0 )
+        location.href = baseUrl + "items?name=" + elem.prev("input").val()
+  	})
+
+	$("button.cart").click(function(e){
+      location.href= baseUrl + "Items/cart";
+  	})
+
 
 	// Contact form
 	var form = $('#main-contact-form');
@@ -138,6 +162,7 @@ jQuery(function($) {
 	var latitude = $('#google-map').data('latitude')
 	var longitude = $('#google-map').data('longitude')
 	function initialize_map() {
+		if($("#google-map").length == 0) {return;}
 		var myLatlng = new google.maps.LatLng(latitude,longitude);
 		var mapOptions = {
 			zoom: 14,
@@ -161,3 +186,18 @@ jQuery(function($) {
 	
 });
 
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    $(".sidenav").css("width","80%");
+    // $("#main").css("background-color","rgba(0,0,0,0.4)");
+    // $("#main").css("margin-left","250px");
+    // $(".navbar-brand").hide()
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    $(".sidenav").css("width","0px");
+    // $("#main").css("background-color","white");
+    // $("#main").css("margin-left","0px");
+    // $(".navbar-brand").show()
+}

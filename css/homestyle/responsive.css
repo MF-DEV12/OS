@@ -1,21 +1,56 @@
+
+ div.search-mobile{
+  display: none;
+ }
+ button.category-menu{
+ 	display: none;
+ }
+ div.search-mobile input{
+ 	border: 1px solid #ddd;
+    margin: 2px;
+ }
+ div.category-treeview{
+ 	display: block;
+ }
+ div.action-holder-mobile{
+	display: none;
+    position: absolute;
+	right: 8px;
+   
+ }
+ 
+ li.account-desktop{
+ 	display:block;	
+ }
+ li.account-mobile{
+ 	display:none;	
+ }
+
+
+ 
+
 /* lg */ 
 @media (min-width: 1200px) {
 
 }
+
 
 /* md */
 @media (min-width: 992px) and (max-width: 1199px) {
 
 }
 
-.navbar-toggle.order {
-	  display: block;
-	  border:1px solid #fff;
+	button.category-menu {
+	  /*border:1px solid #fff;*/
+      position: relative;
 	}
 
-	.navbar-toggle.order .icon-bar {
+	button.category-menu .icon-bar {
 	  background-color: #fff;
 	}
+
+
+ 
 
 /* sm */
 @media (min-width: 768px) and (max-width: 991px) {
@@ -39,6 +74,39 @@
 	.btn-signup {
 		padding: 10px 20px;
 	}
+	button.category-menu{
+	 	display: block !important;
+	}
+	div.action-holder,
+	div.category-treeview{
+		display: none;
+	}
+	div.action-holder-mobile{
+		display:block !important;
+	   
+	}
+	div.customer-header{
+	    height: auto;
+	}
+
+
+	div.action-holder-mobile{
+		display:block !important;
+	   
+	}
+	div.action-holder{
+		display:none !important;
+	   
+	}
+
+
+	li.account-mobile{
+	 	display:block !important;	
+	}
+	li.account-desktop{
+ 		display:none !important	;	
+ 	}
+	  
 }
 
 /* xs */
@@ -72,10 +140,13 @@
 	.navbar-brand {
 		padding: 0 15px 15px;
 	}
-	.navbar-toggle {
-	  border:1px solid #fff;
+	li.account-mobile{
+	 	display:block !important;	
 	}
-
+	li.account-desktop{
+ 		display:none !important	;	
+ 	}
+	 
 	.navbar-toggle .icon-bar {
 	  background-color: #fff;
 	}
@@ -85,11 +156,32 @@
 		padding-top: 10px;
 	}
 
-	.cart-menu{
+	 div.search-mobile{
+	  display: block !important;
+	 }
 
-	    position: absolute;
-	    right: 0px;
-	    top: 0px;
+	 button.category-menu{
+	 	display: block !important;
+	 }
+
+	div.action-holder-mobile{
+		display:block !important;
+	   
+	}
+
+
+
+	button.category-menu { 
+	  top: 0px;
+	}
+
+	div.action-holder,
+	div.category-treeview{
+		display: none;
+	}
+
+	div.customer-header{
+	    height: auto;
 	}
 
 	/*services*/

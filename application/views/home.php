@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
       
-    <title>Lampano Hardware</title>
+    <title>Lampano Hardware - Home</title>
 
 
     <link href="<?=base_url('css/homestyle/bootstrap.min.css');?>" rel="stylesheet">
@@ -55,39 +55,119 @@
         <div class="main-nav">
           <div class="container">
             <div class="navbar-header">
-
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-               <button type="button" class="navbar-toggle" style="border:0px;color:white;" >
-                <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
-              </button>
-              <a class="navbar-brand" href="index.html">
+            <div class="pull-right action-holder-mobile">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                 <button type="button" class="navbar-toggle cart" style="border:0px;color:white;" >
+                  <span class="glyphicon glyphicon-shopping-cart"></span> 
+                  <span class="badge countCart"><?=$totalItemCart?></span>
+                </button>
+                
+ 
+            </div>
+              
+              <a class="navbar-brand" href="#">
                 <h1><img class="img-responsive" src="images/logo-home.png" alt="logo"></h1>
-              </a>                    
+              </a> 
             </div>
             <div class="collapse navbar-collapse">
-              <ul class="nav navbar-nav navbar-right">                 
+               <div class="action-holder" style="position: absolute;margin-left: 252px;">
+
+                  <div class="search-holder">    
+                    <input type="text" name="search" class="form-control" placeholder="Search for items" > 
+                    <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
+                     
+                  </div> 
+                  <div class="cart-holder">
+                    <button type="button" class="cart" style="border:0px;color:white;" >
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        <span class="badge countCart"><?=$totalItemCart?></span>
+                    </button>
+                  </div>
+                  
+                </div>
+
+              <!-- <div class="search-holder">    
+                <input type="text" name="search" class="form-control" placeholder="Search for items" > 
+                <span class="glyphicon glyphicon-search"></span> 
+                  <div class="cart-holder">
+                    <button type="button" class="cart" style="border:0px;color:white;" >
+                        <span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">4</span>
+                    </button>
+                  </div>
+              </div> -->
+          
+              
+
+              <ul class="nav navbar-nav navbar-right" style="z-index: 99999;">                 
                 <li class="scroll active"><a href="#home">Home</a></li>
                 <li class="scroll"><a href="#orders">Orders</a></li> 
                 <!-- <li class="scroll"><a href="#forums">Forums</a></li>                      -->
                 <!-- <li class="scroll"><a href="#about-us">About Us</a></li>      -->
-                <li class="scroll"><a href="#contact">Contact</a></li>       
+                <li class="scroll"><a href="#contact">Contact</a></li>   
+             
+                <?php if($this->session->userdata("username")){ ?>    
+                   <li class="account-mobile"><a href="<?=base_url('mypurchase')?>">My Purchase</a></li>
+                   <li class="account-mobile"><a>Change Password</a></li>
+                   <li class="account-mobile"><a href="<?=base_url('login/logout');?>">Logout</a></li>
+                   <li class="dropdown account-desktop"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;"><span class="glyphicon glyphicon-user"></span></span>
+                        <b class="caret"></b></a>
+                        <ul class="dropdown-menu" style="width:245px;">
+                            <li>
+                               <a style="color: gray;padding:12px;" href="<?=base_url('mypurchase')?>">My Purchase</a>
+                            </li>
+                            <li>
+                                <div class="navbar-content" style="padding:12px;">
+                                    <div class="row"> 
+                                        <div class="col-md-3" align="center">
+                                        <span class="glyphicon glyphicon-user" style="font-size:40px;"></span> 
+                                        </div>
+                                        <div class="col-md-9">
+                                            <span><?=$name;?></span>
+                                            <!-- <p class="text-muted small role"><?=$role;?></p> -->
+                                            <div class="divider">
+                                            </div>
+                                            <!-- <a href="#" class="btn btn-primary btn-sm active">View Profile</a> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="navbar-footer">
+                                    <div class="navbar-footer-content">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button class="btn btn-default btn-sm">Change Password</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button class="btn btn-sm pull-right btn-action">Log Out</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                <?php } else {?>    
+                  <li><a href="<?=base_url('login');?>">Login</a></li>       
+                <?php } ?>    
               </ul>
             </div>
           </div>
         </div><!--/#main-nav-->
     </header>
-
+    <div class="search-mobile">
+      <input type="text" placeholder="Search for items.." class="form-control"/>
+      <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
+    </div>
 <section id="orders">
     <div class="container">
       <div class="row">
         <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <h2>Quality</h2>
-          <p>Techniques don't produce quality products and services:<br/> People do, people who care,people who are treated as creatively contributing individuals</p>
+          <h2>List of Categories</h2>
+          <p>Select the Categories</p>
         </div>
       </div> 
     </div>
@@ -97,7 +177,7 @@
               <div class="col-sm-3">
                 <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
                   <div class="folio-image">
-                    <a href="<?=base_url('customer?family='.$key->Level1No);?>"> 
+                    <a href="<?=base_url('items?family='.$key->Level1No);?>"> 
                     <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="" onerror="this.src='images/noimage.gif';">
                     </a>
                   </div> 
@@ -210,6 +290,7 @@
 
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/bootstrap.min.js")?>"></script>
+      <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
  
       <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.inview.min.js")?>"></script>

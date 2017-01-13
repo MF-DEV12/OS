@@ -199,6 +199,7 @@
  
                 <div class="content-list" data-content="inventory">
                     <!-- <button id="" class="btn btn-action btn-action-right"><span class="glyphicon glyphicon-plus"></span> Physical Count</button> -->
+                    <button class="btn btn-action main-button btn-action-right  btn-print" data-print="generateListInventory"><span class="glyphicon glyphicon-print"></span> Print</button>
                     <table class="display main-table" data-table="inventory"> </table>
                 </div>
 
@@ -297,11 +298,11 @@
                 </div>
         
                 <div class="content-list" data-content="rptitems"> 
-                    <button class="btn btn-action main-button btn-action-right btn-print"><span class="glyphicon glyphicon-print"></span> Print</button>
+                    <button class="btn btn-action main-button btn-action-right btn-print" data-print="generateListItems"><span class="glyphicon glyphicon-print"></span> Print</button>
                     <table class="display main-table" data-table="rptitems"> </table>
                 </div>
                 <div class="content-list" data-content="rptcustomers"> 
-                    <button class="btn btn-action main-button btn-action-right  btn-print"><span class="glyphicon glyphicon-print"></span> Print</button>
+                    <button class="btn btn-action main-button btn-action-right  btn-print" data-print="generateListSupplier"><span class="glyphicon glyphicon-print"></span> Print</button>
                     <table class="display main-table" data-table="rptcustomers"> </table>
                 </div>
 
