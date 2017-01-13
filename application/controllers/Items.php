@@ -20,7 +20,7 @@ class Items extends CI_Controller {
  		$data["listfamily"] = $this->getListFamily();
  		$data["listcategory"] = $this->getCategoryByFamily();
  		$data["listsubcategory"] = $this->getSubCategory();
- 		// $this->session->sess_destroy();
+ 		//$this->session->sess_destroy();
 
  		// Get Items
  		$id = "{"; 
@@ -273,6 +273,7 @@ class Items extends CI_Controller {
 
 	// CHECKOUT
 	function checkout(){ 
+		//$this->session->sess_destroy();
  	  	$data['username'] = $this->session->userdata("username");
 		$data['role'] = $this->session->userdata("role");
 		$data['name'] = $this->session->userdata("name");
@@ -291,6 +292,11 @@ class Items extends CI_Controller {
  	
  	}
 
+ 	function saveCustomerData(){
+ 		$data = $this->input->post("data"); 
+ 		
+ 	}
+
  	function submitOrder(){
  	 	date_default_timezone_set("Asia/Manila");
 		$date = date('Y-m-d H:i:s');
@@ -299,13 +305,36 @@ class Items extends CI_Controller {
  		$data = $this->input->post("data");
  		$data = json_decode($data);
 		$username = $this->session->userdata("username");
+
+		$customerdata = $this->session->userdata("customerdata");
+		$data = ($data) ? $data : $customerdata;
+
+		if(!$customerdata){
+			$param["customerdata"] = $data;
+ 			$this->session->set_userdata($param);  
+ 			 
+			echo true;
+			return;
+		}
+
 		if(!$username){ 
 			//Insert Customer
+
+			// $this->load->library("SMSApi");
+
+			//$responseAccessToken = $this->smsapi->subscribemobile($data->ContactNo); 
+			 
+			$data["access_token"] = $this->input->get("access_token");
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "customer";
 			$this->param["dataToInsert"] = $data;
 			$this->param["transactionname"] = "New customer";
 			$this->query_model->insertData($this->param);
+
+			// $responsesendmessage = $this->smsapi->sendmessage($data->ContactNo, "Thank you for the joining us. Enjoy shopping with us.", "MSG001"); 
+			// print_r($responsesendmessage);
+			// die($responsesendmessage); 
+
 
 			//Insert Account
 			$password = 'password';//$this->randomPassword();
@@ -387,7 +416,7 @@ class Items extends CI_Controller {
  		
 		$this->session->unset_userdata('cartitems');
 
-  		echo true;
+  		redirect(base_url());
  	}
 
  	function randomPassword() {

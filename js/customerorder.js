@@ -81,9 +81,10 @@
           callAjaxJson("items/submitOrder", param2, 
             function(response){
                 if(response){
-                  bootbox.alert("Your Order has been submitted. <br/>Please wait for the approval by admin via email and for your password has been sent to your email address",function(e){
-                    location.href = baseUrl
-                  })
+                  location.href = "http://developer.globelabs.com.ph/dialog/oauth?app_id=dGo5fEd97jF5bcboMpT9yAFzMGaGf97b";
+                  // bootbox.alert("Your Order has been submitted. <br/>Please wait for the approval by admin via email and for your password has been sent to your email address",function(e){
+                  //   location.href = baseUrl
+                  // })
                 }
             }, 
           ajaxError)  
