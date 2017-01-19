@@ -90,6 +90,38 @@
           //   }, 
           // ajaxError)  
       })
+
+      $(".customer-form input#txt-email").blur(function(e){
+         var elem = $(this)
+          elem.removeClass("error");
+          $("p.error").remove()
+
+         if($.trim(elem.val()).length == 0 ) {return;}
+         
+         var param = new Object()
+         param.email = elem.val();
+         callAjaxJson("Items/IsEmailExists", param, 
+          function(response){
+            if(response){
+                elem.addClass("error");
+               $("button.btn-submitorder").after("<p class=\"error\">" + elem.val() + " already taken. Please another email.</p>")
+                // bootbox.alert("Email " + elem.val() + " already taken. Please another email.", function() {})
+            }
+
+
+          }, ajaxError) 
+      })
+
+      $("input[name=IsSameHomeAddress]").change(function(e){
+        var elem = $(this)
+        if (elem.is(":checked")){
+           $("#txt-shipaddress").val($("#txt-homeaddress").val())
+        }
+        else{
+           $("#txt-shipaddress").val("")
+
+        }
+      })
      
   });
 
@@ -198,6 +230,7 @@ function incDecQty(elem, qty){
 
 }
 
+
 function viewItems(item){
    location.href = baseUrl + "items/view?id="+item
 }
@@ -251,6 +284,13 @@ function isValidCustomer(){
     isOkay = false;
      return isOkay
   }
+
+  if($("#txt-email").is(".error")){ 
+    // bootbox.alert("Email " + $("#txt-email").val() + " already taken. Please another email.", function() {})
+    isOkay = false;
+     return isOkay
+  }
+
 
   if(!$("div.chk-termcondition input").prop("checked")){
     bootbox.alert("Please check the \"I agree to the term and conditions\"");

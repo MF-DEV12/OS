@@ -104,6 +104,10 @@
                 Already registered? Click <a href="<?=base_url('login?t=customer')?>">Login</a>
               <?php } ?>   
              </div>
+             <p>
+              <?php $username = $this->session->flashdata("error"); ?>   
+               
+             </p>
               <div class="row customer-form <?=(($customer) ? 'login' : '');?>">
                
                   <div class="col-sm-12 col-lg-6">
