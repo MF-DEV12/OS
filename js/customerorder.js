@@ -66,28 +66,29 @@
         location.href = baseUrl + "items/checkout";
       })
 
-      $("button.btn-submitorder").click(function(e){
-          if(!isValidCustomer()) {return;}
-          var param = new Object()
-          var param2 = new Object()
-          param.LastName = $("#txt-lastname").val()
-          param.FirstName = $("#txt-firstname").val()
-          param.HomeAddress = $("#txt-homeaddress").val()
-          param.ShipAddress = $("#txt-shipaddress").val()
-          param.Email = $("#txt-email").val()
-          param.ContactNo = $("#txt-contact").val()
-          param2.data = JSON.stringify(param)
-
-          callAjaxJson("items/submitOrder", param2, 
-            function(response){
-                if(response){
-                  location.href = "http://developer.globelabs.com.ph/dialog/oauth?app_id=dGo5fEd97jF5bcboMpT9yAFzMGaGf97b";
-                  // bootbox.alert("Your Order has been submitted. <br/>Please wait for the approval by admin via email and for your password has been sent to your email address",function(e){
-                  //   location.href = baseUrl
-                  // })
-                }
-            }, 
-          ajaxError)  
+      // $("button.btn-submitorder").click(function(e){
+      $("form#customerdata").submit(function(e){
+          if(!isValidCustomer()) {return false;}
+          // var param = new Object()
+          // var param2 = new Object()
+          // param.LastName = $("#txt-lastname").val()
+          // param.FirstName = $("#txt-firstname").val()
+          // param.HomeAddress = $("#txt-homeaddress").val()
+          // param.ShipAddress = $("#txt-shipaddress").val()
+          // param.Email = $("#txt-email").val()
+          // param.ContactNo = $("#txt-contact").val()
+          // param2.data = JSON.stringify(param)
+ 
+          // callAjaxJson("items/saveCustomerData", param2, 
+          //   function(response){
+          //       if(response){
+          //         location.href = baseUrl + "items/subscribeMobile";
+          //         // bootbox.alert("Your Order has been submitted. <br/>Please wait for the approval by admin via email and for your password has been sent to your email address",function(e){
+          //         //   location.href = baseUrl
+          //         // })
+          //       }
+          //   }, 
+          // ajaxError)  
       })
      
   });

@@ -204,6 +204,8 @@ class Items extends CI_Controller {
  	}
 
  	function orderToCart(){
+		$this->session->unset_userdata('email');
+
  		$item = $this->input->post("id");
  		$bindItemQty["'". $item . "'" ] = 1; // ITEM => ORDER QTY
  		 
@@ -273,7 +275,11 @@ class Items extends CI_Controller {
 
 	// CHECKOUT
 	function checkout(){ 
-		//$this->session->sess_destroy();
+		//$this->session->unset_userdata('customerdata');
+
+ 	  	$data['email'] = $this->session->userdata("email");
+		$this->session->unset_userdata('email');
+
  	  	$data['username'] = $this->session->userdata("username");
 		$data['role'] = $this->session->userdata("role");
 		$data['name'] = $this->session->userdata("name");
@@ -292,57 +298,64 @@ class Items extends CI_Controller {
  	
  	}
 
- 	function saveCustomerData(){
- 		$data = $this->input->post("data"); 
- 		
+ 	function subscribeMobile(){
+ 		$data["Lastname"] = $this->input->post("Lastname");
+ 		$data["Firstname"] = $this->input->post("Firstname");
+ 		$data["Email"] = $this->input->post("Email");
+ 		$data["HomeAddress"] = $this->input->post("HomeAddress");
+ 		$data["ShipAddress"] = $this->input->post("ShipAddress");
+
+ 		if($this->input->post("IsSameHomeAddress")){
+ 			$data["ShipAddress"] = $data["HomeAddress"];
+ 		} 
+
+ 		$param["customerdata"] = $data;
+
+		$this->session->set_userdata($param);
+		 // echo "<pre>";
+ 		// print_r($this->session->all_userdata());
+		header("Location: http://developer.globelabs.com.ph/dialog/oauth?app_id=dGo5fEd97jF5bcboMpT9yAFzMGaGf97b");
+ 		exit;
  	}
 
+ 
  	function submitOrder(){
  	 	date_default_timezone_set("Asia/Manila");
 		$date = date('Y-m-d H:i:s');
 		$datetime = date('Y-m-d H:i:s', strtotime($date));
-
- 		$data = $this->input->post("data");
- 		$data = json_decode($data);
+ 
+		$data = $this->session->userdata("customerdata"); 
 		$username = $this->session->userdata("username");
-
-		$customerdata = $this->session->userdata("customerdata");
-		$data = ($data) ? $data : $customerdata;
-
-		if(!$customerdata){
-			$param["customerdata"] = $data;
- 			$this->session->set_userdata($param);  
- 			 
-			echo true;
-			return;
-		}
-
+		$email  = $data["Email"];
 		if(!$username){ 
-			//Insert Customer
+			//Insert Customer 
+			$this->load->library("SMSApi");
 
-			// $this->load->library("SMSApi");
-
-			//$responseAccessToken = $this->smsapi->subscribemobile($data->ContactNo); 
+			$code = $this->input->get("code");
+			$result = $this->smsapi->getAccessToken($code);
 			 
-			$data["access_token"] = $this->input->get("access_token");
+			$data["access_token"] = $result->access_token;
+			$data["ContactNo"] = $result->subscriber_number;
+			$data["code"] = $code;
+
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "customer";
 			$this->param["dataToInsert"] = $data;
 			$this->param["transactionname"] = "New customer";
 			$this->query_model->insertData($this->param);
 
-			// $responsesendmessage = $this->smsapi->sendmessage($data->ContactNo, "Thank you for the joining us. Enjoy shopping with us.", "MSG001"); 
-			// print_r($responsesendmessage);
-			// die($responsesendmessage); 
-
-
+			$responsesendmessage = $this->smsapi->sendmessage($data["ContactNo"] , 
+				"LAMPANO HARDWARE:\nHi ". $data["Firstname"] . ", Your Order #orderno has been received and is going through verification process. For status, go to Track my Order in www.lampanohardwaretradings.16mb.com, Thank you.", 
+				"MSG001", 
+				$data["access_token"]); 
+		 
 			//Insert Account
 			$password = 'password';//$this->randomPassword();
 			$this->param = $this->param = $this->query_model->param; 
 			$this->param["table"] = "accounts";
-			$account["Username"] = $data->Email;
-			$account["LastName"] = $data->LastName;
-			$account["FirstName"] =$data->FirstName;
+			$account["Username"] = $data["Email"];
+			$account["LastName"] = $data["LastName"];
+			$account["FirstName"] =$data["FirstName"];
 			$account["Password"] = md5($password);
 			$account["LoginType"] = 'customer'; 
 			$this->param["dataToInsert"] = $account;
@@ -355,13 +368,13 @@ class Items extends CI_Controller {
 		$this->param["table"] = "customer";
 		$this->param["fields"] = "*";
 		if(!$username)
-			$this->param["conditions"] = "Email = '$data->Email'"; 
+			$this->param["conditions"] = "Email = '". $data["Email"] . "'"; 
 		else
 			$this->param["conditions"] = "Email = '$username'"; 
 
 		$result = $this->query_model->getData($this->param);
 		$customerNo = $result[0]->CustomerNo;
-		$shippingaddress = $data->ShipAddress;
+		$shippingaddress = $data["ShipAddress"];
 
 		//Insert tblOrder 
 		$data = array();
@@ -414,9 +427,14 @@ class Items extends CI_Controller {
 		$this->param["dataToUpdate"] = $data;
 		$this->query_model->updateData($this->param);
  		
-		$this->session->unset_userdata('cartitems');
+		$this->session->set_userdata('email', $email);
 
-  		redirect(base_url());
+
+		$this->session->unset_userdata('cartitems');
+		$this->session->unset_userdata('customerdata');
+ 
+
+  		redirect(base_url('items/checkout'));
  	}
 
  	function randomPassword() {

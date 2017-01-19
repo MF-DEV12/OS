@@ -83,108 +83,121 @@
 
 <div id="orders">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-12 col-md-8" style="border-right: 1px dashed #ddd;">
-          <h5 style="margin-bottom: 0px"><b></b></h5>
-         <div class="alert alert-success">
-           <strong>Account Information</strong> <br>
-          <?php $username = $this->session->userdata("username"); ?>   
-          <?php $customer = ($customer) ? $customer[0] : null;  ?>
+      <?php if(!$email) { ?>   
 
-          <?php $lastname = ($customer) ? $customer->Lastname : ""; ?>   
-          <?php $firstname = ($customer) ? $customer->Firstname : ""; ?>   
-          <?php $contact = ($customer) ? $customer->ContactNo : ""; ?>   
-          <?php $email = ($customer) ? $customer->Email : ""; ?>   
-          <?php $shipaddress = ($customer) ? $customer->ShipAddress : ""; ?>   
-          <?php $readonly = ($username) ? "readonly" : ""; ?>   
-          <?php if(!$username){ ?>   
-            Already registered? Click <a href="<?=base_url('login?t=customer')?>">Login</a>
-          <?php } ?>   
-         </div>
-          <div class="row customer-form <?=(($customer) ? 'login' : '');?>">
-           
-              <div class="col-sm-12 col-lg-6">
-                <div class="group">      
-                    <input class="inputMaterial" type="text" id="txt-lastname" value="<?=$lastname;?>" required  <?=$readonly?>>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label class="formlabel">Last name:</label>
-                </div>
-              </div>
-              <div class="col-sm-12 col-lg-6">
-                <div class="group">      
-                    <input class="inputMaterial" type="text"  id="txt-firstname" value="<?=$firstname;?>" required <?=$readonly?>>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label class="formlabel">First name:</label>
-                </div>
-              </div>
-              <div class="col-sm-12 col-lg-6">
-                <div class="group">      
-                    <input class="inputMaterial" type="text"  id="txt-contact"  value="<?=$contact;?>" required <?=$readonly?>>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label class="formlabel">Contact #:</label>
-                </div>
-              </div>
-              <div class="col-sm-12 col-lg-6">
-                <div class="group">      
-                    <input class="inputMaterial" type="text"  id="txt-email"  value="<?=$email;?>" required <?=$readonly?>>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label class="formlabel">Email Address:</label>
-                </div>
-              </div>
+          <form id="customerdata" method="post" action="<?=base_url('items/subscribeMobile');?>">
+          <div class="row">
+            <div class="col-sm-12 col-md-8" style="border-right: 1px dashed #ddd;">
+              <h5 style="margin-bottom: 0px"><b></b></h5>
+             <div class="alert alert-success">
+               <strong>Account Information</strong> <br>
+              <?php $username = $this->session->userdata("username"); ?>   
+              <?php $customer = ($customer) ? $customer[0] : null;  ?>
+
+              <?php $lastname = ($customer) ? $customer->Lastname : ""; ?>   
+              <?php $firstname = ($customer) ? $customer->Firstname : ""; ?>   
+              <?php $contact = ($customer) ? $customer->ContactNo : ""; ?>   
+              <?php $email = ($customer) ? $customer->Email : ""; ?>   
+              <?php $shipaddress = ($customer) ? $customer->ShipAddress : ""; ?>   
+              <?php $readonly = ($username) ? "readonly" : ""; ?>   
               <?php if(!$username){ ?>   
-              <div class="col-sm-12 col-lg-12">
-                <div class="group">      
-                    <input class="inputMaterial" type="text"  id="txt-homeaddress" required >
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label class="formlabel">Home Address:</label>
-                </div>
-              </div>
+                Already registered? Click <a href="<?=base_url('login?t=customer')?>">Login</a>
               <?php } ?>   
-              <div class="col-sm-12 col-lg-12">
-                <div class="group">      
-                    <input class="inputMaterial" type="text"  id="txt-shipaddress"  value="<?=$shipaddress;?>" required <?=$readonly?>>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label class="formlabel">Shipping Address:</label>
-                </div>
-                <?php if(!$username){ ?>   
-                  <div class="checkbox chk-sameaddress pull-right">
-                    <label><input type="checkbox">Same to Home Address</label>
+             </div>
+              <div class="row customer-form <?=(($customer) ? 'login' : '');?>">
+               
+                  <div class="col-sm-12 col-lg-6">
+                    <div class="group">      
+                        <input class="inputMaterial" type="text" id="txt-lastname" name="Lastname" value="<?=$lastname;?>" required  <?=$readonly?>>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label class="formlabel">Last name:</label>
+                    </div>
                   </div>
-                <?php } ?>   
-              </div>  
+                  <div class="col-sm-12 col-lg-6">
+                    <div class="group">      
+                        <input class="inputMaterial" type="text"  id="txt-firstname" name="Firstname" value="<?=$firstname;?>" required <?=$readonly?>>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label class="formlabel">First name:</label>
+                    </div>
+                  </div>
+                  <!-- <div class="col-sm-12 col-lg-6">
+                    <div class="group">      
+                        <input class="inputMaterial" type="text"  id="txt-contact"  value="<?=$contact;?>" required <?=$readonly?>>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label class="formlabel">Contact #:</label>
+                    </div>
+                  </div> -->
+                  <div class="col-sm-12 col-lg-12">
+                    <div class="group">      
+                        <input class="inputMaterial" type="text"  id="txt-email"  name="Email" value="<?=$email;?>" required <?=$readonly?>>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label class="formlabel">Email Address:</label>
+                    </div>
+                  </div>
+                  <?php if(!$username){ ?>   
+                  <div class="col-sm-12 col-lg-12">
+                    <div class="group">      
+                        <input class="inputMaterial" type="text"  id="txt-homeaddress" name="HomeAddress" required >
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label class="formlabel">Home Address:</label>
+                    </div>
+                  </div>
+                  <?php } ?>   
+                  <div class="col-sm-12 col-lg-12">
+                    <div class="group">      
+                        <input class="inputMaterial" type="text"  id="txt-shipaddress" name="ShipAddress" value="<?=$shipaddress;?>" required <?=$readonly?>>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label class="formlabel">Shipping Address:</label>
+                    </div>
+                    <?php if(!$username){ ?>   
+                      <div class="checkbox chk-sameaddress pull-right">
+                        <label><input type="checkbox" name="IsSameHomeAddress">Same to Home Address</label>
+                      </div>
+                    <?php } ?>   
+                  </div>  
 
-          </div>  
-         </div> 
-        <div class="col-sm-12 col-md-4" style="padding-top:15px;"> 
-            <?php $total = 0.00;?> 
-            <?php foreach($itemsoncart as $key) {?> 
-            <?php $total += ($key->Price * $key->Quantity);?>
-            <?php }?>
-          
+              </div>  
+             </div> 
+            <div class="col-sm-12 col-md-4" style="padding-top:15px;"> 
+                <?php $total = 0.00;?> 
+                <?php foreach($itemsoncart as $key) {?> 
+                <?php $total += ($key->Price * $key->Quantity);?>
+                <?php }?>
+              
+              <div class="alert alert-success">
+              <a class="pull-right" href="<?=base_url('items/cart')?>"><carttotal><?=$totalItemCart?></carttotal> item(s)</a>
+               <strong>Order Summary</strong> <br>
+             </div>
+              <dl id="order-summary">
+                <dd style="padding: 6px 10px;">Payment Type:  <span class="pull-right">Cash on delivery</span></dd>
+                <dd style="padding: 34px 10px; border-bottom: 1px solid #dcdcdc;border-top: 1px solid #dcdcdc;">Subtotal: <span class="subtotal pull-right">&#8369; <?=number_format($total,2);?></span></dd>
+                <dd style="padding: 6px 10px;"><b>Total:</b>  <span class="total pull-right"><b>&#8369; <?=number_format($total,2);?></b></span></dd>
+                <dd>
+                    <div class="checkbox chk-termcondition" align="center">
+                      <label><input type="checkbox" value="">I agree to the <a href="<?=base_url('items/termsandconditions')?>" target="_blank">term of conditions</a></label>
+                    </div>
+                    <button class="btn btn-action btn-submitorder" ><span class="glyphicon glyphicon-saved"></span> SUBMIT</button>
+                </dd>
+              </dl> 
+             
+            </div>
+          </div>
+          </form>
+
+      <?php } else {?>
           <div class="alert alert-success">
-          <a class="pull-right" href="<?=base_url('items/cart')?>"><carttotal><?=$totalItemCart?></carttotal> item(s)</a>
-           <strong>Order Summary</strong> <br>
-         </div>
-          <dl id="order-summary">
-            <dd style="padding: 6px 10px;">Payment Type:  <span class="pull-right">Cash on delivery</span></dd>
-            <dd style="padding: 34px 10px; border-bottom: 1px solid #dcdcdc;border-top: 1px solid #dcdcdc;">Subtotal: <span class="subtotal pull-right">&#8369; <?=number_format($total,2);?></span></dd>
-            <dd style="padding: 6px 10px;"><b>Total:</b>  <span class="total pull-right"><b>&#8369; <?=number_format($total,2);?></b></span></dd>
-            <dd>
-                <div class="checkbox chk-termcondition" align="center">
-                  <label><input type="checkbox" value="">I agree to the <a href="<?=base_url('items/termsandconditions')?>" target="_blank">term of conditions</a></label>
-                </div>
-                <button class="btn btn-action btn-submitorder" ><span class="glyphicon glyphicon-saved"></span> SUBMIT</button>
-            </dd>
-          </dl> 
-         
-        </div>
-      </div>
+            <strong>Your Order has been submitted.</strong>  <br/>Please wait for the approval by admin via email and for your temporary password and order number have been sent to your email address. <strong><?=$email?></strong>.<br/>
+            <a class="btn btn-success" href="<?=base_url();?>">Continue to shopping? </a> 
+          </div>
+
+
+      <?php } ?>
     </div>
    
  

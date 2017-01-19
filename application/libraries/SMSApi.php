@@ -5,6 +5,7 @@ class SMSApi{
     
 	 function subscribemobile($mobile){
 	 	$data = array(
+	 		'utf8'=>'✓',
             'authenticity_token' => "8AKz0v0nlFCVEz1VyYiAqJV2igkE3QGMyy+BexIs8rU=",
             'access_token[app_id]' => "dGo5fEd97jF5bcboMpT9yAFzMGaGf97b",
             'access_token[subscriber_num]'    => $mobile,
@@ -15,7 +16,22 @@ class SMSApi{
      	return $this->webrequest($data,  $url);
 	 }
 
-	 function sendmessage($mobile, $message, $messageid){
+	 function getAccessToken($code){
+	 	$data = array(
+            'app_id' => "dGo5fEd97jF5bcboMpT9yAFzMGaGf97b",
+            'app_secret' => "50f5f4dca402216a46ae3947468338aa315ef1b6558034d80fd4a1fb3b00c874",
+            'code' => $code
+	    );
+	     
+
+	    $url = 'http://developer.globelabs.com.ph/oauth/access_token';  
+	    $result = $this->webrequest($data,  $url); 
+	   
+	    $result = json_decode($result);
+	    return $result;
+	 }
+
+	 function sendmessage($mobile, $message, $messageid, $access_token){
 	 	$data = array(
             'clientCorrelator' => $messageid,
             'address' => $mobile,
@@ -24,7 +40,7 @@ class SMSApi{
 	    );
 	    $param["outboundSMSMessageRequest"] = $data;
 
-	    $url = 'https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0160/requests?access_token=VqS6EkKYN2wug7QR4ILQmD-zjcn_FTJCGbYL_k6Fr0Q';  
+	    $url = 'https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0160/requests?access_token='. $access_token;  
 	    return $this->webrequest($param,  $url); 
 	 }
 

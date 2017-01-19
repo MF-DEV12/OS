@@ -1112,8 +1112,40 @@ class Main extends CI_Controller {
 
 				$list[$returntable] = $this->getOrders($curstatus); 
 			}
+
+			$contactinfo = $this->getContactInfoByOrderNumber($orderno);
+			$this->load->library("SMSApi");
+			$statusforSMS = $this->strforOrderStatus($newstatus);
+			$responsesendmessage = $this->smsapi->sendmessage($contactinfo->ContactNo , 
+				"LAMPANO HARDWARE:\nThis is to confirm that your order $orderno has been " . $statusforSMS . ". For status, go to Track my Order in www.lampanohardwaretradings.16mb.com, Thank you.", 
+				"MSG001", 
+				$contactinfo->access_token); 
+
 			echo json_encode($list);
 		}
+
+		function getContactInfoByOrderNumber($ono){
+			$this->param = $this->query_model->param;
+			$this->param["table"] = "customer c";
+			$this->param["fields"] = "c.Firstname, c.ContactNo, c.code, c.access_token ";
+			$this->param["joins"] = "INNER JOIN tblorder o ON c.CustomerNo = o.CustomerNo ";
+			$this->param["conditions"] = "OrderNo = '$ono'";
+			$result = $this->query_model->getData($this->param);
+			return $result[0];
+		}
+
+		function strforOrderStatus($status){
+			$str = "";
+			if($status=="Process")
+				$str = "proccessed"; 
+			elseif($status=="Ship")
+				$str = "shipped";
+			elseif($status=="Cancel")
+				$str = "cancelled";
+			return $str;
+		}
+
+
 		function updateStocksByOrderNo($orderno){
 			$qry  = "UPDATE itemvariant v ";
 			$qry .= "INNER JOIN tblorderdetails o "; 
