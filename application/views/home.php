@@ -26,7 +26,7 @@
           <div class="carousel-inner">
             <div class="item active" style="background-image: url(images/slider/1.jpg)">
               <div class="caption">
-                <h1 class="animated fadeInLeftBig">Welcome to <br/><span>Lamparo Hardware</span></h1>
+                <h1 class="animated fadeInLeftBig">Welcome to <br/><span>Lampano Hardware</span></h1>
                 <!-- <p class="animated fadeInRightBig">Techniques don't produce quality products and services: People do, people who care,people who are treated as creatively contributing individuals</p> -->
                 <a data-scroll class="btn btn-start animated fadeInUpBig" href="#orders">Order now</a>
               </div>

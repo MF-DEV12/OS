@@ -1350,3 +1350,11 @@ div.alert-success{
    border-top: 1px solid #ddd;
     padding: 8px;
 }
+
+input.error{
+  background: #fff6f6;
+}
+p.error{
+  color: red;
+  font-size: 12px;
+}

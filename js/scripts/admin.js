@@ -2077,7 +2077,7 @@ function setupDataTable(table, data){
  
     dttable = table.DataTable({  
                      "aaData" : data.list,
-                     "bSort" : false,
+                     // "bSort" : false,
                      "aoColumns" : fields.Columns,  
                       scrollY:        (table.is(".main-table") || table.data("table") == "posubmit") ? '60vh' : ((table.data("table") == "auditlogs") ? "20vh" : "30vh"),
                       scrollCollapse: false,

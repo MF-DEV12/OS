@@ -161,8 +161,8 @@
     <script src="<?=base_url('js/navside/main.js');?>"></script>   
 
 
-    <script src="<?=base_url('js/print/dataTables.buttons.min.js');?>"></script>    
-    <script src="<?=base_url('js/print/buttons.print.min.js');?>"></script>   
+ <!--    <script src="<?=base_url('js/print/dataTables.buttons.min.js');?>"></script>    
+    <script src="<?=base_url('js/print/buttons.print.min.js');?>"></script>    -->
 
      
 </body>

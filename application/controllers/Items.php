@@ -20,7 +20,7 @@ class Items extends CI_Controller {
  		$data["listfamily"] = $this->getListFamily();
  		$data["listcategory"] = $this->getCategoryByFamily();
  		$data["listsubcategory"] = $this->getSubCategory();
- 		// $this->session->sess_destroy();
+ 		//$this->session->sess_destroy();
 
  		// Get Items
  		$id = "{"; 
@@ -38,7 +38,7 @@ class Items extends CI_Controller {
  	}
 
  	function getFamilyName($level1no = ""){ 
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "level1";
  		$this->param["fields"] = "*";
 		$this->param["conditions"] = "Level1No = '$level1no'";
@@ -48,7 +48,7 @@ class Items extends CI_Controller {
  	}
 
  	function getCategoryName($level2no = ""){ 
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "level2";
  		$this->param["fields"] = "*";
 		$this->param["conditions"] = "Level2No = '$level2no'";
@@ -58,7 +58,7 @@ class Items extends CI_Controller {
  	}
 
  	function getSubCategoryName($level3no = ""){ 
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "level3";
  		$this->param["fields"] = "*";
 		$this->param["conditions"] = "Level3No = '$level3no'";
@@ -70,7 +70,7 @@ class Items extends CI_Controller {
 
 
  	function getListFamily(){ 
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "level1";
  		$this->param["fields"] = "*";
 		$this->param["order"] = "Name1";
@@ -79,7 +79,7 @@ class Items extends CI_Controller {
  	}
 
  	function getCategoryByFamily(){ 
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "level2";
  		$this->param["fields"] = "*";
 		$this->param["order"] = "Name2";
@@ -87,7 +87,7 @@ class Items extends CI_Controller {
 		return $result;
  	}
  	function getSubCategory(){ 
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "level3";
  		$this->param["fields"] = "*";
 		$this->param["order"] = "Name3";
@@ -105,7 +105,7 @@ class Items extends CI_Controller {
  			$listitem = $listItemsInCart;
  		}
  		
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "vw_itemsforsale";
  		$this->param["fields"] = "*,0 Quantity";
 		$this->param["conditions"] = "ItemNumber IN($listitem)";
@@ -130,7 +130,7 @@ class Items extends CI_Controller {
  		$data = $id; 
  		$data = json_decode($data);
  		 
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "vw_itemsforsale";
  		$this->param["fields"] = "*";
 		$this->param["conditions"] = "";
@@ -153,7 +153,7 @@ class Items extends CI_Controller {
  	}
 
  	function getItemVariant($item){ 
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "itemvariant";
  		$this->param["fields"] = "*";
  		$this->param["conditions"] = "ItemNo = '$item' and Owned = 1 and Price is not null";
@@ -204,6 +204,8 @@ class Items extends CI_Controller {
  	}
 
  	function orderToCart(){
+		$this->session->unset_userdata('email');
+
  		$item = $this->input->post("id");
  		$bindItemQty["'". $item . "'" ] = 1; // ITEM => ORDER QTY
  		 
@@ -243,7 +245,7 @@ class Items extends CI_Controller {
 		$listitem = implode(",", $listitemkeys);
 	 
  		
- 		$this->param = $this->param = $this->query_model->param; 
+ 		$this->param = $this->query_model->param; 
  		$this->param["table"] = "vw_itemsforsale";
  		$this->param["fields"] = "*,0 Quantity";
 		$this->param["conditions"] = "ItemNumber IN($listitem)";
@@ -273,6 +275,11 @@ class Items extends CI_Controller {
 
 	// CHECKOUT
 	function checkout(){ 
+		//$this->session->unset_userdata('customerdata');
+
+ 	  	$data['email'] = $this->session->userdata("email");
+		$this->session->unset_userdata('email');
+
  	  	$data['username'] = $this->session->userdata("username");
 		$data['role'] = $this->session->userdata("role");
 		$data['name'] = $this->session->userdata("name");
@@ -291,29 +298,70 @@ class Items extends CI_Controller {
  	
  	}
 
+ 	function subscribeMobile(){
+ 		$data["Lastname"] = $this->input->post("Lastname");
+ 		$data["Firstname"] = $this->input->post("Firstname");
+ 		$data["Email"] = $this->input->post("Email");
+ 		$data["HomeAddress"] = $this->input->post("HomeAddress");
+ 		$data["ShipAddress"] = $this->input->post("ShipAddress");
+
+ 		if($this->input->post("IsSameHomeAddress")){
+ 			$data["ShipAddress"] = $data["HomeAddress"];
+ 		} 
+
+ 		if($this->IsEmailExists($data["Email"])){
+ 			$this->session->set_flashdata("error","Email Already exists");
+ 			echo "<script type=\"text/javascript\">history.back();</script>";
+			return;
+		}
+
+
+
+ 		$param["customerdata"] = $data;
+
+		$this->session->set_userdata($param);
+		 // echo "<pre>";
+ 		// print_r($this->session->all_userdata());
+		header("Location: http://developer.globelabs.com.ph/dialog/oauth?app_id=dGo5fEd97jF5bcboMpT9yAFzMGaGf97b");
+ 		exit;
+ 	}
+
+ 
  	function submitOrder(){
  	 	date_default_timezone_set("Asia/Manila");
 		$date = date('Y-m-d H:i:s');
 		$datetime = date('Y-m-d H:i:s', strtotime($date));
-
- 		$data = $this->input->post("data");
- 		$data = json_decode($data);
+ 
+		$cdata = $this->session->userdata("customerdata"); 
 		$username = $this->session->userdata("username");
+		$email  = $cdata["Email"];
+
+
 		if(!$username){ 
-			//Insert Customer
-			$this->param = $this->param = $this->query_model->param; 
+			//Insert Customer 
+			$this->load->library("SMSApi");
+
+			$code = $this->input->get("code");
+			$result = $this->smsapi->getAccessToken($code);
+			 
+			$cdata["access_token"] = $result->access_token;
+			$cdata["ContactNo"] = $result->subscriber_number;
+			$cdata["code"] = $code;
+
+			$this->param = $this->query_model->param; 
 			$this->param["table"] = "customer";
-			$this->param["dataToInsert"] = $data;
+			$this->param["dataToInsert"] = $cdata;
 			$this->param["transactionname"] = "New customer";
 			$this->query_model->insertData($this->param);
 
+		
 			//Insert Account
 			$password = 'password';//$this->randomPassword();
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param; 
 			$this->param["table"] = "accounts";
-			$account["Username"] = $data->Email;
-			$account["LastName"] = $data->LastName;
-			$account["FirstName"] =$data->FirstName;
+			$account["Username"] = $cdata["Email"];
+			$account["LastName"] = $cdata["LastName"];
+			$account["FirstName"] =$cdata["FirstName"];
 			$account["Password"] = md5($password);
 			$account["LoginType"] = 'customer'; 
 			$this->param["dataToInsert"] = $account;
@@ -322,21 +370,21 @@ class Items extends CI_Controller {
 
 
 		// Get CustomerNo by Email
-		$this->param = $this->param = $this->query_model->param; 
+		$this->param = $this->query_model->param; 
 		$this->param["table"] = "customer";
 		$this->param["fields"] = "*";
 		if(!$username)
-			$this->param["conditions"] = "Email = '$data->Email'"; 
+			$this->param["conditions"] = "Email = '". $cdata["Email"] . "'"; 
 		else
 			$this->param["conditions"] = "Email = '$username'"; 
 
 		$result = $this->query_model->getData($this->param);
 		$customerNo = $result[0]->CustomerNo;
-		$shippingaddress = $data->ShipAddress;
+		$shippingaddress = $cdata["ShipAddress"];
 
 		//Insert tblOrder 
 		$data = array();
-		$this->param = $this->param = $this->query_model->param; 
+		$this->param = $this->query_model->param; 
 		$this->param["table"] = "tblorder";
 		$data["CustomerNo"] = $customerNo;
 		$data["Date"] = $datetime;
@@ -346,12 +394,18 @@ class Items extends CI_Controller {
 		$this->query_model->insertData($this->param);
 
 		// Get OrderNo by Date and CustomerNo
-		$this->param = $this->param = $this->query_model->param; 
+		$this->param = $this->query_model->param; 
 		$this->param["table"] = "tblorder";
 		$this->param["fields"] = "*";
 		$this->param["conditions"] = "Date = '$datetime' and CustomerNo = '$customerNo'";
 		$result = $this->query_model->getData($this->param);
 		$OrderNo = $result[0]->OrderNo;
+
+		$responsesendmessage = $this->smsapi->sendmessage($cdata["ContactNo"] , 
+			"LAMPANO HARDWARE:\nHi ". $cdata["Firstname"] . ", Your Order $OrderNo has been received and is going through verification process. For status, go to Track my Order in www.lampanohardwaretradings.16mb.com, Thank you.", 
+			"MSG001", 
+			$cdata["access_token"]); 
+	 
  
 
 		$listItemsInCart = $this->session->userdata("cartitems"); 
@@ -362,7 +416,7 @@ class Items extends CI_Controller {
 		// INSERT ORDER ITEM DETAILS - tblorderdetails
 		foreach ($itemsoncart as $key) {
 			$data = array();
-			$this->param = $this->param = $this->query_model->param; 
+			$this->param = $this->query_model->param; 
 			$this->param["table"] = "tblorderdetails";
 			$data["OrderNo"] = $OrderNo;
 			$data["ItemVariantNo"] = $key->ItemNumber;
@@ -378,17 +432,35 @@ class Items extends CI_Controller {
 
 		//Update TotalAmount from tblorder
 		$data = array();
-		$this->param = $this->param = $this->query_model->param; 
+		$this->param = $this->query_model->param; 
 		$this->param["table"] = "tblorder";
 		$this->param["conditions"] = "Date = '$datetime' and CustomerNo = '$customerNo'";
 		$data["TotalAmount"] = $total;
 		$this->param["dataToUpdate"] = $data;
 		$this->query_model->updateData($this->param);
  		
-		$this->session->unset_userdata('cartitems');
+		$this->session->set_userdata('email', $email);
 
-  		echo true;
+
+		$this->session->unset_userdata('cartitems');
+		$this->session->unset_userdata('customerdata');
+ 
+
+  		redirect(base_url('items/checkout'));
  	}
+
+ 	function IsEmailExists(){
+ 		$email = $this->input->post("email"); 
+		$this->param = $this->query_model->param; 
+
+		$this->param["table"] = "customer";
+		$this->param["fields"] = "*";
+		$this->param["conditions"] = "Email = '$email'";
+
+		$result = $this->query_model->getData($this->param);
+
+		echo ($result) ? true : false;
+  	}
 
  	function randomPassword() {
 	    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -402,7 +474,7 @@ class Items extends CI_Controller {
 	}
 
 	function getCustomerDetailsByEmail($email){
-		$this->param = $this->param = $this->query_model->param; 
+		$this->param = $this->query_model->param; 
 		$this->param["table"] = "customer";
 		$this->param["fields"] = "*";
 		$this->param["conditions"] = "Email = '$email'";

@@ -1,6 +1,6 @@
 var domain = window.location.pathname;
 domain = domain.split("/");
-var baseUrl = location.protocol + '//' + location.host + "/" + domain[1] + "/"
+var baseUrl = location.protocol + '//' + location.host + "/" //+ domain[1] + "/"
 
 
 function callAjaxJson(controller,parampost, successFunct, errorFunct){

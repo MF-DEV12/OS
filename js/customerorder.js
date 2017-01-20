@@ -66,27 +66,61 @@
         location.href = baseUrl + "items/checkout";
       })
 
-      $("button.btn-submitorder").click(function(e){
-          if(!isValidCustomer()) {return;}
-          var param = new Object()
-          var param2 = new Object()
-          param.LastName = $("#txt-lastname").val()
-          param.FirstName = $("#txt-firstname").val()
-          param.HomeAddress = $("#txt-homeaddress").val()
-          param.ShipAddress = $("#txt-shipaddress").val()
-          param.Email = $("#txt-email").val()
-          param.ContactNo = $("#txt-contact").val()
-          param2.data = JSON.stringify(param)
+      // $("button.btn-submitorder").click(function(e){
+      $("form#customerdata").submit(function(e){
+          if(!isValidCustomer()) {return false;}
+          // var param = new Object()
+          // var param2 = new Object()
+          // param.LastName = $("#txt-lastname").val()
+          // param.FirstName = $("#txt-firstname").val()
+          // param.HomeAddress = $("#txt-homeaddress").val()
+          // param.ShipAddress = $("#txt-shipaddress").val()
+          // param.Email = $("#txt-email").val()
+          // param.ContactNo = $("#txt-contact").val()
+          // param2.data = JSON.stringify(param)
+ 
+          // callAjaxJson("items/saveCustomerData", param2, 
+          //   function(response){
+          //       if(response){
+          //         location.href = baseUrl + "items/subscribeMobile";
+          //         // bootbox.alert("Your Order has been submitted. <br/>Please wait for the approval by admin via email and for your password has been sent to your email address",function(e){
+          //         //   location.href = baseUrl
+          //         // })
+          //       }
+          //   }, 
+          // ajaxError)  
+      })
 
-          callAjaxJson("items/submitOrder", param2, 
-            function(response){
-                if(response){
-                  bootbox.alert("Your Order has been submitted. <br/>Please wait for the approval by admin via email and for your password has been sent to your email address",function(e){
-                    location.href = baseUrl
-                  })
-                }
-            }, 
-          ajaxError)  
+      $(".customer-form input#txt-email").blur(function(e){
+         var elem = $(this)
+          elem.removeClass("error");
+          $("p.error").remove()
+
+         if($.trim(elem.val()).length == 0 ) {return;}
+         
+         var param = new Object()
+         param.email = elem.val();
+         callAjaxJson("Items/IsEmailExists", param, 
+          function(response){
+            if(response){
+                elem.addClass("error");
+               $("button.btn-submitorder").after("<p class=\"error\">" + elem.val() + " already taken. Please another email.</p>")
+                // bootbox.alert("Email " + elem.val() + " already taken. Please another email.", function() {})
+            }
+
+
+          }, ajaxError) 
+      })
+
+      $("input[name=IsSameHomeAddress]").change(function(e){
+        var elem = $(this)
+        if (elem.is(":checked")){
+           $("#txt-shipaddress").val($("#txt-homeaddress").val())
+        }
+        else{
+           $("#txt-shipaddress").val("")
+
+        }
       })
      
   });
@@ -196,6 +230,7 @@ function incDecQty(elem, qty){
 
 }
 
+
 function viewItems(item){
    location.href = baseUrl + "items/view?id="+item
 }
@@ -249,6 +284,13 @@ function isValidCustomer(){
     isOkay = false;
      return isOkay
   }
+
+  if($("#txt-email").is(".error")){ 
+    // bootbox.alert("Email " + $("#txt-email").val() + " already taken. Please another email.", function() {})
+    isOkay = false;
+     return isOkay
+  }
+
 
   if(!$("div.chk-termcondition input").prop("checked")){
     bootbox.alert("Please check the \"I agree to the term and conditions\"");
