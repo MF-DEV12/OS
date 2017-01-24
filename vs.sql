@@ -28,11 +28,11 @@ CREATE TABLE `accounts` (
   `Password` varchar(200) DEFAULT NULL,
   `LoginType` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`AccountNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 /*Data for the table `accounts` */
 
-insert  into `accounts`(`AccountNo`,`LastName`,`FirstName`,`Username`,`Password`,`LoginType`) values (1,NULL,NULL,'Rolen','5f4dcc3b5aa765d61d8327deb882cf99','admin'),(2,NULL,NULL,'JMDMktg','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(3,NULL,NULL,'VEEnt','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(4,NULL,NULL,'Voschtech','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(5,NULL,NULL,'DJZTrd','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(6,NULL,NULL,'Solarfoam','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(7,NULL,NULL,'HGCECo','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(8,NULL,NULL,'mtest','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(9,NULL,NULL,'TestEmail','25d55ad283aa400af464c76d713c07ad','supplier'),(10,NULL,NULL,'testabc','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(11,'test','abc','test@yahoo.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(12,NULL,NULL,NULL,'5f4dcc3b5aa765d61d8327deb882cf99','customer'),(13,NULL,NULL,'test@abc.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(14,NULL,NULL,'friazmarkanthony@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(15,NULL,NULL,'friazmarkanthony@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(16,NULL,NULL,'test@abc.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(17,NULL,NULL,'friazmarkanthony@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(18,NULL,NULL,'friazmarkanthony@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99','customer');
+insert  into `accounts`(`AccountNo`,`LastName`,`FirstName`,`Username`,`Password`,`LoginType`) values (1,NULL,NULL,'Rolen','5f4dcc3b5aa765d61d8327deb882cf99','admin'),(2,NULL,NULL,'JMDMktg','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(3,NULL,NULL,'VEEnt','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(4,NULL,NULL,'Voschtech','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(5,NULL,NULL,'DJZTrd','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(6,NULL,NULL,'Solarfoam','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(7,NULL,NULL,'HGCECo','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(8,NULL,NULL,'mtest','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(9,NULL,NULL,'TestEmail','25d55ad283aa400af464c76d713c07ad','supplier'),(10,NULL,NULL,'testabc','5f4dcc3b5aa765d61d8327deb882cf99','supplier'),(11,'test','abc','test@yahoo.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(12,NULL,NULL,NULL,'5f4dcc3b5aa765d61d8327deb882cf99','customer'),(13,NULL,NULL,'test@abc.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(14,NULL,NULL,'friazmarkanthony@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(15,NULL,NULL,'friazmarkanthony@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(16,NULL,NULL,'test@abc.com','5f4dcc3b5aa765d61d8327deb882cf99','customer'),(19,'deliver','deliver','deliver','5f4dcc3b5aa765d61d8327deb882cf99','deliver');
 
 /*Table structure for table `admin` */
 
@@ -450,6 +450,7 @@ CREATE TABLE `tblorder` (
   `Status` varchar(50) DEFAULT 'New',
   `SalesNo` int(4) unsigned zerofill DEFAULT NULL,
   `TransactionDate` datetime DEFAULT NULL,
+  `DeliverBy` int(11) DEFAULT NULL,
   PRIMARY KEY (`OrderNo`),
   KEY `FKSales_order` (`SalesNo`),
   KEY `CustomerNo` (`CustomerNo`),
@@ -458,7 +459,7 @@ CREATE TABLE `tblorder` (
 
 /*Data for the table `tblorder` */
 
-insert  into `tblorder`(`CustomerNo`,`OrderNo`,`ShipAddress`,`TotalAmount`,`Date`,`Ship`,`Status`,`SalesNo`,`TransactionDate`) values (26,00000001,'Block 4 Lot 14 Oregon St. Phase 7 Palmera Homes Northwinds San Jose Del Monte Bulacan',2990.00,'2017-01-19 15:45:51',1,'Ship',NULL,'2017-01-19 15:47:05');
+insert  into `tblorder`(`CustomerNo`,`OrderNo`,`ShipAddress`,`TotalAmount`,`Date`,`Ship`,`Status`,`SalesNo`,`TransactionDate`,`DeliverBy`) values (26,00000001,'Block 4 Lot 14 Oregon St. Phase 7 Palmera Homes Northwinds San Jose Del Monte Bulacan',2990.00,'2017-01-19 15:45:51',1,'Ship',NULL,'2017-01-19 15:47:05',NULL);
 
 /*Table structure for table `tblorderdetails` */
 
@@ -528,6 +529,7 @@ DROP TABLE IF EXISTS `vw_allorders`;
  `OrderDate` datetime ,
  `TotalAmount` varchar(46) ,
  `Status` varchar(50) ,
+ `DeliverBy` int(11) ,
  `Action` varchar(213) 
 )*/;
 
@@ -998,7 +1000,7 @@ DROP TABLE IF EXISTS `vw_sumquantityforinventory`;
 /*!50001 DROP TABLE IF EXISTS `vw_allorders` */;
 /*!50001 DROP VIEW IF EXISTS `vw_allorders` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_allorders` AS (select 'View items <span class="glyphicon glyphicon-menu-right pull-right"></span>' AS `ViewItems`,`o`.`CustomerNo` AS `CustomerNo`,`o`.`OrderNo` AS `OrderNo`,count(`od`.`OrderNo`) AS `NoOfItems`,concat(`c`.`Firstname`,' ',`c`.`Lastname`) AS `CustomerName`,`c`.`HomeAddress` AS `Address`,`c`.`ShipAddress` AS `ShipAddress`,`o`.`Date` AS `OrderDate`,format(`o`.`TotalAmount`,2) AS `TotalAmount`,`o`.`Status` AS `Status`,(case when (`o`.`Status` = 'New') then concat('<div class="btn-group" align="center"><button class="btn btn-default" onclick="cancelOrder(\'',`o`.`OrderNo`,'\');">Cancel</button><button class="btn btn-action" onclick="processOrder(\'',`o`.`OrderNo`,'\');">Process</button></div>') when (`o`.`Status` = 'Process') then concat('<button class="btn btn-action" onclick="shipOrder(\'',`o`.`OrderNo`,'\');">Ship</button>') else '' end) AS `Action` from ((`tblorder` `o` join `customer` `c` on((`o`.`CustomerNo` = `c`.`CustomerNo`))) join `tblorderdetails` `od` on((`o`.`OrderNo` = `od`.`OrderNo`))) group by `od`.`OrderNo`) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_allorders` AS (select 'View items <span class="glyphicon glyphicon-menu-right pull-right"></span>' AS `ViewItems`,`o`.`CustomerNo` AS `CustomerNo`,`o`.`OrderNo` AS `OrderNo`,count(`od`.`OrderNo`) AS `NoOfItems`,concat(`c`.`Firstname`,' ',`c`.`Lastname`) AS `CustomerName`,`c`.`HomeAddress` AS `Address`,`c`.`ShipAddress` AS `ShipAddress`,`o`.`Date` AS `OrderDate`,format(`o`.`TotalAmount`,2) AS `TotalAmount`,`o`.`Status` AS `Status`,`o`.`DeliverBy` AS `DeliverBy`,(case when (`o`.`Status` = 'New') then concat('<div class="btn-group" align="center"><button class="btn btn-default" onclick="cancelOrder(\'',`o`.`OrderNo`,'\');">Cancel</button><button class="btn btn-action" onclick="processOrder(\'',`o`.`OrderNo`,'\');">Process</button></div>') when (`o`.`Status` = 'Process') then concat('<button class="btn btn-action" onclick="shipOrder(\'',`o`.`OrderNo`,'\');">Ship</button>') else '' end) AS `Action` from ((`tblorder` `o` join `customer` `c` on((`o`.`CustomerNo` = `c`.`CustomerNo`))) join `tblorderdetails` `od` on((`o`.`OrderNo` = `od`.`OrderNo`))) group by `od`.`OrderNo`) */;
 
 /*View structure for view vw_getbackorders */
 

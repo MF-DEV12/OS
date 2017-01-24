@@ -28,19 +28,28 @@ class Login extends CI_Controller {
 			$data["name"] = $result[0]->FirstName;
 			$data["email"] = $result[0]->Username;
 			$data["role"] = $result[0]->LoginType;
-			if($data["role"] == "supplier")
+			if($data["role"] == "supplier" )
 				$data["supplierno"] = $this->getSupplierNoByAccountNo($result[0]->AccountNo);
-			if($data["role"] == "customer")
+			if($data["role"] == "customer" )
 				$data["customerno"] = $this->getCustomerNoByEmail($result[0]->Username);
+			if($data["role"] == "deliver" )
+				$data["accountno"] = $this->getCustomerNoByEmail($result[0]->AccountNo);
 			$this->session->set_userdata($data); 
-			if($data["role"] != "customer")
-				redirect("/main");
-			else{
+
+
+
+			if($data["role"] == "deliver")
+				redirect("/deliver");
+			else if($data["role"] == "customer"){
 				if($this->input->get("t"))
 					redirect("/items/checkout");
 				else
 					redirect("");
 			}
+			else
+				redirect("/main");
+
+			
 		}
 		else
 			$this->session->set_flashdata('error', "Username and password did not match.");

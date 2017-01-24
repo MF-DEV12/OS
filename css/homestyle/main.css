@@ -369,17 +369,17 @@ section {
 ********portfolio CSS*****
 **************************/
 
-#portfolio .container-fluid, 
-#portfolio .col-sm-3  {
+#orders .container-fluid, 
+#orders .col-sm-3  {
   overflow: hidden;
   padding: 0;
 }
 
-#portfolio .folio-item {
+#orders .folio-item {
   position: relative;
 }
 
-#portfolio .overlay {
+#orders .overlay {
   background-color: #000;
   color: #fff; 
   left: 0;
@@ -450,7 +450,7 @@ section {
   transition: all 0.8s ease-in-out;
 }
 
-#portfolio .folio-item:hover .folio-image {
+#orders .folio-item:hover .folio-image {
   -webkit-transform: scale(1.5) rotate(-15deg);
   transform: scale(1.5) rotate(-15deg);
 }
@@ -462,18 +462,18 @@ section {
       
 
 
-#portfolio .folio-item:hover .overlay {
+#orders .folio-item:hover .overlay {
   opacity: 0.8;
   bottom: 0;
   height: 100%;
 }
 
-#portfolio .folio-item:hover .folio-overview .folio-expand {
+#orders .folio-item:hover .folio-overview .folio-expand {
   margin-top: 0;
   margin-left:0;
 }
 
-#portfolio .folio-item:hover .overlay .folio-info {
+#orders .folio-item:hover .overlay .folio-info {
   opacity: 1;  
   margin-bottom:0;
   margin-top:0;
