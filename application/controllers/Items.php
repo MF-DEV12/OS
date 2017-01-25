@@ -322,7 +322,7 @@ class Items extends CI_Controller {
 		$this->session->set_userdata($param);
 		 // echo "<pre>";
  		// print_r($this->session->all_userdata());
-		header("Location: http://developer.globelabs.com.ph/dialog/oauth?app_id=dGo5fEd97jF5bcboMpT9yAFzMGaGf97b");
+		header("Location: http://developer.globelabs.com.ph/dialog/oauth?app_id=".SMS_API_ID);
  		exit;
  	}
 

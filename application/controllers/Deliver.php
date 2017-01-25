@@ -33,8 +33,12 @@ class Deliver extends CI_Controller {
  		$this->param["fields"] = "*";
  		$this->param["conditions"] = "Status = '$status' and DeliverBy = '$accountno'";
 		$result = $this->query_model->getData($this->param);
+		//die($this->db->last_query());
 		return $result; 
  	}
 	 
+	function trackcustomer(){
+		$this->load->view("track-customer");
+	}
 	 
 }

@@ -22,6 +22,7 @@ class Login extends CI_Controller {
 		$this->param["fields"] = "*";
 		$this->param["conditions"] = " Username = '$username' AND `Password` = '$password'";
 		$result = $this->query_model->getData($this->param);
+		//die($this->db->last_query());
 		// $this->session->set_flashdata('error', $this->db->last_query()); // debug purpose
 		if($result){
 			$data["username"] = $result[0]->Username;
@@ -33,7 +34,7 @@ class Login extends CI_Controller {
 			if($data["role"] == "customer" )
 				$data["customerno"] = $this->getCustomerNoByEmail($result[0]->Username);
 			if($data["role"] == "deliver" )
-				$data["accountno"] = $this->getCustomerNoByEmail($result[0]->AccountNo);
+				$data["accountno"] = $result[0]->AccountNo;
 			$this->session->set_userdata($data); 
 
 

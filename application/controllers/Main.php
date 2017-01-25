@@ -20,6 +20,8 @@ class Main extends CI_Controller {
 		$data["mostcustomer"] = $this->GetMostCustomer();
 		$data["totalcustomer"] = $this->GetTotalCustomer();
 		$data["totalrevenue"] = $this->restyle_text($this->getTotalRevenue());
+
+		$data["listdeliver"] = $this->getDeliverName();
 		
 
 		$data["listfamily"] = $this->getFamily();
@@ -1083,6 +1085,7 @@ class Main extends CI_Controller {
 			$this->param = $this->query_model->param; 
 			
 			$data["Ship"] = ($newstatus=='Ship') ? 1 : 0;
+			$data["DeliverBy"] = ($newstatus=='Ship') ? $this->input->post("deliverno") : null;
 			$data["Status"] = $newstatus;
 			$data["TransactionDate"] = $datetime;
 			$this->param["dataToUpdate"] = $data;
@@ -1122,6 +1125,16 @@ class Main extends CI_Controller {
 				$contactinfo->access_token); 
 
 			echo json_encode($list);
+		}
+
+		function getDeliverName(){
+			$this->param = $this->query_model->param;
+			$this->param["table"] = "accounts";
+			$this->param["fields"] = "*";
+			$this->param["conditions"] = "LoginType='deliver'";
+			$this->param["order"] = "LastName, Firstname";
+			$result = $this->query_model->getData($this->param);
+			return $result;
 		}
 
 		function getContactInfoByOrderNumber($ono){

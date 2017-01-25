@@ -2,26 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class SMSApi{
-    
-	 function subscribemobile($mobile){
-	 	$data = array(
-	 		'utf8'=>'✓',
-            'authenticity_token' => "8AKz0v0nlFCVEz1VyYiAqJV2igkE3QGMyy+BexIs8rU=",
-            'access_token[app_id]' => "dGo5fEd97jF5bcboMpT9yAFzMGaGf97b",
-            'access_token[subscriber_num]'    => $mobile,
-            'commit'    => "Grant" 
-	    );
-
-	    $url = 'https://developer.globelabs.com.ph/oauth/request_authorization'; 
-     	return $this->webrequest($data,  $url);
-	 }
+	  
 
 	 function getAccessToken($code){
 	 	$data = array(
-            'app_id' => "dGo5fEd97jF5bcboMpT9yAFzMGaGf97b",
-            'app_secret' => "50f5f4dca402216a46ae3947468338aa315ef1b6558034d80fd4a1fb3b00c874",
+            'app_id' => SMS_API_ID,
+            'app_secret' => SMS_APP_SECRET,
             'code' => $code
 	    );
+
 	     
 
 	    $url = 'http://developer.globelabs.com.ph/oauth/access_token';  
@@ -35,12 +24,12 @@ class SMSApi{
 	 	$data = array(
             'clientCorrelator' => $messageid,
             'address' => $mobile,
-            'senderAddress' => "0160",
+            'senderAddress' => SMS_API_CODE,
             "outboundSMSTextMessage" => array('message'    => $message)
 	    );
 	    $param["outboundSMSMessageRequest"] = $data;
 
-	    $url = 'https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/0160/requests?access_token='. $access_token;  
+	    $url = 'https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/'.SMS_API_CODE.'/requests?access_token='. $access_token;  
 	    return $this->webrequest($param,  $url); 
 	 }
 
