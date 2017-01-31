@@ -25,7 +25,7 @@
  
   </div> 
 
-   <form action="<?=base_url('login/validateUser')?>" method="post" class="login-form" id="loginform">
+   <form action="<?=base_url('login/validateUser'. (($t) ? '?t=customer' : ''))?>" method="post" class="login-form" id="loginform">
     <div class="group">      
       <input class="inputMaterial" type="text" name="username" required>
       <span class="highlight"></span>

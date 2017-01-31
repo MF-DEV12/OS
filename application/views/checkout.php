@@ -84,22 +84,25 @@
 <div id="orders">
     <div class="container">
       <?php if(!$email) { ?>   
+            <?php $username = $this->session->userdata("username"); ?>   
+            <?php $customer = ($customer) ? $customer[0] : null;  ?>
 
-          <form id="customerdata" method="post" action="<?=base_url('items/subscribeMobile');?>">
+            <?php $lastname = ($customer) ? $customer->Lastname : ""; ?>   
+            <?php $firstname = ($customer) ? $customer->Firstname : ""; ?>   
+            <?php $contact = ($customer) ? $customer->ContactNo : ""; ?>   
+            <?php $email = ($customer) ? $customer->Email : ""; ?>   
+            <?php $homeaddress = ($customer) ? $customer->HomeAddress : ""; ?>   
+            <?php $shipaddress = ($customer) ? $customer->ShipAddress : ""; ?>   
+            <?php $readonly = ($username) ? "readonly" : ""; ?>   
+            <?php $form = ($username) ? "submitOrder" : "subscribeMobile"; ?>   
+
+          <form id="customerdata" method="post" action="<?=base_url('items/'.$form);?>">
           <div class="row">
             <div class="col-sm-12 col-md-8" style="border-right: 1px dashed #ddd;">
               <h5 style="margin-bottom: 0px"><b></b></h5>
              <div class="alert alert-success">
                <strong>Account Information</strong> <br>
-              <?php $username = $this->session->userdata("username"); ?>   
-              <?php $customer = ($customer) ? $customer[0] : null;  ?>
-
-              <?php $lastname = ($customer) ? $customer->Lastname : ""; ?>   
-              <?php $firstname = ($customer) ? $customer->Firstname : ""; ?>   
-              <?php $contact = ($customer) ? $customer->ContactNo : ""; ?>   
-              <?php $email = ($customer) ? $customer->Email : ""; ?>   
-              <?php $shipaddress = ($customer) ? $customer->ShipAddress : ""; ?>   
-              <?php $readonly = ($username) ? "readonly" : ""; ?>   
+            
               <?php if(!$username){ ?>   
                 Already registered? Click <a href="<?=base_url('login?t=customer')?>">Login</a>
               <?php } ?>   
@@ -145,7 +148,7 @@
                   <?php if(!$username){ ?>   
                   <div class="col-sm-12 col-lg-12">
                     <div class="group">      
-                        <input class="inputMaterial" type="text"  id="txt-homeaddress" name="HomeAddress" required >
+                        <input class="inputMaterial" type="text"  id="txt-homeaddress" name="HomeAddress" value="<?=$homeaddress;?>"  required >
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label class="formlabel">Home Address:</label>

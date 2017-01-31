@@ -277,8 +277,8 @@ class Items extends CI_Controller {
 	function checkout(){ 
 		//$this->session->unset_userdata('customerdata');
 
- 	  	$data['email'] = $this->session->userdata("email");
-		$this->session->unset_userdata('email');
+ 	  	$data['email'] = $this->session->userdata("NewEmail");
+		$this->session->unset_userdata('NewEmail');
 
  	  	$data['username'] = $this->session->userdata("username");
 		$data['role'] = $this->session->userdata("role");
@@ -313,15 +313,10 @@ class Items extends CI_Controller {
  			$this->session->set_flashdata("error","Email Already exists");
  			echo "<script type=\"text/javascript\">history.back();</script>";
 			return;
-		}
+		} 
 
-
-
- 		$param["customerdata"] = $data;
-
-		$this->session->set_userdata($param);
-		 // echo "<pre>";
- 		// print_r($this->session->all_userdata());
+ 		$param["customerdata"] = $data; 
+		$this->session->set_userdata($param); 
 		header("Location: http://developer.globelabs.com.ph/dialog/oauth?app_id=".SMS_API_ID);
  		exit;
  	}
@@ -335,11 +330,12 @@ class Items extends CI_Controller {
 		$cdata = $this->session->userdata("customerdata"); 
 		$username = $this->session->userdata("username");
 		$email  = $cdata["Email"];
-
+		$this->load->library("SMSApi");
+		$this->load->library("Email_Lib");
 
 		if(!$username){ 
 			//Insert Customer 
-			$this->load->library("SMSApi");
+		
 
 			$code = $this->input->get("code");
 			$result = $this->smsapi->getAccessToken($code);
@@ -356,7 +352,7 @@ class Items extends CI_Controller {
 
 		
 			//Insert Account
-			$password = 'password';//$this->randomPassword();
+			$password = 'password'; //$this->randomPassword();
 			$this->param = $this->query_model->param; 
 			$this->param["table"] = "accounts";
 			$account["Username"] = $cdata["Email"];
@@ -366,6 +362,13 @@ class Items extends CI_Controller {
 			$account["LoginType"] = 'customer'; 
 			$this->param["dataToInsert"] = $account;
 			$this->query_model->insertData($this->param);
+		}else{ 
+
+			$email = $this->session->userdata("email");  
+			$cdata =  $this->getCustomerDetailsByEmail($email, true); 
+			$cdata = $cdata[0];
+			// echo "<pre>";
+			// print_r($cdata);
 		}
 
 
@@ -400,13 +403,14 @@ class Items extends CI_Controller {
 		$this->param["conditions"] = "Date = '$datetime' and CustomerNo = '$customerNo'";
 		$result = $this->query_model->getData($this->param);
 		$OrderNo = $result[0]->OrderNo;
+		// print_r($result);
 
 		$responsesendmessage = $this->smsapi->sendmessage($cdata["ContactNo"] , 
-			"LAMPANO HARDWARE:\nHi ". $cdata["Firstname"] . ", Your Order $OrderNo has been received and is going through verification process. For status, go to Track my Order in www.lampanohardwaretradings.16mb.com, Thank you.", 
+			"LAMPANO HARDWARE:\nHi ". $cdata["Firstname"] . ", Your Order $OrderNo has been received and is going through verification process. For status, to track the order, login to www.lampanohardwaretradings.16mb.com, Thank you.", 
 			"MSG001", 
 			$cdata["access_token"]); 
 	 
- 
+ 		// die($responsesendmessage);
 
 		$listItemsInCart = $this->session->userdata("cartitems"); 
 		$itemsoncart = $this->getItemsByItemNo($listItemsInCart);
@@ -439,7 +443,7 @@ class Items extends CI_Controller {
 		$this->param["dataToUpdate"] = $data;
 		$this->query_model->updateData($this->param);
  		
-		$this->session->set_userdata('email', $email);
+		$this->session->set_userdata('NewEmail', $email);
 
 
 		$this->session->unset_userdata('cartitems');
@@ -473,8 +477,10 @@ class Items extends CI_Controller {
 	    return implode($pass); //turn the array into a string
 	}
 
-	function getCustomerDetailsByEmail($email){
+	function getCustomerDetailsByEmail($email, $isarray=false){
 		$this->param = $this->query_model->param; 
+
+		$this->param["isArrayReturn"] = $isarray;
 		$this->param["table"] = "customer";
 		$this->param["fields"] = "*";
 		$this->param["conditions"] = "Email = '$email'";

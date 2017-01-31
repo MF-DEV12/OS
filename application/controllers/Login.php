@@ -12,7 +12,8 @@ class Login extends CI_Controller {
  	}
 
  	function index(){
- 		$this->load->view('login');
+ 		$data["t"] = $this->input->get("t");
+ 		$this->load->view('login', $data);
  	}
 
 	function validateUser(){
