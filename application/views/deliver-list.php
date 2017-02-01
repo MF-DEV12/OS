@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
       
-    <title>Lampano Hardware - My Purchase</title>
+    <title>Lampano Hardware - Order Tracker</title>
 
 
     <link href="<?=base_url('css/homestyle/bootstrap.min.css');?>" rel="stylesheet">
@@ -34,99 +34,18 @@
 
         <div class="row" style="padding-top: 8px;">
           <div class="alert alert-success">
-            <strong>My Purchases</strong>
+            <strong>Shipping Order Tracker</strong>
           </div>
            <div class='multitab-section'>
             <div>
-              <ul class='multitab-widget multitab-widget-content-tabs-id'>
-                <li class='multitab-tab'><a href='#multicolumn-widget-id1'>New Orders</a></li>
-                <li class='multitab-tab'><a href='#multicolumn-widget-id2'>Process</a></li>
+              <ul class='multitab-widget multitab-widget-content-tabs-id'> 
                 <li class='multitab-tab'><a href='#multicolumn-widget-id3'>Shipping</a></li>
                 <li class='multitab-tab'><a href='#multicolumn-widget-id4'>Delivered</a></li>
-                <li class='multitab-tab'><a href='#multicolumn-widget-id4'>Cancelled</a></li>
+                <li class='multitab-tab'><a href='#multicolumn-widget-id5'>Cancelled</a></li>
               </ul>
             </div>
-            <div class='multitab-widget-content multitab-widget-content-widget-id' id='multicolumn-widget-id1'>
-              <span class='sidebar' id='sidebartab1' preferred='yes'>
-                 <table class="display table" id="table-cart">
-                    <thead>
-                      <tr>
-                        <th>Order List</th> 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php if($neworders) {?>
-
-                          <?php foreach($neworders as $key) {?>
-                          <tr>
-                             <td onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">
-                              <div class="row">
-                                <div class="col-xs-6">
-                                  <h4 style="color:#048e81;">#<?=$key->OrderNo?></h4> 
-                                  <h5>Shipping Address : <br/><?=$key->ShipAddress?></h5> 
-                                </div>
-                                <div class="col-xs-6"> 
-                                  <h6>Total Payment : <br/> &#8369; <span class="cart-total"><?=$key->TotalAmount?></span></h6>  
-                                  <h6><?=$key->NoOfItems?> item(s)</h6>
-                                  <span class="label label-default">Waiting for Approval</span>
-                                </div> 
-                              </div> 
-                            </td> 
-                          </tr>
-                          <?php }?>
-                      <?php } else{ ?>
-                          <tr>
-                            <td align="center">
-                              <p class="empty">No orders yet.</p>
-                            </td> 
-                          </tr> 
-                      <?php }?>
-
-                    </tbody>
-                </table>
-              </span>
-              
-            </div>
-            <div class='multitab-widget-content multitab-widget-content-widget-id' id='multicolumn-widget-id2'>
-              <span class='sidebar' id='sidebartab2' preferred='yes'>
-               <table class="display table" id="table-cart">
-                    <thead>
-                      <tr>
-                        <th>Order List</th> 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php if($process) {?>
-
-                          <?php foreach($process as $key) {?>
-                          <tr>
-                             <td onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">
-                              <div class="row">
-                                <div class="col-xs-6">
-                                  <h4 style="color:#048e81;">#<?=$key->OrderNo?></h4> 
-                                  <h5>Shipping Address : <br/><?=$key->ShipAddress?></h5> 
-                                </div>
-                                <div class="col-xs-6"> 
-                                  <h6>Total Payment : <br/> &#8369; <span class="cart-total"><?=$key->TotalAmount?></span></h6>  
-                                  <h6><?=$key->NoOfItems?> item(s)</h6>
-                                  <span class="label label-default">Waiting for Shipping</span>
-                                </div> 
-                              </div> 
-                            </td> 
-                          </tr>
-                          <?php }?>
-                      <?php } else{ ?>
-                          <tr>
-                            <td align="center">
-                              <p class="empty">No orders yet.</p>
-                            </td> 
-                          </tr>  
-                      <?php }?>
-
-                    </tbody>
-                </table>
-              </span>
-            </div>
+             
+             
             <div class='-content multitab-widget-content-widget-id' id='multicolumn-widget-id3'>
               <span class='sidebar' id='sidebartab3' preferred='yes'>
                <table class="display table" id="table-cart">
@@ -140,11 +59,12 @@
 
                           <?php foreach($shipping as $key) {?>
                           <tr>
-                            <td onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">
+                            <td >
                               <div class="row">
                                 <div class="col-xs-6">
-                                  <h4 style="color:#048e81;">#<?=$key->OrderNo?></h4> 
+                                  <h4 style="color:#048e81;" onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">#<?=$key->OrderNo?></h4> 
                                   <h5>Shipping Address : <br/><?=$key->ShipAddress?></h5> 
+                                  <a class="btn btn-success" href="<?=base_url("deliver/trackcustomer");?>" ><i class="fa fa-map-marker" aria-hidden="true"></i> Track</a>
                                 </div>
                                 <div class="col-xs-6"> 
                                   <h6>Total Payment : <br/> &#8369; <span class="cart-total"><?=$key->TotalAmount?></span></h6>  

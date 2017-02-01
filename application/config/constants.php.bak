@@ -83,25 +83,3 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
-
-
-define('COMPANYNAME', "Lampano Hardware Tradings"); 
-
-
-//SMS API KEY
- // PRODUCTION
-define('SMS_API_ID', "dGo5fEd97jF5bcboMpT9yAFzMGaGf97b"); 
-define('SMS_APP_SECRET', "50f5f4dca402216a46ae3947468338aa315ef1b6558034d80fd4a1fb3b00c874"); 
-define('SMS_API_CODE', "0160"); 
-
-// TEST
-//define('SMS_API_ID', "MX96Hgba8RfA7TxoqMia6zfazX48H7G8"); 
-//define('SMS_APP_SECRET', "209a383b40dc3753d7851df2075bf89e27f5855d71ebd88a020ce9491f8e7822"); 
-//define('SMS_API_CODE', "1339"); 
-
-// GOOGLE MAPS API
-define('GPS_API', "AIzaSyBAlK9GyBqRtZ6xTAk3p8u5IWUECzbKpZ0"); 
-
-
-
- 

@@ -166,38 +166,50 @@
     <div class="container">
       <div class="row">
         <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <h2>List of Categories</h2>
-          <p>Select the Categories</p>
+          <h2>Categories</h2>
+          <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam</p> -->
         </div>
       </div> 
     </div>
-    <div class="container-fluid" align="center">
-      <div class="row" align="center">
+    <div class="container">
+      <div class="row">
+        <?php $ctr = 0;?>
         <?php foreach($family as $key) {?>
+        <?php $animate = ($ctr % 2 == 0) ? "fadeInRightBig" : "fadeInLeftBig";?>
+        <?php $ctr++;?>
+
               <div class="col-sm-3">
-                <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
+                <div class="folio-item wow <?=$animate;?>" data-wow-duration="1000ms" data-wow-delay="300ms">
                   <div class="folio-image">
-                    <a href="<?=base_url('items?family='.$key->Level1No);?>"> 
                     <img class="img-responsive" src="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" alt="" onerror="this.src='images/noimage.gif';">
-                    </a>
-                  </div> 
-                  <p><?=$key->Name1;?></p>
+                  </div>
+                  <div class="overlay">
+                    <div class="overlay-content">
+                      <div class="overlay-text">
+                        <div class="folio-info">
+                          <h3><?=$key->Name1;?></h3>
+                        </div>
+                        <div class="folio-overview">
+                          <span class="folio-link"><a class="folio-read-more" href="#" data-single_url="<?=base_url('items?family='.$key->Level1No);?>" ><i class="fa fa-arrow-circle-right"></i></a></span>
+                          <!-- <span class="folio-expand"><a href="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" data-lightbox="portfolio"><i class="fa fa-search-plus"></i></a></span> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-        <?php } ?>
+              </div>  
+               
+        <?php } ?>  
 
       
-        
-      </div>
-      <div class="load-more wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="500ms">
-          <a  class="btn-loadmore"><i class="fa fa-repeat"></i> Load More</a>
-      </div> 
+         
     </div>
     <div id="portfolio-single-wrap">
       <div id="portfolio-single">
       </div>
-    </div> 
-</section>  
+    </div><!-- /#portfolio-single-wrap -->
+</section>
+
 
 
 <section id="contact">
@@ -239,7 +251,7 @@
             </div>
             <div class="col-sm-6">
               <div class="contact-info wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                <h1>Get in Touch!</h1>
                 <ul class="address">
                   <li><i class="fa fa-map-marker"></i> <span> Address:</span> at 22 General Luis Novaliches, Quezon City, Metro Manila </li>
                   <li><i class="fa fa-phone"></i> <span> Phone:</span> +928 123 4567  </li>
@@ -292,7 +304,7 @@
       <script type="text/javascript" src="<?=base_url("js/homestyle/bootstrap.min.js")?>"></script>
       <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
  
-      <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+      <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBAlK9GyBqRtZ6xTAk3p8u5IWUECzbKpZ0"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.inview.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/wow.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/mousescroll.js")?>"></script>

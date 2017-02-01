@@ -11,18 +11,24 @@
 
             </div>
             <div class="action-holder pull-right">
-
+              <?php if($role != "deliver") {?>
+              
               <div class="search-holder">    
                 <input type="text" name="search" class="form-control" placeholder="Search for items" > 
                 <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
                  
               </div> 
+             
+
               <div class="cart-holder">
                 <button type="button" class="cart" style="border:0px;color:white;" >
                     <span class="glyphicon glyphicon-shopping-cart"></span> 
                     <span class="badge countCart"><?=$totalItemCart?></span>
                 </button>
               </div>
+              
+              <?php }?>
+
               <div class="account-holder">
                   <div class="dropdown">
                     <button type="button" class="dropdown-toggle" style="border:0px;color:white;background: transparent; " data-toggle="dropdown">
@@ -30,10 +36,11 @@
                     </button>
                
                      <ul class="dropdown-menu dropdown-menu-right" style="width:245px;">
-                          
+                              <?php if($role != "deliver") {?>
                               <li>
                                  <a style="color: gray;padding:12px;" href="<?=base_url('mypurchase')?>">My Purchase</a>
                               </li>
+                              <?php }?>
                             
                               <li>
                                   <div class="navbar-content" style="padding:12px;">
@@ -81,10 +88,14 @@
                       <li class="divider"></li>
                     <?php } ?>
 
+                    <?php if($role != "deliver") {?>
                     <li><a style="color: gray; " href="<?=base_url('items/cart')?>">My Cart  <span class="badge countCart-mobile"><?=$totalItemCart?></span></a></li>
-                    
+                    <?php } ?>
                     <?php if($username){ ?>
+                    <?php if($role != "deliver") {?>
                       <li><a style="color: gray; " href="<?=base_url('mypurchase')?>">My Purchase</a></li>
+                    <?php } ?>
+
                       <li><a style="color: gray; ">Change Password</a></li>
                       <li><a style="color: gray; ">Log Out</a></li> 
                     <?php } else { ?>

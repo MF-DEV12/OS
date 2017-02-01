@@ -54,7 +54,17 @@
           elem.addClass("active");
           $("span.item-price").text(toMoney(elem.data("price")))
           $("button.btn-addtocart").attr("onclick", "orderItem('"+   elem.data("item")  + "-"+  elem.data("variant") +"');")
+
+          $("ul.variantname").empty()
+          var listvariant = elem.data("variantname")
+          for(x in listvariant){
+            $("ul.variantname").append("<li>"+ x + " : " + listvariant[x] + "</li>")
+          }
+
+
       })
+
+
 
       $("span.btn-itemsearch").click(function(e){
         var elem = $(this)
@@ -151,8 +161,10 @@ function getItemsResponse(response){
                 item += "        <div class=\"col-sm-12  item-holder\"  onclick=\"viewItems('"+ data[x].ItemNumber +"');\">"
                 item += "          <img width=\"200px\" height=\"200px\" src=\"images/variant-folder/"+ data[x].ImageFile +"\" alt=\"\" onerror=\"this.src='"+ baseUrl  +"/images/noimage.gif';\"/>"
                
-                item += "          <h4>"+ data[x].Name +"</h4>"
-                item += "          <b>&#8369; "+ toMoney(data[x].Price) +"</b>"
+                item += "          <h5>"+ data[x].Name +"</h5>"
+                item += "          <p class=\"category\">"+ data[x].Category +"</p>"
+                item += "          <h6>"+ ((data[x].Stocks > 0) ? "Stocks:" + data[x].Stocks : "Out of Stocks") +"</h6>"
+                item += "          <b>Price: &#8369; "+ toMoney(data[x].Price) +"</b>"
                 item += "        </div>"
                 item += "        <div class=\"col-sm-12\">"
                 item += "          <button class=\"btn btn-action btn-buy\" onclick=\"orderItem('"+ data[x].ItemNumber +"');\"  data-toggle=\"modal\" data-backdrop=\"static\"  data-keyboard=\"false\" data-target=\"#confirmcart\" style=\"width:100%;\">Buy</button> "
@@ -165,6 +177,7 @@ function getItemsResponse(response){
             $("div.list-items").append("<p class=\"empty\">No item(s) found.</p>"); 
           } 
     },500) 
+ 
 
 }
 
@@ -229,7 +242,6 @@ function incDecQty(elem, qty){
     ajaxError)  
 
 }
-
 
 function viewItems(item){
    location.href = baseUrl + "items/view?id="+item

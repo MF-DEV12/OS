@@ -160,12 +160,13 @@
                       <div class="row">
                         <div class="col-sm-12 item-holder"  onclick="viewItems('<?=$key->ItemNumber?>');">
                           <img width="200px" height="200px" src="images/variant-folder/<?=$key->ImageFile?>" alt="" onerror="this.src='<?=base_url("images/noimage.gif")?>';"/>
-                          <h4><?=$key->Name?></h4>
+                          <h5><?=$key->Name?></h5>
                           <p class="category"><?=$key->Category?></p>
-                          <b>&#8369; <?=number_format($key->Price,2)?></b>
+                          <h6><?=(($key->Stocks > 0) ? "Stock: " . $key->Stocks : "Out of Stocks");?></h6>
+                          <b>Price: &#8369; <?=number_format($key->Price,2)?></b>
                         </div>
                         <div class="col-sm-12">
-                          <button class="btn btn-action btn-buy"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#confirmcart" onclick="orderItem('<?=$key->ItemNumber?>');"  style="width:100%;">Buy</button> 
+                          <button class="btn btn-action btn-buy"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#confirmcart" onclick="orderItem('<?=$key->ItemNumber?>');"  style="width:100%;" <?=(($key->Stocks > 0) ? "": "disabled");?>>Buy</button> 
                         </div> 
                       </div>
                    </div>

@@ -146,6 +146,34 @@
       </div>
     </div>
 
+    <div class="modal fade" id="shipOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 20px;" data-orderno="0">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Ship Order information</h4>
+          </div>
+          <div class="modal-body">
+                <div class="group">       
+                  <select class="inputMaterial" id="listDeliverName" required>
+                    <option value="" disabled selected></option>
+                    <?php foreach($listdeliver as $key) {?>
+                      <option value="<?=$key->AccountNo?>"><?=$key->LastName . ', ' . $key->FirstName;?></option> 
+                    <?php }?>
+                  </select>
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label class="formlabel">Assign to deliver:</label>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-action" id="btn-submitShipOrder">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript" src='<?=base_url("js/jquery/jquery-1.11.3.js")?>'></script>
     <script type="text/javascript" src='<?=base_url("js/jquery/jquery-ui.js")?>'></script> 
     <script type="text/javascript" src='<?=base_url("js/datatables/jquery.dataTables.min.js")?>'></script> 
@@ -161,8 +189,7 @@
     <script src="<?=base_url('js/navside/main.js');?>"></script>   
 
 
- <!--    <script src="<?=base_url('js/print/dataTables.buttons.min.js');?>"></script>    
-    <script src="<?=base_url('js/print/buttons.print.min.js');?>"></script>    -->
+ 
 
      
 </body>
