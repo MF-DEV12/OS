@@ -117,9 +117,7 @@
                    <li class="dropdown account-desktop"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;"><span class="glyphicon glyphicon-user"></span></span>
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu" style="width:245px;">
-                            <li>
-                               <a style="color: gray;padding:12px;" href="<?=base_url('mypurchase')?>">My Purchase</a>
-                            </li>
+                             
                             <li>
                                 <div class="navbar-content" style="padding:12px;">
                                     <div class="row"> 
@@ -129,9 +127,8 @@
                                         <div class="col-md-9">
                                             <span><?=$name;?></span>
                                             <!-- <p class="text-muted small role"><?=$role;?></p> -->
-                                            <div class="divider">
-                                            </div>
-                                            <!-- <a href="#" class="btn btn-primary btn-sm active">View Profile</a> -->
+                                            <div class="divider"> </div> 
+                                            <span class="pull-right"><a href="<?=base_url('mypurchase')?>"  style="color: gray;padding:12px;text-align: right; text-transform: capitalize;font-weight: 100;"><i class="fa fa-shopping-cart" aria-hidden="true"></i> My Purchase</a></span>
                                         </div>
                                     </div>
                                 </div>
@@ -190,8 +187,8 @@
                           <h3><?=$key->Name1;?></h3>
                         </div>
                         <div class="folio-overview">
-                          <span class="folio-link"><a class="folio-read-more" href="#" data-single_url="<?=base_url('items?family='.$key->Level1No);?>" ><i class="fa fa-link"></i></a></span>
-                          <span class="folio-expand"><a href="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" data-lightbox="portfolio"><i class="fa fa-search-plus"></i></a></span>
+                          <span class="folio-link"><a class="folio-read-more" href="#" data-single_url="<?=base_url('items?family='.$key->Level1No);?>" ><i class="fa fa-arrow-circle-right"></i></a></span>
+                          <!-- <span class="folio-expand"><a href="<?=base_url('images/variant-folder/' . $key->ImageFile);?>" data-lightbox="portfolio"><i class="fa fa-search-plus"></i></a></span> -->
                         </div>
                       </div>
                     </div>

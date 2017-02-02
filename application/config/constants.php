@@ -85,6 +85,8 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 
+define('COMPANYNAME', "Lampano Hardware Tradings"); 
+
 
 //SMS API KEY
 // // PRODUCTION
@@ -99,5 +101,7 @@ define('SMS_API_CODE', "1339");
 
 // GOOGLE MAPS API
 define('GPS_API', "AIzaSyBAlK9GyBqRtZ6xTAk3p8u5IWUECzbKpZ0"); 
+
+
 
  

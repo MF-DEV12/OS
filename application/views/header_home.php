@@ -38,7 +38,7 @@
                      <ul class="dropdown-menu dropdown-menu-right" style="width:245px;">
                               <?php if($role != "deliver") {?>
                               <li>
-                                 <a style="color: gray;padding:12px;" href="<?=base_url('mypurchase')?>">My Purchase</a>
+                                 
                               </li>
                               <?php }?>
                             
@@ -50,8 +50,8 @@
                                           </div>
                                           <div class="col-md-9">
                                               <span><?=$name;?></span>
-                                                  <div class="divider">
-                                              </div>
+                                              <div class="divider"></div>
+                                              <span class="pull-right"><a style="color: gray;padding:12px; text-align: center;" href="<?=base_url('mypurchase')?>"><i class="fa fa-shopping-cart" aria-hidden="true"></i> My Purchase</a></span>
                                           </div>
                                       </div>
                                   </div>

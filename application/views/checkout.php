@@ -24,7 +24,7 @@
 <body>
     
     <div class="preloader"> <i class="fa fa-circle-o-notch fa-spin"></i></div>
-   <?php $this->load->view("header_home");?>
+    <?php $this->load->view("header_home");?>
  
  
 <div id="navigation" style="display: none;">
@@ -129,14 +129,17 @@
                         <label class="formlabel">First name:</label>
                     </div>
                   </div>
-                  <!-- <div class="col-sm-12 col-lg-6">
+                  <!-- <?php if($customer){ ?> 
+                  <div class="col-sm-12 col-lg-6">
                     <div class="group">      
                         <input class="inputMaterial" type="text"  id="txt-contact"  value="<?=$contact;?>" required <?=$readonly?>>
                         <span class="highlight"></span>
                         <span class="bar"></span>
                         <label class="formlabel">Contact #:</label>
                     </div>
-                  </div> -->
+                  </div>
+                  <?php } ?>    -->
+                  
                   <div class="col-sm-12 col-lg-12">
                     <div class="group">      
                         <input class="inputMaterial" type="text"  id="txt-email"  name="Email" value="<?=$email;?>" required <?=$readonly?>>

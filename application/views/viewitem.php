@@ -26,65 +26,12 @@
 
 <div id="main">
     <div class="preloader"> <i class="fa fa-circle-o-notch fa-spin"></i></div>
-    <header id="home">
-         
-        <div class="main-nav">
-          <div class="container customer-header" >
-            <div class="navbar-header">
-             
-             
-              <a class="navbar-brand" href="<?=base_url();?>">
-                <h1><img class="img-responsive" src="<?=base_url('images/logo-home.png');?>" alt="logo"></h1>
-              </a>   
-
-            </div>
-            <div class="action-holder pull-right">
-
-              <div class="search-holder">    
-                <input type="text" name="search" class="form-control" placeholder="Search for items" > 
-                <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
-                 
-              </div> 
-              <div class="cart-holder">
-                <button type="button" class="cart" style="border:0px;color:white;" >
-                    <span class="glyphicon glyphicon-shopping-cart"></span> 
-                    <span class="badge countCart"><?=$totalItemCart?></span>
-                </button>
-              </div>
-              <div class="account-holder">
-                <button type="button" class="account" style="border:0px;color:white;" >
-                    <span class="glyphicon glyphicon-user"></span>
-                </button>
-              </div>
-
-              
-            </div>
-
-            <div class="pull-right action-holder-mobile" style="top:0px;">
-                 <button type="button" class="navbar-toggle category-menu"  onclick="openNav();"  id="responsive-menu-button">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                 <button type="button" class="navbar-toggle" style="border:0px;color:white;" >
-                    <span class="glyphicon glyphicon-user"></span>
-                </button>
-                <button type="button" class="navbar-toggle cart" style="border:0px;color:white;" >
-                  <span class="glyphicon glyphicon-shopping-cart"></span>
-                  <span class="badge countCart"><?=$totalItemCart?></span>
-                  
-                </button>
-               
-            </div>
-          </div>
-        </div><!--/#main-nav-->
-    </header>
+     <?php $this->load->view("header_home");?>
  
 
  
 
-<section id="orders">
+<section id="orders" style="padding: 0px">
     <?php $items = $items[0];?>
     <div class="container" style="height: 700px;">
       <div class="row">
@@ -109,7 +56,7 @@
           <h5>Item Specification:</h5>
           <dl id="items-specs">
             <dd style="border-bottom: 1px solid #ddd;">
-              <ul>
+              <ul class="variantname">
                  <?php $variantname = json_decode($items->VariantNameJSON);?>
                  <?php foreach($variantname as $key => $value){ ?> 
                   <li><?=$key?> : <?=$value;?></li>
@@ -121,7 +68,7 @@
                 <h6>Choose a Variation:</h6>
                 <dl id="list-variation"> 
                    <?php foreach($itemvariant as $key){ ?> 
-                      <dd data-item="<?=$key->ItemNo?>" data-price="<?=$key->Price?>" data-variant="<?=$key->VariantNo?>"<?=(($items->ItemNumber == $key->ItemNo . "-" . $key->VariantNo) ? "class=\"active\"" : "");?>> <img src="<?=base_url('images/variant-folder/'. $key->ImageFile);?>" alt="" width="80px" height="80px"/></dd>
+                      <dd data-item="<?=$key->ItemNo?>" data-price="<?=$key->Price?>" data-variant="<?=$key->VariantNo?>"<?=(($items->ItemNumber == $key->ItemNo . "-" . $key->VariantNo) ? "class=\"active\"" : "");?> data-variantname='<?=str_replace('"',"\"",$key->VariantNameJSON);?>'> <img src="<?=base_url('images/variant-folder/'. $key->ImageFile);?>" alt="" width="80px" height="80px"/></dd>
                    <?php } ?> 
                 </dl>
               </dd>

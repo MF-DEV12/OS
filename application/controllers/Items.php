@@ -13,6 +13,9 @@ class Items extends CI_Controller {
  		$level1no = $this->input->get("family");
  		$level2no = $this->input->get("category");
  		$level3no = $this->input->get("subcategory");
+		$data['username'] = $this->session->userdata("username");
+		$data['role'] = $this->session->userdata("role");
+		$data['name'] = $this->session->userdata("name");
  		$item = $this->input->get("name");
  		$data["family"] = ($level1no) ? $this->getFamilyName($level1no) : array();
  		$data["category"] = ($level2no) ? $this->getCategoryName($level2no) : array();
@@ -166,6 +169,9 @@ class Items extends CI_Controller {
 
  	function view(){
  		$item = $this->input->get("id"); 
+ 		$data['username'] = $this->session->userdata("username");
+		$data['role'] = $this->session->userdata("role");
+		$data['name'] = $this->session->userdata("name");
 		$level1no = $this->input->get("family");
  		$level2no = $this->input->get("category");
  		$level3no = $this->input->get("subcategory");
@@ -328,6 +334,7 @@ class Items extends CI_Controller {
 		$datetime = date('Y-m-d H:i:s', strtotime($date));
  
 		$cdata = $this->session->userdata("customerdata"); 
+		 
 		$username = $this->session->userdata("username");
 		$email  = $cdata["Email"];
 		$this->load->library("SMSApi");
@@ -335,8 +342,7 @@ class Items extends CI_Controller {
 
 		if(!$username){ 
 			//Insert Customer 
-		
-
+		 	
 			$code = $this->input->get("code");
 			$result = $this->smsapi->getAccessToken($code);
 			 
@@ -352,16 +358,24 @@ class Items extends CI_Controller {
 
 		
 			//Insert Account
-			$password = 'password'; //$this->randomPassword();
+			$password = $this->randomPassword();
 			$this->param = $this->query_model->param; 
 			$this->param["table"] = "accounts";
 			$account["Username"] = $cdata["Email"];
-			$account["LastName"] = $cdata["LastName"];
-			$account["FirstName"] =$cdata["FirstName"];
+			$account["LastName"] = $cdata["Lastname"];
+			$account["FirstName"] =$cdata["Firstname"];
 			$account["Password"] = md5($password);
 			$account["LoginType"] = 'customer'; 
 			$this->param["dataToInsert"] = $account;
 			$this->query_model->insertData($this->param);
+
+			$data["firstname"] = $account["FirstName"];
+			$data["email"] = $account["Username"];
+			$data["password"] = $password;
+			$data["companyname"] = COMPANYNAME;
+
+			$this->email_lib->sendAccount($data);
+
 		}else{ 
 
 			$email = $this->session->userdata("email");  
