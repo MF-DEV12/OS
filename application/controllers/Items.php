@@ -352,7 +352,7 @@ class Items extends CI_Controller {
 
 		
 			//Insert Account
-			$password = 'password'; //$this->randomPassword();
+			$password = $this->randomPassword();
 			$this->param = $this->query_model->param; 
 			$this->param["table"] = "accounts";
 			$account["Username"] = $cdata["Email"];
