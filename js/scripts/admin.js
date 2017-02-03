@@ -1219,6 +1219,14 @@ $(function(){
             
         })
 
+        $("#btn-submitShipOrder").click(function(e){
+            var modal = $("#shipOrderModal")
+            var orderno = modal.data("orderno")
+            var deliverno = $("#listDeliverName option:selected").val();
+            setStatusOrder(orderno,"Ship", deliverno); 
+            modal.modal("hide")
+        })  
+
 
 
 
@@ -1758,7 +1766,7 @@ $(function(){
         bootbox.confirm("Do you want to process this order number? <br/><b>#" + orderNo + "</b>", function(result){
             if(result)
                  setStatusOrder(orderNo,"Process"); 
-        })
+        }) 
      }
      function cancelOrder(orderNo){
         bootbox.confirm("Do you want to cancel this order number? <br/><b>#" + orderNo + "</b>", function(result){
@@ -1767,17 +1775,21 @@ $(function(){
         })
      }
      function shipOrder(orderNo){
-        bootbox.confirm("Do you want to ship this order number? <br/><b>#" + orderNo + "</b>", function(result){
-            if(result)
-                 setStatusOrder(orderNo,"Ship"); 
-        }) 
+        var modal = $("#shipOrderModal") 
+        $("#listDeliverName").val("")
+        modal.data("orderno", orderNo)
+        // modal.modal("show")
+        // bootbox.confirm("Do you want to ship this order number? <br/><b>#" + orderNo + "</b>", function(result){
+        //     if(result)
+        //          setStatusOrder(orderNo,"Ship"); 
+        // }) 
      }
     
 
-     function setStatusOrder(orderNo,status){
+     function setStatusOrder(orderNo,status,deliverno=0){
         var param = new Object()
         param.ono = orderNo;
-
+        param.deliverno = deliverno
         param.curstatus = ($("#polistorderstatus option:selected").length) ? $("#polistorderstatus option:selected").val() : "";
 
         if(status == "Process" || status == "Cancel"){

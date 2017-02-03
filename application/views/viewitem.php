@@ -31,7 +31,7 @@
 
  
 
-<section id="orders">
+<section id="orders" style="padding: 0px">
     <?php $items = $items[0];?>
     <div class="container" style="height: 700px;">
       <div class="row">
