@@ -989,7 +989,7 @@ class Main extends CI_Controller {
 			}
 
 			$this->param["dataToInsert"] = $data;
-			$this->param["table"] = "Level". $lvl;
+			$this->param["table"] = "level". $lvl;
 			$this->param["transactionname"] = "New " . $category;
 			$this->query_model->insertData($this->param); 
 
@@ -1017,7 +1017,7 @@ class Main extends CI_Controller {
 			$this->param = $this->query_model->param;  
 			$data["Name". $lvl] = $name; 
 			$this->param["dataToUpdate"] = $data;
-			$this->param["table"] = "Level". $lvl;
+			$this->param["table"] = "level". $lvl;
 			$this->param["conditions"] = "Level". $lvl. "No = '$id'";
 			$category = ($lvl == "1") ? "Family" : (($lvl == "2") ? "Category" : "Sub-Category"); 
 			$this->param["transactionname"] = "Update " . $category;
@@ -1028,7 +1028,7 @@ class Main extends CI_Controller {
 			$id = $this->input->post("id");
 			$lvl = $this->input->post("lvl");
 			$this->param = $this->query_model->param;  
-			$this->param["table"] = "Level". $lvl;
+			$this->param["table"] = "level". $lvl;
 			$this->param["conditions"] = "Level". $lvl. "No = '$id'";
 			$category = ($lvl == "1") ? "Family" : (($lvl == "2") ? "Category" : "Sub-Category"); 
 			$this->param["transactionname"] = "Delete $category";

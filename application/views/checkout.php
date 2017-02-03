@@ -165,11 +165,18 @@
                         <span class="bar"></span>
                         <label class="formlabel">Shipping Address:</label>
                     </div>
+                   
                     <?php if(!$username){ ?>   
                       <div class="checkbox chk-sameaddress pull-right">
                         <label><input type="checkbox" name="IsSameHomeAddress">Same to Home Address</label>
                       </div>
                     <?php } ?>   
+                   <div class="group">      
+                        <input class="inputMaterial" type="text"  id="txt-landmark" name="Landmark" value="<?=$shipaddress;?>" placeholder="" required <?=$readonly?>>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label class="formlabel">Landmark</label>
+                    </div>
                   </div>  
 
               </div>  
@@ -249,7 +256,7 @@
       </div>
     </div>
 </footer>
-
+<div id="map"></div>
 
 
  
@@ -261,7 +268,7 @@
       <script type="text/javascript" src='<?=base_url("js/bootbox.min.js")?>'></script>
       <script type="text/javascript" src='<?=base_url("js/utility/helpers.js")?>'></script>
  
-      <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+      <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=<?=GPS_API;?>&libraries=places"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.inview.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/wow.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/mousescroll.js")?>"></script>
@@ -272,14 +279,7 @@
       <script type="text/javascript" src="<?=base_url("js/side-menu/side-menu.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/customerorder.js")?>"></script>
 
-      <script type="text/javascript">
-         $('#responsive-menu-button').sidr({
-            name: 'sidr-main',
-            source: '#navigation',
-            side: 'left'
-          });
-      </script>
-
+     
 
  
      

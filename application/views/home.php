@@ -105,7 +105,7 @@
 
               <ul class="nav navbar-nav navbar-right" style="z-index: 99999;">                 
                 <li class="scroll active"><a href="#home">Home</a></li>
-                <li class="scroll"><a href="#orders">Orders</a></li> 
+                <li class="scroll"><a href="#orders">Products</a></li> 
                 <!-- <li class="scroll"><a href="#forums">Forums</a></li>                      -->
                 <!-- <li class="scroll"><a href="#about-us">About Us</a></li>      -->
                 <li class="scroll"><a href="#contact">Contact</a></li>   
@@ -159,11 +159,11 @@
       <input type="text" placeholder="Search for items.." class="form-control"/>
       <span class="glyphicon glyphicon-search btn-itemsearch"></span> 
     </div>
-<section id="orders">
+<section id="orders">   
     <div class="container">
       <div class="row">
         <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <h2>Categories</h2>
+          <h2>Category of our Products</h2>
           <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam</p> -->
         </div>
       </div> 
@@ -301,7 +301,7 @@
       <script type="text/javascript" src="<?=base_url("js/homestyle/bootstrap.min.js")?>"></script>
       <script type="text/javascript" src='<?=base_url("js/utility/ajaxCall.js")?>'></script>
  
-      <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBAlK9GyBqRtZ6xTAk3p8u5IWUECzbKpZ0"></script>
+      <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=<?=GPS_API;?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.inview.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/wow.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/mousescroll.js")?>"></script>
