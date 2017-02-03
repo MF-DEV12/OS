@@ -41,33 +41,36 @@
                                  
                               </li>
                               <?php }?>
-                            
-                              <li>
-                                  <div class="navbar-content" style="padding:12px;">
-                                      <div class="row"> 
-                                          <div class="col-md-3" align="center">
-                                          <span class="glyphicon glyphicon-user" style="font-size:40px;"></span> 
-                                          </div>
-                                          <div class="col-md-9">
-                                              <span><?=$name;?></span>
-                                              <div class="divider"></div>
-                                              <span class="pull-right"><a style="color: gray;padding:12px; text-align: center;" href="<?=base_url('mypurchase')?>"><i class="fa fa-shopping-cart" aria-hidden="true"></i> My Purchase</a></span>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="navbar-footer">
-                                      <div class="navbar-footer-content">
-                                          <div class="row">
-                                              <div class="col-md-6">
-                                                  <button class="btn btn-default btn-sm">Change Password</button>
-                                              </div>
-                                              <div class="col-md-6">
-                                                  <button class="btn btn-sm pull-right btn-action">Log Out</button>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </li>
+                              <?php if($username){ ?>
+                                <li>
+                                    <div class="navbar-content" style="padding:12px;">
+                                        <div class="row"> 
+                                            <div class="col-md-3" align="center">
+                                            <span class="glyphicon glyphicon-user" style="font-size:40px;"></span> 
+                                            </div>
+                                            <div class="col-md-9">
+                                                <span><?=$name;?></span>
+                                                <div class="divider"></div>
+                                                <span class="pull-right"><a style="color: gray;padding:12px; text-align: center;" href="<?=base_url('mypurchase')?>"><i class="fa fa-shopping-cart" aria-hidden="true"></i> My Purchase</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="navbar-footer">
+                                        <div class="navbar-footer-content">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button class="btn btn-default btn-sm">Change Password</button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button class="btn btn-sm pull-right btn-action">Log Out</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php } else {?>
+                              <li><a style="color: gray;" href="<?=base_url('login');?>">Log in</a></li>    
+                            <?php } ?>
                       </ul>
                   </div>
                 

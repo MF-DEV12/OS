@@ -63,8 +63,8 @@
                               <div class="row">
                                 <div class="col-xs-6">
                                   <h4 style="color:#048e81;" onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">#<?=$key->OrderNo?></h4> 
-                                  <h5>Shipping Address : <br/><?=$key->ShipAddress?></h5> 
-                                  <a class="btn btn-success" href="<?=base_url("deliver/trackcustomer");?>" ><i class="fa fa-map-marker" aria-hidden="true"></i> Track</a>
+                                  <h5>Shipping Address : <br/><?=$key->ShipAddress?> <br/> Landmark : <br/> <?=$key->Landmark?></h5> 
+                                  <button class="btn btn-success btn-track" data-landmark="<?=$key->Landmark?>"><i class="fa fa-map-marker" aria-hidden="true"></i> Track</button>
                                 </div>
                                 <div class="col-xs-6"> 
                                   <h6>Total Payment : <br/> &#8369; <span class="cart-total"><?=$key->TotalAmount?></span></h6>  

@@ -310,6 +310,7 @@ class Items extends CI_Controller {
  		$data["Email"] = $this->input->post("Email");
  		$data["HomeAddress"] = $this->input->post("HomeAddress");
  		$data["ShipAddress"] = $this->input->post("ShipAddress");
+ 		$data["Landmark"] = $this->input->post("Landmark");
 
  		if($this->input->post("IsSameHomeAddress")){
  			$data["ShipAddress"] = $data["HomeAddress"];
