@@ -30,27 +30,49 @@ class SMSApi{
 	    $param["outboundSMSMessageRequest"] = $data;
 
 	    $url = 'https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/'.SMS_API_CODE.'/requests?access_token='. $access_token;  
-	    return $this->webrequest($param,  $url); 
+	    return $this->webrequest2($url); 
+	 }
+
+
+	 function sendmessage2($mobile, $message){
+
+	   
+		$data = array(
+	        'key' => 'de12ebb4e32aff602a46095ac3184a6781182c0d',
+	        'to' => $mobile,
+	        'content' => $message
+	    ); 
+
+	    $url = 'https://api.clockworksms.com/http/send.aspx';  
+	    return $this->webrequest($data, $url); 
+ 
 	 }
 
 	 function webrequest($post_data, $url){ 
- 
-	 	$data_string = json_encode($post_data);                                                                                   
-	 	 
-		$ch = curl_init($url);                                                                      
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);    
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);                                                                  
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-		    'Content-Type: application/json' )                                                                       
-		);                                                                                                                   
+ 		
 
+		$ch = curl_init();
+	 
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);                                                                  
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, 
+		          http_build_query($post_data));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$result = curl_exec($ch);
 		echo curl_error($ch);
-		//echo $data_string;
+		curl_close ($ch); 
 		return $result;
+ 		 
 	 }
+
+	 function webrequest2($url){      
+		
+		 
+	 }
+
+
+
 
  
 	 

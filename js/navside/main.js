@@ -99,7 +99,7 @@ jQuery(document).ready(function($){
 
             var arrList = new Object();
             arrList.list = "";
-            arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,DPOCost|DPO Cost,SRP|Suggessted Retail Price (SRP)"
+            arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,SRP|Suggessted Retail Price (SRP),DPOCost|DPO Cost(%),Price|Price"
             listposupplier["listitemvariantreview"] = arrList; 
             $("input#lbl-itemname").val($("#txt-itemname").val())
             $("input#lbl-uom").val($("select#list-uom option:selected").val())

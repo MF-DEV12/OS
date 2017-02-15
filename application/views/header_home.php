@@ -4,10 +4,16 @@
           <div class="container customer-header" >
             <div class="navbar-header">
              
-             
+             <?php if($role != "deliver") {?>
               <a class="navbar-brand" href="<?=base_url();?>">
                 <h1><img class="img-responsive" src="<?=base_url('images/logo-home.png');?>" alt="logo"></h1>
               </a>   
+             <?php }else{ ?>
+               <a class="navbar-brand" href="<?=base_url("deliver");?>">
+                 <h1><img class="img-responsive" src="<?=base_url('images/logo-home.png');?>" alt="logo"></h1>
+              </a>  
+
+             <?php }?>
 
             </div>
             <div class="action-holder pull-right">
@@ -62,7 +68,7 @@
                                                     <button class="btn btn-default btn-sm">Change Password</button>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button class="btn btn-sm pull-right btn-action">Log Out</button>
+                                                    <button class="btn btn-sm pull-right btn-action" onclick="location.href='<?=base_url('login/logOut');?>'">Log Out</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -100,9 +106,9 @@
                     <?php } ?>
 
                       <li><a style="color: gray; ">Change Password</a></li>
-                      <li><a style="color: gray; ">Log Out</a></li> 
+                      <li><a style="color: gray; " href="<?=base_url('login/logOut');?>">Log Out</a></li> 
                     <?php } else { ?>
-                      <li><a style="color: gray;" href="<?=base_url('login');?>">Log in</a></li> 
+                      <li><a style="color: gray;" href="<?=base_url('login/');?>">Log in</a></li> 
 
                     <?php } ?>
                   </ul>

@@ -17,7 +17,7 @@ $(function(){
 
             var arrList = new Object();
             arrList.list = "";
-            arrList.fields = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,DPOCost|DPO Cost,Total|Total"
+            arrList.fields = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,Price|Price,Total|Total"
             listposupplier["posubmit"] = arrList;
 
             arrList = new Object();
@@ -31,6 +31,8 @@ $(function(){
             listposupplier["lowstockbysupplier"] = arrList;
 
             bindingDatatoDataTable(listposupplier)
+
+            $("table[data-table=pobysupplier]").closest("div.dataTables_wrapper").find("div.dataTables_filter").show();
 
         })
 
@@ -871,7 +873,7 @@ $(function(){
                     var arrList = new Object();
                     var list = new Object();
                     arrList.list  = "";
-                    arrList.fields = "Image|Thumbnail,Attributes|Variant,DPOCost|DPO Cost,SRP|Suggested Retail Price(SRP),Action|";
+                    arrList.fields = "Image|Thumbnail,Attributes|Variant,SRP|Suggested Retail Price(SRP),DPOCost|DPO Cost(%),Price|Price,Action|";
                     list["listitemvariant"] = arrList;
 
                     bindingDatatoDataTable(list)
@@ -1005,13 +1007,15 @@ $(function(){
             var data = new Object();
             data.Image = ""
             data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-backdrop=\"static\"  data-keyboard=\"false\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Add variants</a>";
-            data.DPOCost = "<input type=\"text\" class=\"numeric variant-dpocost form-control\"/>";
+            data.DPOCost = "<input class=\"variant-dpocost form-control\" type=\"number\" min=\"1\" max=\"100\" onblur=\"dpoPercent(this);\"/>";
             data.SRP = "<input type=\"text\" class=\"numeric variant-srp form-control\"/>";
+            data.Price = "<span class=\"variant-price\">&#8369; <span>0.00</span></span>";
             data.Action = "<a onclick=\"deleteVariant(this);\"><span class=\"glyphicon glyphicon-remove\"></span></a>";
              
             arrayData.push(data)
-            arrList.list  = arrayData;
-            arrList.fields = "Image|Thumbnail,Attributes|Variant,DPOCost|DPO Cost,SRP|Suggested Retail Price(SRP),Action|";
+            arrList.list  = arrayData; 
+            arrList.fields = "Image|Thumbnail,Attributes|Variant,SRP|Suggested Retail Price(SRP),DPOCost|DPO Cost(%),Price|Price,Action|";
+
             var table = listObjTableBinded["listitemvariant"]
             table.row.add(data).draw()
             table.draw()
@@ -1209,12 +1213,14 @@ $(function(){
             var dpo = tr.find("input.variant-dpocost")
             var srp = tr.find("input.variant-srp")
              if($.trim(dpo.val()).length > 0 && $.trim(srp.val()).length > 0){
-                var dpoValue = toMoneyValue(dpo.val())
+                var dpoValue = (toMoneyValue(dpo.val()) > 100) ? 100 :  toMoneyValue(dpo.val())
                 var srpValue = toMoneyValue(srp.val()) 
-                if(parseFloat(dpoValue,10) >= parseFloat(srpValue,10)){
-                   srp.after("<span class=\"label-error\">DPO Cost must be lower than to SRP.</span>") 
+                var computePrice = srpValue * parseFloat((dpoValue/100),2)
+                tr.find("span.variant-price span").text(toMoney(parseFloat(computePrice,2)))
+                //if(parseFloat(dpoValue,10) >= parseFloat(srpValue,10)){
+                //   srp.after("<span class=\"label-error\">DPO Cost must be lower than to SRP.</span>") 
                     
-                }  
+                //}  
             } 
             
         })
@@ -1268,7 +1274,7 @@ $(function(){
         var param = new Object();
         param.rlno = requestlistno;
         param.qty = elem.val();
-        param.total = parseFloat(elem.val(),2) * parseFloat(toMoneyValue(data.DPOCost), 2)
+        param.total = parseFloat(elem.val(),2) * parseFloat(toMoneyValue(data.Price), 2)
         callAjaxJson("main/updatePOQty", param,  
             function(response){
                 if(response){
@@ -1566,14 +1572,16 @@ $(function(){
             row.DPOCostStr =  tr.find("input.variant-dpocost").val()      
             row.SRP = toMoneyValue(tr.find("input.variant-srp").val())       
             row.SRPStr = tr.find("input.variant-srp").val()      
+            row.Price = toMoneyValue(tr.find("span.variant-price span").text())
             data.push(row) 
 
         })
         var arrList = new Object();
         var list = new Object();
         newItemVariantList = data    
-        arrList.list  = data;
-        arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,DPOCostStr|DPO Cost,SRPStr|Suggessted Retail Price (SRP)"
+        arrList.list  = data; 
+        arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,SRPStr|Suggessted Retail Price (SRP),DPOCostStr|DPO Cost(%),Price|Price"
+
         list["listitemvariantreview"] = arrList;
         bindingDatatoDataTable(list)
         $("table[data-table='listitemvariantreview']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
@@ -1705,11 +1713,11 @@ $(function(){
         var currentSRP = toMoneyValue(currentSRPStr);
         var inputPrice = toMoneyValue($("input#txt-editPriceAdmin").val());
 
-        if(parseFloat(currentSRP,10) > parseInt(inputPrice,10)){
-            $("div#editvariantadmin").find("p.label-error").text("The Unit price must be greater than the SRP -> " + currentSRPStr + " "); 
-            isOkay = false
-            return isOkay;
-        }
+        // if(parseFloat(currentSRP,10) > parseInt(inputPrice,10)){
+        //     $("div#editvariantadmin").find("p.label-error").text("The Unit price must be greater than the SRP -> " + currentSRPStr + " "); 
+        //     isOkay = false
+        //     return isOkay;
+        // }
 
         if(parseInt($("input#txt-editCriticalAdmin").val(),10) > parseInt($("input#txt-editLowstockAdmin").val(),10)){
             $("div#editvariantadmin").find("p.label-error").text("Low Stock Level must be greater than the Critical.");
@@ -1996,7 +2004,7 @@ function bindingDataViewingRequestItem(response,table){
             addHeader(tr,"Item No") 
             addHeader(tr,"Thumbnail")
             addHeader(tr,"Description")  
-            addHeader(tr,"DPO Cost")
+            addHeader(tr,"Price")
             addHeader(tr,"Qty Requested")
             addHeader(tr,"Subtotal")
  
@@ -2007,7 +2015,7 @@ function bindingDataViewingRequestItem(response,table){
                 addCellData(tr,list[row].ItemNo)
                 addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
                 addCellData(tr,list[row].ItemDescription)  
-                addCellData(tr,list[row].DPOCost)
+                addCellData(tr,list[row].Price)
 
                 addCellData(tr,list[row].RequestsQty)
                 addCellData(tr,list[row].SubTotal)
@@ -2033,7 +2041,7 @@ function bindingDataViewingPendingItems(response,table){
             addHeader(tr,"Item No") 
             addHeader(tr,"Thumbnail")
             addHeader(tr,"Description")  
-            addHeader(tr,"DPO Cost")
+            addHeader(tr,"Price")
             addHeader(tr,"Qty Requested")
             addHeader(tr,"Qty Received")
             addHeader(tr,"Subtotal")
@@ -2045,7 +2053,7 @@ function bindingDataViewingPendingItems(response,table){
                 addCellData(tr,list[row].ItemNo)
                 addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
                 addCellData(tr,list[row].ItemDescription)  
-                addCellData(tr,list[row].DPOCost)
+                addCellData(tr,list[row].Price)
 
                 addCellData(tr,list[row].RequestsQty)
                 addCellData(tr,list[row].Received)
@@ -2089,23 +2097,27 @@ function setupDataTable(table, data){
  
     dttable = table.DataTable({  
                      "aaData" : data.list,
-                     // "bSort" : false,
+                     "bSort" : (table.is(".main-table") ? (table.data("table") != "listitemvariant") : false),
                      "aoColumns" : fields.Columns,  
                       scrollY:        (table.is(".main-table") || table.data("table") == "posubmit") ? '60vh' : ((table.data("table") == "auditlogs") ? "20vh" : "30vh"),
                       scrollCollapse: false,
                       paging:         false,
-                      rowsGroup: rowgroup,
-                      // dom: 'Bfrtip',
-                      //   buttons: [ 'print' ]
+                      rowsGroup: rowgroup, 
                        
                       
                 }); 
+
+
      
     listObjTableBinded[table.data("table")] = dttable
     dttable.draw(); 
     updateNotification(table.data("table"))
     bindingPOTotal(table, data)
 
+    if( table.data("table") == "pobysupplier" ){
+        table.closest("div.dataTables_wrapper").find("div.dataTables_filter").show();
+    }
+  
 }
  function bindingPOTotal(table,data){
     if(table.data("table") == "posubmit")
@@ -2319,4 +2331,13 @@ function generateChart(data){
      jQuery('svg').find('text:contains("Highcharts.com")').remove();
   } 
 
+}
+
+function dpoPercent(elem){
+    elem = $(elem)
+    var dpo = parseFloat(toMoneyValue(elem.val()),2)
+
+    if(dpo > 100){
+        elem.val("100.00")
+    } 
 }

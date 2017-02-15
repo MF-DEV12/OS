@@ -64,7 +64,7 @@
                                 <div class="col-xs-6">
                                   <h4 style="color:#048e81;" onclick="viewOrderList('<?=$key->OrderNo?>');"  data-toggle="modal" data-backdrop="static"  data-keyboard="false" data-target="#viewOrderList">#<?=$key->OrderNo?></h4> 
                                   <h5>Shipping Address : <br/><?=$key->ShipAddress?> <br/> Landmark : <br/> <?=$key->Landmark?></h5> 
-                                  <button class="btn btn-success btn-track" data-landmark="<?=$key->Landmark?>"><i class="fa fa-map-marker" aria-hidden="true"></i> Track</button>
+                                 <button class="btn btn-success btn-track" data-landmark="<?=$key->Landmark?>"><i class="fa fa-map-marker" aria-hidden="true"></i> Track</button>
                                 </div>
                                 <div class="col-xs-6"> 
                                   <h6>Total Payment : <br/> &#8369; <span class="cart-total"><?=$key->TotalAmount?></span></h6>  
@@ -253,7 +253,8 @@
       <script type="text/javascript" src='<?=base_url("js/bootbox.min.js")?>'></script>
       <script type="text/javascript" src='<?=base_url("js/utility/helpers.js")?>'></script>
  
-      <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+      <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=<?=GPS_API;?>"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/jquery.inview.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/wow.min.js")?>"></script>
       <script type="text/javascript" src="<?=base_url("js/homestyle/mousescroll.js")?>"></script>
@@ -278,4 +279,4 @@
      
 </body>
     
-</html> 
+</html> 	

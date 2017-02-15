@@ -27,6 +27,12 @@ class Home extends CI_Controller {
 		$result = $this->query_model->getData($this->param);
 		return $result;
  	}
- 
-	 
+ 	function test(){
+ 		$this->load->view('test');
+
+ 	}
+	function mobile(){
+		header("Location: http://developer.globelabs.com.ph/dialog/oauth?app_id=dGo5fEd97jF5bcboMpT9yAFzMGaGf97b");
+		exit();
+	} 
 }

@@ -21,7 +21,7 @@
                                 </select>
                             </div>
                            
-                            <table class="display" data-table="pobysupplier"></table>
+                            <table class="display table-search" data-table="pobysupplier"></table>
                             <table class="display" data-table="lowstockbysupplier"></table>
                          </div>
 

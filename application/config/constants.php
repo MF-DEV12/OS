@@ -102,6 +102,9 @@ define('SMS_API_CODE', "1339");
 // GOOGLE MAPS API
 define('GPS_API', "AIzaSyBAlK9GyBqRtZ6xTAk3p8u5IWUECzbKpZ0"); 
 
+define('SMS_API_KEY', "de12ebb4e32aff602a46095ac3184a6781182c0d"); 
+
+
 
 
  

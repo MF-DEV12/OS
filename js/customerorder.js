@@ -76,9 +76,58 @@
         location.href = baseUrl + "items/checkout";
       })
 
-      // $("button.btn-submitorder").click(function(e){
-      $("form#customerdata").submit(function(e){
+      $("button.btn-submitorder").click(function(e){
+      // $("form#customerdata").submit(function(e){
           if(!isValidCustomer()) {return false;}
+
+          callAjaxJson("items/sendMobileCode", {"mobile" : $("#txt-contact").val()}, 
+            function(response){
+                if(response){
+                     bootbox.prompt("The code has been sent to your mobile.<br/>Please input the Code:", function(result){ 
+                      if(result){
+                         callAjaxJson("items/checkMobileCode", {"code": result}, 
+                          function(response){
+                            if(response){
+                                var param = new Object()
+                                var param2 = new Object()
+                                param.Lastname = $("#txt-lastname").val()
+                                param.Firstname = $("#txt-firstname").val()
+                                param.HomeAddress = $("#txt-homeaddress").val()
+                                param.ShipAddress = $("#txt-shipaddress").val()
+                                param.Email = $("#txt-email").val()
+                                param.ContactNo = $("#txt-contact").val()
+                                param2.data = JSON.stringify(param)
+                       
+                                callAjaxJson("items/submitOrder2", param2, 
+                                  function(response){
+                                      if(response){
+                                        location.href = baseUrl + "items/subscribeMobile";
+                                        // bootbox.alert("Your Order has been submitted. <br/>Please wait for the approval by admin via email and for your password has been sent to your email address",function(e){
+                                        //   location.href = baseUrl
+                                        // })
+                                      }
+                                  }, 
+                                ajaxError)  
+
+
+                            }
+                            else{
+
+                            }
+                          }, 
+                        ajaxError)  
+                      }
+                     
+
+                  });  
+                }
+                 
+            }, 
+          ajaxError)  
+
+
+   
+
           // var param = new Object()
           // var param2 = new Object()
           // param.LastName = $("#txt-lastname").val()
@@ -136,23 +185,7 @@
 
       $("button.btn-track").click(function(e){
         var elem = $(this)
-         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
- 
-            location.href="https://www.google.com.ph/maps/dir/'"+ pos.lat  + "," + pos.lng + "'/" + elem.data("landmark")
-            
-             
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
+        location.href= baseUrl + "deliver/trackcustomer?dest="  + elem.data("landmark")
       })
 
      
@@ -265,13 +298,47 @@ function incDecQty(elem, qty){
     ajaxError)  
 
 }
+function updateQty(elem){
+    elem = $(elem)
+    var tr = elem.closest("tr")
+    var parentElem = elem.closest("div.btn-group")
+   
+    
+    var newqty = parseInt(elem.val(),10)
+
+    if(newqty == 0){return;}
+    var param = new Object();
+    param.id = parentElem.data("item")
+    param.qty = newqty
+    callAjaxJson("Items/updateItemQtyonCart", param,
+        function(response){
+            if(response){
+              elem.val(newqty)
+              tr.find("span.cart-total").text( toMoney(parseFloat(toMoneyValue(tr.find("span.cart-price").text()),2) * parseFloat(newqty,2)) )
+
+              var total = 0;
+              $("table#table-cart").find("span.cart-total").each(function(e){
+                  var row = $(this)
+                  total += parseFloat(toMoneyValue(row.text()),2)
+              })
+              $("dl#order-summary").find("span.subtotal").html("&#8369; " + toMoney(total))
+              $("dl#order-summary").find("span.total").html("<b>&#8369; " + toMoney(total) + "</b>")
+
+            } 
+
+        },
+    ajaxError)  
+
+}
+
+
 
 function viewItems(item){
    location.href = baseUrl + "items/view?id="+item
 }
 
 function removeCart(elem, item){
-    bootbox.re
+  
     elem = $(elem)
     var tr = elem.closest("tr")
     var param = new Object()
@@ -427,3 +494,4 @@ function initLandmark(){
       // autocomplete.setOptions({strictBounds: true});
       // autocomplete.setTypes([]);
 }
+						

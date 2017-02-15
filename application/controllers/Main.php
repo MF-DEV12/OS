@@ -337,7 +337,7 @@ class Main extends CI_Controller {
 			$columns["No"] = "No";
 			$columns["ItemNo"] = "Item #";
 			$columns["ItemDescription"] = "Name & Description";
-			$columns["DPOCost"] = "DPOCost";
+			$columns["Price"] = "Price";
 			$columns["RequestsQty"] = "Quantity";
 			$columns["SubTotal"] = "Sub Total";
 			$data["columns"] =  $columns; 
@@ -480,12 +480,12 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*"; 
 			$this->param["conditions"] = "SupplyRequestNo = '$SupplyRequestNo'"; 
 			$result = $this->query_model->getData($this->param); 
-			$emailData["item"] = $result;
-			$emailData["supplierno"] = $SupplyRequestNo;
-			$emailresult = $this->email_lib->sendPurchaseOrder($emailData);
-			if(!$emailresult){
-				echo "not success";
-			}
+			//$emailData["item"] = $result;
+			//$emailData["supplierno"] = $SupplyRequestNo;
+			//$emailresult = $this->email_lib->sendPurchaseOrder($emailData);
+			//if(!$emailresult){
+			//	echo "not success";
+			//}
 
 
 			$data = array();
@@ -516,7 +516,7 @@ class Main extends CI_Controller {
 			$this->param["fields"] = "*";
 			$this->param["conditions"] = "createdby = '$createdby' AND SupplierNo = '$supplierNo'";
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,DPOCost|DPO Cost,Total|Total";
+			$data["fields"] = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,Price|Price,Total|Total";
 			$data["totalpo"] = $this->getPOTotal($data["list"]);
 			return $data;
 		}
@@ -678,7 +678,7 @@ class Main extends CI_Controller {
 
 	 
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "RequestListNo|No,SupplierName|Supplier name,ItemDescription|Item Description,Received|Qty Received,PendingQuantity|Qty Pending";
+			$data["fields"] = "RequestListNo|No,SupplierName|Supplier name,ItemDescription|Item Description,Received|Qty Received,PendingQuantity|Qty Pending,DateReceive|Received Date";
 			if($role == "supplier"){
 				$data["fields"] .= ",Action|Action";
 			}
@@ -840,10 +840,8 @@ class Main extends CI_Controller {
 			$role = $this->session->userdata("role");
 			$sno = $this->session->userdata("supplierno");
 
-			if($role == "supplier")
-				$this->param["conditions"] = "SRemoved = '$isRemovedItems'";  
-			else
-				$this->param["conditions"] = "Removed = '$isRemovedItems' AND Owned = 1";  
+			 
+			$this->param["conditions"] = "(Removed = '$isRemovedItems' AND SRemoved = '$isRemovedItems') AND Owned = 1";  
 
 
 			if($role == "supplier"){
@@ -851,6 +849,7 @@ class Main extends CI_Controller {
 			}
  
 			$data["list"] =  $this->query_model->getData($this->param);
+			 
 			$data["fields"] = "ViewItems|Variants,ItemNo|Item Number,Name|Item Name,NoOfItems|No of Variant,UOM|UOM,Name1|Family,Name2|Category,Name3|Subcategory";
 			if($role != "supplier")
 				$data["fields"].= ",SupplierName|Supplier name";
@@ -1239,7 +1238,7 @@ class Main extends CI_Controller {
 			$this->param["conditions"] = "SupplyRequestNo = '$supreqno'"; 
 
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ItemNo|Item No,ThumbNail|ThumbNail,ItemDescription|Description,DPOCost|DPO Cost,RequestsQty|QTY Request,SubTotal|SubTotal"; 
+			$data["fields"] = "ItemNo|Item No,ThumbNail|ThumbNail,ItemDescription|Description,Price|Price,RequestsQty|QTY Request,SubTotal|SubTotal"; 
 				 
 			$list["child-".$supreqno] = $data;
 		 
@@ -1342,18 +1341,19 @@ class Main extends CI_Controller {
 			 
 			$this->param = $this->query_model->param;  
 
-			$this->param["table"] = "vw_getpendingitemsbysupplyrequestno	"; 
+			$this->param["table"] = "vw_getpendingitemsbysupplyrequestno"; 
 			$this->param["fields"] = "*"; 
 			$this->param["conditions"] = "SupplyRequestNo = '$supreqno'"; 
 
 			$data["list"] =  $this->query_model->getData($this->param);
-			$data["fields"] = "ItemNo|Item No,ThumbNail|ThumbNail,ItemDescription|Description,DPOCost|DPO Cost,RequestsQty|Requested QTY,Received|Received QTY ,SubTotal|SubTotal"; 
+			$data["fields"] = "ItemNo|Item No,ThumbNail|ThumbNail,ItemDescription|Description,Price|Price,RequestsQty|Requested QTY,Received|Received QTY ,SubTotal|SubTotal"; 
 				 
 			$list["child-".$supreqno] = $data;
 		 
 			echo json_encode($list);
 		}
 
+                
 		function setDeliveredPendingOrders(){
 			$status = $this->input->post("status");
 			$supreqno = $this->input->post("supreqno");
@@ -1368,7 +1368,7 @@ class Main extends CI_Controller {
 			$this->param["table"] = "supplyrequest";
 			$this->param["conditions"] = "SupplyRequestNo = '$supreqno'";
 			$this->query_model->updateData($this->param); 
-			$list["pendingorders"] = $this->GetPendingItemsBySupplyRequestNo();
+			$list["pendingorders"] = $this->GetPendingOrders();
 			echo json_encode($list);
 		}
 
@@ -1419,6 +1419,7 @@ class Main extends CI_Controller {
 				$datavariant["ItemNo"] = $dataitems->ItemNo;
 				$datavariant["SRP"] = $v->SRP;
 				$datavariant["DPOCost"] = $v->DPOCost; 
+                                $datavariant["Price"] = $v->Price; 
 				$datavariant["ImageFile"] = $v->FileName; 
 				$datavariant["VariantName"] = $v->VariantsName; 
 				$datavariant["VariantNameJSON"] = json_encode($v->VariantsNameJSON); 
@@ -1568,3 +1569,4 @@ class Main extends CI_Controller {
 	 
 
 }
+	
