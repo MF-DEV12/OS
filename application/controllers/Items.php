@@ -328,6 +328,156 @@ class Items extends CI_Controller {
  		exit;
  	}
 
+ 	function sendMobileCode(){
+ 		$mobile = $this->input->post("mobile");
+ 		$code = 	 $this->randomPassword(); 
+ 		$this->load->library("SMSApi"); 
+ 		$message = "CODE: " . $code; 
+ 		$result = $this->smsapi->sendmessage2($mobile, $message);	
+  
+ 		$this->session->set_userdata("mobile-code", $code);
+
+ 		echo true;
+
+ 	}
+
+ 	function checkMobileCode(){
+ 		$usercode= $this->input->post("code");
+ 	 
+ 		$code = $this->session->userdata("mobile-code");
+ 		
+ 		echo (md5($usercode) == md5($code));
+
+ 	}
+
+ 	function submitOrder2(){
+		date_default_timezone_set("Asia/Manila");
+		$date = date('Y-m-d H:i:s');
+		$datetime = date('Y-m-d H:i:s', strtotime($date));
+		$username = $this->session->userdata("username");
+		$cdata = $this->input->post("data");
+
+		$cdata = json_decode($cdata, true);
+ 		$this->load->library("SMSApi"); 
+		$this->load->library("Email_Lib");
+
+
+		if(!$username){ 
+			//Insert Customer 
+			$this->param = $this->query_model->param; 
+			$this->param["table"] = "customer";
+			$this->param["dataToInsert"] = $cdata;
+			$this->param["transactionname"] = "New customer";
+			$this->query_model->insertData($this->param);
+
+			//Insert Account
+			$password = $this->randomPassword();
+			$this->param = $this->query_model->param; 
+			$this->param["table"] = "accounts";
+			$account["Username"] = $cdata["Email"];
+			$account["LastName"] = $cdata["Lastname"];
+			$account["FirstName"] =$cdata["Firstname"];
+			$account["Password"] = md5($password);
+			$account["LoginType"] = 'customer'; 
+			$this->param["dataToInsert"] = $account;
+			$this->query_model->insertData($this->param);
+
+			$data["firstname"] = $account["FirstName"];
+			$data["email"] = $account["Username"];
+			$data["password"] = $password;
+			$data["companyname"] = COMPANYNAME;
+
+			$this->email_lib->sendAccount($data);
+		}
+		else{
+			$email = $this->session->userdata("email");  
+			$cdata =  $this->getCustomerDetailsByEmail($email, true); 
+			$cdata = $cdata[0];
+		}
+
+
+
+		// Get CustomerNo by Email
+		$this->param = $this->query_model->param; 
+		$this->param["table"] = "customer";
+		$this->param["fields"] = "*";
+		if(!$username)
+			$this->param["conditions"] = "Email = '". $cdata["Email"] . "'"; 
+		else
+			$this->param["conditions"] = "Email = '$username'"; 
+
+		$result = $this->query_model->getData($this->param);
+		$customerNo = $result[0]->CustomerNo;
+		$shippingaddress = $cdata["ShipAddress"];
+
+		//Insert tblOrder 
+		$data = array();
+		$this->param = $this->query_model->param; 
+		$this->param["table"] = "tblorder";
+		$data["CustomerNo"] = $customerNo;
+		$data["Date"] = $datetime;
+		$data["ShipAddress"] = $shippingaddress;
+		$this->param["dataToInsert"] = $data;
+		$this->param["transactionname"] = "New Order";
+		$this->query_model->insertData($this->param);
+
+		// Get OrderNo by Date and CustomerNo
+		$this->param = $this->query_model->param; 
+		$this->param["table"] = "tblorder";
+		$this->param["fields"] = "*";
+		$this->param["conditions"] = "Date = '$datetime' and CustomerNo = '$customerNo'";
+		$result = $this->query_model->getData($this->param);
+		$OrderNo = $result[0]->OrderNo;
+		// print_r($result);
+		
+		 $this->smsapi->sendmessage2($cdata["ContactNo"] , 
+			"LAMPANO HARDWARE:\nHi ". $cdata["Firstname"] . ", Your Order $OrderNo has been approved and is going through verification process. For status, to track the order, login to www.lampanohardwaretradings.16mb.com, Thank you."); 
+	 
+ 		// die($responsesendmessage);
+
+		$listItemsInCart = $this->session->userdata("cartitems"); 
+		$itemsoncart = $this->getItemsByItemNo($listItemsInCart);
+
+		$total = 0.00;
+
+		// INSERT ORDER ITEM DETAILS - tblorderdetails
+		foreach ($itemsoncart as $key) {
+			$data = array();
+			$this->param = $this->query_model->param; 
+			$this->param["table"] = "tblorderdetails";
+			$data["OrderNo"] = $OrderNo;
+			$data["ItemVariantNo"] = $key->ItemNumber;
+			$data["Quantity"] = $key->Quantity;
+			$data["Price"] = $key->Price;
+			$data["SubTotal"] = (float)$key->Price * $key->Quantity;
+			$this->param["dataToInsert"] = $data; 
+			$this->query_model->insertData($this->param);
+
+			$total += (float)$key->Price * $key->Quantity;
+		}
+		
+
+		//Update TotalAmount from tblorder
+		$data = array();
+		$this->param = $this->query_model->param; 
+		$this->param["table"] = "tblorder";
+		$this->param["conditions"] = "Date = '$datetime' and CustomerNo = '$customerNo'";
+		$data["TotalAmount"] = $total;
+		$this->param["dataToUpdate"] = $data;
+		$this->query_model->updateData($this->param);
+ 		
+		$this->session->set_userdata('NewEmail', $email);
+
+
+		$this->session->unset_userdata('cartitems');
+		$this->session->unset_userdata('customerdata');
+ 
+
+  		redirect(base_url('items/checkout'));
+
+ 	}
+
+
  
  	function submitOrder(){
  	 	date_default_timezone_set("Asia/Manila");
@@ -345,9 +495,9 @@ class Items extends CI_Controller {
 			//Insert Customer 
 		 	
 			$code = $this->input->get("code");
-			$result = $this->smsapi->getAccessToken($code);
+			//$result = $this->smsapi->getAccessToken($code);
 			 
-			$cdata["access_token"] = $result->access_token;
+			//$cdata["access_token"] = $result->access_token;
 			$cdata["ContactNo"] = $result->subscriber_number;
 			$cdata["code"] = $code;
 
@@ -421,7 +571,7 @@ class Items extends CI_Controller {
 		// print_r($result);
 
 		$responsesendmessage = $this->smsapi->sendmessage($cdata["ContactNo"] , 
-			"LAMPANO HARDWARE:\nHi ". $cdata["Firstname"] . ", Your Order $OrderNo has been received and is going through verification process. For status, to track the order, login to www.lampanohardwaretradings.16mb.com, Thank you.", 
+			"LAMPANO HARDWARE:\nHi ". $cdata["Firstname"] . ", Your Order $OrderNo has been approved and is going through verification process. For status, to track the order, login to www.lampanohardwaretradings.16mb.com, Thank you.", 
 			"MSG001", 
 			$cdata["access_token"]); 
 	 

@@ -96,7 +96,7 @@
             <?php $readonly = ($username) ? "readonly" : ""; ?>   
             <?php $form = ($username) ? "submitOrder" : "subscribeMobile"; ?>   
 
-          <form id="customerdata" method="post" action="<?=base_url('items/'.$form);?>">
+          <!-- <form id="customerdata" method="post" action="<?=base_url('items/'.$form);?>"> -->
           <div class="row">
             <div class="col-sm-12 col-md-8" style="border-right: 1px dashed #ddd;">
               <h5 style="margin-bottom: 0px"><b></b></h5>
@@ -129,7 +129,7 @@
                         <label class="formlabel">First name:</label>
                     </div>
                   </div>
-                  <!-- <?php if($customer){ ?> 
+                  
                   <div class="col-sm-12 col-lg-6">
                     <div class="group">      
                         <input class="inputMaterial" type="text"  id="txt-contact"  value="<?=$contact;?>" required <?=$readonly?>>
@@ -138,9 +138,8 @@
                         <label class="formlabel">Contact #:</label>
                     </div>
                   </div>
-                  <?php } ?>    -->
-                  
-                  <div class="col-sm-12 col-lg-12">
+                 
+                  <div class="col-sm-12 col-lg-6">
                     <div class="group">      
                         <input class="inputMaterial" type="text"  id="txt-email"  name="Email" value="<?=$email;?>" required <?=$readonly?>>
                         <span class="highlight"></span>
@@ -205,7 +204,7 @@
              
             </div>
           </div>
-          </form>
+          <!-- </form> -->
 
       <?php } else {?>
           <div class="alert alert-success">

@@ -67,24 +67,17 @@
                           <div class="col-xs-4">
                           QTY: 
                             <div class="btn-group cartqty" data-item="<?=$key->ItemNumber;?>">
-                              <button class="btn btn-default dec" onclick="incDecQty(this,-1);">-</button>
-                              <button class="btn btn-default qty disabled"><?=$key->Quantity?></button>
-                              <button class="btn btn-default inc" onclick="incDecQty(this,1);">+</button>
+                              <!--<button class="btn btn-default dec" onclick="incDecQty(this,-1);">-</button>-->
+                              <input type="text" class="form-control qty" onblur="updateQty(this)" value="<?=$key->Quantity?>" style="border: 1px solid #ddd;">
+                              <!--<button class="btn btn-default qty" contenteditable="true" onblur="updateQty(this)"><?=$key->Quantity?></button>-->
+                              <!--<button class="btn btn-default inc" onclick="incDecQty(this,1);">+</button>-->
                             </div>  
                             <h6>&#8369; <span class="cart-total"><?=number_format(($key->Price * $key->Quantity),2);?></span></h6>
                           </div>
 
                         </div> 
                       </td>
-                      <!-- <td>&#8369; <span class="cart-price"><?=number_format($key->Price,2)?></span></td>
-                      <td>
-                        <div class="btn-group cartqty" data-item="<?=$key->ItemNumber;?>">
-                          <button class="btn btn-default dec" onclick="incDecQty(this,-1);">-</button>
-                          <button class="btn btn-default qty disabled"><?=$key->Quantity?></button>
-                          <button class="btn btn-default inc" onclick="incDecQty(this,1);">+</button>
-                        </div>  
-                      </td> -->
-                      <!-- <td></td> -->
+                     
                       <td><span class="glyphicon glyphicon-remove removeCart" onclick="removeCart(this,'<?=$key->ItemNumber;?>');"></span></td>
                     </tr>
                     <?php $total += ($key->Price * $key->Quantity);?>
@@ -190,4 +183,4 @@
      
 </body>
     
-</html> 
+</html> 	

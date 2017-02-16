@@ -17,12 +17,12 @@ $(function(){
 
             var arrList = new Object();
             arrList.list = "";
-            arrList.fields = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,DPOCost|DPO Cost,Total|Total"
+            arrList.fields = "Remove| ,ItemQty|Quantity,Item|Item No.,ItemDescription|Description,Price|Price,Total|Total"
             listposupplier["posubmit"] = arrList;
 
             arrList = new Object();
             arrList.list  = "";
-            arrList.fields = "Action| ,ItemNo|Item No.,Description|Description,DPOCost|DPO Cost"
+            arrList.fields = "Action| ,ItemNo|Item No.,Description|Description,Price|Price"
             listposupplier["pobysupplier"] = arrList;
 
             arrList = new Object();
@@ -31,6 +31,8 @@ $(function(){
             listposupplier["lowstockbysupplier"] = arrList;
 
             bindingDatatoDataTable(listposupplier)
+
+            $("table[data-table=pobysupplier]").closest("div.dataTables_wrapper").find("div.dataTables_filter").show();
 
         })
 
@@ -752,18 +754,30 @@ $(function(){
 
         $("table[data-table=requestlist]").on("click", "tr td:last-child button.btn-deliver",function(){
             var elem = $(this)
-            var tr = elem.closest("tr")
+            var tr = elem.closest("tr") 
             var table = listObjTableBinded["requestlist"]
             var data = table.rows(tr).data()
-            bootbox.confirm("Do you want to approve and deliver this request?", function(result){
 
-                if(result){
-                    var param = new Object()
-                    param.status = $("select#porequestlist option:selected").val()
-                    param.supreqno = data[0].SupplyRequestNo
-                        callAjaxJson("main/setDeliveredRequest", param, bindingDatatoDataTable, ajaxError)
-                } 
-            }) 
+
+              callAjaxJson("main/validateApprovedQtyByPO", {"supreqno" : data[0].SupplyRequestNo}, 
+                function(response){
+                    if(response.result){
+                            bootbox.confirm("Do you want to approve and deliver this request?", function(result){
+
+                                if(result){
+                                    var param = new Object()
+                                    param.status = $("select#porequestlist option:selected").val()
+                                    param.supreqno = data[0].SupplyRequestNo
+                                        callAjaxJson("main/setDeliveredRequest", param, bindingDatatoDataTable, ajaxError)
+                                } 
+                            }) 
+                             }
+                    else{
+                        bootbox.alert("Please check the items and make sure the Approved Qty has value.")
+                    }
+
+                }
+                , ajaxError)
         })
 
         $("table[data-table=pendingorders]").on("click", "tr td:last-child button.btn-deliverpending",function(){
@@ -771,6 +785,7 @@ $(function(){
             var tr = elem.closest("tr")
             var table = listObjTableBinded["pendingorders"]
             var data = table.rows(tr).data()
+ 
             bootbox.confirm("Do you want to deliver this pending orders?", function(result){
 
                 if(result){
@@ -780,6 +795,8 @@ $(function(){
                         callAjaxJson("main/setDeliveredPendingOrders", param, bindingDatatoDataTable, ajaxError)
                 } 
             }) 
+
+         
         })
 
         //ITEMS
@@ -871,7 +888,7 @@ $(function(){
                     var arrList = new Object();
                     var list = new Object();
                     arrList.list  = "";
-                    arrList.fields = "Image|Thumbnail,Attributes|Variant,DPOCost|DPO Cost,SRP|Suggested Retail Price(SRP),Action|";
+                    arrList.fields = "Image|Thumbnail,Attributes|Variant,SRP|Suggested Retail Price(SRP),DPOCost|DPO Cost(%),Price|Price,Action|";
                     list["listitemvariant"] = arrList;
 
                     bindingDatatoDataTable(list)
@@ -1005,13 +1022,15 @@ $(function(){
             var data = new Object();
             data.Image = ""
             data.Attributes = "<a class=\"attribute-setup-show\" data-toggle=\"modal\" data-backdrop=\"static\"  data-keyboard=\"false\" data-target=\"#attributesetup\"><span class=\"glyphicon glyphicon-cog\"></span> Add variants</a>";
-            data.DPOCost = "<input type=\"text\" class=\"numeric variant-dpocost form-control\"/>";
+            data.DPOCost = "<input class=\"variant-dpocost form-control\" type=\"number\" min=\"1\" max=\"100\" onblur=\"dpoPercent(this);\"/>";
             data.SRP = "<input type=\"text\" class=\"numeric variant-srp form-control\"/>";
+            data.Price = "<span class=\"variant-price\">&#8369; <span>0.00</span></span>";
             data.Action = "<a onclick=\"deleteVariant(this);\"><span class=\"glyphicon glyphicon-remove\"></span></a>";
              
             arrayData.push(data)
-            arrList.list  = arrayData;
-            arrList.fields = "Image|Thumbnail,Attributes|Variant,DPOCost|DPO Cost,SRP|Suggested Retail Price(SRP),Action|";
+            arrList.list  = arrayData; 
+            arrList.fields = "Image|Thumbnail,Attributes|Variant,SRP|Suggested Retail Price(SRP),DPOCost|DPO Cost(%),Price|Price,Action|";
+
             var table = listObjTableBinded["listitemvariant"]
             table.row.add(data).draw()
             table.draw()
@@ -1209,12 +1228,14 @@ $(function(){
             var dpo = tr.find("input.variant-dpocost")
             var srp = tr.find("input.variant-srp")
              if($.trim(dpo.val()).length > 0 && $.trim(srp.val()).length > 0){
-                var dpoValue = toMoneyValue(dpo.val())
+                var dpoValue = (toMoneyValue(dpo.val()) > 100) ? 100 :  toMoneyValue(dpo.val())
                 var srpValue = toMoneyValue(srp.val()) 
-                if(parseFloat(dpoValue,10) >= parseFloat(srpValue,10)){
-                   srp.after("<span class=\"label-error\">DPO Cost must be lower than to SRP.</span>") 
+                var computePrice = srpValue * parseFloat((dpoValue/100),2)
+                tr.find("span.variant-price span").text(toMoney(parseFloat(computePrice,2)))
+                //if(parseFloat(dpoValue,10) >= parseFloat(srpValue,10)){
+                //   srp.after("<span class=\"label-error\">DPO Cost must be lower than to SRP.</span>") 
                     
-                }  
+                //}  
             } 
             
         })
@@ -1268,7 +1289,7 @@ $(function(){
         var param = new Object();
         param.rlno = requestlistno;
         param.qty = elem.val();
-        param.total = parseFloat(elem.val(),2) * parseFloat(toMoneyValue(data.DPOCost), 2)
+        param.total = parseFloat(elem.val(),2) * parseFloat(toMoneyValue(data.Price), 2)
         callAjaxJson("main/updatePOQty", param,  
             function(response){
                 if(response){
@@ -1317,13 +1338,15 @@ $(function(){
         elem = $(elem)
         tr = $(tr)
         tr.find("p.label-error").remove()
-        var porequest =  parseInt(tr.find("td:last-child").text(),10)
+        var table = listObjTableBinded["poreceivesubmit"]
+        var data = table.rows(tr).data();
+        var porequest =  parseInt(data[0].Approved,10) //parseInt(tr.find("td:last-child").text(),10)
         var poreceived =  parseInt(elem.val(),10)
 
 
         if(porequest < poreceived){
                      
-            elem.after("<p class=\"label-error\">Received must not be greater than the Requested.</p>")
+            elem.after("<p class=\"label-error\">Received must not be greater than the Approved.</p>")
             return false
         }
         return true;
@@ -1566,14 +1589,16 @@ $(function(){
             row.DPOCostStr =  tr.find("input.variant-dpocost").val()      
             row.SRP = toMoneyValue(tr.find("input.variant-srp").val())       
             row.SRPStr = tr.find("input.variant-srp").val()      
+            row.Price = toMoneyValue(tr.find("span.variant-price span").text())
             data.push(row) 
 
         })
         var arrList = new Object();
         var list = new Object();
         newItemVariantList = data    
-        arrList.list  = data;
-        arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,DPOCostStr|DPO Cost,SRPStr|Suggessted Retail Price (SRP)"
+        arrList.list  = data; 
+        arrList.fields = "Image|Thumbnail,VariantsName|Item Variant,SRPStr|Suggessted Retail Price (SRP),DPOCostStr|DPO Cost(%),Price|Price"
+
         list["listitemvariantreview"] = arrList;
         bindingDatatoDataTable(list)
         $("table[data-table='listitemvariantreview']").closest("div.dataTables_wrapper").find("div.dataTables_filter").hide() 
@@ -1705,11 +1730,11 @@ $(function(){
         var currentSRP = toMoneyValue(currentSRPStr);
         var inputPrice = toMoneyValue($("input#txt-editPriceAdmin").val());
 
-        if(parseFloat(currentSRP,10) > parseInt(inputPrice,10)){
-            $("div#editvariantadmin").find("p.label-error").text("The Unit price must be greater than the SRP -> " + currentSRPStr + " "); 
-            isOkay = false
-            return isOkay;
-        }
+        // if(parseFloat(currentSRP,10) > parseInt(inputPrice,10)){
+        //     $("div#editvariantadmin").find("p.label-error").text("The Unit price must be greater than the SRP -> " + currentSRPStr + " "); 
+        //     isOkay = false
+        //     return isOkay;
+        // }
 
         if(parseInt($("input#txt-editCriticalAdmin").val(),10) > parseInt($("input#txt-editLowstockAdmin").val(),10)){
             $("div#editvariantadmin").find("p.label-error").text("Low Stock Level must be greater than the Critical.");
@@ -1996,8 +2021,9 @@ function bindingDataViewingRequestItem(response,table){
             addHeader(tr,"Item No") 
             addHeader(tr,"Thumbnail")
             addHeader(tr,"Description")  
-            addHeader(tr,"DPO Cost")
+            addHeader(tr,"Price")
             addHeader(tr,"Qty Requested")
+            addHeader(tr,"Qty Approved")
             addHeader(tr,"Subtotal")
  
             thead.append(tr)
@@ -2007,9 +2033,10 @@ function bindingDataViewingRequestItem(response,table){
                 addCellData(tr,list[row].ItemNo)
                 addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
                 addCellData(tr,list[row].ItemDescription)  
-                addCellData(tr,list[row].DPOCost)
+                addCellData(tr,list[row].Price)
 
                 addCellData(tr,list[row].RequestsQty)
+                addCellData(tr,list[row].Approved)
                 addCellData(tr,list[row].SubTotal)
  
                 tbody.append(tr)
@@ -2033,8 +2060,8 @@ function bindingDataViewingPendingItems(response,table){
             addHeader(tr,"Item No") 
             addHeader(tr,"Thumbnail")
             addHeader(tr,"Description")  
-            addHeader(tr,"DPO Cost")
-            addHeader(tr,"Qty Requested")
+            addHeader(tr,"Price")
+            addHeader(tr,"Qty Approved")
             addHeader(tr,"Qty Received")
             addHeader(tr,"Subtotal")
  
@@ -2045,9 +2072,9 @@ function bindingDataViewingPendingItems(response,table){
                 addCellData(tr,list[row].ItemNo)
                 addCellData(tr,"<img src=\""+ baseUrl +  "images/variant-folder/" + list[row].ImageFile +"\" alt=\"\" width=\"100px\" onerror=\"this.src='"+ baseUrl + "images/noimage.gif';\"/>") 
                 addCellData(tr,list[row].ItemDescription)  
-                addCellData(tr,list[row].DPOCost)
+                addCellData(tr,list[row].Price)
 
-                addCellData(tr,list[row].RequestsQty)
+                addCellData(tr,list[row].Approved)
                 addCellData(tr,list[row].Received)
                 addCellData(tr,list[row].SubTotal)
  
@@ -2089,23 +2116,27 @@ function setupDataTable(table, data){
  
     dttable = table.DataTable({  
                      "aaData" : data.list,
-                     // "bSort" : false,
+                     "bSort" : (table.is(".main-table") ? (table.data("table") != "listitemvariant") : false),
                      "aoColumns" : fields.Columns,  
                       scrollY:        (table.is(".main-table") || table.data("table") == "posubmit") ? '60vh' : ((table.data("table") == "auditlogs") ? "20vh" : "30vh"),
                       scrollCollapse: false,
                       paging:         false,
-                      rowsGroup: rowgroup,
-                      // dom: 'Bfrtip',
-                      //   buttons: [ 'print' ]
+                      rowsGroup: rowgroup, 
                        
                       
                 }); 
+
+
      
     listObjTableBinded[table.data("table")] = dttable
     dttable.draw(); 
     updateNotification(table.data("table"))
     bindingPOTotal(table, data)
 
+    if( table.data("table") == "pobysupplier" ){
+        table.closest("div.dataTables_wrapper").find("div.dataTables_filter").show();
+    }
+  
 }
  function bindingPOTotal(table,data){
     if(table.data("table") == "posubmit")
@@ -2320,3 +2351,49 @@ function generateChart(data){
   } 
 
 }
+
+function dpoPercent(elem){
+    elem = $(elem)
+    var dpo = parseFloat(toMoneyValue(elem.val()),2)
+
+    if(dpo > 100){
+        elem.val("100.00")
+    } 
+}
+
+
+function updateApprovedQty(requestlistno, requestqty, elem){
+     elem = $(elem)
+     if(!validateApprovedQty(elem,requestqty)){  return; } 
+     var param = new Object();
+     param.rlno = requestlistno
+     param.qty = elem.val();
+     callAjaxJson("main/UpdateApprovedQty", param, 
+      function(response){
+          if(response){
+            
+        
+          }
+      }, 
+    ajaxError)  
+
+}
+
+function validateApprovedQty(elem,requestqty){
+    elem.closest("td").find("p.error").remove();
+    if($.trim(elem.val()).length == 0){
+        elem.after("<p class=\"error\">Input the Approved Qty.</p>")
+        return false;
+    } 
+
+    if(parseInt(elem.val(),10)  > requestqty){
+        elem.after("<p class=\"error\">Approved qty must not be greater than the Request Qty.</p>")
+        elem.select();
+        return false;
+    } 
+
+    return true;
+
+
+}
+

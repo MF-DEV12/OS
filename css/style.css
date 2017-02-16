@@ -599,6 +599,11 @@ p.message{
   display: none;
 }
 
+p.error{
+  color: red;
+  font-size: 12px; 
+}
+
 asterisk{
   color: red;
 }

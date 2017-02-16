@@ -38,7 +38,12 @@ class Deliver extends CI_Controller {
  	}
 	 
 	function trackcustomer(){
-		$this->load->view("track-customer");
+		$data['username'] = $this->session->userdata("username");
+		$data['role'] = $this->session->userdata("role");
+		$data['name'] = $this->session->userdata("name");
+		$landmark = $this->input->get("dest");
+		$data["delivertrack"] = "https://www.google.com/maps/embed/v1/directions?key=". GPS_API . "&origin=14.7202842,121.01659&destination=". $landmark ."&avoid=tolls|highways&zoom=12";
+		$this->load->view("deliver-map",$data);
 	}
 	 
 }
